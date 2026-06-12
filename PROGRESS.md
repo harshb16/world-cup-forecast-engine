@@ -17,10 +17,11 @@ Backend API Sprint
 - Ticket 9: Knockout Simulation
 - Ticket 10: Monte Carlo Engine
 - Ticket 11: API Schemas and Simulation Service
+- Ticket 12: Teams and Fixtures Endpoints
 
 ## Current Ticket
 
-- Ticket 12: Teams and Fixtures Endpoints
+- Ticket 13: Simulation Endpoint
 
 ## Blocked Issues
 
@@ -32,4 +33,4 @@ Backend API Sprint
 
 ## Next Ticket
 
-- Ticket 12: Teams and Fixtures Endpoints
+- Ticket 13: Simulation Endpoint

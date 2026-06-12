@@ -13,10 +13,11 @@ Backend Core Sprint
 - Ticket 5: Sample Data Loader
 - Ticket 6: Elo Match Model
 - Ticket 7: Poisson Score Model
+- Ticket 8: Group-Stage Simulation
 
 ## Current Ticket
 
-- Ticket 8: Group-Stage Simulation
+- Ticket 9: Knockout Simulation
 
 ## Blocked Issues
 
@@ -24,4 +25,4 @@ Backend Core Sprint
 
 ## Next Ticket
 
-- Ticket 8: Group-Stage Simulation
+- Ticket 9: Knockout Simulation

@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Backend API Sprint
+Frontend MVP Sprint
 
 ## Completed Tickets
 
@@ -21,10 +21,11 @@ Backend API Sprint
 - Ticket 13: Simulation Endpoint
 - Ticket 14: Scenario Simulation Endpoint
 - Ticket 15: Scenario Compare and Probability Deltas
+- Ticket 16: Frontend Setup
 
 ## Current Ticket
 
-- None.
+- Ticket 17: Dashboard Shell
 
 ## Blocked Issues
 
@@ -36,4 +37,4 @@ Backend API Sprint
 
 ## Next Ticket
 
-- Review and merge Backend API Sprint.
+- Ticket 17: Dashboard Shell

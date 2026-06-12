@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Backend Core Sprint
+Backend API Sprint
 
 ## Completed Tickets
 
@@ -16,10 +16,11 @@ Backend Core Sprint
 - Ticket 8: Group-Stage Simulation
 - Ticket 9: Knockout Simulation
 - Ticket 10: Monte Carlo Engine
+- Ticket 11: API Schemas and Simulation Service
 
 ## Current Ticket
 
-- None.
+- Ticket 12: Teams and Fixtures Endpoints
 
 ## Blocked Issues
 
@@ -31,4 +32,4 @@ Backend Core Sprint
 
 ## Next Ticket
 
-- Plan the next backend API sprint.
+- Ticket 12: Teams and Fixtures Endpoints

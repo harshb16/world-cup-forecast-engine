@@ -1,11 +1,16 @@
 """HTTP routes for the API."""
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from app.models.domain import Group, Match, Team
-from app.models.schemas import HealthResponse, SimulateRequest, SimulationSummaryResponse
+from app.models.schemas import (
+    HealthResponse,
+    ScenarioSimulateRequest,
+    SimulateRequest,
+    SimulationSummaryResponse,
+)
 from app.services.data_loader import load_sample_tournament
-from app.services.simulation_service import run_sample_simulation
+from app.services.simulation_service import run_sample_scenario_simulation, run_sample_simulation
 
 router = APIRouter()
 
@@ -38,3 +43,12 @@ def fixtures() -> list[Match]:
 def simulate(request: SimulateRequest) -> SimulationSummaryResponse:
     """Run a Monte Carlo simulation against sample tournament data."""
     return run_sample_simulation(request)
+
+
+@router.post("/scenario/simulate", response_model=SimulationSummaryResponse)
+def scenario_simulate(request: ScenarioSimulateRequest) -> SimulationSummaryResponse:
+    """Run a what-if simulation against sample tournament data."""
+    try:
+        return run_sample_scenario_simulation(request)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc

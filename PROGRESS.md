@@ -19,10 +19,11 @@ Backend API Sprint
 - Ticket 11: API Schemas and Simulation Service
 - Ticket 12: Teams and Fixtures Endpoints
 - Ticket 13: Simulation Endpoint
+- Ticket 14: Scenario Simulation Endpoint
 
 ## Current Ticket
 
-- Ticket 14: Scenario Simulation Endpoint
+- Ticket 15: Scenario Compare and Probability Deltas
 
 ## Blocked Issues
 
@@ -34,4 +35,4 @@ Backend API Sprint
 
 ## Next Ticket
 
-- Ticket 14: Scenario Simulation Endpoint
+- Ticket 15: Scenario Compare and Probability Deltas

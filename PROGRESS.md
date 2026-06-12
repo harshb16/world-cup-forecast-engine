@@ -14,10 +14,11 @@ Backend Core Sprint
 - Ticket 6: Elo Match Model
 - Ticket 7: Poisson Score Model
 - Ticket 8: Group-Stage Simulation
+- Ticket 9: Knockout Simulation
 
 ## Current Ticket
 
-- Ticket 9: Knockout Simulation
+- Ticket 10: Monte Carlo Engine
 
 ## Blocked Issues
 
@@ -25,4 +26,4 @@ Backend Core Sprint
 
 ## Next Ticket
 
-- Ticket 9: Knockout Simulation
+- Ticket 10: Monte Carlo Engine

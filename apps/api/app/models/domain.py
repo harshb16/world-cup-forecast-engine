@@ -29,11 +29,17 @@ class Match(BaseModel):
     team_a_id: str = Field(min_length=1)
     team_b_id: str = Field(min_length=1)
     result: MatchResult | None = None
+    winner_team_id: str | None = None
 
     @model_validator(mode="after")
     def teams_must_be_distinct(self) -> "Match":
         if self.team_a_id == self.team_b_id:
             raise ValueError("match teams must be distinct")
+        if self.winner_team_id is not None and self.winner_team_id not in {
+            self.team_a_id,
+            self.team_b_id,
+        }:
+            raise ValueError("winner_team_id must reference one of the match teams")
         return self
 
 

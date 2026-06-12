@@ -15,10 +15,11 @@ Backend Core Sprint
 - Ticket 7: Poisson Score Model
 - Ticket 8: Group-Stage Simulation
 - Ticket 9: Knockout Simulation
+- Ticket 10: Monte Carlo Engine
 
 ## Current Ticket
 
-- Ticket 10: Monte Carlo Engine
+- None.
 
 ## Blocked Issues
 
@@ -26,4 +27,4 @@ Backend Core Sprint
 
 ## Next Ticket
 
-- Ticket 10: Monte Carlo Engine
+- Plan the next backend API sprint.

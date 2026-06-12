@@ -73,3 +73,28 @@ class SimulationSummaryResponse(BaseModel):
     third_place_finish_probabilities: dict[str, float]
     third_place_qualification_probabilities: dict[str, float]
     average_points_by_team: dict[str, float]
+
+
+class TeamProbabilityDeltaResponse(BaseModel):
+    """Per-team scenario probability deltas."""
+
+    team_id: str
+    team_name: str
+    group_id: str
+    champion_probability_delta: float
+    final_probability_delta: float
+    semi_final_probability_delta: float
+    quarter_final_probability_delta: float
+    round_of_16_probability_delta: float
+    round_of_32_probability_delta: float
+    group_qualification_probability_delta: float
+
+
+class ScenarioCompareResponse(BaseModel):
+    """Response body for comparing baseline and scenario simulations."""
+
+    baseline: SimulationSummaryResponse
+    scenario: SimulationSummaryResponse
+    deltas: list[TeamProbabilityDeltaResponse]
+    biggest_risers: list[TeamProbabilityDeltaResponse]
+    biggest_fallers: list[TeamProbabilityDeltaResponse]

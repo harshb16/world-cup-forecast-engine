@@ -5,12 +5,17 @@ from fastapi import APIRouter, HTTPException
 from app.models.domain import Group, Match, Team
 from app.models.schemas import (
     HealthResponse,
+    ScenarioCompareResponse,
     ScenarioSimulateRequest,
     SimulateRequest,
     SimulationSummaryResponse,
 )
 from app.services.data_loader import load_sample_tournament
-from app.services.simulation_service import run_sample_scenario_simulation, run_sample_simulation
+from app.services.simulation_service import (
+    run_sample_scenario_compare,
+    run_sample_scenario_simulation,
+    run_sample_simulation,
+)
 
 router = APIRouter()
 
@@ -50,5 +55,14 @@ def scenario_simulate(request: ScenarioSimulateRequest) -> SimulationSummaryResp
     """Run a what-if simulation against sample tournament data."""
     try:
         return run_sample_scenario_simulation(request)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.post("/scenario/compare", response_model=ScenarioCompareResponse)
+def scenario_compare(request: ScenarioSimulateRequest) -> ScenarioCompareResponse:
+    """Compare baseline and what-if simulation probabilities."""
+    try:
+        return run_sample_scenario_compare(request)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc

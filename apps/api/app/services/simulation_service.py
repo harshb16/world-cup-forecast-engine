@@ -3,10 +3,12 @@
 from app.models.domain import MatchResult, SimulationSummary, Team, TournamentConfig
 from app.models.schemas import (
     MatchResultOverride,
+    ScenarioCompareResponse,
     ScenarioSimulateRequest,
     SimulateRequest,
     SimulationMetadataResponse,
     SimulationSummaryResponse,
+    TeamProbabilityDeltaResponse,
     TeamStageProbabilityResponse,
 )
 from app.services.data_loader import load_sample_tournament
@@ -106,6 +108,33 @@ def run_sample_scenario_simulation(
     return _to_response(summary, config.teams, metadata)
 
 
+def run_sample_scenario_compare(
+    request: ScenarioSimulateRequest,
+) -> ScenarioCompareResponse:
+    """Compare baseline simulation probabilities against a scenario."""
+    baseline_request = SimulateRequest(
+        n_simulations=request.n_simulations,
+        model_type=request.model_type,
+        seed=request.seed,
+    )
+    baseline = run_sample_simulation(baseline_request)
+    scenario = run_sample_scenario_simulation(request)
+    deltas = _calculate_deltas(baseline, scenario)
+    ranked_by_champion_delta = sorted(
+        deltas,
+        key=lambda item: item.champion_probability_delta,
+        reverse=True,
+    )
+
+    return ScenarioCompareResponse(
+        baseline=baseline,
+        scenario=scenario,
+        deltas=deltas,
+        biggest_risers=ranked_by_champion_delta[:5],
+        biggest_fallers=sorted(deltas, key=lambda item: item.champion_probability_delta)[:5],
+    )
+
+
 def _to_response(
     summary: SimulationSummary,
     teams: list[Team],
@@ -146,3 +175,31 @@ def _to_response(
         third_place_qualification_probabilities=summary.third_place_qualification_probability,
         average_points_by_team=summary.average_points_by_team,
     )
+
+
+def _calculate_deltas(
+    baseline: SimulationSummaryResponse,
+    scenario: SimulationSummaryResponse,
+) -> list[TeamProbabilityDeltaResponse]:
+    baseline_by_team = {team.team_id: team for team in baseline.teams}
+    scenario_by_team = {team.team_id: team for team in scenario.teams}
+
+    return [
+        TeamProbabilityDeltaResponse(
+            team_id=team_id,
+            team_name=scenario_team.team_name,
+            group_id=scenario_team.group_id,
+            champion_probability_delta=scenario_team.champion - baseline_team.champion,
+            final_probability_delta=scenario_team.final - baseline_team.final,
+            semi_final_probability_delta=scenario_team.semi_final - baseline_team.semi_final,
+            quarter_final_probability_delta=scenario_team.quarter_final - baseline_team.quarter_final,
+            round_of_16_probability_delta=scenario_team.round_of_16 - baseline_team.round_of_16,
+            round_of_32_probability_delta=scenario_team.round_of_32 - baseline_team.round_of_32,
+            group_qualification_probability_delta=(
+                scenario_team.group_qualification_probability
+                - baseline_team.group_qualification_probability
+            ),
+        )
+        for team_id, scenario_team in scenario_by_team.items()
+        for baseline_team in [baseline_by_team[team_id]]
+    ]

@@ -9,10 +9,11 @@ Backend Core Sprint
 - Ticket 1: API skeleton
 - Ticket 2: Domain Models
 - Ticket 3: Group Table
+- Ticket 4: Third-Place Ranking
 
 ## Current Ticket
 
-- Ticket 4: Third-Place Ranking
+- Ticket 5: Sample Data Loader
 
 ## Blocked Issues
 
@@ -20,4 +21,4 @@ Backend Core Sprint
 
 ## Next Ticket
 
-- Ticket 4: Third-Place Ranking
+- Ticket 5: Sample Data Loader

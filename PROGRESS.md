@@ -11,10 +11,11 @@ Backend Core Sprint
 - Ticket 3: Group Table
 - Ticket 4: Third-Place Ranking
 - Ticket 5: Sample Data Loader
+- Ticket 6: Elo Match Model
 
 ## Current Ticket
 
-- Ticket 6: Elo Match Model
+- Ticket 7: Poisson Score Model
 
 ## Blocked Issues
 
@@ -22,4 +23,4 @@ Backend Core Sprint
 
 ## Next Ticket
 
-- Ticket 6: Elo Match Model
+- Ticket 7: Poisson Score Model

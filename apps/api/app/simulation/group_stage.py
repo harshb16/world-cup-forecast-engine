@@ -1,0 +1,1 @@
+"""Group-stage simulation module."""

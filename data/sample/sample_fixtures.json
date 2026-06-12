@@ -1,0 +1,578 @@
+[
+  {
+    "id": "A1",
+    "stage": "group",
+    "group_id": "A",
+    "team_a_id": "T01",
+    "team_b_id": "T02",
+    "result": null
+  },
+  {
+    "id": "A2",
+    "stage": "group",
+    "group_id": "A",
+    "team_a_id": "T03",
+    "team_b_id": "T04",
+    "result": null
+  },
+  {
+    "id": "A3",
+    "stage": "group",
+    "group_id": "A",
+    "team_a_id": "T01",
+    "team_b_id": "T03",
+    "result": null
+  },
+  {
+    "id": "A4",
+    "stage": "group",
+    "group_id": "A",
+    "team_a_id": "T02",
+    "team_b_id": "T04",
+    "result": null
+  },
+  {
+    "id": "A5",
+    "stage": "group",
+    "group_id": "A",
+    "team_a_id": "T01",
+    "team_b_id": "T04",
+    "result": null
+  },
+  {
+    "id": "A6",
+    "stage": "group",
+    "group_id": "A",
+    "team_a_id": "T02",
+    "team_b_id": "T03",
+    "result": null
+  },
+  {
+    "id": "B1",
+    "stage": "group",
+    "group_id": "B",
+    "team_a_id": "T05",
+    "team_b_id": "T06",
+    "result": null
+  },
+  {
+    "id": "B2",
+    "stage": "group",
+    "group_id": "B",
+    "team_a_id": "T07",
+    "team_b_id": "T08",
+    "result": null
+  },
+  {
+    "id": "B3",
+    "stage": "group",
+    "group_id": "B",
+    "team_a_id": "T05",
+    "team_b_id": "T07",
+    "result": null
+  },
+  {
+    "id": "B4",
+    "stage": "group",
+    "group_id": "B",
+    "team_a_id": "T06",
+    "team_b_id": "T08",
+    "result": null
+  },
+  {
+    "id": "B5",
+    "stage": "group",
+    "group_id": "B",
+    "team_a_id": "T05",
+    "team_b_id": "T08",
+    "result": null
+  },
+  {
+    "id": "B6",
+    "stage": "group",
+    "group_id": "B",
+    "team_a_id": "T06",
+    "team_b_id": "T07",
+    "result": null
+  },
+  {
+    "id": "C1",
+    "stage": "group",
+    "group_id": "C",
+    "team_a_id": "T09",
+    "team_b_id": "T10",
+    "result": null
+  },
+  {
+    "id": "C2",
+    "stage": "group",
+    "group_id": "C",
+    "team_a_id": "T11",
+    "team_b_id": "T12",
+    "result": null
+  },
+  {
+    "id": "C3",
+    "stage": "group",
+    "group_id": "C",
+    "team_a_id": "T09",
+    "team_b_id": "T11",
+    "result": null
+  },
+  {
+    "id": "C4",
+    "stage": "group",
+    "group_id": "C",
+    "team_a_id": "T10",
+    "team_b_id": "T12",
+    "result": null
+  },
+  {
+    "id": "C5",
+    "stage": "group",
+    "group_id": "C",
+    "team_a_id": "T09",
+    "team_b_id": "T12",
+    "result": null
+  },
+  {
+    "id": "C6",
+    "stage": "group",
+    "group_id": "C",
+    "team_a_id": "T10",
+    "team_b_id": "T11",
+    "result": null
+  },
+  {
+    "id": "D1",
+    "stage": "group",
+    "group_id": "D",
+    "team_a_id": "T13",
+    "team_b_id": "T14",
+    "result": null
+  },
+  {
+    "id": "D2",
+    "stage": "group",
+    "group_id": "D",
+    "team_a_id": "T15",
+    "team_b_id": "T16",
+    "result": null
+  },
+  {
+    "id": "D3",
+    "stage": "group",
+    "group_id": "D",
+    "team_a_id": "T13",
+    "team_b_id": "T15",
+    "result": null
+  },
+  {
+    "id": "D4",
+    "stage": "group",
+    "group_id": "D",
+    "team_a_id": "T14",
+    "team_b_id": "T16",
+    "result": null
+  },
+  {
+    "id": "D5",
+    "stage": "group",
+    "group_id": "D",
+    "team_a_id": "T13",
+    "team_b_id": "T16",
+    "result": null
+  },
+  {
+    "id": "D6",
+    "stage": "group",
+    "group_id": "D",
+    "team_a_id": "T14",
+    "team_b_id": "T15",
+    "result": null
+  },
+  {
+    "id": "E1",
+    "stage": "group",
+    "group_id": "E",
+    "team_a_id": "T17",
+    "team_b_id": "T18",
+    "result": null
+  },
+  {
+    "id": "E2",
+    "stage": "group",
+    "group_id": "E",
+    "team_a_id": "T19",
+    "team_b_id": "T20",
+    "result": null
+  },
+  {
+    "id": "E3",
+    "stage": "group",
+    "group_id": "E",
+    "team_a_id": "T17",
+    "team_b_id": "T19",
+    "result": null
+  },
+  {
+    "id": "E4",
+    "stage": "group",
+    "group_id": "E",
+    "team_a_id": "T18",
+    "team_b_id": "T20",
+    "result": null
+  },
+  {
+    "id": "E5",
+    "stage": "group",
+    "group_id": "E",
+    "team_a_id": "T17",
+    "team_b_id": "T20",
+    "result": null
+  },
+  {
+    "id": "E6",
+    "stage": "group",
+    "group_id": "E",
+    "team_a_id": "T18",
+    "team_b_id": "T19",
+    "result": null
+  },
+  {
+    "id": "F1",
+    "stage": "group",
+    "group_id": "F",
+    "team_a_id": "T21",
+    "team_b_id": "T22",
+    "result": null
+  },
+  {
+    "id": "F2",
+    "stage": "group",
+    "group_id": "F",
+    "team_a_id": "T23",
+    "team_b_id": "T24",
+    "result": null
+  },
+  {
+    "id": "F3",
+    "stage": "group",
+    "group_id": "F",
+    "team_a_id": "T21",
+    "team_b_id": "T23",
+    "result": null
+  },
+  {
+    "id": "F4",
+    "stage": "group",
+    "group_id": "F",
+    "team_a_id": "T22",
+    "team_b_id": "T24",
+    "result": null
+  },
+  {
+    "id": "F5",
+    "stage": "group",
+    "group_id": "F",
+    "team_a_id": "T21",
+    "team_b_id": "T24",
+    "result": null
+  },
+  {
+    "id": "F6",
+    "stage": "group",
+    "group_id": "F",
+    "team_a_id": "T22",
+    "team_b_id": "T23",
+    "result": null
+  },
+  {
+    "id": "G1",
+    "stage": "group",
+    "group_id": "G",
+    "team_a_id": "T25",
+    "team_b_id": "T26",
+    "result": null
+  },
+  {
+    "id": "G2",
+    "stage": "group",
+    "group_id": "G",
+    "team_a_id": "T27",
+    "team_b_id": "T28",
+    "result": null
+  },
+  {
+    "id": "G3",
+    "stage": "group",
+    "group_id": "G",
+    "team_a_id": "T25",
+    "team_b_id": "T27",
+    "result": null
+  },
+  {
+    "id": "G4",
+    "stage": "group",
+    "group_id": "G",
+    "team_a_id": "T26",
+    "team_b_id": "T28",
+    "result": null
+  },
+  {
+    "id": "G5",
+    "stage": "group",
+    "group_id": "G",
+    "team_a_id": "T25",
+    "team_b_id": "T28",
+    "result": null
+  },
+  {
+    "id": "G6",
+    "stage": "group",
+    "group_id": "G",
+    "team_a_id": "T26",
+    "team_b_id": "T27",
+    "result": null
+  },
+  {
+    "id": "H1",
+    "stage": "group",
+    "group_id": "H",
+    "team_a_id": "T29",
+    "team_b_id": "T30",
+    "result": null
+  },
+  {
+    "id": "H2",
+    "stage": "group",
+    "group_id": "H",
+    "team_a_id": "T31",
+    "team_b_id": "T32",
+    "result": null
+  },
+  {
+    "id": "H3",
+    "stage": "group",
+    "group_id": "H",
+    "team_a_id": "T29",
+    "team_b_id": "T31",
+    "result": null
+  },
+  {
+    "id": "H4",
+    "stage": "group",
+    "group_id": "H",
+    "team_a_id": "T30",
+    "team_b_id": "T32",
+    "result": null
+  },
+  {
+    "id": "H5",
+    "stage": "group",
+    "group_id": "H",
+    "team_a_id": "T29",
+    "team_b_id": "T32",
+    "result": null
+  },
+  {
+    "id": "H6",
+    "stage": "group",
+    "group_id": "H",
+    "team_a_id": "T30",
+    "team_b_id": "T31",
+    "result": null
+  },
+  {
+    "id": "I1",
+    "stage": "group",
+    "group_id": "I",
+    "team_a_id": "T33",
+    "team_b_id": "T34",
+    "result": null
+  },
+  {
+    "id": "I2",
+    "stage": "group",
+    "group_id": "I",
+    "team_a_id": "T35",
+    "team_b_id": "T36",
+    "result": null
+  },
+  {
+    "id": "I3",
+    "stage": "group",
+    "group_id": "I",
+    "team_a_id": "T33",
+    "team_b_id": "T35",
+    "result": null
+  },
+  {
+    "id": "I4",
+    "stage": "group",
+    "group_id": "I",
+    "team_a_id": "T34",
+    "team_b_id": "T36",
+    "result": null
+  },
+  {
+    "id": "I5",
+    "stage": "group",
+    "group_id": "I",
+    "team_a_id": "T33",
+    "team_b_id": "T36",
+    "result": null
+  },
+  {
+    "id": "I6",
+    "stage": "group",
+    "group_id": "I",
+    "team_a_id": "T34",
+    "team_b_id": "T35",
+    "result": null
+  },
+  {
+    "id": "J1",
+    "stage": "group",
+    "group_id": "J",
+    "team_a_id": "T37",
+    "team_b_id": "T38",
+    "result": null
+  },
+  {
+    "id": "J2",
+    "stage": "group",
+    "group_id": "J",
+    "team_a_id": "T39",
+    "team_b_id": "T40",
+    "result": null
+  },
+  {
+    "id": "J3",
+    "stage": "group",
+    "group_id": "J",
+    "team_a_id": "T37",
+    "team_b_id": "T39",
+    "result": null
+  },
+  {
+    "id": "J4",
+    "stage": "group",
+    "group_id": "J",
+    "team_a_id": "T38",
+    "team_b_id": "T40",
+    "result": null
+  },
+  {
+    "id": "J5",
+    "stage": "group",
+    "group_id": "J",
+    "team_a_id": "T37",
+    "team_b_id": "T40",
+    "result": null
+  },
+  {
+    "id": "J6",
+    "stage": "group",
+    "group_id": "J",
+    "team_a_id": "T38",
+    "team_b_id": "T39",
+    "result": null
+  },
+  {
+    "id": "K1",
+    "stage": "group",
+    "group_id": "K",
+    "team_a_id": "T41",
+    "team_b_id": "T42",
+    "result": null
+  },
+  {
+    "id": "K2",
+    "stage": "group",
+    "group_id": "K",
+    "team_a_id": "T43",
+    "team_b_id": "T44",
+    "result": null
+  },
+  {
+    "id": "K3",
+    "stage": "group",
+    "group_id": "K",
+    "team_a_id": "T41",
+    "team_b_id": "T43",
+    "result": null
+  },
+  {
+    "id": "K4",
+    "stage": "group",
+    "group_id": "K",
+    "team_a_id": "T42",
+    "team_b_id": "T44",
+    "result": null
+  },
+  {
+    "id": "K5",
+    "stage": "group",
+    "group_id": "K",
+    "team_a_id": "T41",
+    "team_b_id": "T44",
+    "result": null
+  },
+  {
+    "id": "K6",
+    "stage": "group",
+    "group_id": "K",
+    "team_a_id": "T42",
+    "team_b_id": "T43",
+    "result": null
+  },
+  {
+    "id": "L1",
+    "stage": "group",
+    "group_id": "L",
+    "team_a_id": "T45",
+    "team_b_id": "T46",
+    "result": null
+  },
+  {
+    "id": "L2",
+    "stage": "group",
+    "group_id": "L",
+    "team_a_id": "T47",
+    "team_b_id": "T48",
+    "result": null
+  },
+  {
+    "id": "L3",
+    "stage": "group",
+    "group_id": "L",
+    "team_a_id": "T45",
+    "team_b_id": "T47",
+    "result": null
+  },
+  {
+    "id": "L4",
+    "stage": "group",
+    "group_id": "L",
+    "team_a_id": "T46",
+    "team_b_id": "T48",
+    "result": null
+  },
+  {
+    "id": "L5",
+    "stage": "group",
+    "group_id": "L",
+    "team_a_id": "T45",
+    "team_b_id": "T48",
+    "result": null
+  },
+  {
+    "id": "L6",
+    "stage": "group",
+    "group_id": "L",
+    "team_a_id": "T46",
+    "team_b_id": "T47",
+    "result": null
+  }
+]

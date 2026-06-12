@@ -10,10 +10,11 @@ Backend Core Sprint
 - Ticket 2: Domain Models
 - Ticket 3: Group Table
 - Ticket 4: Third-Place Ranking
+- Ticket 5: Sample Data Loader
 
 ## Current Ticket
 
-- Ticket 5: Sample Data Loader
+- Ticket 6: Elo Match Model
 
 ## Blocked Issues
 
@@ -21,4 +22,4 @@ Backend Core Sprint
 
 ## Next Ticket
 
-- Ticket 5: Sample Data Loader
+- Ticket 6: Elo Match Model

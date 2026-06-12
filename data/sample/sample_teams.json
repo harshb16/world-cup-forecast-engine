@@ -1,0 +1,290 @@
+[
+  {
+    "id": "T01",
+    "name": "Sample Team 01",
+    "group_id": "A",
+    "rating": 1735
+  },
+  {
+    "id": "T02",
+    "name": "Sample Team 02",
+    "group_id": "A",
+    "rating": 1730
+  },
+  {
+    "id": "T03",
+    "name": "Sample Team 03",
+    "group_id": "A",
+    "rating": 1725
+  },
+  {
+    "id": "T04",
+    "name": "Sample Team 04",
+    "group_id": "A",
+    "rating": 1720
+  },
+  {
+    "id": "T05",
+    "name": "Sample Team 05",
+    "group_id": "B",
+    "rating": 1715
+  },
+  {
+    "id": "T06",
+    "name": "Sample Team 06",
+    "group_id": "B",
+    "rating": 1710
+  },
+  {
+    "id": "T07",
+    "name": "Sample Team 07",
+    "group_id": "B",
+    "rating": 1705
+  },
+  {
+    "id": "T08",
+    "name": "Sample Team 08",
+    "group_id": "B",
+    "rating": 1700
+  },
+  {
+    "id": "T09",
+    "name": "Sample Team 09",
+    "group_id": "C",
+    "rating": 1695
+  },
+  {
+    "id": "T10",
+    "name": "Sample Team 10",
+    "group_id": "C",
+    "rating": 1690
+  },
+  {
+    "id": "T11",
+    "name": "Sample Team 11",
+    "group_id": "C",
+    "rating": 1685
+  },
+  {
+    "id": "T12",
+    "name": "Sample Team 12",
+    "group_id": "C",
+    "rating": 1680
+  },
+  {
+    "id": "T13",
+    "name": "Sample Team 13",
+    "group_id": "D",
+    "rating": 1675
+  },
+  {
+    "id": "T14",
+    "name": "Sample Team 14",
+    "group_id": "D",
+    "rating": 1670
+  },
+  {
+    "id": "T15",
+    "name": "Sample Team 15",
+    "group_id": "D",
+    "rating": 1665
+  },
+  {
+    "id": "T16",
+    "name": "Sample Team 16",
+    "group_id": "D",
+    "rating": 1660
+  },
+  {
+    "id": "T17",
+    "name": "Sample Team 17",
+    "group_id": "E",
+    "rating": 1655
+  },
+  {
+    "id": "T18",
+    "name": "Sample Team 18",
+    "group_id": "E",
+    "rating": 1650
+  },
+  {
+    "id": "T19",
+    "name": "Sample Team 19",
+    "group_id": "E",
+    "rating": 1645
+  },
+  {
+    "id": "T20",
+    "name": "Sample Team 20",
+    "group_id": "E",
+    "rating": 1640
+  },
+  {
+    "id": "T21",
+    "name": "Sample Team 21",
+    "group_id": "F",
+    "rating": 1635
+  },
+  {
+    "id": "T22",
+    "name": "Sample Team 22",
+    "group_id": "F",
+    "rating": 1630
+  },
+  {
+    "id": "T23",
+    "name": "Sample Team 23",
+    "group_id": "F",
+    "rating": 1625
+  },
+  {
+    "id": "T24",
+    "name": "Sample Team 24",
+    "group_id": "F",
+    "rating": 1620
+  },
+  {
+    "id": "T25",
+    "name": "Sample Team 25",
+    "group_id": "G",
+    "rating": 1615
+  },
+  {
+    "id": "T26",
+    "name": "Sample Team 26",
+    "group_id": "G",
+    "rating": 1610
+  },
+  {
+    "id": "T27",
+    "name": "Sample Team 27",
+    "group_id": "G",
+    "rating": 1605
+  },
+  {
+    "id": "T28",
+    "name": "Sample Team 28",
+    "group_id": "G",
+    "rating": 1600
+  },
+  {
+    "id": "T29",
+    "name": "Sample Team 29",
+    "group_id": "H",
+    "rating": 1595
+  },
+  {
+    "id": "T30",
+    "name": "Sample Team 30",
+    "group_id": "H",
+    "rating": 1590
+  },
+  {
+    "id": "T31",
+    "name": "Sample Team 31",
+    "group_id": "H",
+    "rating": 1585
+  },
+  {
+    "id": "T32",
+    "name": "Sample Team 32",
+    "group_id": "H",
+    "rating": 1580
+  },
+  {
+    "id": "T33",
+    "name": "Sample Team 33",
+    "group_id": "I",
+    "rating": 1575
+  },
+  {
+    "id": "T34",
+    "name": "Sample Team 34",
+    "group_id": "I",
+    "rating": 1570
+  },
+  {
+    "id": "T35",
+    "name": "Sample Team 35",
+    "group_id": "I",
+    "rating": 1565
+  },
+  {
+    "id": "T36",
+    "name": "Sample Team 36",
+    "group_id": "I",
+    "rating": 1560
+  },
+  {
+    "id": "T37",
+    "name": "Sample Team 37",
+    "group_id": "J",
+    "rating": 1555
+  },
+  {
+    "id": "T38",
+    "name": "Sample Team 38",
+    "group_id": "J",
+    "rating": 1550
+  },
+  {
+    "id": "T39",
+    "name": "Sample Team 39",
+    "group_id": "J",
+    "rating": 1545
+  },
+  {
+    "id": "T40",
+    "name": "Sample Team 40",
+    "group_id": "J",
+    "rating": 1540
+  },
+  {
+    "id": "T41",
+    "name": "Sample Team 41",
+    "group_id": "K",
+    "rating": 1535
+  },
+  {
+    "id": "T42",
+    "name": "Sample Team 42",
+    "group_id": "K",
+    "rating": 1530
+  },
+  {
+    "id": "T43",
+    "name": "Sample Team 43",
+    "group_id": "K",
+    "rating": 1525
+  },
+  {
+    "id": "T44",
+    "name": "Sample Team 44",
+    "group_id": "K",
+    "rating": 1520
+  },
+  {
+    "id": "T45",
+    "name": "Sample Team 45",
+    "group_id": "L",
+    "rating": 1515
+  },
+  {
+    "id": "T46",
+    "name": "Sample Team 46",
+    "group_id": "L",
+    "rating": 1510
+  },
+  {
+    "id": "T47",
+    "name": "Sample Team 47",
+    "group_id": "L",
+    "rating": 1505
+  },
+  {
+    "id": "T48",
+    "name": "Sample Team 48",
+    "group_id": "L",
+    "rating": 1500
+  }
+]

@@ -3,8 +3,9 @@
 from fastapi import APIRouter
 
 from app.models.domain import Group, Match, Team
-from app.models.schemas import HealthResponse
+from app.models.schemas import HealthResponse, SimulateRequest, SimulationSummaryResponse
 from app.services.data_loader import load_sample_tournament
+from app.services.simulation_service import run_sample_simulation
 
 router = APIRouter()
 
@@ -31,3 +32,9 @@ def groups() -> list[Group]:
 def fixtures() -> list[Match]:
     """Return sample tournament fixtures."""
     return load_sample_tournament().matches
+
+
+@router.post("/simulate", response_model=SimulationSummaryResponse)
+def simulate(request: SimulateRequest) -> SimulationSummaryResponse:
+    """Run a Monte Carlo simulation against sample tournament data."""
+    return run_sample_simulation(request)

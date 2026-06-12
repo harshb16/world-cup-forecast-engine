@@ -22,10 +22,11 @@ Frontend MVP Sprint
 - Ticket 14: Scenario Simulation Endpoint
 - Ticket 15: Scenario Compare and Probability Deltas
 - Ticket 16: Frontend Setup
+- Ticket 17: Dashboard Shell
 
 ## Current Ticket
 
-- Ticket 17: Dashboard Shell
+- Ticket 18: API Client and Simulation Data
 
 ## Blocked Issues
 
@@ -37,4 +38,4 @@ Frontend MVP Sprint
 
 ## Next Ticket
 
-- Ticket 17: Dashboard Shell
+- Ticket 18: API Client and Simulation Data

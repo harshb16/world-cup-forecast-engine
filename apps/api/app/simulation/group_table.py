@@ -27,9 +27,11 @@ def calculate_group_table(
             raise ValueError(f"unknown team id in group: {team_id}")
 
     for match in matches:
-        if match.group_id != group.id or match.result is None or not match.result.played:
+        if match.group_id != group.id:
             continue
         if match.team_a_id not in rows or match.team_b_id not in rows:
+            raise ValueError("group match contains teams outside the group")
+        if match.result is None or not match.result.played:
             continue
 
         team_a = rows[match.team_a_id]

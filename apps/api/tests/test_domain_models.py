@@ -11,6 +11,7 @@ from app.models.domain import (
     Team,
     TournamentConfig,
 )
+from app.services.data_loader import load_sample_tournament
 
 
 def test_team_requires_positive_rating() -> None:
@@ -85,3 +86,86 @@ def test_tournament_config_rejects_unknown_match_team() -> None:
 
     with pytest.raises(ValidationError):
         TournamentConfig(teams=teams, groups=groups, matches=matches)
+
+
+def test_tournament_config_rejects_invalid_team_group_id() -> None:
+    teams = [
+        Team(id="T1", name="Team 1", group_id="B", rating=1500),
+        Team(id="T2", name="Team 2", group_id="A", rating=1450),
+    ]
+    groups = [Group(id="A", name="Group A", team_ids=["T2"])]
+
+    with pytest.raises(ValidationError):
+        TournamentConfig(teams=teams, groups=groups)
+
+
+def test_tournament_config_rejects_group_with_unknown_team() -> None:
+    teams = [Team(id="T1", name="Team 1", group_id="A", rating=1500)]
+    groups = [Group(id="A", name="Group A", team_ids=["T1", "T2"])]
+
+    with pytest.raises(ValidationError):
+        TournamentConfig(teams=teams, groups=groups)
+
+
+def test_tournament_config_rejects_team_listed_in_wrong_group() -> None:
+    teams = [
+        Team(id="T1", name="Team 1", group_id="A", rating=1500),
+        Team(id="T2", name="Team 2", group_id="A", rating=1450),
+    ]
+    groups = [
+        Group(id="A", name="Group A", team_ids=["T1"]),
+        Group(id="B", name="Group B", team_ids=["T2"]),
+    ]
+
+    with pytest.raises(ValidationError):
+        TournamentConfig(teams=teams, groups=groups)
+
+
+def test_tournament_config_rejects_team_in_multiple_groups() -> None:
+    teams = [
+        Team(id="T1", name="Team 1", group_id="A", rating=1500),
+        Team(id="T2", name="Team 2", group_id="A", rating=1450),
+    ]
+    groups = [
+        Group(id="A", name="Group A", team_ids=["T1", "T2"]),
+        Group(id="B", name="Group B", team_ids=["T1"]),
+    ]
+
+    with pytest.raises(ValidationError):
+        TournamentConfig(teams=teams, groups=groups)
+
+
+def test_tournament_config_rejects_group_stage_fixture_with_team_group_mismatch() -> None:
+    teams = [
+        Team(id="T1", name="Team 1", group_id="A", rating=1500),
+        Team(id="T2", name="Team 2", group_id="A", rating=1450),
+        Team(id="T3", name="Team 3", group_id="B", rating=1400),
+    ]
+    groups = [
+        Group(id="A", name="Group A", team_ids=["T1", "T2"]),
+        Group(id="B", name="Group B", team_ids=["T3"]),
+    ]
+    matches = [Match(id="M1", stage="group", group_id="A", team_a_id="T1", team_b_id="T3")]
+
+    with pytest.raises(ValidationError):
+        TournamentConfig(teams=teams, groups=groups, matches=matches)
+
+
+def test_tournament_config_rejects_group_stage_fixture_without_group_id() -> None:
+    teams = [
+        Team(id="T1", name="Team 1", group_id="A", rating=1500),
+        Team(id="T2", name="Team 2", group_id="A", rating=1450),
+    ]
+    groups = [Group(id="A", name="Group A", team_ids=["T1", "T2"])]
+    matches = [Match(id="M1", stage="group", team_a_id="T1", team_b_id="T2")]
+
+    with pytest.raises(ValidationError):
+        TournamentConfig(teams=teams, groups=groups, matches=matches)
+
+
+def test_valid_sample_tournament_still_loads_successfully() -> None:
+    config = load_sample_tournament()
+
+    assert len(config.teams) == 48
+    assert len(config.groups) == 12
+    assert len(config.matches) == 72

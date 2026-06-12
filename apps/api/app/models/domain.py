@@ -92,27 +92,46 @@ class TournamentConfig(BaseModel):
 
     @model_validator(mode="after")
     def references_must_be_valid(self) -> "TournamentConfig":
-        team_ids = {team.id for team in self.teams}
-        group_ids = {group.id for group in self.groups}
+        teams_by_id = {team.id: team for team in self.teams}
+        team_ids = set(teams_by_id)
+        groups_by_id = {group.id: group for group in self.groups}
+        group_ids = set(groups_by_id)
 
         if len(team_ids) != len(self.teams):
             raise ValueError("team ids must be unique")
         if len(group_ids) != len(self.groups):
             raise ValueError("group ids must be unique")
 
+        group_membership_counts = {team_id: 0 for team_id in team_ids}
         for group in self.groups:
+            if len(set(group.team_ids)) != len(group.team_ids):
+                raise ValueError("group team_ids must be unique")
             unknown_team_ids = set(group.team_ids) - team_ids
             if unknown_team_ids:
                 raise ValueError("group references unknown team ids")
+            for team_id in group.team_ids:
+                group_membership_counts[team_id] += 1
+                if teams_by_id[team_id].group_id != group.id:
+                    raise ValueError("group contains team with mismatched group_id")
 
         for team in self.teams:
             if team.group_id not in group_ids:
                 raise ValueError("team references unknown group_id")
+            if group_membership_counts[team.id] != 1:
+                raise ValueError("each team must belong to exactly one group")
 
         for match in self.matches:
             if match.team_a_id not in team_ids or match.team_b_id not in team_ids:
                 raise ValueError("match references unknown team id")
-            if match.group_id is not None and match.group_id not in group_ids:
+            if match.stage == "group":
+                if match.group_id is None:
+                    raise ValueError("group-stage matches require group_id")
+                if match.group_id not in group_ids:
+                    raise ValueError("group-stage match references unknown group_id")
+                group_team_ids = set(groups_by_id[match.group_id].team_ids)
+                if match.team_a_id not in group_team_ids or match.team_b_id not in group_team_ids:
+                    raise ValueError("group-stage match teams must belong to match group_id")
+            elif match.group_id is not None and match.group_id not in group_ids:
                 raise ValueError("match references unknown group_id")
 
         return self

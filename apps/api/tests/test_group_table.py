@@ -1,5 +1,7 @@
 """Tests for group table calculation."""
 
+import pytest
+
 from app.models.domain import Group, Match, MatchResult, Team
 from app.simulation.group_table import calculate_group_table
 
@@ -130,3 +132,19 @@ def test_ignores_matches_without_result() -> None:
     table = calculate_group_table(_group(), _teams_by_id(), matches)
 
     assert all(row.played == 0 for row in table)
+
+
+def test_rejects_group_match_with_team_outside_group() -> None:
+    matches = [
+        Match(
+            id="M1",
+            stage="group",
+            group_id="A",
+            team_a_id="T1",
+            team_b_id="T9",
+            result=MatchResult(team_a_goals=1, team_b_goals=0),
+        )
+    ]
+
+    with pytest.raises(ValueError, match="outside the group"):
+        calculate_group_table(_group(), _teams_by_id(), matches)

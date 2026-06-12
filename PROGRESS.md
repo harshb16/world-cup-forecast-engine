@@ -25,6 +25,10 @@ Backend Core Sprint
 
 - None.
 
+## Notes
+
+- Backend Core Sprint hardening completed; validation gap fixed.
+
 ## Next Ticket
 
 - Plan the next backend API sprint.

@@ -1,5 +1,6 @@
 """Match model implementations."""
 
+import math
 from typing import Protocol
 
 import numpy as np
@@ -80,3 +81,68 @@ class EloWinDrawLossModel:
             team_a_goals=int(team_a_goals),
             team_b_goals=int(team_b_goals),
         )
+
+
+def expected_goals(team_a: Team, team_b: Team) -> tuple[float, float]:
+    """Convert team ratings into expected goals for each side."""
+    base_goals = 1.35
+    rating_gap = (team_a.rating - team_b.rating) / 400
+    team_a_expected = base_goals * float(np.exp(rating_gap * 0.35))
+    team_b_expected = base_goals * float(np.exp(-rating_gap * 0.35))
+
+    return (
+        min(max(team_a_expected, 0.3), 3.2),
+        min(max(team_b_expected, 0.3), 3.2),
+    )
+
+
+class PoissonScoreModel:
+    """Poisson scoreline model using rating-derived expected goals."""
+
+    def expected_goals(self, team_a: Team, team_b: Team) -> tuple[float, float]:
+        """Return expected goals for team A and team B."""
+        return expected_goals(team_a, team_b)
+
+    def predict_probabilities(self, team_a: Team, team_b: Team) -> dict[str, float]:
+        """Approximate W/D/L probabilities by sampling many score probabilities."""
+        team_a_expected, team_b_expected = self.expected_goals(team_a, team_b)
+        max_goals = 8
+        team_a_win = 0.0
+        draw = 0.0
+        team_b_win = 0.0
+
+        for team_a_goals in range(max_goals + 1):
+            prob_a = _poisson_probability(team_a_goals, team_a_expected)
+            for team_b_goals in range(max_goals + 1):
+                probability = prob_a * _poisson_probability(team_b_goals, team_b_expected)
+                if team_a_goals > team_b_goals:
+                    team_a_win += probability
+                elif team_a_goals < team_b_goals:
+                    team_b_win += probability
+                else:
+                    draw += probability
+
+        total = team_a_win + draw + team_b_win
+        return {
+            "team_a_win": team_a_win / total,
+            "draw": draw / total,
+            "team_b_win": team_b_win / total,
+        }
+
+    def simulate_result(
+        self,
+        team_a: Team,
+        team_b: Team,
+        rng: np.random.Generator,
+    ) -> MatchResult:
+        """Simulate a football scoreline from Poisson goal distributions."""
+        team_a_expected, team_b_expected = self.expected_goals(team_a, team_b)
+
+        return MatchResult(
+            team_a_goals=int(rng.poisson(team_a_expected)),
+            team_b_goals=int(rng.poisson(team_b_expected)),
+        )
+
+
+def _poisson_probability(goals: int, expected: float) -> float:
+    return float((expected**goals) * np.exp(-expected) / math.factorial(goals))

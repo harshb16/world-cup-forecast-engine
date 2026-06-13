@@ -66,3 +66,13 @@ def test_simulate_n_simulations_limit_works() -> None:
     )
 
     assert response.status_code == 422
+
+
+def test_simulate_supports_calibrated_elo() -> None:
+    response = client.post(
+        "/simulate",
+        json={"n_simulations": 3, "model_type": "calibrated_elo", "seed": 1},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["metadata"]["model_type"] == "calibrated_elo"

@@ -15,7 +15,7 @@ class SimulateRequest(BaseModel):
     """Request body for running a sample tournament simulation."""
 
     n_simulations: int = Field(default=1000, ge=1, le=10_000)
-    model_type: Literal["elo", "poisson"] = "elo"
+    model_type: Literal["elo", "poisson", "calibrated_elo"] = "elo"
     seed: int | None = None
 
 
@@ -36,7 +36,7 @@ class ScenarioSimulateRequest(SimulateRequest):
 class BracketSimulateRequest(BaseModel):
     """Request body for simulating one revealable tournament bracket."""
 
-    model_type: Literal["elo", "poisson"] = "poisson"
+    model_type: Literal["elo", "poisson", "calibrated_elo"] = "poisson"
     simulation_mode: Literal["favorite", "random"] = "favorite"
     seed: int | None = None
     result_overrides: list[MatchResultOverride] = Field(default_factory=list)
@@ -46,7 +46,7 @@ class TeamPathRequest(BaseModel):
     """Request body for exploring a team's likely knockout path."""
 
     team_id: str = Field(min_length=1)
-    model_type: Literal["elo", "poisson"] = "poisson"
+    model_type: Literal["elo", "poisson", "calibrated_elo"] = "poisson"
     n_simulations: int = Field(default=500, ge=1, le=5_000)
     seed: int | None = None
 
@@ -118,7 +118,7 @@ class DataMetadataResponse(BaseModel):
 class ModelMetadataResponse(BaseModel):
     """Public description of a supported match model."""
 
-    id: Literal["elo", "poisson"]
+    id: Literal["elo", "poisson", "calibrated_elo"]
     name: str
     is_ml: bool
     inputs: list[str] = Field(default_factory=list)
@@ -130,7 +130,7 @@ class ModelMetadataResponse(BaseModel):
 class BacktestingResponse(BaseModel):
     """Baseline evaluation metrics for completed fixtures."""
 
-    model_type: Literal["elo", "poisson"]
+    model_type: Literal["elo", "poisson", "calibrated_elo"]
     data_mode: str
     sample_size: int
     accuracy: float | None = None

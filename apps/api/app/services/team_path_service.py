@@ -28,7 +28,7 @@ def calculate_team_path(
     if request.team_id not in teams_by_id:
         raise ValueError(f"unknown team_id: {request.team_id}")
 
-    match_model = create_match_model(request.model_type)
+    match_model = create_match_model(request.model_type, data_mode)
     rng = np.random.default_rng(request.seed)
     reached_counts = {stage: 0 for stage in ROUND_NAMES}
     opponent_counts = {stage: Counter() for stage in ROUND_NAMES}

@@ -75,7 +75,7 @@ def models() -> list[ModelMetadataResponse]:
 
 @router.get("/backtesting", response_model=BacktestingResponse)
 def backtesting(
-    model_type: Literal["elo", "poisson"] = "poisson",
+    model_type: Literal["elo", "poisson", "calibrated_elo"] = "poisson",
 ) -> BacktestingResponse:
     """Return baseline backtesting metrics for completed fixtures."""
     return calculate_backtesting_metrics(model_type, get_data_mode())

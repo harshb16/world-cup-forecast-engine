@@ -55,4 +55,31 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
                 "Monte Carlo stage probabilities",
             ],
         ),
+        ModelMetadataResponse(
+            id="calibrated_elo",
+            name="Open-data calibrated Elo",
+            is_ml=False,
+            inputs=[
+                "open international match results since 2018",
+                "active team identity",
+                "home/neutral flag",
+                "score margin",
+            ],
+            assumptions=[
+                "Recent senior international results are a stronger strength signal than ranking position alone.",
+                "Home advantage applies only to non-neutral matches in training.",
+                "Goal margin scales rating updates without making blowouts dominate the model.",
+            ],
+            limitations=[
+                "Still not an xG, player, injury, market, or event-data model.",
+                "Team aliases and open-data coverage can miss edge cases.",
+                "Current calibration updates team ratings, not attack/defense shape.",
+            ],
+            supported_outputs=[
+                "win/draw/loss probabilities",
+                "favorite-path bracket reveal",
+                "Monte Carlo stage probabilities",
+                "team path distributions",
+            ],
+        ),
     ]

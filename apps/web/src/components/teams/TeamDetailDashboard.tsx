@@ -189,7 +189,9 @@ function TeamPathExplorer({ path }: { path: TeamPath }) {
         </div>
         <p className="text-xs text-zinc-500">
           {formatNumber(path.metadata.n_simulations)} simulations ·{" "}
-          {path.metadata.model_type.toUpperCase()}
+          {path.metadata.model_type === "calibrated_elo"
+            ? "Calibrated Elo"
+            : path.metadata.model_type.toUpperCase()}
         </p>
       </div>
 

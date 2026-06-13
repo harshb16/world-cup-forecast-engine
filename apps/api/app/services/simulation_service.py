@@ -11,15 +11,24 @@ from app.models.schemas import (
     TeamProbabilityDeltaResponse,
     TeamStageProbabilityResponse,
 )
-from app.services.data_loader import load_metadata, load_tournament
+from app.services.data_loader import load_metadata, load_model_parameters, load_tournament
 from app.simulation.match_models import EloWinDrawLossModel, MatchModel, PoissonScoreModel
 from app.simulation.monte_carlo import STAGES, run_simulations
 
 
-def create_match_model(model_type: str) -> MatchModel:
+def create_match_model(model_type: str, data_mode: str = "processed") -> MatchModel:
     """Create a match model from a public model type."""
     if model_type == "elo":
         return EloWinDrawLossModel()
+    if model_type == "calibrated_elo":
+        parameters = load_model_parameters(data_mode)
+        return EloWinDrawLossModel(
+            rating_overrides={
+                item["team_id"]: item["rating"]
+                for item in parameters.get("team_ratings", [])
+                if not item.get("fallback_used", False)
+            }
+        )
     if model_type == "poisson":
         return PoissonScoreModel()
     raise ValueError(f"unsupported model_type: {model_type}")
@@ -30,7 +39,7 @@ def run_simulation(request: SimulateRequest, data_mode: str) -> SimulationSummar
     config = load_tournament(data_mode)
     summary = run_simulations(
         config,
-        create_match_model(request.model_type),
+        create_match_model(request.model_type, data_mode),
         n_simulations=request.n_simulations,
         seed=request.seed,
     )
@@ -96,7 +105,7 @@ def run_scenario_simulation(
     )
     summary = run_simulations(
         config,
-        create_match_model(request.model_type),
+        create_match_model(request.model_type, data_mode),
         n_simulations=request.n_simulations,
         seed=request.seed,
     )

@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "@/lib/config";
 export { formatPercent } from "@/lib/format";
 
-export type ModelType = "elo" | "poisson";
+export type ModelType = "elo" | "poisson" | "calibrated_elo";
 
 export type SimulationRequest = {
   n_simulations: number;
@@ -295,7 +295,7 @@ export async function fetchTeamPath(teamId: string): Promise<TeamPath> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       team_id: teamId,
-      model_type: "poisson",
+      model_type: "calibrated_elo",
       n_simulations: 500,
       seed: 42,
     }),

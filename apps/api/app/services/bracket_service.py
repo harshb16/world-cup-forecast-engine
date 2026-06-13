@@ -27,7 +27,7 @@ def run_bracket_simulation(
     base_config = load_tournament(data_mode)
     config = apply_result_overrides(base_config, request.result_overrides)
     teams_by_id = {team.id: team for team in config.teams}
-    base_match_model = create_match_model(request.model_type)
+    base_match_model = create_match_model(request.model_type, data_mode)
     match_model = (
         _MostLikelyMatchModel(base_match_model)
         if request.simulation_mode == "favorite"

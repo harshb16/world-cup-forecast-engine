@@ -61,6 +61,7 @@ Status: complete for MVP.
 - Interactive one-run knockout bracket reveal
 - Favorite-path bracket mode
 - Team path explorer
+- Open-data calibrated Elo model
 
 Status: current.
 

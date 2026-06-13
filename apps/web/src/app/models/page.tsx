@@ -57,8 +57,8 @@ export default function ModelsPage() {
             <SummaryCard
               icon={Target}
               label="Current model class"
-              value="Statistical baselines"
-              detail="No trained ML in production yet"
+              value="Open-data calibrated"
+              detail="Historical match results now drive one Elo option"
             />
             <SummaryCard
               icon={BarChart3}

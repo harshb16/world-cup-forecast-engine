@@ -67,6 +67,23 @@ def _write_valid_dataset(base_dir: Path) -> None:
     write_json(base_dir / "results.json", results)
     write_json(base_dir / "ratings.json", ratings)
     write_json(
+        base_dir / "model_parameters.json",
+        {
+            "source": {"url": "test"},
+            "training_window_start": "2018-01-01",
+            "team_ratings": [
+                {
+                    "team_id": team["id"],
+                    "team_name": team["name"],
+                    "source_team_name": team["name"],
+                    "rating": team["rating"],
+                    "fallback_used": False,
+                }
+                for team in teams
+            ],
+        },
+    )
+    write_json(
         base_dir / "metadata.json",
         {
             "data_mode": "processed",

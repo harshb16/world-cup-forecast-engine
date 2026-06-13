@@ -45,10 +45,11 @@ Product Foundation Repair Sprint
 - Ticket 37: Product Credibility Placeholder Cleanup
 - Ticket 38: Interactive Bracket Trace API and Reveal UI
 - Ticket 39: Favorite Bracket Mode and Team Path Explorer
+- Ticket 40: Open-Data Calibrated Elo Model
 
 ## Current Ticket
 
-- None. Favorite Bracket Mode and Team Path Explorer completed.
+- None. Open-data calibrated Elo model completed.
 
 ## Blocked Issues
 
@@ -64,4 +65,4 @@ Product Foundation Repair Sprint
 
 ## Next Ticket
 
-- Upgrade predictor model calibration with historical match data.
+- Start premium UI redesign foundation.

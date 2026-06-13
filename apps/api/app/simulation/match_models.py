@@ -31,14 +31,19 @@ class MatchModel(Protocol):
 class EloWinDrawLossModel:
     """Simple Elo-derived win/draw/loss model."""
 
-    def __init__(self, base_draw_probability: float = 0.26) -> None:
+    def __init__(
+        self,
+        base_draw_probability: float = 0.26,
+        rating_overrides: dict[str, float] | None = None,
+    ) -> None:
         if not 0 <= base_draw_probability < 1:
             raise ValueError("base_draw_probability must be in [0, 1)")
         self.base_draw_probability = base_draw_probability
+        self.rating_overrides = rating_overrides or {}
 
     def predict_probabilities(self, team_a: Team, team_b: Team) -> dict[str, float]:
         """Predict team A win, draw, and team B win probabilities."""
-        rating_gap = team_a.rating - team_b.rating
+        rating_gap = self._rating(team_a) - self._rating(team_b)
         expected_a = 1 / (1 + 10 ** (-rating_gap / 400))
         draw_reduction = min(abs(rating_gap) / 2000, 0.1)
         draw_probability = max(0.12, self.base_draw_probability - draw_reduction)
@@ -81,6 +86,9 @@ class EloWinDrawLossModel:
             team_a_goals=int(team_a_goals),
             team_b_goals=int(team_b_goals),
         )
+
+    def _rating(self, team: Team) -> float:
+        return self.rating_overrides.get(team.id, team.rating)
 
 
 def expected_goals(team_a: Team, team_b: Team) -> tuple[float, float]:

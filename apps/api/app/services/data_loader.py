@@ -104,6 +104,19 @@ def load_metadata(mode: str) -> dict[str, Any]:
     raise ValueError(f"unsupported data mode: {mode}")
 
 
+def load_model_parameters(mode: str) -> dict[str, Any]:
+    """Load model parameter metadata for the selected mode."""
+    if mode == "processed":
+        return _load_object(PROCESSED_DATA_DIR / "model_parameters.json")
+    if mode == "sample":
+        return {
+            "data_version": "sample-model-parameters",
+            "source": {},
+            "team_ratings": [],
+        }
+    raise ValueError(f"unsupported data mode: {mode}")
+
+
 def _processed_quality_metadata() -> dict[str, Any]:
     tournament = load_processed_tournament()
     ratings = _load_json(PROCESSED_DATA_DIR / "ratings.json")

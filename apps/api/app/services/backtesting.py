@@ -40,7 +40,7 @@ def calculate_backtesting_metrics(
             ],
         )
 
-    match_model = create_match_model(model_type)
+    match_model = create_match_model(model_type, mode)
     exact_predictions = 0
     brier_total = 0.0
     log_loss_total = 0.0

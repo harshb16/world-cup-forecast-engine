@@ -15,6 +15,7 @@ to `data/processed`.
 python scripts/ingest/fetch_worldcup_fifa.py
 python scripts/ingest/fetch_fifa_rankings.py
 python scripts/ingest/fetch_elo_ratings.py
+python scripts/ingest/fetch_historical_results.py
 python scripts/ingest/validate_processed_data.py
 ```
 
@@ -24,6 +25,7 @@ Local raw-file fallback:
 python scripts/ingest/fetch_worldcup_fifa.py --raw-file data/raw/fifa/worldcup_2026.json
 python scripts/ingest/fetch_fifa_rankings.py --raw-file data/raw/ratings/fifa_rankings.json
 python scripts/ingest/fetch_elo_ratings.py --raw-file data/raw/ratings/elo_ratings.csv
+python scripts/ingest/fetch_historical_results.py --raw-file data/raw/results/international_results.csv
 ```
 
 Processed outputs:
@@ -34,6 +36,7 @@ Processed outputs:
 - `data/processed/results.json`
 - `data/processed/ratings.json`
 - `data/processed/metadata.json`
+- `data/processed/model_parameters.json`
 
 If a source blocks automated access, save a manually downloaded normalized file
 under `data/raw/fifa/` or `data/raw/ratings/` and rerun the relevant script with

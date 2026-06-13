@@ -13,6 +13,7 @@ def validate_processed_data(base_dir=PROCESSED_DIR) -> list[str]:
     results = read_json(base_dir / "results.json")
     ratings = read_json(base_dir / "ratings.json")
     metadata = read_json(base_dir / "metadata.json")
+    model_parameters = read_json(base_dir / "model_parameters.json")
 
     if len(teams) != 48:
         errors.append("teams.json must contain 48 teams")
@@ -91,6 +92,15 @@ def validate_processed_data(base_dir=PROCESSED_DIR) -> list[str]:
     for key in required_metadata:
         if key not in metadata:
             errors.append(f"metadata missing {key}")
+
+    model_parameter_ids = {
+        item["team_id"]
+        for item in model_parameters.get("team_ratings", [])
+    }
+    if model_parameter_ids != team_ids:
+        errors.append("model_parameters.json must contain one rating for every team")
+    if any(item.get("fallback_used") for item in model_parameters.get("team_ratings", [])):
+        errors.append("model_parameters.json must not use fallback ratings")
 
     return errors
 

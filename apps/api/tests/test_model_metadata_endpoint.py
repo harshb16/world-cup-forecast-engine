@@ -15,7 +15,7 @@ def test_models_endpoint_returns_current_baselines() -> None:
     models = response.json()
     model_ids = {model["id"] for model in models}
 
-    assert model_ids == {"elo", "poisson"}
+    assert model_ids == {"elo", "poisson", "calibrated_elo"}
     assert all(model["is_ml"] is False for model in models)
     assert all(model["assumptions"] for model in models)
     assert all(model["limitations"] for model in models)

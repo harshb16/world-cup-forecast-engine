@@ -30,7 +30,7 @@ const ROUND_ORDER = [
 ];
 
 export default function BracketPage() {
-  const [modelType, setModelType] = useState<ModelType>("poisson");
+  const [modelType, setModelType] = useState<ModelType>("calibrated_elo");
   const [simulationMode, setSimulationMode] = useState<"favorite" | "random">(
     "favorite",
   );
@@ -141,7 +141,7 @@ export default function BracketPage() {
               <TraceStat
                 icon={Sparkles}
                 label="Model"
-                value={modelType.toUpperCase()}
+                value={formatModelLabel(modelType)}
               />
               <TraceStat
                 icon={Shuffle}
@@ -179,7 +179,7 @@ export default function BracketPage() {
                   {mode === "favorite" ? "Most likely" : "Random"}
                 </button>
               ))}
-              {(["poisson", "elo"] as ModelType[]).map((model) => (
+              {(["calibrated_elo", "poisson", "elo"] as ModelType[]).map((model) => (
                 <button
                   key={model}
                   type="button"
@@ -197,7 +197,7 @@ export default function BracketPage() {
                       : "border-white/10 bg-white/[0.05] text-zinc-300 hover:bg-white/[0.08]"
                   }`}
                 >
-                  {model.toUpperCase()}
+                  {formatModelLabel(model)}
                 </button>
               ))}
             </div>
@@ -243,6 +243,14 @@ export default function BracketPage() {
       </div>
     </AppShell>
   );
+}
+
+function formatModelLabel(modelType: ModelType): string {
+  if (modelType === "calibrated_elo") {
+    return "Calibrated Elo";
+  }
+
+  return modelType.toUpperCase();
 }
 
 function BracketWall({

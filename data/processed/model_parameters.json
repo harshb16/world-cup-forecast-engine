@@ -1,0 +1,353 @@
+{
+  "data_version": "open-elo-2026-06-13T18:09:46+00:00",
+  "method": {
+    "base_rating": 1500.0,
+    "goal_margin_adjustment": "sqrt(goal_margin)",
+    "home_advantage": 55.0,
+    "k_factor": 28.0
+  },
+  "source": {
+    "name": "International football results from martj42/international_results",
+    "url": "https://raw.githubusercontent.com/martj42/international_results/master/results.csv",
+    "usage": "Open-data Elo calibration from senior international match results."
+  },
+  "team_ratings": [
+    {
+      "fallback_used": false,
+      "rating": 1809.4,
+      "source_team_name": "Mexico",
+      "team_id": "MEXICO",
+      "team_name": "Mexico"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1624.4,
+      "source_team_name": "South Africa",
+      "team_id": "RSA",
+      "team_name": "South Africa"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1772.8,
+      "source_team_name": "South Korea",
+      "team_id": "KOR",
+      "team_name": "Korea Republic"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1644.2,
+      "source_team_name": "Czech Republic",
+      "team_id": "CZECHIA",
+      "team_name": "Czechia"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1753.7,
+      "source_team_name": "Canada",
+      "team_id": "CANADA",
+      "team_name": "Canada"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1516.3,
+      "source_team_name": "Qatar",
+      "team_id": "QATAR",
+      "team_name": "Qatar"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1497.2,
+      "source_team_name": "Bosnia and Herzegovina",
+      "team_id": "BIH",
+      "team_name": "Bosnia and Herzegovina"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1765.7,
+      "source_team_name": "Switzerland",
+      "team_id": "SWITZERLAND",
+      "team_name": "Switzerland"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1863.9,
+      "source_team_name": "Brazil",
+      "team_id": "BRAZIL",
+      "team_name": "Brazil"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1894.0,
+      "source_team_name": "Morocco",
+      "team_id": "MOROCCO",
+      "team_name": "Morocco"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1658.3,
+      "source_team_name": "Haiti",
+      "team_id": "HAITI",
+      "team_name": "Haiti"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1644.1,
+      "source_team_name": "Scotland",
+      "team_id": "SCOTLAND",
+      "team_name": "Scotland"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1720.3,
+      "source_team_name": "United States",
+      "team_id": "USA",
+      "team_name": "United States"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1643.3,
+      "source_team_name": "Paraguay",
+      "team_id": "PARAGUAY",
+      "team_name": "Paraguay"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1771.0,
+      "source_team_name": "Australia",
+      "team_id": "AUSTRALIA",
+      "team_name": "Australia"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1749.3,
+      "source_team_name": "Turkey",
+      "team_id": "TURKIYE",
+      "team_name": "Türkiye"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1810.8,
+      "source_team_name": "Germany",
+      "team_id": "GERMANY",
+      "team_name": "Germany"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1574.7,
+      "source_team_name": "Curaçao",
+      "team_id": "CURACAO",
+      "team_name": "Curaçao"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1775.7,
+      "source_team_name": "Ivory Coast",
+      "team_id": "CIV",
+      "team_name": "Côte d’Ivoire"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1792.2,
+      "source_team_name": "Ecuador",
+      "team_id": "ECUADOR",
+      "team_name": "Ecuador"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1803.4,
+      "source_team_name": "Netherlands",
+      "team_id": "NETHERLANDS",
+      "team_name": "Netherlands"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1870.2,
+      "source_team_name": "Japan",
+      "team_id": "JAPAN",
+      "team_name": "Japan"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1620.2,
+      "source_team_name": "Sweden",
+      "team_id": "SWEDEN",
+      "team_name": "Sweden"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1677.0,
+      "source_team_name": "Tunisia",
+      "team_id": "TUNISIA",
+      "team_name": "Tunisia"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1795.6,
+      "source_team_name": "Belgium",
+      "team_id": "BELGIUM",
+      "team_name": "Belgium"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1744.1,
+      "source_team_name": "Egypt",
+      "team_id": "EGYPT",
+      "team_name": "Egypt"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1822.6,
+      "source_team_name": "Iran",
+      "team_id": "IRN",
+      "team_name": "IR Iran"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1613.4,
+      "source_team_name": "New Zealand",
+      "team_id": "NEW_ZEALAND",
+      "team_name": "New Zealand"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1946.4,
+      "source_team_name": "Spain",
+      "team_id": "SPAIN",
+      "team_name": "Spain"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1606.9,
+      "source_team_name": "Cape Verde",
+      "team_id": "CPV",
+      "team_name": "Cabo Verde"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1629.2,
+      "source_team_name": "Saudi Arabia",
+      "team_id": "SAUDI_ARABIA",
+      "team_name": "Saudi Arabia"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1746.0,
+      "source_team_name": "Uruguay",
+      "team_id": "URUGUAY",
+      "team_name": "Uruguay"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1871.3,
+      "source_team_name": "France",
+      "team_id": "FRANCE",
+      "team_name": "France"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1811.9,
+      "source_team_name": "Senegal",
+      "team_id": "SENEGAL",
+      "team_name": "Senegal"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1665.4,
+      "source_team_name": "Iraq",
+      "team_id": "IRAQ",
+      "team_name": "Iraq"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1774.2,
+      "source_team_name": "Norway",
+      "team_id": "NORWAY",
+      "team_name": "Norway"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1937.2,
+      "source_team_name": "Argentina",
+      "team_id": "ARGENTINA",
+      "team_name": "Argentina"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1844.9,
+      "source_team_name": "Algeria",
+      "team_id": "ALGERIA",
+      "team_name": "Algeria"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1743.8,
+      "source_team_name": "Austria",
+      "team_id": "AUSTRIA",
+      "team_name": "Austria"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1670.5,
+      "source_team_name": "Jordan",
+      "team_id": "JORDAN",
+      "team_name": "Jordan"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1843.3,
+      "source_team_name": "Portugal",
+      "team_id": "PORTUGAL",
+      "team_name": "Portugal"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1683.7,
+      "source_team_name": "DR Congo",
+      "team_id": "COD",
+      "team_name": "Congo DR"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1727.2,
+      "source_team_name": "Uzbekistan",
+      "team_id": "UZBEKISTAN",
+      "team_name": "Uzbekistan"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1844.3,
+      "source_team_name": "Colombia",
+      "team_id": "COLOMBIA",
+      "team_name": "Colombia"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1853.1,
+      "source_team_name": "England",
+      "team_id": "ENGLAND",
+      "team_name": "England"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1755.5,
+      "source_team_name": "Croatia",
+      "team_id": "CROATIA",
+      "team_name": "Croatia"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1563.3,
+      "source_team_name": "Ghana",
+      "team_id": "GHANA",
+      "team_name": "Ghana"
+    },
+    {
+      "fallback_used": false,
+      "rating": 1694.1,
+      "source_team_name": "Panama",
+      "team_id": "PANAMA",
+      "team_name": "Panama"
+    }
+  ],
+  "training_window_start": "2018-01-01"
+}

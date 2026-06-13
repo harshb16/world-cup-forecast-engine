@@ -16,7 +16,7 @@ import {
 import { formatNumber, formatPercent } from "@/lib/format";
 
 export default function BacktestingPage() {
-  const [modelType, setModelType] = useState<ModelType>("poisson");
+  const [modelType, setModelType] = useState<ModelType>("calibrated_elo");
   const [metrics, setMetrics] = useState<BacktestingMetrics | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -53,7 +53,7 @@ export default function BacktestingPage() {
       />
 
       <div className="mb-5 flex flex-wrap gap-2">
-        {(["poisson", "elo"] as ModelType[]).map((model) => (
+        {(["calibrated_elo", "poisson", "elo"] as ModelType[]).map((model) => (
           <button
             key={model}
             type="button"
@@ -71,7 +71,7 @@ export default function BacktestingPage() {
                 : "border-white/10 bg-white/[0.05] text-zinc-300 hover:bg-white/[0.08]"
             }`}
           >
-            {model.toUpperCase()}
+            {formatModelLabel(model)}
           </button>
         ))}
       </div>
@@ -144,6 +144,14 @@ export default function BacktestingPage() {
       ) : null}
     </AppShell>
   );
+}
+
+function formatModelLabel(modelType: ModelType): string {
+  if (modelType === "calibrated_elo") {
+    return "Calibrated Elo";
+  }
+
+  return modelType.toUpperCase();
 }
 
 function MetricCard({

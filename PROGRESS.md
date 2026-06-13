@@ -25,10 +25,11 @@ Frontend MVP Sprint
 - Ticket 17: Dashboard Shell
 - Ticket 18: API Client and Simulation Data
 - Ticket 19: Groups Page
+- Ticket 20: What-if Lab
 
 ## Current Ticket
 
-- Ticket 20: What-if Lab
+- Ticket 21: Basic Teams Page
 
 ## Blocked Issues
 
@@ -40,4 +41,4 @@ Frontend MVP Sprint
 
 ## Next Ticket
 
-- Ticket 20: What-if Lab
+- Ticket 21: Basic Teams Page

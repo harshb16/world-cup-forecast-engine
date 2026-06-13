@@ -53,6 +53,12 @@ export type Match = {
   winner_team_id: string | null;
 };
 
+export type MatchResultOverride = {
+  match_id: string;
+  team_a_goals: number;
+  team_b_goals: number;
+};
+
 export type SimulationSummary = {
   metadata: {
     n_simulations: number;
@@ -69,6 +75,27 @@ export type SimulationSummary = {
   average_points_by_team: Record<string, number>;
 };
 
+export type TeamProbabilityDelta = {
+  team_id: string;
+  team_name: string;
+  group_id: string;
+  champion_probability_delta: number;
+  final_probability_delta: number;
+  semi_final_probability_delta: number;
+  quarter_final_probability_delta: number;
+  round_of_16_probability_delta: number;
+  round_of_32_probability_delta: number;
+  group_qualification_probability_delta: number;
+};
+
+export type ScenarioCompareResponse = {
+  baseline: SimulationSummary;
+  scenario: SimulationSummary;
+  deltas: TeamProbabilityDelta[];
+  biggest_risers: TeamProbabilityDelta[];
+  biggest_fallers: TeamProbabilityDelta[];
+};
+
 export async function simulateTournament(
   request: SimulationRequest,
 ): Promise<SimulationSummary> {
@@ -80,6 +107,25 @@ export async function simulateTournament(
 
   if (!response.ok) {
     throw new Error(`Simulation failed with status ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function compareScenario(request: {
+  n_simulations: number;
+  model_type: ModelType;
+  seed?: number;
+  result_overrides: MatchResultOverride[];
+}): Promise<ScenarioCompareResponse> {
+  const response = await fetch(`${API_BASE_URL}/scenario/compare`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Scenario comparison failed with status ${response.status}`);
   }
 
   return response.json();

@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-UI/UX Productization Sprint
+Real World Cup Data Sprint
 
 ## Completed Tickets
 
@@ -32,10 +32,16 @@ UI/UX Productization Sprint
 - Ticket 24: Groups Page Redesign
 - Ticket 25: What-if Lab UX Redesign
 - Ticket 26: Teams Pages Redesign
+- Ticket 27: Real World Cup Data Acquisition Scripts
+- Ticket 28: Processed Real-Data Schema and Validator
+- Ticket 29: Real World Cup 2026 Processed Dataset
+- Ticket 30: Backend Defaults to Real Processed Data
+- Ticket 31: Frontend Real-Data Status and Cleanup
+- Ticket 32: Real-Data Docs and Local Run Workflow
 
 ## Current Ticket
 
-- None. UI/UX Productization Sprint implementation completed.
+- None. Real World Cup Data Sprint implementation completed.
 
 ## Blocked Issues
 
@@ -47,4 +53,4 @@ UI/UX Productization Sprint
 
 ## Next Ticket
 
-- Review UI/UX Productization Sprint before merge.
+- Review Real World Cup Data Sprint before merge.

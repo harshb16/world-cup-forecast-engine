@@ -18,6 +18,23 @@ python scripts/ingest/fetch_elo_ratings.py
 python scripts/ingest/validate_processed_data.py
 ```
 
+Local raw-file fallback:
+
+```bash
+python scripts/ingest/fetch_worldcup_fifa.py --raw-file data/raw/fifa/worldcup_2026.json
+python scripts/ingest/fetch_fifa_rankings.py --raw-file data/raw/ratings/fifa_rankings.json
+python scripts/ingest/fetch_elo_ratings.py --raw-file data/raw/ratings/elo_ratings.csv
+```
+
+Processed outputs:
+
+- `data/processed/teams.json`
+- `data/processed/groups.json`
+- `data/processed/fixtures.json`
+- `data/processed/results.json`
+- `data/processed/ratings.json`
+- `data/processed/metadata.json`
+
 If a source blocks automated access, save a manually downloaded normalized file
 under `data/raw/fifa/` or `data/raw/ratings/` and rerun the relevant script with
 `--raw-file`.

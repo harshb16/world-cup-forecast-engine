@@ -1,5 +1,6 @@
 import { AppShell } from "@/components/AppShell";
 import { PageHeader } from "@/components/PageHeader";
+import { TeamsDashboard } from "@/components/teams/TeamsDashboard";
 
 export default function TeamsPage() {
   return (
@@ -7,11 +8,9 @@ export default function TeamsPage() {
       <PageHeader
         eyebrow="Teams"
         title="Team index"
-        description="Searchable team cards and detail links will appear here."
+        description="Browse teams, ratings, group assignments, and latest simulation probabilities."
       />
-      <section className="rounded-lg border border-zinc-200 bg-white p-5 text-sm text-zinc-600">
-        Team index placeholder
-      </section>
+      <TeamsDashboard />
     </AppShell>
   );
 }

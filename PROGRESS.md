@@ -26,10 +26,11 @@ Frontend MVP Sprint
 - Ticket 18: API Client and Simulation Data
 - Ticket 19: Groups Page
 - Ticket 20: What-if Lab
+- Ticket 21: Basic Teams Page
 
 ## Current Ticket
 
-- Ticket 21: Basic Teams Page
+- None. Frontend MVP Sprint implementation completed.
 
 ## Blocked Issues
 
@@ -41,4 +42,4 @@ Frontend MVP Sprint
 
 ## Next Ticket
 
-- Ticket 21: Basic Teams Page
+- Review Frontend MVP Sprint before merge.

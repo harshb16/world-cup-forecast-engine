@@ -9,8 +9,9 @@ World Cup 2026 format:
 - Best 8 third-place teams qualify.
 - Round of 32 starts knockout phase.
 
-Current limitation:
+Current implementation:
 
 - Group-stage data is processed from real World Cup 2026 structure.
-- Knockout bracket mapping remains placeholder/MVP logic until official bracket
-  path data is fully wired.
+- Knockout simulation uses the FIFA World Cup 2026 Round-of-32 match slots.
+- Third-place qualifiers are assigned only to slots that allow their source group,
+  using deterministic matching when multiple valid third-place assignments exist.

@@ -98,7 +98,7 @@ def load_metadata(mode: str) -> dict[str, Any]:
             ],
             "model_limitations": [
                 "Sample ratings are synthetic and should not be read as team strength.",
-                "Knockout bracket mapping is for development only.",
+                "Knockout bracket uses FIFA World Cup 2026 round-of-32 slots with deterministic third-place assignment.",
             ],
         }
     raise ValueError(f"unsupported data mode: {mode}")
@@ -129,7 +129,7 @@ def _processed_quality_metadata() -> dict[str, Any]:
         ],
         "model_limitations": [
             "Current models are statistical baselines, not trained machine-learning models.",
-            "Knockout bracket seeding still uses placeholder MVP pairing.",
+            "Knockout bracket uses FIFA World Cup 2026 round-of-32 slots with deterministic third-place assignment.",
             "Small Monte Carlo probability gaps can be sampling noise.",
         ],
     }

@@ -1,5 +1,5 @@
 {
-  "bracket_status": "group-stage real data; knockout bracket mapping remains placeholder for simulation seeding",
+  "bracket_status": "group-stage real data; knockout simulation uses FIFA World Cup 2026 round-of-32 slots with deterministic third-place assignment",
   "data_mode": "processed",
   "data_version": "2026-worldcup-processed-2026-06-13",
   "is_real_data": true,

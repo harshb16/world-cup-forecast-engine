@@ -57,8 +57,9 @@ Product Foundation Repair Sprint
 - Backend Core Sprint hardening completed; validation gap fixed.
 - Real World Cup Data Sprint completed.
 - Current models remain non-ML baselines.
-- Knockout bracket mapping remains placeholder/MVP.
+- Knockout bracket mapping now uses FIFA World Cup 2026 Round-of-32 slots with
+  deterministic valid third-place assignment.
 
 ## Next Ticket
 
-- Implement official Round-of-32 bracket mapping.
+- Add team path explorer using the repaired knockout bracket.

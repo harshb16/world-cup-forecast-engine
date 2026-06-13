@@ -7,8 +7,8 @@ export default function GroupsPage() {
     <AppShell>
       <PageHeader
         eyebrow="Groups"
-        title="Group qualification overview"
-        description="Top-two odds, third-place paths, qualification probability, and average points by group."
+        title="Group races"
+        description="See who is favored, who is fighting for second, and which groups are most likely to get messy."
       />
       <GroupsDashboard />
     </AppShell>

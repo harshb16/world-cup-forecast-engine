@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
 import { GroupProbabilityCard } from "@/components/groups/GroupProbabilityCard";
+import { HelpText } from "@/components/ui/HelpText";
 import {
   fetchGroups,
   fetchTeams,
@@ -71,15 +72,21 @@ export function GroupsDashboard() {
   }
 
   return (
-    <div className="grid gap-5 xl:grid-cols-2">
-      {data.groups.map((group) => (
-        <GroupProbabilityCard
-          key={group.id}
-          group={group}
-          teams={data.teams}
-          probabilitiesByTeamId={probabilitiesByTeamId}
-        />
-      ))}
+    <div className="space-y-5">
+      <HelpText>
+        Qualification probability combines finishing top two with the chance of
+        advancing as one of the best third-place teams.
+      </HelpText>
+      <div className="grid gap-5 xl:grid-cols-2">
+        {data.groups.map((group) => (
+          <GroupProbabilityCard
+            key={group.id}
+            group={group}
+            teams={data.teams}
+            probabilitiesByTeamId={probabilitiesByTeamId}
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,6 +1,8 @@
-import { ProbabilityBar } from "@/components/dashboard/ProbabilityBar";
 import { GroupChaosScore } from "@/components/groups/GroupChaosScore";
+import { ProbabilityBar } from "@/components/ui/ProbabilityBar";
+import { SectionCard } from "@/components/ui/SectionCard";
 import { Group, Team, TeamProbability } from "@/lib/api";
+import { formatNumber, formatPercent } from "@/lib/format";
 
 export function GroupProbabilityCard({
   group,
@@ -24,53 +26,94 @@ export function GroupProbabilityCard({
       (a, b) =>
         b.probability.group_qualification_probability -
         a.probability.group_qualification_probability,
-    );
+  );
+  const likelyWinner = groupTeams[0];
 
   return (
-    <section className="rounded-lg border border-zinc-200 bg-white p-5">
+    <SectionCard>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-zinc-950">{group.name}</h2>
-          <p className="text-sm text-zinc-500">{group.id}</p>
+          <p className="text-xs font-semibold uppercase text-emerald-200">
+            {group.id}
+          </p>
+          <h2 className="mt-1 text-xl font-semibold text-white">{group.name}</h2>
         </div>
+        {likelyWinner ? (
+          <div className="rounded-md border border-emerald-300/20 bg-emerald-300/10 px-3 py-2 text-sm text-emerald-100">
+            <span className="block text-xs text-emerald-100/70">
+              Most likely winner
+            </span>
+            <span className="font-semibold">
+              {likelyWinner.team.name} ·{" "}
+              {formatPercent(likelyWinner.probability.top_two_probability)}
+            </span>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="mt-5">
         <GroupChaosScore teams={groupTeams.map((item) => item.probability)} />
       </div>
 
-      <div className="mt-5 space-y-4">
-        {groupTeams.map(({ team, probability }) => (
-          <div key={team.id} className="rounded-md border border-zinc-100 p-4">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <h3 className="font-semibold text-zinc-900">{team.name}</h3>
-                <p className="text-xs text-zinc-500">
-                  Rating {team.rating.toFixed(0)} · Avg points{" "}
-                  {probability.average_points.toFixed(2)}
-                </p>
+      <div className="mt-5 space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="text-sm font-semibold text-white">Qualification race</h3>
+          <span className="text-xs text-zinc-500">Sorted by qualify odds</span>
+        </div>
+
+        {groupTeams.map(({ team, probability }, index) => (
+          <div
+            key={team.id}
+            className="rounded-md border border-white/10 bg-black/10 p-4"
+          >
+            <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr] lg:items-center">
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-white/10 text-xs font-semibold text-zinc-300">
+                    {index + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <h4 className="truncate font-semibold text-white">
+                      {team.name}
+                    </h4>
+                    <p className="text-xs text-zinc-500">
+                      Rating {formatNumber(team.rating)} · Avg points{" "}
+                      {probability.average_points.toFixed(2)}
+                    </p>
+                  </div>
+                </div>
               </div>
               <ProbabilityBar
                 value={probability.group_qualification_probability}
+                label="Overall qualification"
               />
             </div>
-            <div className="mt-3 grid gap-3 text-xs text-zinc-600 sm:grid-cols-2">
-              <div className="flex items-center justify-between gap-3">
+
+            <div className="mt-3 grid gap-3 text-xs text-zinc-400 sm:grid-cols-3">
+              <div className="flex items-center justify-between gap-3 rounded-md bg-white/[0.035] px-3 py-2">
+                <span>Average points</span>
+                <span className="font-semibold text-zinc-100">
+                  {probability.average_points.toFixed(2)}
+                </span>
+              </div>
+              <div className="flex items-center justify-between gap-3 rounded-md bg-white/[0.035] px-3 py-2">
                 <span>Top two</span>
-                <span className="font-semibold">
-                  {(probability.top_two_probability * 100).toFixed(1)}%
+                <span className="font-semibold text-zinc-100">
+                  {formatPercent(probability.top_two_probability)}
                 </span>
               </div>
               <div className="flex items-center justify-between gap-3">
                 <span>Third-place qualify</span>
-                <span className="font-semibold">
-                  {(
-                    probability.third_place_qualification_probability * 100
-                  ).toFixed(1)}
-                  %
+                <span className="font-semibold text-zinc-100">
+                  {formatPercent(
+                    probability.third_place_qualification_probability,
+                  )}
                 </span>
               </div>
             </div>
           </div>
         ))}
       </div>
-    </section>
+    </SectionCard>
   );
 }

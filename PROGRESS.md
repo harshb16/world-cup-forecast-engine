@@ -30,10 +30,11 @@ UI/UX Productization Sprint
 - Ticket 22: Design System Cleanup
 - Ticket 23: Homepage Redesign
 - Ticket 24: Groups Page Redesign
+- Ticket 25: What-if Lab UX Redesign
 
 ## Current Ticket
 
-- Ticket 25: What-if Lab UX Redesign
+- Ticket 26: Teams Pages Redesign
 
 ## Blocked Issues
 
@@ -45,4 +46,4 @@ UI/UX Productization Sprint
 
 ## Next Ticket
 
-- Ticket 25: What-if Lab UX Redesign
+- Ticket 26: Teams Pages Redesign

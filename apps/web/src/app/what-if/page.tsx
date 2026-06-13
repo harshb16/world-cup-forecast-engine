@@ -8,7 +8,7 @@ export default function WhatIfPage() {
       <PageHeader
         eyebrow="What-if lab"
         title="Scenario simulation"
-        description="Override match results and compare probability movement against the baseline."
+        description="Pick a few match results, rerun the model, and see which teams rise or fall."
       />
       <WhatIfLab />
     </AppShell>

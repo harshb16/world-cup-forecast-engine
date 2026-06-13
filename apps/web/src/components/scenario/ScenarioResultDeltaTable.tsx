@@ -1,4 +1,5 @@
-import { DeltaBadge } from "@/components/scenario/DeltaBadge";
+import { DeltaBadge } from "@/components/ui/DeltaBadge";
+import { SectionCard } from "@/components/ui/SectionCard";
 import { TeamProbabilityDelta } from "@/lib/api";
 
 export function ScenarioResultDeltaTable({
@@ -9,8 +10,8 @@ export function ScenarioResultDeltaTable({
   rows: TeamProbabilityDelta[];
 }) {
   return (
-    <section className="rounded-lg border border-zinc-200 bg-white p-5">
-      <h2 className="text-base font-semibold text-zinc-950">{title}</h2>
+    <SectionCard>
+      <h2 className="text-base font-semibold text-white">{title}</h2>
       <div className="mt-4 overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead className="text-xs uppercase text-zinc-500">
@@ -24,10 +25,10 @@ export function ScenarioResultDeltaTable({
               <th className="py-2 font-semibold">Qualify</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-100">
+          <tbody className="divide-y divide-white/10">
             {rows.map((row) => (
               <tr key={row.team_id}>
-                <td className="py-3 font-medium text-zinc-800">
+                <td className="py-3 font-medium text-zinc-100">
                   {row.team_name}
                 </td>
                 <td className="py-3">
@@ -53,6 +54,6 @@ export function ScenarioResultDeltaTable({
           </tbody>
         </table>
       </div>
-    </section>
+    </SectionCard>
   );
 }

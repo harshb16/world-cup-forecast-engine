@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import { SectionCard } from "@/components/ui/SectionCard";
 import { Match, MatchResultOverride, Team } from "@/lib/api";
 
 export function ScenarioBuilder({
@@ -22,59 +23,61 @@ export function ScenarioBuilder({
     [fixtures, matchId],
   );
 
-  const selectedLabel = selectedMatch
-    ? `${teamsById.get(selectedMatch.team_a_id)?.name ?? selectedMatch.team_a_id} vs ${
-        teamsById.get(selectedMatch.team_b_id)?.name ?? selectedMatch.team_b_id
-      }`
-    : "Select match";
+  const selectedLabel = selectedMatch ? formatFixture(selectedMatch, teamsById) : "";
 
   return (
-    <section className="rounded-lg border border-zinc-200 bg-white p-5">
-      <h2 className="text-base font-semibold text-zinc-950">Scenario builder</h2>
+    <SectionCard>
+      <div>
+        <p className="text-xs font-semibold uppercase text-emerald-200">
+          Step 1 and 2
+        </p>
+        <h2 className="mt-1 text-lg font-semibold text-white">
+          Pick a match and set the score
+        </h2>
+      </div>
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_8rem_8rem_auto]">
-        <label className="text-sm font-medium text-zinc-700">
+        <label className="text-sm font-medium text-zinc-300">
           Match
           <select
             value={matchId}
             onChange={(event) => setMatchId(event.target.value)}
-            className="mt-2 h-11 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm text-zinc-950"
+            className="mt-2 h-11 w-full rounded-md border border-white/10 bg-[#101624] px-3 text-sm text-white outline-none focus:border-emerald-300/50"
           >
             {fixtures.map((fixture) => {
-              const teamA = teamsById.get(fixture.team_a_id)?.name ?? fixture.team_a_id;
-              const teamB = teamsById.get(fixture.team_b_id)?.name ?? fixture.team_b_id;
               return (
                 <option key={fixture.id} value={fixture.id}>
-                  {fixture.id}: {teamA} vs {teamB}
+                  {formatFixture(fixture, teamsById)}
                 </option>
               );
             })}
           </select>
         </label>
 
-        <label className="text-sm font-medium text-zinc-700">
+        <label className="text-sm font-medium text-zinc-300">
           Team A
           <input
             value={teamAGoals}
             min={0}
             type="number"
             onChange={(event) => setTeamAGoals(Number(event.target.value))}
-            className="mt-2 h-11 w-full rounded-md border border-zinc-300 px-3 text-sm text-zinc-950"
+            className="mt-2 h-11 w-full rounded-md border border-white/10 bg-[#101624] px-3 text-sm text-white outline-none focus:border-emerald-300/50"
           />
         </label>
 
-        <label className="text-sm font-medium text-zinc-700">
+        <label className="text-sm font-medium text-zinc-300">
           Team B
           <input
             value={teamBGoals}
             min={0}
             type="number"
             onChange={(event) => setTeamBGoals(Number(event.target.value))}
-            className="mt-2 h-11 w-full rounded-md border border-zinc-300 px-3 text-sm text-zinc-950"
+            className="mt-2 h-11 w-full rounded-md border border-white/10 bg-[#101624] px-3 text-sm text-white outline-none focus:border-emerald-300/50"
           />
         </label>
 
         <button
           type="button"
+          disabled={!matchId}
           onClick={() =>
             onAddOverride({
               match_id: matchId,
@@ -82,12 +85,21 @@ export function ScenarioBuilder({
               team_b_goals: Math.max(0, teamBGoals),
             })
           }
-          className="mt-7 h-11 rounded-md bg-emerald-600 px-4 text-sm font-semibold text-white transition hover:bg-emerald-700"
+          className="mt-7 h-11 rounded-md bg-emerald-300 px-4 text-sm font-semibold text-zinc-950 transition hover:bg-emerald-200 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400"
         >
-          Add
+          Add result
         </button>
       </div>
-      <p className="mt-3 text-xs text-zinc-500">{selectedLabel}</p>
-    </section>
+      {selectedLabel ? (
+        <p className="mt-3 text-xs text-zinc-500">Selected: {selectedLabel}</p>
+      ) : null}
+    </SectionCard>
   );
+}
+
+function formatFixture(fixture: Match, teamsById: Map<string, Team>): string {
+  const teamA = teamsById.get(fixture.team_a_id)?.name ?? fixture.team_a_id;
+  const teamB = teamsById.get(fixture.team_b_id)?.name ?? fixture.team_b_id;
+  const groupLabel = fixture.group_id ? `${fixture.group_id} · ` : "";
+  return `${groupLabel}${teamA} vs ${teamB}`;
 }

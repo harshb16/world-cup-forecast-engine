@@ -1,3 +1,5 @@
+import { EmptyState } from "@/components/ui/EmptyState";
+import { SectionCard } from "@/components/ui/SectionCard";
 import { Match, MatchResultOverride, Team } from "@/lib/api";
 
 export function ScenarioOverridesList({
@@ -14,20 +16,30 @@ export function ScenarioOverridesList({
   onClear: () => void;
 }) {
   return (
-    <section className="rounded-lg border border-zinc-200 bg-white p-5">
+    <SectionCard>
       <div className="flex items-center justify-between gap-4">
-        <h2 className="text-base font-semibold text-zinc-950">Overrides</h2>
+        <div>
+          <p className="text-xs font-semibold uppercase text-emerald-200">
+            Scenario slate
+          </p>
+          <h2 className="mt-1 text-lg font-semibold text-white">
+            Selected overrides
+          </h2>
+        </div>
         <button
           type="button"
           onClick={onClear}
-          className="rounded-md border border-zinc-300 px-3 py-2 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-100"
+          className="rounded-md border border-white/10 px-3 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-white/[0.06]"
         >
           Clear
         </button>
       </div>
       <div className="mt-4 space-y-3">
         {overrides.length === 0 ? (
-          <p className="text-sm text-zinc-500">No overrides added.</p>
+          <EmptyState
+            title="No results selected yet"
+            description="Add one or more match scores to compare the new tournament probabilities against the baseline."
+          />
         ) : (
           overrides.map((override) => {
             const fixture = fixturesById.get(override.match_id);
@@ -41,16 +53,19 @@ export function ScenarioOverridesList({
             return (
               <div
                 key={override.match_id}
-                className="flex items-center justify-between gap-4 rounded-md border border-zinc-100 p-3 text-sm"
+                className="flex flex-col gap-3 rounded-md border border-white/10 bg-white/[0.04] p-3 text-sm sm:flex-row sm:items-center sm:justify-between"
               >
-                <span className="text-zinc-700">
-                  {teamA} {override.team_a_goals} - {override.team_b_goals}{" "}
+                <span className="font-semibold text-zinc-100">
+                  {teamA}{" "}
+                  <span className="text-emerald-200">
+                    {override.team_a_goals} - {override.team_b_goals}
+                  </span>{" "}
                   {teamB}
                 </span>
                 <button
                   type="button"
                   onClick={() => onRemove(override.match_id)}
-                  className="text-xs font-semibold text-rose-700"
+                  className="self-start rounded-md border border-rose-300/20 px-2 py-1 text-xs font-semibold text-rose-200 transition hover:bg-rose-300/10 sm:self-auto"
                 >
                   Remove
                 </button>
@@ -59,6 +74,6 @@ export function ScenarioOverridesList({
           })
         )}
       </div>
-    </section>
+    </SectionCard>
   );
 }

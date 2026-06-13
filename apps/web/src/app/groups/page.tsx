@@ -1,5 +1,5 @@
 import { AppShell } from "@/components/AppShell";
-import { LoadingState } from "@/components/LoadingState";
+import { GroupsDashboard } from "@/components/groups/GroupsDashboard";
 import { PageHeader } from "@/components/PageHeader";
 
 export default function GroupsPage() {
@@ -8,9 +8,9 @@ export default function GroupsPage() {
       <PageHeader
         eyebrow="Groups"
         title="Group qualification overview"
-        description="Group cards will combine team data with top-two and best third-place probabilities."
+        description="Top-two odds, third-place paths, qualification probability, and average points by group."
       />
-      <LoadingState label="Group probability cards pending API connection" />
+      <GroupsDashboard />
     </AppShell>
   );
 }

@@ -24,10 +24,11 @@ Frontend MVP Sprint
 - Ticket 16: Frontend Setup
 - Ticket 17: Dashboard Shell
 - Ticket 18: API Client and Simulation Data
+- Ticket 19: Groups Page
 
 ## Current Ticket
 
-- Ticket 19: Groups Page
+- Ticket 20: What-if Lab
 
 ## Blocked Issues
 
@@ -39,4 +40,4 @@ Frontend MVP Sprint
 
 ## Next Ticket
 
-- Ticket 19: Groups Page
+- Ticket 20: What-if Lab

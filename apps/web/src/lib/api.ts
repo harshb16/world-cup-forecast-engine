@@ -26,6 +26,33 @@ export type TeamProbability = {
   average_points: number;
 };
 
+export type Team = {
+  id: string;
+  name: string;
+  group_id: string;
+  rating: number;
+};
+
+export type Group = {
+  id: string;
+  name: string;
+  team_ids: string[];
+};
+
+export type Match = {
+  id: string;
+  stage: string;
+  group_id: string | null;
+  team_a_id: string;
+  team_b_id: string;
+  result: {
+    team_a_goals: number;
+    team_b_goals: number;
+    played: boolean;
+  } | null;
+  winner_team_id: string | null;
+};
+
 export type SimulationSummary = {
   metadata: {
     n_simulations: number;
@@ -53,6 +80,28 @@ export async function simulateTournament(
 
   if (!response.ok) {
     throw new Error(`Simulation failed with status ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function fetchTeams(): Promise<Team[]> {
+  return fetchJson<Team[]>("/teams");
+}
+
+export async function fetchGroups(): Promise<Group[]> {
+  return fetchJson<Group[]>("/groups");
+}
+
+export async function fetchFixtures(): Promise<Match[]> {
+  return fetchJson<Match[]>("/fixtures");
+}
+
+async function fetchJson<T>(path: string): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`);
+
+  if (!response.ok) {
+    throw new Error(`Request failed with status ${response.status}`);
   }
 
   return response.json();

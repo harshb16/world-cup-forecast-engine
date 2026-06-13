@@ -2,7 +2,7 @@
 
 ## Current Milestone
 
-Milestone 1: Simulation Engine MVP
+Milestone 2: Data credibility, model transparency, validation, and product polish
 
 ## Product Phases
 
@@ -18,13 +18,18 @@ Milestone 1: Simulation Engine MVP
 - Knockout simulation
 - Monte Carlo aggregation
 
+Status: complete for MVP.
+
 ### Phase 2: Backend API
 
 - FastAPI setup
-- /simulate endpoint
-- /teams endpoint
-- /fixtures endpoint
-- /scenario endpoint
+- `/simulate` endpoint
+- `/teams` endpoint
+- `/fixtures` endpoint
+- `/scenario` endpoint
+- `/metadata` endpoint
+
+Status: complete for MVP.
 
 ### Phase 3: Frontend dashboard
 
@@ -32,29 +37,55 @@ Milestone 1: Simulation Engine MVP
 - Stage probability table
 - Group probability cards
 - Team pages
-- Charts
+- What-if lab
 
-### Phase 4: What-if lab
+Status: complete for MVP.
 
-- Manual result overrides
-- Scenario saving
-- Probability comparison
+### Phase 4: Real data foundation
 
-### Phase 5: Better models
+- Checked-in processed World Cup 2026 teams, groups, fixtures, results, ratings
+- Processed data validator
+- Data source metadata
+- Backend defaults to processed data
+- Sample data retained for tests and development fallback
 
-- Elo model
-- Poisson model
+Status: complete for MVP.
+
+### Phase 5: Product foundation hardening
+
+- Data quality counts and coverage metadata
+- Public model assumptions and limitations
+- Baseline backtesting metrics
+- Clear UI copy for current model/data limits
+- Removal of placeholder product pages
+
+Status: current.
+
+### Phase 6: Better tournament rules
+
+- Official Round-of-32 bracket mapping
+- More explicit knockout path tracking
+- More robust third-place matchup handling
+- Probability movement after ingested real results
+
+Status: next rules sprint.
+
+### Phase 7: Better models
+
+- Elo calibration
+- Poisson calibration
+- Dixon-Coles style score correction
+- Historical feature dataset
 - ML model
 - Ensemble model
 
-### Phase 6: Live updates
+Status: deferred until data and evaluation foundation are stronger.
+
+### Phase 8: Live updates
 
 - Real results ingestion
 - Probability timeline
 - Biggest risers/fallers
+- Published update workflow
 
-### Phase 7: Backtesting
-
-- Historical tournament loader
-- Evaluation metrics
-- Model comparison dashboard
+Status: future.

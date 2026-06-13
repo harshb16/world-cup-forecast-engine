@@ -51,8 +51,16 @@ def test_metadata_returns_real_data_status(monkeypatch) -> None:  # type: ignore
     response = client.get("/metadata")
 
     assert response.status_code == 200
-    assert response.json()["data_mode"] == "processed"
-    assert response.json()["is_real_data"] is True
+    metadata = response.json()
+    assert metadata["data_mode"] == "processed"
+    assert metadata["is_real_data"] is True
+    assert metadata["team_count"] == 48
+    assert metadata["group_count"] == 12
+    assert metadata["fixture_count"] == 72
+    assert metadata["completed_result_count"] == 4
+    assert metadata["rating_coverage_count"] == 48
+    assert metadata["data_quality_notes"]
+    assert metadata["model_limitations"]
 
 
 def test_simulate_works_with_processed_default(monkeypatch) -> None:  # type: ignore[no-untyped-def]

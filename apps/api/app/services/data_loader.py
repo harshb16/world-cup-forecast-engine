@@ -70,8 +70,10 @@ def load_tournament(mode: str) -> TournamentConfig:
 def load_metadata(mode: str) -> dict[str, Any]:
     """Load data-source metadata for the selected mode."""
     if mode == "processed":
-        return _load_object(PROCESSED_DATA_DIR / "metadata.json")
+        metadata = _load_object(PROCESSED_DATA_DIR / "metadata.json")
+        return {**metadata, **_processed_quality_metadata()}
     if mode == "sample":
+        sample = load_sample_tournament()
         return {
             "data_mode": "sample",
             "is_real_data": False,
@@ -81,5 +83,53 @@ def load_metadata(mode: str) -> dict[str, Any]:
             "rating_source": "sample",
             "ratings_are_official": False,
             "bracket_status": "sample development data",
+            "team_count": len(sample.teams),
+            "group_count": len(sample.groups),
+            "fixture_count": len(sample.matches),
+            "completed_result_count": sum(
+                1
+                for match in sample.matches
+                if match.result is not None and match.result.played
+            ),
+            "rating_coverage_count": len(sample.teams),
+            "data_quality_notes": [
+                "Sample mode uses generated development teams and fixtures.",
+                "Use processed mode for checked-in World Cup 2026 data.",
+            ],
+            "model_limitations": [
+                "Sample ratings are synthetic and should not be read as team strength.",
+                "Knockout bracket mapping is for development only.",
+            ],
         }
     raise ValueError(f"unsupported data mode: {mode}")
+
+
+def _processed_quality_metadata() -> dict[str, Any]:
+    tournament = load_processed_tournament()
+    ratings = _load_json(PROCESSED_DATA_DIR / "ratings.json")
+    rated_team_ids = {item["team_id"] for item in ratings}
+    completed_result_count = sum(
+        1
+        for match in tournament.matches
+        if match.result is not None and match.result.played
+    )
+
+    return {
+        "team_count": len(tournament.teams),
+        "group_count": len(tournament.groups),
+        "fixture_count": len(tournament.matches),
+        "completed_result_count": completed_result_count,
+        "rating_coverage_count": len(
+            {team.id for team in tournament.teams if team.id in rated_team_ids}
+        ),
+        "data_quality_notes": [
+            "Processed mode uses checked-in World Cup 2026 teams, groups, fixtures, results, and rank-derived ratings.",
+            "Completed results are included only when present in processed fixtures.",
+            "Ratings cover all active teams but are derived from rankings, not official FIFA strength scores.",
+        ],
+        "model_limitations": [
+            "Current models are statistical baselines, not trained machine-learning models.",
+            "Knockout bracket seeding still uses placeholder MVP pairing.",
+            "Small Monte Carlo probability gaps can be sampling noise.",
+        ],
+    }

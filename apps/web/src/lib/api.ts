@@ -60,30 +60,6 @@ export type MatchResultOverride = {
   team_b_goals: number;
 };
 
-export type SimulationSummary = {
-  metadata: {
-    n_simulations: number;
-    model_type: ModelType;
-    seed: number | null;
-    overrides_applied: unknown[];
-    data_mode: string;
-    is_real_data: boolean;
-    data_version: string | null;
-    last_updated: string | null;
-    sources: Array<Record<string, unknown>>;
-    rating_source: string | null;
-    ratings_are_official: boolean;
-    bracket_status: string | null;
-  };
-  teams: TeamProbability[];
-  champion_probabilities: Record<string, number>;
-  group_qualification_probabilities: Record<string, number>;
-  top_two_probabilities: Record<string, number>;
-  third_place_finish_probabilities: Record<string, number>;
-  third_place_qualification_probabilities: Record<string, number>;
-  average_points_by_team: Record<string, number>;
-};
-
 export type DataMetadata = {
   data_mode: string;
   is_real_data: boolean;
@@ -93,6 +69,49 @@ export type DataMetadata = {
   rating_source: string | null;
   ratings_are_official: boolean;
   bracket_status: string | null;
+  team_count: number;
+  group_count: number;
+  fixture_count: number;
+  completed_result_count: number;
+  rating_coverage_count: number;
+  data_quality_notes: string[];
+  model_limitations: string[];
+};
+
+export type ModelMetadata = {
+  id: ModelType;
+  name: string;
+  is_ml: boolean;
+  inputs: string[];
+  assumptions: string[];
+  limitations: string[];
+  supported_outputs: string[];
+};
+
+export type BacktestingMetrics = {
+  model_type: ModelType;
+  data_mode: string;
+  sample_size: number;
+  accuracy: number | null;
+  brier_score: number | null;
+  log_loss: number | null;
+  limitations: string[];
+};
+
+export type SimulationSummary = {
+  metadata: DataMetadata & {
+    n_simulations: number;
+    model_type: ModelType;
+    seed: number | null;
+    overrides_applied: unknown[];
+  };
+  teams: TeamProbability[];
+  champion_probabilities: Record<string, number>;
+  group_qualification_probabilities: Record<string, number>;
+  top_two_probabilities: Record<string, number>;
+  third_place_finish_probabilities: Record<string, number>;
+  third_place_qualification_probabilities: Record<string, number>;
+  average_points_by_team: Record<string, number>;
 };
 
 export type TeamProbabilityDelta = {
@@ -165,6 +184,16 @@ export async function fetchFixtures(): Promise<Match[]> {
 
 export async function fetchMetadata(): Promise<DataMetadata> {
   return fetchJson<DataMetadata>("/metadata");
+}
+
+export async function fetchModelMetadata(): Promise<ModelMetadata[]> {
+  return fetchJson<ModelMetadata[]>("/models");
+}
+
+export async function fetchBacktestingMetrics(
+  modelType: ModelType = "poisson",
+): Promise<BacktestingMetrics> {
+  return fetchJson<BacktestingMetrics>(`/backtesting?model_type=${modelType}`);
 }
 
 async function fetchJson<T>(path: string): Promise<T> {

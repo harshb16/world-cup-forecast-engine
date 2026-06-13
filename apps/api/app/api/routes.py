@@ -1,18 +1,24 @@
 """HTTP routes for the API."""
 
+from typing import Literal
+
 from fastapi import APIRouter, HTTPException
 
 from app.core.config import get_data_mode
 from app.models.domain import Group, Match, Team
 from app.models.schemas import (
+    BacktestingResponse,
     DataMetadataResponse,
     HealthResponse,
+    ModelMetadataResponse,
     ScenarioCompareResponse,
     ScenarioSimulateRequest,
     SimulateRequest,
     SimulationSummaryResponse,
 )
+from app.services.backtesting import calculate_backtesting_metrics
 from app.services.data_loader import load_metadata, load_tournament
+from app.services.model_metadata import list_model_metadata
 from app.services.simulation_service import (
     run_scenario_compare,
     run_scenario_simulation,
@@ -53,6 +59,20 @@ def fixtures() -> list[Match]:
 def metadata() -> DataMetadataResponse:
     """Return active tournament data metadata."""
     return DataMetadataResponse.model_validate(load_metadata(get_data_mode()))
+
+
+@router.get("/models", response_model=list[ModelMetadataResponse])
+def models() -> list[ModelMetadataResponse]:
+    """Return public metadata for supported match models."""
+    return list_model_metadata()
+
+
+@router.get("/backtesting", response_model=BacktestingResponse)
+def backtesting(
+    model_type: Literal["elo", "poisson"] = "poisson",
+) -> BacktestingResponse:
+    """Return baseline backtesting metrics for completed fixtures."""
+    return calculate_backtesting_metrics(model_type, get_data_mode())
 
 
 @router.post("/simulate", response_model=SimulationSummaryResponse)

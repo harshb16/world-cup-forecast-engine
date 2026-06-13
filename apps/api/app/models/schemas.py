@@ -68,6 +68,13 @@ class SimulationMetadataResponse(BaseModel):
     rating_source: str | None = None
     ratings_are_official: bool = False
     bracket_status: str | None = None
+    team_count: int | None = None
+    group_count: int | None = None
+    fixture_count: int | None = None
+    completed_result_count: int | None = None
+    rating_coverage_count: int | None = None
+    data_quality_notes: list[str] = Field(default_factory=list)
+    model_limitations: list[str] = Field(default_factory=list)
 
 
 class DataMetadataResponse(BaseModel):
@@ -81,6 +88,37 @@ class DataMetadataResponse(BaseModel):
     rating_source: str | None = None
     ratings_are_official: bool = False
     bracket_status: str | None = None
+    team_count: int
+    group_count: int
+    fixture_count: int
+    completed_result_count: int
+    rating_coverage_count: int
+    data_quality_notes: list[str] = Field(default_factory=list)
+    model_limitations: list[str] = Field(default_factory=list)
+
+
+class ModelMetadataResponse(BaseModel):
+    """Public description of a supported match model."""
+
+    id: Literal["elo", "poisson"]
+    name: str
+    is_ml: bool
+    inputs: list[str] = Field(default_factory=list)
+    assumptions: list[str] = Field(default_factory=list)
+    limitations: list[str] = Field(default_factory=list)
+    supported_outputs: list[str] = Field(default_factory=list)
+
+
+class BacktestingResponse(BaseModel):
+    """Baseline evaluation metrics for completed fixtures."""
+
+    model_type: Literal["elo", "poisson"]
+    data_mode: str
+    sample_size: int
+    accuracy: float | None = None
+    brier_score: float | None = None
+    log_loss: float | None = None
+    limitations: list[str] = Field(default_factory=list)
 
 
 class SimulationSummaryResponse(BaseModel):

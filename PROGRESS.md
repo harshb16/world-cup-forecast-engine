@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Real World Cup Data Sprint
+Product Foundation Repair Sprint
 
 ## Completed Tickets
 
@@ -38,10 +38,15 @@ Real World Cup Data Sprint
 - Ticket 30: Backend Defaults to Real Processed Data
 - Ticket 31: Frontend Real-Data Status and Cleanup
 - Ticket 32: Real-Data Docs and Local Run Workflow
+- Ticket 33: Roadmap and Milestone Cleanup
+- Ticket 34: Data Quality and Provenance API
+- Ticket 35: Model Transparency Foundation
+- Ticket 36: Baseline Backtesting Foundation
+- Ticket 37: Product Credibility Placeholder Cleanup
 
 ## Current Ticket
 
-- None. Real World Cup Data Sprint implementation completed.
+- None. Product foundation repair implementation completed.
 
 ## Blocked Issues
 
@@ -50,7 +55,10 @@ Real World Cup Data Sprint
 ## Notes
 
 - Backend Core Sprint hardening completed; validation gap fixed.
+- Real World Cup Data Sprint completed.
+- Current models remain non-ML baselines.
+- Knockout bracket mapping remains placeholder/MVP.
 
 ## Next Ticket
 
-- Review Real World Cup Data Sprint before merge.
+- Implement official Round-of-32 bracket mapping.

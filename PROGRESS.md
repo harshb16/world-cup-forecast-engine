@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Frontend MVP Sprint
+UI/UX Productization Sprint
 
 ## Completed Tickets
 
@@ -27,10 +27,11 @@ Frontend MVP Sprint
 - Ticket 19: Groups Page
 - Ticket 20: What-if Lab
 - Ticket 21: Basic Teams Page
+- Ticket 22: Design System Cleanup
 
 ## Current Ticket
 
-- None. Frontend MVP Sprint implementation completed.
+- Ticket 23: Homepage Redesign
 
 ## Blocked Issues
 
@@ -42,4 +43,4 @@ Frontend MVP Sprint
 
 ## Next Ticket
 
-- Review Frontend MVP Sprint before merge.
+- Ticket 23: Homepage Redesign

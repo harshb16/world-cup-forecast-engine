@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/lib/config";
+export { formatPercent } from "@/lib/format";
 
 export type ModelType = "elo" | "poisson";
 
@@ -151,11 +152,4 @@ async function fetchJson<T>(path: string): Promise<T> {
   }
 
   return response.json();
-}
-
-export function formatPercent(value: number): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "percent",
-    maximumFractionDigits: 1,
-  }).format(value);
 }

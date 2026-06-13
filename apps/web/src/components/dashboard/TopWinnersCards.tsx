@@ -12,23 +12,23 @@ export function TopWinnersCards({ teams }: { teams: TeamProbability[] }) {
       {topTeams.map((team, index) => (
         <section
           key={team.team_id}
-          className="rounded-lg border border-zinc-200 bg-white p-4"
+          className="rounded-lg border border-white/10 bg-white/[0.06] p-4"
         >
           <div className="flex items-center justify-between gap-3">
-            <span className="flex size-9 items-center justify-center rounded-md bg-emerald-50 text-emerald-700">
+            <span className="flex size-9 items-center justify-center rounded-md bg-emerald-300/10 text-emerald-200">
               <Trophy size={18} aria-hidden="true" />
             </span>
-            <span className="text-xs font-semibold text-zinc-400">
+            <span className="text-xs font-semibold text-zinc-500">
               #{index + 1}
             </span>
           </div>
-          <p className="mt-4 text-sm font-medium text-zinc-500">
+          <p className="mt-4 text-sm font-medium text-zinc-400">
             Champion probability
           </p>
-          <h2 className="mt-1 text-lg font-semibold text-zinc-950">
+          <h2 className="mt-1 text-lg font-semibold text-white">
             {team.team_name}
           </h2>
-          <p className="mt-2 text-2xl font-semibold text-emerald-700">
+          <p className="mt-2 text-2xl font-semibold text-emerald-200">
             {formatPercent(team.champion)}
           </p>
         </section>

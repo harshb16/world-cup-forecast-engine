@@ -31,6 +31,9 @@ const ROUND_ORDER = [
 
 export default function BracketPage() {
   const [modelType, setModelType] = useState<ModelType>("poisson");
+  const [simulationMode, setSimulationMode] = useState<"favorite" | "random">(
+    "favorite",
+  );
   const [seed, setSeed] = useState(42);
   const [trace, setTrace] = useState<BracketSimulation | null>(null);
   const [revealedMatchIds, setRevealedMatchIds] = useState<Set<string>>(
@@ -41,7 +44,7 @@ export default function BracketPage() {
   useEffect(() => {
     let isActive = true;
 
-    simulateBracket({ model_type: modelType, seed })
+    simulateBracket({ model_type: modelType, simulation_mode: simulationMode, seed })
       .then((data) => {
         if (isActive) {
           setTrace(data);
@@ -62,7 +65,7 @@ export default function BracketPage() {
     return () => {
       isActive = false;
     };
-  }, [modelType, seed]);
+  }, [modelType, simulationMode, seed]);
 
   const finalMatch = trace?.rounds.Final?.[0] ?? null;
   const championRevealed =
@@ -111,8 +114,8 @@ export default function BracketPage() {
     <AppShell>
       <PageHeader
         eyebrow="Bracket lab"
-        title="Reveal one simulated World Cup path"
-        description="Run one seeded tournament trace, then click through the knockout bracket from Round of 32 to champion."
+        title="Reveal the most likely World Cup path"
+        description="Click through a deterministic favorite path by default, or switch to seeded random mode when you want chaos."
       />
 
       <div className="space-y-6">
@@ -124,12 +127,14 @@ export default function BracketPage() {
               </p>
               <h2 className="mt-2 max-w-3xl text-3xl font-semibold text-white sm:text-4xl">
                 {championRevealed && trace
-                  ? `${trace.champion_team_name} wins the run.`
-                  : "Knockout wall locked. Start revealing."}
+                  ? `${trace.champion_team_name} wins this path.`
+                  : simulationMode === "favorite"
+                    ? "Most likely bracket locked. Start revealing."
+                    : "Random bracket locked. Start revealing."}
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-400">
-                Same backend model, one deterministic seed. Every match already
-                has a simulated score; the interface controls when it becomes visible.
+                Favorite mode chooses the higher advance probability at every
+                unresolved match. Random mode samples one seeded tournament trace.
               </p>
             </div>
             <div className="grid gap-2 sm:grid-cols-3 lg:min-w-[28rem]">
@@ -140,8 +145,8 @@ export default function BracketPage() {
               />
               <TraceStat
                 icon={Shuffle}
-                label="Seed"
-                value={formatNumber(seed)}
+                label="Mode"
+                value={simulationMode === "favorite" ? "Most likely" : `Seed ${formatNumber(seed)}`}
               />
               <TraceStat
                 icon={Trophy}
@@ -153,6 +158,27 @@ export default function BracketPage() {
 
           <div className="flex flex-col gap-3 p-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap gap-2">
+              {(["favorite", "random"] as const).map((mode) => (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() => {
+                    if (mode === simulationMode) {
+                      return;
+                    }
+                    setTrace(null);
+                    setError(null);
+                    setSimulationMode(mode);
+                  }}
+                  className={`rounded-md border px-3 py-2 text-sm font-semibold transition ${
+                    simulationMode === mode
+                      ? "border-sky-300/50 bg-sky-300 text-zinc-950"
+                      : "border-white/10 bg-white/[0.05] text-zinc-300 hover:bg-white/[0.08]"
+                  }`}
+                >
+                  {mode === "favorite" ? "Most likely" : "Random"}
+                </button>
+              ))}
               {(["poisson", "elo"] as ModelType[]).map((model) => (
                 <button
                   key={model}
@@ -187,6 +213,7 @@ export default function BracketPage() {
                 onClick={() => {
                   setTrace(null);
                   setError(null);
+                  setSimulationMode("random");
                   setSeed((current) => current + 1);
                 }}
               />

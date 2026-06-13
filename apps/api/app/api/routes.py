@@ -17,6 +17,8 @@ from app.models.schemas import (
     ScenarioSimulateRequest,
     SimulateRequest,
     SimulationSummaryResponse,
+    TeamPathRequest,
+    TeamPathResponse,
 )
 from app.services.backtesting import calculate_backtesting_metrics
 from app.services.bracket_service import run_bracket_simulation
@@ -30,6 +32,7 @@ from app.services.simulation_service import (
     run_sample_scenario_simulation,
     run_sample_simulation,
 )
+from app.services.team_path_service import calculate_team_path
 
 router = APIRouter()
 
@@ -89,6 +92,15 @@ def bracket_simulate(request: BracketSimulateRequest) -> BracketSimulationRespon
     """Run one revealable tournament bracket simulation."""
     try:
         return run_bracket_simulation(request, get_data_mode())
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.post("/team-path", response_model=TeamPathResponse)
+def team_path(request: TeamPathRequest) -> TeamPathResponse:
+    """Return likely knockout path distribution for one team."""
+    try:
+        return calculate_team_path(request, get_data_mode())
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 

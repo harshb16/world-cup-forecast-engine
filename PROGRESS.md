@@ -44,10 +44,11 @@ Product Foundation Repair Sprint
 - Ticket 36: Baseline Backtesting Foundation
 - Ticket 37: Product Credibility Placeholder Cleanup
 - Ticket 38: Interactive Bracket Trace API and Reveal UI
+- Ticket 39: Favorite Bracket Mode and Team Path Explorer
 
 ## Current Ticket
 
-- None. Interactive Bracket MVP implementation completed.
+- None. Favorite Bracket Mode and Team Path Explorer completed.
 
 ## Blocked Issues
 
@@ -63,4 +64,4 @@ Product Foundation Repair Sprint
 
 ## Next Ticket
 
-- Add team path explorer using bracket trace distributions.
+- Upgrade predictor model calibration with historical match data.

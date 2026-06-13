@@ -37,8 +37,18 @@ class BracketSimulateRequest(BaseModel):
     """Request body for simulating one revealable tournament bracket."""
 
     model_type: Literal["elo", "poisson"] = "poisson"
+    simulation_mode: Literal["favorite", "random"] = "favorite"
     seed: int | None = None
     result_overrides: list[MatchResultOverride] = Field(default_factory=list)
+
+
+class TeamPathRequest(BaseModel):
+    """Request body for exploring a team's likely knockout path."""
+
+    team_id: str = Field(min_length=1)
+    model_type: Literal["elo", "poisson"] = "poisson"
+    n_simulations: int = Field(default=500, ge=1, le=5_000)
+    seed: int | None = None
 
 
 class TeamStageProbabilityResponse(BaseModel):
@@ -172,10 +182,37 @@ class BracketSimulationResponse(BaseModel):
     """One complete tournament trace for an interactive bracket reveal."""
 
     metadata: SimulationMetadataResponse
+    simulation_mode: Literal["favorite", "random"]
     group_tables: list[BracketGroupTableResponse]
     rounds: dict[str, list[BracketMatchResponse]]
     champion_team_id: str
     champion_team_name: str
+
+
+class TeamPathOpponentResponse(BaseModel):
+    """Likely opponent row for one stage."""
+
+    team_id: str
+    team_name: str
+    count: int
+    probability: float
+
+
+class TeamPathStageResponse(BaseModel):
+    """Likely path distribution for one knockout stage."""
+
+    stage: str
+    reached_count: int
+    reached_probability: float
+    opponents: list[TeamPathOpponentResponse] = Field(default_factory=list)
+
+
+class TeamPathResponse(BaseModel):
+    """Monte Carlo path explorer response for one team."""
+
+    metadata: SimulationMetadataResponse
+    team: BracketTeamResponse
+    stages: list[TeamPathStageResponse]
 
 
 class SimulationSummaryResponse(BaseModel):

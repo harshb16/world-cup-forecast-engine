@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from app.models.domain import Match, Team
+from app.models.domain import Match, MatchResult, Team
 from app.models.schemas import (
     BracketGroupTableResponse,
     BracketMatchProbabilityResponse,
@@ -16,6 +16,7 @@ from app.services.data_loader import load_metadata, load_tournament
 from app.services.simulation_service import apply_result_overrides, create_match_model
 from app.simulation.group_stage import simulate_group_stage
 from app.simulation.knockout import simulate_knockout
+from app.simulation.match_models import MatchModel
 
 
 def run_bracket_simulation(
@@ -26,7 +27,12 @@ def run_bracket_simulation(
     base_config = load_tournament(data_mode)
     config = apply_result_overrides(base_config, request.result_overrides)
     teams_by_id = {team.id: team for team in config.teams}
-    match_model = create_match_model(request.model_type)
+    base_match_model = create_match_model(request.model_type)
+    match_model = (
+        _MostLikelyMatchModel(base_match_model)
+        if request.simulation_mode == "favorite"
+        else base_match_model
+    )
     rng = np.random.default_rng(request.seed)
 
     group_stage = simulate_group_stage(config, match_model, rng)
@@ -47,6 +53,7 @@ def run_bracket_simulation(
 
     return BracketSimulationResponse(
         metadata=metadata,
+        simulation_mode=request.simulation_mode,
         group_tables=[
             BracketGroupTableResponse(
                 group_id=group_id,
@@ -110,3 +117,37 @@ def _to_bracket_team(team: Team) -> BracketTeamResponse:
         group_id=team.group_id,
         rating=team.rating,
     )
+
+
+class _MostLikelyMatchModel:
+    """Deterministic wrapper that chooses the most likely match outcome."""
+
+    def __init__(self, base_model: MatchModel) -> None:
+        self.base_model = base_model
+
+    def predict_probabilities(self, team_a: Team, team_b: Team) -> dict[str, float]:
+        return self.base_model.predict_probabilities(team_a, team_b)
+
+    def simulate_result(
+        self,
+        team_a: Team,
+        team_b: Team,
+        rng: np.random.Generator,
+    ) -> MatchResult:
+        probabilities = self.predict_probabilities(team_a, team_b)
+        outcome = max(probabilities, key=probabilities.get)
+        margin = _favorite_margin(abs(team_a.rating - team_b.rating))
+
+        if outcome == "draw":
+            return MatchResult(team_a_goals=1, team_b_goals=1)
+        if outcome == "team_a_win":
+            return MatchResult(team_a_goals=1 + margin, team_b_goals=1)
+        return MatchResult(team_a_goals=1, team_b_goals=1 + margin)
+
+
+def _favorite_margin(rating_gap: float) -> int:
+    if rating_gap >= 450:
+        return 3
+    if rating_gap >= 200:
+        return 2
+    return 1

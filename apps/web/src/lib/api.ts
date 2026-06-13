@@ -134,6 +134,7 @@ export type BracketSimulation = {
     seed: number | null;
     overrides_applied: unknown[];
   };
+  simulation_mode: "favorite" | "random";
   group_tables: Array<{
     group_id: string;
     rows: Array<Record<string, unknown>>;
@@ -141,6 +142,31 @@ export type BracketSimulation = {
   rounds: Record<string, BracketMatch[]>;
   champion_team_id: string;
   champion_team_name: string;
+};
+
+export type TeamPathOpponent = {
+  team_id: string;
+  team_name: string;
+  count: number;
+  probability: number;
+};
+
+export type TeamPathStage = {
+  stage: string;
+  reached_count: number;
+  reached_probability: number;
+  opponents: TeamPathOpponent[];
+};
+
+export type TeamPath = {
+  metadata: DataMetadata & {
+    n_simulations: number;
+    model_type: ModelType;
+    seed: number | null;
+    overrides_applied: unknown[];
+  };
+  team: BracketTeam;
+  stages: TeamPathStage[];
 };
 
 export type SimulationSummary = {
@@ -217,6 +243,7 @@ export async function compareScenario(request: {
 
 export async function simulateBracket(request: {
   model_type: ModelType;
+  simulation_mode?: "favorite" | "random";
   seed?: number;
   result_overrides?: MatchResultOverride[];
 }): Promise<BracketSimulation> {
@@ -260,6 +287,25 @@ export async function fetchBacktestingMetrics(
   modelType: ModelType = "poisson",
 ): Promise<BacktestingMetrics> {
   return fetchJson<BacktestingMetrics>(`/backtesting?model_type=${modelType}`);
+}
+
+export async function fetchTeamPath(teamId: string): Promise<TeamPath> {
+  const response = await fetch(`${API_BASE_URL}/team-path`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      team_id: teamId,
+      model_type: "poisson",
+      n_simulations: 500,
+      seed: 42,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Team path request failed with status ${response.status}`);
+  }
+
+  return response.json();
 }
 
 async function fetchJson<T>(path: string): Promise<T> {

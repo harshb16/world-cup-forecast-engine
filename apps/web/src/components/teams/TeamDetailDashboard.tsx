@@ -16,11 +16,14 @@ import {
   fetchGroups,
   fetchMetadata,
   fetchTeams,
+  fetchTeamPath,
   Group,
   simulateTournament,
   SimulationSummary,
   Team,
   DataMetadata,
+  TeamPath,
+  TeamPathStage,
 } from "@/lib/api";
 import { formatNumber, formatPercent } from "@/lib/format";
 
@@ -29,6 +32,7 @@ type TeamDetailData = {
   teams: Team[];
   simulation: SimulationSummary;
   metadata: DataMetadata;
+  path: TeamPath;
 };
 
 export function TeamDetailDashboard() {
@@ -44,15 +48,16 @@ export function TeamDetailDashboard() {
       fetchGroups(),
       fetchTeams(),
       fetchMetadata(),
+      fetchTeamPath(teamId),
       simulateTournament({
         n_simulations: 1000,
         model_type: "poisson",
         seed: 42,
       }),
     ])
-      .then(([groups, teams, metadata, simulation]) => {
+      .then(([groups, teams, metadata, path, simulation]) => {
         if (isActive) {
-          setData({ groups, teams, metadata, simulation });
+          setData({ groups, teams, metadata, path, simulation });
         }
       })
       .catch((caughtError: unknown) => {
@@ -68,7 +73,7 @@ export function TeamDetailDashboard() {
     return () => {
       isActive = false;
     };
-  }, []);
+  }, [teamId]);
 
   const team = useMemo(
     () => data?.teams.find((candidate) => candidate.id === teamId),
@@ -157,6 +162,8 @@ export function TeamDetailDashboard() {
       </SectionCard>
       <DataStatusCard metadata={data.metadata} />
 
+      <TeamPathExplorer path={data.path} />
+
       {probability ? (
         <HelpText>
           These chances are not predictions for a single match. They are the
@@ -164,6 +171,76 @@ export function TeamDetailDashboard() {
           stage or wins the tournament.
         </HelpText>
       ) : null}
+    </div>
+  );
+}
+
+function TeamPathExplorer({ path }: { path: TeamPath }) {
+  return (
+    <SectionCard>
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase text-emerald-200">
+            Path explorer
+          </p>
+          <h2 className="mt-1 text-lg font-semibold text-white">
+            Likely knockout road
+          </h2>
+        </div>
+        <p className="text-xs text-zinc-500">
+          {formatNumber(path.metadata.n_simulations)} simulations ·{" "}
+          {path.metadata.model_type.toUpperCase()}
+        </p>
+      </div>
+
+      <div className="mt-5 grid gap-3 lg:grid-cols-5">
+        {path.stages.map((stage) => (
+          <PathStageCard key={stage.stage} stage={stage} />
+        ))}
+      </div>
+    </SectionCard>
+  );
+}
+
+function PathStageCard({ stage }: { stage: TeamPathStage }) {
+  const topOpponent = stage.opponents[0];
+
+  return (
+    <div className="rounded-lg border border-white/10 bg-black/15 p-3">
+      <p className="text-xs font-semibold uppercase text-zinc-500">
+        {stage.stage}
+      </p>
+      <p className="mt-2 text-2xl font-semibold text-white">
+        {formatPercent(stage.reached_probability)}
+      </p>
+      <p className="mt-1 text-xs text-zinc-500">Reach probability</p>
+
+      <div className="mt-4 space-y-2">
+        {topOpponent ? (
+          stage.opponents.slice(0, 3).map((opponent) => (
+            <div key={opponent.team_id}>
+              <div className="flex items-center justify-between gap-2 text-xs">
+                <span className="truncate font-semibold text-zinc-200">
+                  {opponent.team_name}
+                </span>
+                <span className="text-zinc-500">
+                  {formatPercent(opponent.probability)}
+                </span>
+              </div>
+              <div className="mt-1 h-1 overflow-hidden rounded-full bg-white/10">
+                <div
+                  className="h-full bg-emerald-300"
+                  style={{
+                    width: `${Math.round(opponent.probability * 100)}%`,
+                  }}
+                />
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-sm text-zinc-500">No common opponent yet.</p>
+        )}
+      </div>
     </div>
   );
 }

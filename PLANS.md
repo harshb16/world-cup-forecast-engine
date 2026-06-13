@@ -59,6 +59,8 @@ Status: complete for MVP.
 - Clear UI copy for current model/data limits
 - Removal of placeholder product pages
 - Interactive one-run knockout bracket reveal
+- Favorite-path bracket mode
+- Team path explorer
 
 Status: current.
 

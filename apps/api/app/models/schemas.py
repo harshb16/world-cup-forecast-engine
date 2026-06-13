@@ -33,6 +33,14 @@ class ScenarioSimulateRequest(SimulateRequest):
     result_overrides: list[MatchResultOverride] = Field(default_factory=list)
 
 
+class BracketSimulateRequest(BaseModel):
+    """Request body for simulating one revealable tournament bracket."""
+
+    model_type: Literal["elo", "poisson"] = "poisson"
+    seed: int | None = None
+    result_overrides: list[MatchResultOverride] = Field(default_factory=list)
+
+
 class TeamStageProbabilityResponse(BaseModel):
     """Per-team probability response."""
 
@@ -119,6 +127,55 @@ class BacktestingResponse(BaseModel):
     brier_score: float | None = None
     log_loss: float | None = None
     limitations: list[str] = Field(default_factory=list)
+
+
+class BracketTeamResponse(BaseModel):
+    """Team payload used inside a bracket match."""
+
+    team_id: str
+    team_name: str
+    group_id: str
+    rating: float
+
+
+class BracketMatchProbabilityResponse(BaseModel):
+    """Pre-match probabilities for a bracket match."""
+
+    team_a_win: float
+    draw: float
+    team_b_win: float
+    team_a_advance: float
+    team_b_advance: float
+
+
+class BracketMatchResponse(BaseModel):
+    """One revealable knockout match."""
+
+    id: str
+    stage: str
+    match_number: int
+    team_a: BracketTeamResponse
+    team_b: BracketTeamResponse
+    result: dict[str, int]
+    winner_team_id: str
+    probabilities: BracketMatchProbabilityResponse
+
+
+class BracketGroupTableResponse(BaseModel):
+    """Final group table included with a bracket trace."""
+
+    group_id: str
+    rows: list[dict[str, object]]
+
+
+class BracketSimulationResponse(BaseModel):
+    """One complete tournament trace for an interactive bracket reveal."""
+
+    metadata: SimulationMetadataResponse
+    group_tables: list[BracketGroupTableResponse]
+    rounds: dict[str, list[BracketMatchResponse]]
+    champion_team_id: str
+    champion_team_name: str
 
 
 class SimulationSummaryResponse(BaseModel):

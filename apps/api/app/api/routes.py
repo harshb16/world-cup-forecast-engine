@@ -8,6 +8,8 @@ from app.core.config import get_data_mode
 from app.models.domain import Group, Match, Team
 from app.models.schemas import (
     BacktestingResponse,
+    BracketSimulateRequest,
+    BracketSimulationResponse,
     DataMetadataResponse,
     HealthResponse,
     ModelMetadataResponse,
@@ -17,6 +19,7 @@ from app.models.schemas import (
     SimulationSummaryResponse,
 )
 from app.services.backtesting import calculate_backtesting_metrics
+from app.services.bracket_service import run_bracket_simulation
 from app.services.data_loader import load_metadata, load_tournament
 from app.services.model_metadata import list_model_metadata
 from app.services.simulation_service import (
@@ -79,6 +82,15 @@ def backtesting(
 def simulate(request: SimulateRequest) -> SimulationSummaryResponse:
     """Run a Monte Carlo simulation against sample tournament data."""
     return run_simulation(request, get_data_mode())
+
+
+@router.post("/bracket/simulate", response_model=BracketSimulationResponse)
+def bracket_simulate(request: BracketSimulateRequest) -> BracketSimulationResponse:
+    """Run one revealable tournament bracket simulation."""
+    try:
+        return run_bracket_simulation(request, get_data_mode())
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 @router.post("/scenario/simulate", response_model=SimulationSummaryResponse)

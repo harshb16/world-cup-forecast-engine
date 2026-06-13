@@ -43,10 +43,11 @@ Product Foundation Repair Sprint
 - Ticket 35: Model Transparency Foundation
 - Ticket 36: Baseline Backtesting Foundation
 - Ticket 37: Product Credibility Placeholder Cleanup
+- Ticket 38: Interactive Bracket Trace API and Reveal UI
 
 ## Current Ticket
 
-- None. Product foundation repair implementation completed.
+- None. Interactive Bracket MVP implementation completed.
 
 ## Blocked Issues
 
@@ -62,4 +63,4 @@ Product Foundation Repair Sprint
 
 ## Next Ticket
 
-- Add team path explorer using the repaired knockout bracket.
+- Add team path explorer using bracket trace distributions.

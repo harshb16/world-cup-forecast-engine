@@ -6,6 +6,7 @@ import {
   BarChart3,
   FlaskConical,
   Gauge,
+  GitBranch,
   History,
   Shield,
   Table2,
@@ -15,6 +16,7 @@ import {
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: Gauge },
+  { href: "/bracket", label: "Bracket", icon: GitBranch },
   { href: "/groups", label: "Groups", icon: Table2 },
   { href: "/what-if", label: "What-if", icon: FlaskConical },
   { href: "/teams", label: "Teams", icon: Users },
@@ -67,7 +69,7 @@ export function Navigation() {
           MVP model
         </div>
         <p className="mt-1 text-xs leading-5 text-zinc-400">
-          Real World Cup data with MVP bracket rules.
+          Real data, 2026 bracket slots, seeded reveal lab.
         </p>
       </div>
     </aside>

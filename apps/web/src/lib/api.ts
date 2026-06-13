@@ -98,6 +98,51 @@ export type BacktestingMetrics = {
   limitations: string[];
 };
 
+export type BracketTeam = {
+  team_id: string;
+  team_name: string;
+  group_id: string;
+  rating: number;
+};
+
+export type BracketMatchProbabilities = {
+  team_a_win: number;
+  draw: number;
+  team_b_win: number;
+  team_a_advance: number;
+  team_b_advance: number;
+};
+
+export type BracketMatch = {
+  id: string;
+  stage: string;
+  match_number: number;
+  team_a: BracketTeam;
+  team_b: BracketTeam;
+  result: {
+    team_a_goals: number;
+    team_b_goals: number;
+  };
+  winner_team_id: string;
+  probabilities: BracketMatchProbabilities;
+};
+
+export type BracketSimulation = {
+  metadata: DataMetadata & {
+    n_simulations: number;
+    model_type: ModelType;
+    seed: number | null;
+    overrides_applied: unknown[];
+  };
+  group_tables: Array<{
+    group_id: string;
+    rows: Array<Record<string, unknown>>;
+  }>;
+  rounds: Record<string, BracketMatch[]>;
+  champion_team_id: string;
+  champion_team_name: string;
+};
+
 export type SimulationSummary = {
   metadata: DataMetadata & {
     n_simulations: number;
@@ -165,6 +210,27 @@ export async function compareScenario(request: {
 
   if (!response.ok) {
     throw new Error(`Scenario comparison failed with status ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function simulateBracket(request: {
+  model_type: ModelType;
+  seed?: number;
+  result_overrides?: MatchResultOverride[];
+}): Promise<BracketSimulation> {
+  const response = await fetch(`${API_BASE_URL}/bracket/simulate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      ...request,
+      result_overrides: request.result_overrides ?? [],
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Bracket simulation failed with status ${response.status}`);
   }
 
   return response.json();

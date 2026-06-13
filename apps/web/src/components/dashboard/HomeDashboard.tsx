@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FlaskConical, Table2, Users, BarChart3 } from "lucide-react";
+import { FlaskConical, Table2, Users, BarChart3, GitBranch } from "lucide-react";
 
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
@@ -183,6 +183,12 @@ export function HomeDashboard() {
 }
 
 const quickLinks = [
+  {
+    href: "/bracket",
+    title: "Bracket",
+    description: "Reveal a seeded knockout path from Round of 32 to champion.",
+    icon: GitBranch,
+  },
   {
     href: "/groups",
     title: "Groups",

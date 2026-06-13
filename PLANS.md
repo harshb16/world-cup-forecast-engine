@@ -58,6 +58,7 @@ Status: complete for MVP.
 - Baseline backtesting metrics
 - Clear UI copy for current model/data limits
 - Removal of placeholder product pages
+- Interactive one-run knockout bracket reveal
 
 Status: current.
 

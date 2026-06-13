@@ -6,6 +6,7 @@ import { FlaskConical, Table2, Users, BarChart3 } from "lucide-react";
 
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
+import { DataStatusCard } from "@/components/DataStatusCard";
 import { ChampionOddsTable } from "@/components/dashboard/ChampionOddsTable";
 import { StageProbabilityTable } from "@/components/dashboard/StageProbabilityTable";
 import { TopWinnersCards } from "@/components/dashboard/TopWinnersCards";
@@ -75,7 +76,7 @@ export function HomeDashboard() {
               {topChampion.team_name} leads the current title race.
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-300">
-              This view runs the sample tournament through the backend Monte Carlo
+              This view runs World Cup 2026 data through the backend Monte Carlo
               engine and turns the results into probabilities normal fans can scan.
             </p>
           </div>
@@ -95,8 +96,8 @@ export function HomeDashboard() {
             />
             <StatCard
               label="Data status"
-              value="Sample"
-              detail="Manual sample tournament data, not live FIFA results"
+              value={summary.metadata.is_real_data ? "Real" : "Sample"}
+              detail={summary.metadata.data_version ?? "No version"}
               tone="amber"
             />
           </div>
@@ -121,6 +122,10 @@ export function HomeDashboard() {
           detail="Baseline run"
         />
       </div>
+
+      <section className="space-y-4">
+        <DataStatusCard metadata={summary.metadata} />
+      </section>
 
       <section className="space-y-4">
         <div>

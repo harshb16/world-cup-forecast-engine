@@ -4,21 +4,25 @@ import { useEffect, useMemo, useState } from "react";
 
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
+import { DataStatusCard } from "@/components/DataStatusCard";
 import { GroupProbabilityCard } from "@/components/groups/GroupProbabilityCard";
 import { HelpText } from "@/components/ui/HelpText";
 import {
   fetchGroups,
+  fetchMetadata,
   fetchTeams,
   Group,
   simulateTournament,
   SimulationSummary,
   Team,
+  DataMetadata,
 } from "@/lib/api";
 
 type GroupData = {
   groups: Group[];
   teams: Team[];
   simulation: SimulationSummary;
+  metadata: DataMetadata;
 };
 
 export function GroupsDashboard() {
@@ -31,15 +35,16 @@ export function GroupsDashboard() {
     Promise.all([
       fetchGroups(),
       fetchTeams(),
+      fetchMetadata(),
       simulateTournament({
         n_simulations: 1000,
         model_type: "poisson",
         seed: 42,
       }),
     ])
-      .then(([groups, teams, simulation]) => {
+      .then(([groups, teams, metadata, simulation]) => {
         if (isActive) {
-          setData({ groups, teams, simulation });
+          setData({ groups, teams, metadata, simulation });
         }
       })
       .catch((caughtError: unknown) => {
@@ -77,6 +82,7 @@ export function GroupsDashboard() {
         Qualification probability combines finishing top two with the chance of
         advancing as one of the best third-place teams.
       </HelpText>
+      <DataStatusCard metadata={data.metadata} />
       <div className="grid gap-5 xl:grid-cols-2">
         {data.groups.map((group) => (
           <GroupProbabilityCard

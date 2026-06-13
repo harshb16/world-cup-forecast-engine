@@ -67,7 +67,7 @@ export function Navigation() {
           MVP model
         </div>
         <p className="mt-1 text-xs leading-5 text-zinc-400">
-          Sample data and MVP bracket rules are active.
+          Real World Cup data with MVP bracket rules.
         </p>
       </div>
     </aside>

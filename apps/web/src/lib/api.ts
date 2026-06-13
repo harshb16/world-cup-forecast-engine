@@ -66,6 +66,14 @@ export type SimulationSummary = {
     model_type: ModelType;
     seed: number | null;
     overrides_applied: unknown[];
+    data_mode: string;
+    is_real_data: boolean;
+    data_version: string | null;
+    last_updated: string | null;
+    sources: Array<Record<string, unknown>>;
+    rating_source: string | null;
+    ratings_are_official: boolean;
+    bracket_status: string | null;
   };
   teams: TeamProbability[];
   champion_probabilities: Record<string, number>;
@@ -74,6 +82,17 @@ export type SimulationSummary = {
   third_place_finish_probabilities: Record<string, number>;
   third_place_qualification_probabilities: Record<string, number>;
   average_points_by_team: Record<string, number>;
+};
+
+export type DataMetadata = {
+  data_mode: string;
+  is_real_data: boolean;
+  data_version: string | null;
+  last_updated: string | null;
+  sources: Array<Record<string, unknown>>;
+  rating_source: string | null;
+  ratings_are_official: boolean;
+  bracket_status: string | null;
 };
 
 export type TeamProbabilityDelta = {
@@ -142,6 +161,10 @@ export async function fetchGroups(): Promise<Group[]> {
 
 export async function fetchFixtures(): Promise<Match[]> {
   return fetchJson<Match[]>("/fixtures");
+}
+
+export async function fetchMetadata(): Promise<DataMetadata> {
+  return fetchJson<DataMetadata>("/metadata");
 }
 
 async function fetchJson<T>(path: string): Promise<T> {

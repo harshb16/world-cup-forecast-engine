@@ -101,5 +101,8 @@ function formatFixture(fixture: Match, teamsById: Map<string, Team>): string {
   const teamA = teamsById.get(fixture.team_a_id)?.name ?? fixture.team_a_id;
   const teamB = teamsById.get(fixture.team_b_id)?.name ?? fixture.team_b_id;
   const groupLabel = fixture.group_id ? `${fixture.group_id} · ` : "";
-  return `${groupLabel}${teamA} vs ${teamB}`;
+  const score = fixture.result
+    ? ` · ${fixture.result.team_a_goals}-${fixture.result.team_b_goals}`
+    : "";
+  return `${groupLabel}${teamA} vs ${teamB}${score}`;
 }

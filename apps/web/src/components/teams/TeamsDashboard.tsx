@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
+import { DataStatusCard } from "@/components/DataStatusCard";
 import { TeamName } from "@/components/teams/TeamName";
 import { TeamProbabilitySummary } from "@/components/teams/TeamProbabilitySummary";
 import { TeamSearch } from "@/components/teams/TeamSearch";
@@ -12,17 +13,20 @@ import { HelpText } from "@/components/ui/HelpText";
 import { SectionCard } from "@/components/ui/SectionCard";
 import {
   fetchGroups,
+  fetchMetadata,
   fetchTeams,
   Group,
   simulateTournament,
   SimulationSummary,
   Team,
+  DataMetadata,
 } from "@/lib/api";
 
 type TeamIndexData = {
   groups: Group[];
   teams: Team[];
   simulation: SimulationSummary;
+  metadata: DataMetadata;
 };
 
 export function TeamsDashboard() {
@@ -37,15 +41,16 @@ export function TeamsDashboard() {
     Promise.all([
       fetchGroups(),
       fetchTeams(),
+      fetchMetadata(),
       simulateTournament({
         n_simulations: 1000,
         model_type: "poisson",
         seed: 42,
       }),
     ])
-      .then(([groups, teams, simulation]) => {
+      .then(([groups, teams, metadata, simulation]) => {
         if (isActive) {
-          setData({ groups, teams, simulation });
+          setData({ groups, teams, metadata, simulation });
         }
       })
       .catch((caughtError: unknown) => {
@@ -157,9 +162,10 @@ export function TeamsDashboard() {
       </SectionCard>
 
       <HelpText>
-        Team cards use the latest seeded sample simulation. Open a profile for a
+        Team cards use latest seeded World Cup data. Open a profile for a
         fuller stage-by-stage ladder.
       </HelpText>
+      <DataStatusCard metadata={data.metadata} />
 
       {teamsByGroup.length === 0 ? (
         <EmptyState

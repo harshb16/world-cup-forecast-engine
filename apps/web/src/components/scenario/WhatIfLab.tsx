@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
+import { DataStatusCard } from "@/components/DataStatusCard";
 import { ScenarioBuilder } from "@/components/scenario/ScenarioBuilder";
 import { ScenarioOverridesList } from "@/components/scenario/ScenarioOverridesList";
 import { ScenarioResultDeltaTable } from "@/components/scenario/ScenarioResultDeltaTable";
@@ -13,11 +14,13 @@ import { SectionCard } from "@/components/ui/SectionCard";
 import {
   compareScenario,
   fetchFixtures,
+  fetchMetadata,
   fetchTeams,
   Match,
   MatchResultOverride,
   ScenarioCompareResponse,
   Team,
+  DataMetadata,
 } from "@/lib/api";
 
 export function WhatIfLab() {
@@ -25,17 +28,19 @@ export function WhatIfLab() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [overrides, setOverrides] = useState<MatchResultOverride[]>([]);
   const [result, setResult] = useState<ScenarioCompareResponse | null>(null);
+  const [metadata, setMetadata] = useState<DataMetadata | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let isActive = true;
-    Promise.all([fetchFixtures(), fetchTeams()])
-      .then(([nextFixtures, nextTeams]) => {
+    Promise.all([fetchFixtures(), fetchTeams(), fetchMetadata()])
+      .then(([nextFixtures, nextTeams, nextMetadata]) => {
         if (isActive) {
           setFixtures(nextFixtures);
           setTeams(nextTeams);
+          setMetadata(nextMetadata);
           setIsLoading(false);
         }
       })
@@ -114,6 +119,7 @@ export function WhatIfLab() {
           </div>
         ))}
       </section>
+      {metadata ? <DataStatusCard metadata={metadata} /> : null}
 
       <ScenarioBuilder
         fixtures={fixtures}

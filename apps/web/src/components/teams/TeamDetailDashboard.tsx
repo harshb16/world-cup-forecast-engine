@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
+import { DataStatusCard } from "@/components/DataStatusCard";
 import { TeamName } from "@/components/teams/TeamName";
 import { TeamProbabilitySummary } from "@/components/teams/TeamProbabilitySummary";
 import { HelpText } from "@/components/ui/HelpText";
@@ -13,11 +14,13 @@ import { SectionCard } from "@/components/ui/SectionCard";
 import { StatCard } from "@/components/ui/StatCard";
 import {
   fetchGroups,
+  fetchMetadata,
   fetchTeams,
   Group,
   simulateTournament,
   SimulationSummary,
   Team,
+  DataMetadata,
 } from "@/lib/api";
 import { formatNumber, formatPercent } from "@/lib/format";
 
@@ -25,6 +28,7 @@ type TeamDetailData = {
   groups: Group[];
   teams: Team[];
   simulation: SimulationSummary;
+  metadata: DataMetadata;
 };
 
 export function TeamDetailDashboard() {
@@ -39,15 +43,16 @@ export function TeamDetailDashboard() {
     Promise.all([
       fetchGroups(),
       fetchTeams(),
+      fetchMetadata(),
       simulateTournament({
         n_simulations: 1000,
         model_type: "poisson",
         seed: 42,
       }),
     ])
-      .then(([groups, teams, simulation]) => {
+      .then(([groups, teams, metadata, simulation]) => {
         if (isActive) {
-          setData({ groups, teams, simulation });
+          setData({ groups, teams, metadata, simulation });
         }
       })
       .catch((caughtError: unknown) => {
@@ -150,11 +155,12 @@ export function TeamDetailDashboard() {
           </p>
         )}
       </SectionCard>
+      <DataStatusCard metadata={data.metadata} />
 
       {probability ? (
         <HelpText>
           These chances are not predictions for a single match. They are the
-          share of seeded sample simulations where {team.name} reaches each
+          share of seeded World Cup simulations where {team.name} reaches each
           stage or wins the tournament.
         </HelpText>
       ) : null}

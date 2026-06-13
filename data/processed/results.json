@@ -1,6 +1,6 @@
 [
   {
-    "match_id": "A-01",
+    "match_id": "A1",
     "source": "Reported in indexed match-result sources; verify against FIFA before live operations",
     "status": "finished",
     "team_a_goals": 2,
@@ -9,7 +9,7 @@
     "team_b_id": "RSA"
   },
   {
-    "match_id": "A-02",
+    "match_id": "A2",
     "source": "Reported in indexed match-result sources; verify against FIFA before live operations",
     "status": "finished",
     "team_a_goals": 2,
@@ -18,7 +18,7 @@
     "team_b_id": "CZECHIA"
   },
   {
-    "match_id": "B-01",
+    "match_id": "B1",
     "source": "Reported in indexed match-result sources; verify against FIFA before live operations",
     "status": "finished",
     "team_a_goals": 1,
@@ -27,7 +27,7 @@
     "team_b_id": "QATAR"
   },
   {
-    "match_id": "D-01",
+    "match_id": "D1",
     "source": "Reported in indexed match-result sources; verify against FIFA before live operations",
     "status": "finished",
     "team_a_goals": 4,

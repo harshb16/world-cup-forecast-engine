@@ -40,12 +40,12 @@ def test_group_a_contains_expected_real_teams() -> None:
 def test_processed_fixtures_include_known_completed_results() -> None:
     fixtures = {fixture["id"]: fixture for fixture in _read("fixtures.json")}
 
-    assert fixtures["A-01"]["result"] == {
+    assert fixtures["A1"]["result"] == {
         "played": True,
         "team_a_goals": 2,
         "team_b_goals": 0,
     }
-    assert fixtures["A-02"]["result"] == {
+    assert fixtures["A2"]["result"] == {
         "played": True,
         "team_a_goals": 2,
         "team_b_goals": 1,

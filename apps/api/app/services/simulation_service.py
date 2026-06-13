@@ -11,7 +11,7 @@ from app.models.schemas import (
     TeamProbabilityDeltaResponse,
     TeamStageProbabilityResponse,
 )
-from app.services.data_loader import load_sample_tournament
+from app.services.data_loader import load_metadata, load_tournament
 from app.simulation.match_models import EloWinDrawLossModel, MatchModel, PoissonScoreModel
 from app.simulation.monte_carlo import STAGES, run_simulations
 
@@ -25,22 +25,23 @@ def create_match_model(model_type: str) -> MatchModel:
     raise ValueError(f"unsupported model_type: {model_type}")
 
 
-def run_sample_simulation(request: SimulateRequest) -> SimulationSummaryResponse:
-    """Run a simulation against the local sample tournament."""
-    config = load_sample_tournament()
+def run_simulation(request: SimulateRequest, data_mode: str) -> SimulationSummaryResponse:
+    """Run a simulation against the configured tournament data."""
+    config = load_tournament(data_mode)
     summary = run_simulations(
         config,
         create_match_model(request.model_type),
         n_simulations=request.n_simulations,
         seed=request.seed,
     )
-    metadata = SimulationMetadataResponse(
-        n_simulations=request.n_simulations,
-        model_type=request.model_type,
-        seed=request.seed,
-    )
+    metadata = _simulation_metadata(request, data_mode)
 
     return _to_response(summary, config.teams, metadata)
+
+
+def run_sample_simulation(request: SimulateRequest) -> SimulationSummaryResponse:
+    """Run a simulation against the local sample tournament."""
+    return run_simulation(request, "sample")
 
 
 def apply_result_overrides(
@@ -84,12 +85,13 @@ def apply_result_overrides(
     )
 
 
-def run_sample_scenario_simulation(
+def run_scenario_simulation(
     request: ScenarioSimulateRequest,
+    data_mode: str,
 ) -> SimulationSummaryResponse:
-    """Run a sample tournament simulation with manual result overrides."""
+    """Run a tournament simulation with manual result overrides."""
     config = apply_result_overrides(
-        load_sample_tournament(),
+        load_tournament(data_mode),
         request.result_overrides,
     )
     summary = run_simulations(
@@ -98,18 +100,21 @@ def run_sample_scenario_simulation(
         n_simulations=request.n_simulations,
         seed=request.seed,
     )
-    metadata = SimulationMetadataResponse(
-        n_simulations=request.n_simulations,
-        model_type=request.model_type,
-        seed=request.seed,
-        overrides_applied=request.result_overrides,
-    )
+    metadata = _simulation_metadata(request, data_mode)
 
     return _to_response(summary, config.teams, metadata)
 
 
-def run_sample_scenario_compare(
+def run_sample_scenario_simulation(
     request: ScenarioSimulateRequest,
+) -> SimulationSummaryResponse:
+    """Run a sample tournament simulation with manual result overrides."""
+    return run_scenario_simulation(request, "sample")
+
+
+def run_scenario_compare(
+    request: ScenarioSimulateRequest,
+    data_mode: str,
 ) -> ScenarioCompareResponse:
     """Compare baseline simulation probabilities against a scenario."""
     baseline_request = SimulateRequest(
@@ -117,8 +122,8 @@ def run_sample_scenario_compare(
         model_type=request.model_type,
         seed=request.seed,
     )
-    baseline = run_sample_simulation(baseline_request)
-    scenario = run_sample_scenario_simulation(request)
+    baseline = run_simulation(baseline_request, data_mode)
+    scenario = run_scenario_simulation(request, data_mode)
     deltas = _calculate_deltas(baseline, scenario)
     ranked_by_champion_delta = sorted(
         deltas,
@@ -132,6 +137,32 @@ def run_sample_scenario_compare(
         deltas=deltas,
         biggest_risers=ranked_by_champion_delta[:5],
         biggest_fallers=sorted(deltas, key=lambda item: item.champion_probability_delta)[:5],
+    )
+
+
+def run_sample_scenario_compare(
+    request: ScenarioSimulateRequest,
+) -> ScenarioCompareResponse:
+    """Compare baseline simulation probabilities against a scenario."""
+    return run_scenario_compare(request, "sample")
+
+
+def _simulation_metadata(
+    request: SimulateRequest,
+    data_mode: str,
+) -> SimulationMetadataResponse:
+    source_metadata = load_metadata(data_mode)
+    overrides = (
+        request.result_overrides
+        if isinstance(request, ScenarioSimulateRequest)
+        else []
+    )
+    return SimulationMetadataResponse(
+        n_simulations=request.n_simulations,
+        model_type=request.model_type,
+        seed=request.seed,
+        overrides_applied=overrides,
+        **source_metadata,
     )
 
 

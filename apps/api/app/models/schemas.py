@@ -60,6 +60,27 @@ class SimulationMetadataResponse(BaseModel):
     model_type: str
     seed: int | None = None
     overrides_applied: list[MatchResultOverride] = Field(default_factory=list)
+    data_mode: str = "processed"
+    is_real_data: bool = True
+    data_version: str | None = None
+    last_updated: str | None = None
+    sources: list[dict[str, object]] = Field(default_factory=list)
+    rating_source: str | None = None
+    ratings_are_official: bool = False
+    bracket_status: str | None = None
+
+
+class DataMetadataResponse(BaseModel):
+    """Metadata describing the active tournament data source."""
+
+    data_mode: str
+    is_real_data: bool
+    data_version: str | None = None
+    last_updated: str | None = None
+    sources: list[dict[str, object]] = Field(default_factory=list)
+    rating_source: str | None = None
+    ratings_are_official: bool = False
+    bracket_status: str | None = None
 
 
 class SimulationSummaryResponse(BaseModel):

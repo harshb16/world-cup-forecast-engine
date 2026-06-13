@@ -2,7 +2,7 @@
   {
     "city": null,
     "group_id": "A",
-    "id": "A-01",
+    "id": "A1",
     "kickoff": "2026-06-11",
     "result": {
       "played": true,
@@ -19,7 +19,7 @@
   {
     "city": null,
     "group_id": "A",
-    "id": "A-02",
+    "id": "A2",
     "kickoff": "2026-06-11",
     "result": {
       "played": true,
@@ -36,7 +36,7 @@
   {
     "city": null,
     "group_id": "A",
-    "id": "A-03",
+    "id": "A3",
     "kickoff": "2026-06-18",
     "result": null,
     "stage": "group",
@@ -49,7 +49,7 @@
   {
     "city": null,
     "group_id": "A",
-    "id": "A-04",
+    "id": "A4",
     "kickoff": "2026-06-18",
     "result": null,
     "stage": "group",
@@ -62,7 +62,7 @@
   {
     "city": null,
     "group_id": "A",
-    "id": "A-05",
+    "id": "A5",
     "kickoff": "2026-06-24",
     "result": null,
     "stage": "group",
@@ -75,7 +75,7 @@
   {
     "city": null,
     "group_id": "A",
-    "id": "A-06",
+    "id": "A6",
     "kickoff": "2026-06-24",
     "result": null,
     "stage": "group",
@@ -88,7 +88,7 @@
   {
     "city": null,
     "group_id": "B",
-    "id": "B-01",
+    "id": "B1",
     "kickoff": "2026-06-12",
     "result": {
       "played": true,
@@ -105,7 +105,7 @@
   {
     "city": null,
     "group_id": "B",
-    "id": "B-02",
+    "id": "B2",
     "kickoff": "2026-06-12",
     "result": null,
     "stage": "group",
@@ -118,7 +118,7 @@
   {
     "city": null,
     "group_id": "B",
-    "id": "B-03",
+    "id": "B3",
     "kickoff": "2026-06-18",
     "result": null,
     "stage": "group",
@@ -131,7 +131,7 @@
   {
     "city": null,
     "group_id": "B",
-    "id": "B-04",
+    "id": "B4",
     "kickoff": "2026-06-18",
     "result": null,
     "stage": "group",
@@ -144,7 +144,7 @@
   {
     "city": null,
     "group_id": "B",
-    "id": "B-05",
+    "id": "B5",
     "kickoff": "2026-06-24",
     "result": null,
     "stage": "group",
@@ -157,7 +157,7 @@
   {
     "city": null,
     "group_id": "B",
-    "id": "B-06",
+    "id": "B6",
     "kickoff": "2026-06-24",
     "result": null,
     "stage": "group",
@@ -170,7 +170,7 @@
   {
     "city": null,
     "group_id": "C",
-    "id": "C-01",
+    "id": "C1",
     "kickoff": "2026-06-13",
     "result": null,
     "stage": "group",
@@ -183,7 +183,7 @@
   {
     "city": null,
     "group_id": "C",
-    "id": "C-02",
+    "id": "C2",
     "kickoff": "2026-06-13",
     "result": null,
     "stage": "group",
@@ -196,7 +196,7 @@
   {
     "city": null,
     "group_id": "C",
-    "id": "C-03",
+    "id": "C3",
     "kickoff": "2026-06-19",
     "result": null,
     "stage": "group",
@@ -209,7 +209,7 @@
   {
     "city": null,
     "group_id": "C",
-    "id": "C-04",
+    "id": "C4",
     "kickoff": "2026-06-19",
     "result": null,
     "stage": "group",
@@ -222,7 +222,7 @@
   {
     "city": null,
     "group_id": "C",
-    "id": "C-05",
+    "id": "C5",
     "kickoff": "2026-06-24",
     "result": null,
     "stage": "group",
@@ -235,7 +235,7 @@
   {
     "city": null,
     "group_id": "C",
-    "id": "C-06",
+    "id": "C6",
     "kickoff": "2026-06-24",
     "result": null,
     "stage": "group",
@@ -248,7 +248,7 @@
   {
     "city": null,
     "group_id": "D",
-    "id": "D-01",
+    "id": "D1",
     "kickoff": "2026-06-12",
     "result": {
       "played": true,
@@ -265,7 +265,7 @@
   {
     "city": null,
     "group_id": "D",
-    "id": "D-02",
+    "id": "D2",
     "kickoff": "2026-06-12",
     "result": null,
     "stage": "group",
@@ -278,7 +278,7 @@
   {
     "city": null,
     "group_id": "D",
-    "id": "D-03",
+    "id": "D3",
     "kickoff": "2026-06-19",
     "result": null,
     "stage": "group",
@@ -291,7 +291,7 @@
   {
     "city": null,
     "group_id": "D",
-    "id": "D-04",
+    "id": "D4",
     "kickoff": "2026-06-19",
     "result": null,
     "stage": "group",
@@ -304,7 +304,7 @@
   {
     "city": null,
     "group_id": "D",
-    "id": "D-05",
+    "id": "D5",
     "kickoff": "2026-06-25",
     "result": null,
     "stage": "group",
@@ -317,7 +317,7 @@
   {
     "city": null,
     "group_id": "D",
-    "id": "D-06",
+    "id": "D6",
     "kickoff": "2026-06-25",
     "result": null,
     "stage": "group",
@@ -330,7 +330,7 @@
   {
     "city": null,
     "group_id": "E",
-    "id": "E-01",
+    "id": "E1",
     "kickoff": "2026-06-14",
     "result": null,
     "stage": "group",
@@ -343,7 +343,7 @@
   {
     "city": null,
     "group_id": "E",
-    "id": "E-02",
+    "id": "E2",
     "kickoff": "2026-06-14",
     "result": null,
     "stage": "group",
@@ -356,7 +356,7 @@
   {
     "city": null,
     "group_id": "E",
-    "id": "E-03",
+    "id": "E3",
     "kickoff": "2026-06-20",
     "result": null,
     "stage": "group",
@@ -369,7 +369,7 @@
   {
     "city": null,
     "group_id": "E",
-    "id": "E-04",
+    "id": "E4",
     "kickoff": "2026-06-20",
     "result": null,
     "stage": "group",
@@ -382,7 +382,7 @@
   {
     "city": null,
     "group_id": "E",
-    "id": "E-05",
+    "id": "E5",
     "kickoff": "2026-06-25",
     "result": null,
     "stage": "group",
@@ -395,7 +395,7 @@
   {
     "city": null,
     "group_id": "E",
-    "id": "E-06",
+    "id": "E6",
     "kickoff": "2026-06-25",
     "result": null,
     "stage": "group",
@@ -408,7 +408,7 @@
   {
     "city": null,
     "group_id": "F",
-    "id": "F-01",
+    "id": "F1",
     "kickoff": "2026-06-14",
     "result": null,
     "stage": "group",
@@ -421,7 +421,7 @@
   {
     "city": null,
     "group_id": "F",
-    "id": "F-02",
+    "id": "F2",
     "kickoff": "2026-06-14",
     "result": null,
     "stage": "group",
@@ -434,7 +434,7 @@
   {
     "city": null,
     "group_id": "F",
-    "id": "F-03",
+    "id": "F3",
     "kickoff": "2026-06-20",
     "result": null,
     "stage": "group",
@@ -447,7 +447,7 @@
   {
     "city": null,
     "group_id": "F",
-    "id": "F-04",
+    "id": "F4",
     "kickoff": "2026-06-20",
     "result": null,
     "stage": "group",
@@ -460,7 +460,7 @@
   {
     "city": null,
     "group_id": "F",
-    "id": "F-05",
+    "id": "F5",
     "kickoff": "2026-06-25",
     "result": null,
     "stage": "group",
@@ -473,7 +473,7 @@
   {
     "city": null,
     "group_id": "F",
-    "id": "F-06",
+    "id": "F6",
     "kickoff": "2026-06-25",
     "result": null,
     "stage": "group",
@@ -486,7 +486,7 @@
   {
     "city": null,
     "group_id": "G",
-    "id": "G-01",
+    "id": "G1",
     "kickoff": "2026-06-15",
     "result": null,
     "stage": "group",
@@ -499,7 +499,7 @@
   {
     "city": null,
     "group_id": "G",
-    "id": "G-02",
+    "id": "G2",
     "kickoff": "2026-06-15",
     "result": null,
     "stage": "group",
@@ -512,7 +512,7 @@
   {
     "city": null,
     "group_id": "G",
-    "id": "G-03",
+    "id": "G3",
     "kickoff": "2026-06-21",
     "result": null,
     "stage": "group",
@@ -525,7 +525,7 @@
   {
     "city": null,
     "group_id": "G",
-    "id": "G-04",
+    "id": "G4",
     "kickoff": "2026-06-21",
     "result": null,
     "stage": "group",
@@ -538,7 +538,7 @@
   {
     "city": null,
     "group_id": "G",
-    "id": "G-05",
+    "id": "G5",
     "kickoff": "2026-06-26",
     "result": null,
     "stage": "group",
@@ -551,7 +551,7 @@
   {
     "city": null,
     "group_id": "G",
-    "id": "G-06",
+    "id": "G6",
     "kickoff": "2026-06-26",
     "result": null,
     "stage": "group",
@@ -564,7 +564,7 @@
   {
     "city": null,
     "group_id": "H",
-    "id": "H-01",
+    "id": "H1",
     "kickoff": "2026-06-15",
     "result": null,
     "stage": "group",
@@ -577,7 +577,7 @@
   {
     "city": null,
     "group_id": "H",
-    "id": "H-02",
+    "id": "H2",
     "kickoff": "2026-06-15",
     "result": null,
     "stage": "group",
@@ -590,7 +590,7 @@
   {
     "city": null,
     "group_id": "H",
-    "id": "H-03",
+    "id": "H3",
     "kickoff": "2026-06-21",
     "result": null,
     "stage": "group",
@@ -603,7 +603,7 @@
   {
     "city": null,
     "group_id": "H",
-    "id": "H-04",
+    "id": "H4",
     "kickoff": "2026-06-21",
     "result": null,
     "stage": "group",
@@ -616,7 +616,7 @@
   {
     "city": null,
     "group_id": "H",
-    "id": "H-05",
+    "id": "H5",
     "kickoff": "2026-06-26",
     "result": null,
     "stage": "group",
@@ -629,7 +629,7 @@
   {
     "city": null,
     "group_id": "H",
-    "id": "H-06",
+    "id": "H6",
     "kickoff": "2026-06-26",
     "result": null,
     "stage": "group",
@@ -642,7 +642,7 @@
   {
     "city": null,
     "group_id": "I",
-    "id": "I-01",
+    "id": "I1",
     "kickoff": "2026-06-16",
     "result": null,
     "stage": "group",
@@ -655,7 +655,7 @@
   {
     "city": null,
     "group_id": "I",
-    "id": "I-02",
+    "id": "I2",
     "kickoff": "2026-06-16",
     "result": null,
     "stage": "group",
@@ -668,7 +668,7 @@
   {
     "city": null,
     "group_id": "I",
-    "id": "I-03",
+    "id": "I3",
     "kickoff": "2026-06-22",
     "result": null,
     "stage": "group",
@@ -681,7 +681,7 @@
   {
     "city": null,
     "group_id": "I",
-    "id": "I-04",
+    "id": "I4",
     "kickoff": "2026-06-22",
     "result": null,
     "stage": "group",
@@ -694,7 +694,7 @@
   {
     "city": null,
     "group_id": "I",
-    "id": "I-05",
+    "id": "I5",
     "kickoff": "2026-06-26",
     "result": null,
     "stage": "group",
@@ -707,7 +707,7 @@
   {
     "city": null,
     "group_id": "I",
-    "id": "I-06",
+    "id": "I6",
     "kickoff": "2026-06-26",
     "result": null,
     "stage": "group",
@@ -720,7 +720,7 @@
   {
     "city": null,
     "group_id": "J",
-    "id": "J-01",
+    "id": "J1",
     "kickoff": "2026-06-16",
     "result": null,
     "stage": "group",
@@ -733,7 +733,7 @@
   {
     "city": null,
     "group_id": "J",
-    "id": "J-02",
+    "id": "J2",
     "kickoff": "2026-06-16",
     "result": null,
     "stage": "group",
@@ -746,7 +746,7 @@
   {
     "city": null,
     "group_id": "J",
-    "id": "J-03",
+    "id": "J3",
     "kickoff": "2026-06-22",
     "result": null,
     "stage": "group",
@@ -759,7 +759,7 @@
   {
     "city": null,
     "group_id": "J",
-    "id": "J-04",
+    "id": "J4",
     "kickoff": "2026-06-22",
     "result": null,
     "stage": "group",
@@ -772,7 +772,7 @@
   {
     "city": null,
     "group_id": "J",
-    "id": "J-05",
+    "id": "J5",
     "kickoff": "2026-06-27",
     "result": null,
     "stage": "group",
@@ -785,7 +785,7 @@
   {
     "city": null,
     "group_id": "J",
-    "id": "J-06",
+    "id": "J6",
     "kickoff": "2026-06-27",
     "result": null,
     "stage": "group",
@@ -798,7 +798,7 @@
   {
     "city": null,
     "group_id": "K",
-    "id": "K-01",
+    "id": "K1",
     "kickoff": "2026-06-17",
     "result": null,
     "stage": "group",
@@ -811,7 +811,7 @@
   {
     "city": null,
     "group_id": "K",
-    "id": "K-02",
+    "id": "K2",
     "kickoff": "2026-06-17",
     "result": null,
     "stage": "group",
@@ -824,7 +824,7 @@
   {
     "city": null,
     "group_id": "K",
-    "id": "K-03",
+    "id": "K3",
     "kickoff": "2026-06-23",
     "result": null,
     "stage": "group",
@@ -837,7 +837,7 @@
   {
     "city": null,
     "group_id": "K",
-    "id": "K-04",
+    "id": "K4",
     "kickoff": "2026-06-23",
     "result": null,
     "stage": "group",
@@ -850,7 +850,7 @@
   {
     "city": null,
     "group_id": "K",
-    "id": "K-05",
+    "id": "K5",
     "kickoff": "2026-06-27",
     "result": null,
     "stage": "group",
@@ -863,7 +863,7 @@
   {
     "city": null,
     "group_id": "K",
-    "id": "K-06",
+    "id": "K6",
     "kickoff": "2026-06-27",
     "result": null,
     "stage": "group",
@@ -876,7 +876,7 @@
   {
     "city": null,
     "group_id": "L",
-    "id": "L-01",
+    "id": "L1",
     "kickoff": "2026-06-17",
     "result": null,
     "stage": "group",
@@ -889,7 +889,7 @@
   {
     "city": null,
     "group_id": "L",
-    "id": "L-02",
+    "id": "L2",
     "kickoff": "2026-06-17",
     "result": null,
     "stage": "group",
@@ -902,7 +902,7 @@
   {
     "city": null,
     "group_id": "L",
-    "id": "L-03",
+    "id": "L3",
     "kickoff": "2026-06-23",
     "result": null,
     "stage": "group",
@@ -915,7 +915,7 @@
   {
     "city": null,
     "group_id": "L",
-    "id": "L-04",
+    "id": "L4",
     "kickoff": "2026-06-23",
     "result": null,
     "stage": "group",
@@ -928,7 +928,7 @@
   {
     "city": null,
     "group_id": "L",
-    "id": "L-05",
+    "id": "L5",
     "kickoff": "2026-06-27",
     "result": null,
     "stage": "group",
@@ -941,7 +941,7 @@
   {
     "city": null,
     "group_id": "L",
-    "id": "L-06",
+    "id": "L6",
     "kickoff": "2026-06-27",
     "result": null,
     "stage": "group",

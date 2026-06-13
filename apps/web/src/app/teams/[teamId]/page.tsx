@@ -8,7 +8,7 @@ export default function TeamDetailPage() {
       <PageHeader
         eyebrow="Team detail"
         title="Team probability profile"
-        description="Latest seeded simulation probabilities for this team."
+        description="A team-level readout of rating, group position, qualification, and tournament upside."
       />
       <TeamDetailDashboard />
     </AppShell>

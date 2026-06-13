@@ -20,7 +20,7 @@ export function TeamSearch({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder="Search teams"
-        className="h-11 w-full rounded-md border border-zinc-300 bg-white pl-10 pr-3 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
+        className="h-11 w-full rounded-md border border-white/10 bg-[#101624] pl-10 pr-3 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-emerald-300/50"
       />
     </label>
   );

@@ -7,8 +7,8 @@ export default function TeamsPage() {
     <AppShell>
       <PageHeader
         eyebrow="Teams"
-        title="Team index"
-        description="Browse teams, ratings, group assignments, and latest simulation probabilities."
+        title="Team dashboards"
+        description="Search, filter by group, and open team profiles with stage-by-stage probability ladders."
       />
       <TeamsDashboard />
     </AppShell>

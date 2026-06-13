@@ -8,6 +8,9 @@ import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
 import { TeamName } from "@/components/teams/TeamName";
 import { TeamProbabilitySummary } from "@/components/teams/TeamProbabilitySummary";
+import { HelpText } from "@/components/ui/HelpText";
+import { SectionCard } from "@/components/ui/SectionCard";
+import { StatCard } from "@/components/ui/StatCard";
 import {
   fetchGroups,
   fetchTeams,
@@ -16,6 +19,7 @@ import {
   SimulationSummary,
   Team,
 } from "@/lib/api";
+import { formatNumber, formatPercent } from "@/lib/format";
 
 type TeamDetailData = {
   groups: Group[];
@@ -90,12 +94,51 @@ export function TeamDetailDashboard() {
     <div className="space-y-5">
       <Link
         href="/teams"
-        className="inline-flex text-sm font-semibold text-emerald-700 transition hover:text-emerald-800"
+        className="inline-flex text-sm font-semibold text-emerald-200 transition hover:text-emerald-100"
       >
         Back to teams
       </Link>
 
-      <section className="rounded-lg border border-zinc-200 bg-white p-5">
+      <section className="rounded-lg border border-white/10 bg-gradient-to-br from-white/[0.12] to-white/[0.04] p-6">
+        <div className="grid gap-6 xl:grid-cols-[1fr_1.2fr] xl:items-end">
+          <div>
+            <p className="text-xs font-semibold uppercase text-emerald-200">
+              Team dashboard
+            </p>
+            <h2 className="mt-2 text-4xl font-semibold text-white">
+              {team.name}
+            </h2>
+            <p className="mt-3 text-sm text-zinc-400">
+              {group?.name ?? team.group_id} · Rating {formatNumber(team.rating)}
+            </p>
+          </div>
+          {probability ? (
+            <div className="grid gap-3 sm:grid-cols-3">
+              <StatCard
+                label="Champion chance"
+                value={formatPercent(probability.champion)}
+                detail="Wins the tournament"
+                tone="green"
+              />
+              <StatCard
+                label="Qualification"
+                value={formatPercent(
+                  probability.group_qualification_probability,
+                )}
+                detail="Reaches knockouts"
+              />
+              <StatCard
+                label="Average points"
+                value={probability.average_points.toFixed(2)}
+                detail="Group stage"
+                tone="amber"
+              />
+            </div>
+          ) : null}
+        </div>
+      </section>
+
+      <SectionCard>
         <TeamName team={team} groupName={group?.name} />
         {probability ? (
           <div className="mt-5">
@@ -106,7 +149,15 @@ export function TeamDetailDashboard() {
             Simulation probabilities unavailable.
           </p>
         )}
-      </section>
+      </SectionCard>
+
+      {probability ? (
+        <HelpText>
+          These chances are not predictions for a single match. They are the
+          share of seeded sample simulations where {team.name} reaches each
+          stage or wins the tournament.
+        </HelpText>
+      ) : null}
     </div>
   );
 }

@@ -1,5 +1,5 @@
-import { ProbabilityBar } from "@/components/dashboard/ProbabilityBar";
-import { formatPercent, TeamProbability } from "@/lib/api";
+import { ProbabilityBar } from "@/components/ui/ProbabilityBar";
+import { TeamProbability } from "@/lib/api";
 
 const stageRows = [
   { label: "Round of 32", key: "round_of_32" },
@@ -19,41 +19,38 @@ export function TeamProbabilitySummary({
   return (
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-2">
-        <div className="rounded-md border border-zinc-100 p-3">
+        <div className="rounded-md border border-white/10 bg-white/[0.035] p-3">
           <span className="text-xs font-medium text-zinc-500">Champion</span>
           <div className="mt-2">
-            <ProbabilityBar value={probability.champion} />
+            <ProbabilityBar value={probability.champion} label="Win title" />
           </div>
         </div>
-        <div className="rounded-md border border-zinc-100 p-3">
+        <div className="rounded-md border border-white/10 bg-white/[0.035] p-3">
           <span className="text-xs font-medium text-zinc-500">
             Group qualification
           </span>
           <div className="mt-2">
             <ProbabilityBar
               value={probability.group_qualification_probability}
+              label="Reach knockouts"
             />
           </div>
         </div>
       </div>
 
       {!compact ? (
-        <div className="rounded-md border border-zinc-100 p-3">
-          <div className="grid gap-3 text-sm md:grid-cols-2">
+        <div className="rounded-md border border-white/10 bg-white/[0.035] p-3">
+          <div className="space-y-3 text-sm">
             {stageRows.map((row) => (
-              <div
+              <ProbabilityBar
                 key={row.key}
-                className="flex items-center justify-between gap-4"
-              >
-                <span className="text-zinc-600">{row.label}</span>
-                <span className="font-semibold text-zinc-950">
-                  {formatPercent(probability[row.key])}
-                </span>
-              </div>
+                value={probability[row.key]}
+                label={row.label}
+              />
             ))}
             <div className="flex items-center justify-between gap-4">
-              <span className="text-zinc-600">Average points</span>
-              <span className="font-semibold text-zinc-950">
+              <span className="text-zinc-400">Average points</span>
+              <span className="font-semibold text-zinc-100">
                 {probability.average_points.toFixed(2)}
               </span>
             </div>

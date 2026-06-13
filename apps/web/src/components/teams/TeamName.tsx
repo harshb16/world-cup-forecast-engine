@@ -13,7 +13,7 @@ export function TeamName({
 }) {
   const content = (
     <>
-      <span className="block font-semibold text-zinc-950">{team.name}</span>
+      <span className="block font-semibold text-white">{team.name}</span>
       <span className="block text-xs text-zinc-500">
         {groupName ?? team.group_id} · Rating {team.rating.toFixed(0)}
       </span>
@@ -22,7 +22,7 @@ export function TeamName({
 
   if (href) {
     return (
-      <Link href={href} className="block transition hover:text-emerald-700">
+      <Link href={href} className="block transition hover:opacity-80">
         {content}
       </Link>
     );

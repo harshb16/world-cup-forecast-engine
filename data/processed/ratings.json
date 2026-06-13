@@ -1,0 +1,434 @@
+[
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 15,
+    "model_rating": 2080,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "MEXICO",
+    "team_name": "Mexico"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 61,
+    "model_rating": 1712,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "RSA",
+    "team_name": "South Africa"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 22,
+    "model_rating": 2024,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "KOR",
+    "team_name": "Korea Republic"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 44,
+    "model_rating": 1848,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "CZECHIA",
+    "team_name": "Czechia"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 64,
+    "model_rating": 1688,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "CANADA",
+    "team_name": "Canada"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 40,
+    "model_rating": 1880,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "QATAR",
+    "team_name": "Qatar"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 76,
+    "model_rating": 1592,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "BIH",
+    "team_name": "Bosnia and Herzegovina"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 16,
+    "model_rating": 2072,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "SWITZERLAND",
+    "team_name": "Switzerland"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 5,
+    "model_rating": 2160,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "BRAZIL",
+    "team_name": "Brazil"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 12,
+    "model_rating": 2104,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "MOROCCO",
+    "team_name": "Morocco"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 90,
+    "model_rating": 1480,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "HAITI",
+    "team_name": "Haiti"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 49,
+    "model_rating": 1808,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "SCOTLAND",
+    "team_name": "Scotland"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 14,
+    "model_rating": 2088,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "USA",
+    "team_name": "United States"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 50,
+    "model_rating": 1800,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "PARAGUAY",
+    "team_name": "Paraguay"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 25,
+    "model_rating": 2000,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "AUSTRALIA",
+    "team_name": "Australia"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 26,
+    "model_rating": 1992,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "TURKIYE",
+    "team_name": "Türkiye"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 9,
+    "model_rating": 2128,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "GERMANY",
+    "team_name": "Germany"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 91,
+    "model_rating": 1472,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "CURACAO",
+    "team_name": "Curaçao"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 55,
+    "model_rating": 1760,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "CIV",
+    "team_name": "Côte d’Ivoire"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 27,
+    "model_rating": 1984,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "ECUADOR",
+    "team_name": "Ecuador"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 7,
+    "model_rating": 2144,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "NETHERLANDS",
+    "team_name": "Netherlands"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 20,
+    "model_rating": 2040,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "JAPAN",
+    "team_name": "Japan"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 30,
+    "model_rating": 1960,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "SWEDEN",
+    "team_name": "Sweden"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 47,
+    "model_rating": 1824,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "TUNISIA",
+    "team_name": "Tunisia"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 8,
+    "model_rating": 2136,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "BELGIUM",
+    "team_name": "Belgium"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 32,
+    "model_rating": 1944,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "EGYPT",
+    "team_name": "Egypt"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 21,
+    "model_rating": 2032,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "IRN",
+    "team_name": "IR Iran"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 89,
+    "model_rating": 1488,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "NEW_ZEALAND",
+    "team_name": "New Zealand"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 1,
+    "model_rating": 2192,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "SPAIN",
+    "team_name": "Spain"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 68,
+    "model_rating": 1656,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "CPV",
+    "team_name": "Cabo Verde"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 60,
+    "model_rating": 1720,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "SAUDI_ARABIA",
+    "team_name": "Saudi Arabia"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 11,
+    "model_rating": 2112,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "URUGUAY",
+    "team_name": "Uruguay"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 3,
+    "model_rating": 2176,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "FRANCE",
+    "team_name": "France"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 19,
+    "model_rating": 2048,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "SENEGAL",
+    "team_name": "Senegal"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 81,
+    "model_rating": 1552,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "IRAQ",
+    "team_name": "Iraq"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 29,
+    "model_rating": 1968,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "NORWAY",
+    "team_name": "Norway"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 2,
+    "model_rating": 2184,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "ARGENTINA",
+    "team_name": "Argentina"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 35,
+    "model_rating": 1920,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "ALGERIA",
+    "team_name": "Algeria"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 17,
+    "model_rating": 2064,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "AUSTRIA",
+    "team_name": "Austria"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 75,
+    "model_rating": 1600,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "JORDAN",
+    "team_name": "Jordan"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 6,
+    "model_rating": 2152,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "PORTUGAL",
+    "team_name": "Portugal"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 80,
+    "model_rating": 1560,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "COD",
+    "team_name": "Congo DR"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 79,
+    "model_rating": 1568,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "UZBEKISTAN",
+    "team_name": "Uzbekistan"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 13,
+    "model_rating": 2096,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "COLOMBIA",
+    "team_name": "Colombia"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 4,
+    "model_rating": 2168,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "ENGLAND",
+    "team_name": "England"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 10,
+    "model_rating": 2120,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "CROATIA",
+    "team_name": "Croatia"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 72,
+    "model_rating": 1624,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "GHANA",
+    "team_name": "Ghana"
+  },
+  {
+    "elo_rating": null,
+    "fifa_points": null,
+    "fifa_rank": 65,
+    "model_rating": 1680,
+    "source": "FIFA/Coca-Cola ranking order from public tournament references; rank-derived model rating",
+    "team_id": "PANAMA",
+    "team_name": "Panama"
+  }
+]

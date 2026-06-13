@@ -1,0 +1,38 @@
+[
+  {
+    "match_id": "A-01",
+    "source": "Reported in indexed match-result sources; verify against FIFA before live operations",
+    "status": "finished",
+    "team_a_goals": 2,
+    "team_a_id": "MEXICO",
+    "team_b_goals": 0,
+    "team_b_id": "RSA"
+  },
+  {
+    "match_id": "A-02",
+    "source": "Reported in indexed match-result sources; verify against FIFA before live operations",
+    "status": "finished",
+    "team_a_goals": 2,
+    "team_a_id": "KOR",
+    "team_b_goals": 1,
+    "team_b_id": "CZECHIA"
+  },
+  {
+    "match_id": "B-01",
+    "source": "Reported in indexed match-result sources; verify against FIFA before live operations",
+    "status": "finished",
+    "team_a_goals": 1,
+    "team_a_id": "CANADA",
+    "team_b_goals": 1,
+    "team_b_id": "QATAR"
+  },
+  {
+    "match_id": "D-01",
+    "source": "Reported in indexed match-result sources; verify against FIFA before live operations",
+    "status": "finished",
+    "team_a_goals": 4,
+    "team_a_id": "USA",
+    "team_b_goals": 1,
+    "team_b_id": "PARAGUAY"
+  }
+]

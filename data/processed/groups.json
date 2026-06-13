@@ -1,0 +1,122 @@
+[
+  {
+    "id": "A",
+    "name": "Group A",
+    "team_ids": [
+      "MEXICO",
+      "RSA",
+      "KOR",
+      "CZECHIA"
+    ]
+  },
+  {
+    "id": "B",
+    "name": "Group B",
+    "team_ids": [
+      "CANADA",
+      "QATAR",
+      "BIH",
+      "SWITZERLAND"
+    ]
+  },
+  {
+    "id": "C",
+    "name": "Group C",
+    "team_ids": [
+      "BRAZIL",
+      "MOROCCO",
+      "HAITI",
+      "SCOTLAND"
+    ]
+  },
+  {
+    "id": "D",
+    "name": "Group D",
+    "team_ids": [
+      "USA",
+      "PARAGUAY",
+      "AUSTRALIA",
+      "TURKIYE"
+    ]
+  },
+  {
+    "id": "E",
+    "name": "Group E",
+    "team_ids": [
+      "GERMANY",
+      "CURACAO",
+      "CIV",
+      "ECUADOR"
+    ]
+  },
+  {
+    "id": "F",
+    "name": "Group F",
+    "team_ids": [
+      "NETHERLANDS",
+      "JAPAN",
+      "SWEDEN",
+      "TUNISIA"
+    ]
+  },
+  {
+    "id": "G",
+    "name": "Group G",
+    "team_ids": [
+      "BELGIUM",
+      "EGYPT",
+      "IRN",
+      "NEW_ZEALAND"
+    ]
+  },
+  {
+    "id": "H",
+    "name": "Group H",
+    "team_ids": [
+      "SPAIN",
+      "CPV",
+      "SAUDI_ARABIA",
+      "URUGUAY"
+    ]
+  },
+  {
+    "id": "I",
+    "name": "Group I",
+    "team_ids": [
+      "FRANCE",
+      "SENEGAL",
+      "IRAQ",
+      "NORWAY"
+    ]
+  },
+  {
+    "id": "J",
+    "name": "Group J",
+    "team_ids": [
+      "ARGENTINA",
+      "ALGERIA",
+      "AUSTRIA",
+      "JORDAN"
+    ]
+  },
+  {
+    "id": "K",
+    "name": "Group K",
+    "team_ids": [
+      "PORTUGAL",
+      "COD",
+      "UZBEKISTAN",
+      "COLOMBIA"
+    ]
+  },
+  {
+    "id": "L",
+    "name": "Group L",
+    "team_ids": [
+      "ENGLAND",
+      "CROATIA",
+      "GHANA",
+      "PANAMA"
+    ]
+  }
+]

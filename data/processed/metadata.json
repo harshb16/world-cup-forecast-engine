@@ -1,0 +1,26 @@
+{
+  "bracket_status": "group-stage real data; knockout bracket mapping remains placeholder for simulation seeding",
+  "data_mode": "processed",
+  "data_version": "2026-worldcup-processed-2026-06-13",
+  "is_real_data": true,
+  "last_updated": "2026-06-13T06:25:00+00:00",
+  "rating_source": "FIFA ranking rank-derived model rating",
+  "ratings_are_official": false,
+  "sources": [
+    {
+      "name": "FIFA World Cup 26 scores and fixtures",
+      "url": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
+      "usage": "Primary intended source for tournament fixtures/results; automated fetch script provided."
+    },
+    {
+      "name": "FIFA/Coca-Cola Men’s World Ranking",
+      "url": "https://inside.fifa.com/fifa-world-ranking/men",
+      "usage": "Ranking reference for rank-derived model ratings."
+    },
+    {
+      "name": "Public indexed schedule/group references",
+      "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup",
+      "usage": "Fallback normalization aid when official dynamic pages are unavailable to automation."
+    }
+  ]
+}

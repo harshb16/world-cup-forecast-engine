@@ -1,0 +1,26 @@
+# World Cup Data Ingestion
+
+These scripts acquire or ingest World Cup 2026 data and write normalized files
+to `data/processed`.
+
+## Sources
+
+- FIFA World Cup 26 scores and fixtures: `https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures`
+- FIFA/Coca-Cola Men's World Ranking: `https://inside.fifa.com/fifa-world-ranking/men`
+- World Football Elo Ratings: `https://www.eloratings.net/`
+
+## Commands
+
+```bash
+python scripts/ingest/fetch_worldcup_fifa.py
+python scripts/ingest/fetch_fifa_rankings.py
+python scripts/ingest/fetch_elo_ratings.py
+python scripts/ingest/validate_processed_data.py
+```
+
+If a source blocks automated access, save a manually downloaded normalized file
+under `data/raw/fifa/` or `data/raw/ratings/` and rerun the relevant script with
+`--raw-file`.
+
+Runtime code never fetches the internet. The backend reads checked-in processed
+JSON files.

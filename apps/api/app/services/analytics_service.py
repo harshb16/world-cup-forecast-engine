@@ -7,6 +7,7 @@ from pathlib import Path
 
 import numpy as np
 
+from app.core.config import DEFAULT_MODEL_TYPE
 from app.models.schemas import (
     BracketSimulateRequest,
     GroupChaosResponse,
@@ -51,7 +52,7 @@ RISK_LABELS = (
 
 def calculate_upset_radar(
     data_mode: str,
-    model_type: ModelType = "oracle_v2",
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
     limit: int = 12,
 ) -> UpsetRadarResponse:
     """Rank fixtures by upset risk using advance probability gaps."""
@@ -156,7 +157,7 @@ def calculate_upset_radar(
 
 def calculate_group_chaos(
     data_mode: str,
-    model_type: ModelType = "oracle_v2",
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
     n_simulations: int = 500,
     seed: int = 42,
 ) -> GroupChaosResponse:
@@ -224,10 +225,17 @@ def calculate_model_comparison(
     data_mode: str,
     n_simulations: int = 300,
     seed: int = 42,
-    baseline_model: ModelType = "oracle_v2",
+    baseline_model: ModelType = DEFAULT_MODEL_TYPE,
 ) -> ModelComparisonResponse:
     """Compare champion and top-four probabilities across model types."""
-    model_types: list[ModelType] = ["elo", "poisson", "calibrated_elo", "oracle_v2"]
+    model_types: list[ModelType] = [
+        "elo",
+        "poisson",
+        "calibrated_elo",
+        "oracle_v2",
+        "dixon_coles",
+        "oracle_v3",
+    ]
     summaries = {
         model_type: run_simulation(
             SimulateRequest(

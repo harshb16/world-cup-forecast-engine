@@ -10,6 +10,8 @@ export type ModelType =
   | "gbm"
   | "oracle_v3";
 
+export const DEFAULT_MODEL_TYPE: ModelType = "oracle_v3";
+
 export type SimulationRequest = {
   n_simulations: number;
   model_type: ModelType;
@@ -412,7 +414,7 @@ export async function fetchModelMetadata(): Promise<ModelMetadata[]> {
 }
 
 export async function fetchBacktestingMetrics(
-  modelType: ModelType = "oracle_v2",
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
 ): Promise<BacktestingMetrics> {
   return fetchJson<BacktestingMetrics>(`/backtesting?model_type=${modelType}`);
 }
@@ -423,7 +425,7 @@ export async function fetchTeamPath(teamId: string): Promise<TeamPath> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       team_id: teamId,
-      model_type: "oracle_v2",
+      model_type: DEFAULT_MODEL_TYPE,
       n_simulations: 500,
       seed: 42,
     }),
@@ -437,7 +439,7 @@ export async function fetchTeamPath(teamId: string): Promise<TeamPath> {
 }
 
 export async function fetchUpsetRadar(
-  modelType: ModelType = "oracle_v2",
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
   limit = 8,
 ): Promise<UpsetRadar> {
   return fetchJson<UpsetRadar>(
@@ -446,7 +448,7 @@ export async function fetchUpsetRadar(
 }
 
 export async function fetchGroupChaos(
-  modelType: ModelType = "oracle_v2",
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
   nSimulations = 500,
   seed = 42,
 ): Promise<GroupChaosReport> {
@@ -458,7 +460,7 @@ export async function fetchGroupChaos(
 export async function fetchModelComparison(
   nSimulations = 300,
   seed = 42,
-  baselineModel: ModelType = "oracle_v2",
+  baselineModel: ModelType = DEFAULT_MODEL_TYPE,
 ): Promise<ModelComparison> {
   return fetchJson<ModelComparison>(
     `/analytics/model-comparison?n_simulations=${nSimulations}&seed=${seed}&baseline_model=${baselineModel}`,
@@ -482,13 +484,13 @@ export async function fetchProbabilityMovers(
 }
 
 export async function fetchMatchday(
-  modelType: ModelType = "oracle_v2",
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
 ): Promise<MatchdayData> {
   return fetchJson<MatchdayData>(`/matchday?model_type=${modelType}`);
 }
 
 export async function fetchThirdPlaceTracker(
-  modelType: ModelType = "oracle_v2",
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
   nSimulations = 500,
   seed = 42,
 ): Promise<ThirdPlaceTracker> {
@@ -500,7 +502,7 @@ export async function fetchThirdPlaceTracker(
 export async function fetchHeadToHead(
   teamAId: string,
   teamBId: string,
-  modelType: ModelType = "oracle_v2",
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
 ): Promise<HeadToHead> {
   return fetchJson<HeadToHead>(
     `/team-path/head-to-head?team_a=${teamAId}&team_b=${teamBId}&model_type=${modelType}`,

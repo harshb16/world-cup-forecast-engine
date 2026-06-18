@@ -103,11 +103,16 @@ def _current_matchday() -> int:
 def _append_probability_snapshot(timestamp: str) -> None:
     """Append champion probabilities after a successful sync."""
     try:
+        from app.core.config import DEFAULT_MODEL_TYPE
         from app.models.schemas import SimulateRequest
         from app.services.simulation_service import run_simulation
 
         summary = run_simulation(
-            SimulateRequest(n_simulations=500, model_type="oracle_v2", seed=42),
+            SimulateRequest(
+                n_simulations=500,
+                model_type=DEFAULT_MODEL_TYPE,
+                seed=42,
+            ),
             "processed",
         )
         history_path = PROCESSED_DIR / "probability_history.json"

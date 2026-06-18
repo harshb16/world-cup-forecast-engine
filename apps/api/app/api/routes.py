@@ -4,7 +4,7 @@ import json
 
 from fastapi import APIRouter, HTTPException
 
-from app.core.config import get_data_mode
+from app.core.config import DEFAULT_MODEL_TYPE, get_data_mode
 from app.models.domain import Group, Match, Team
 from app.models.schemas import (
     BacktestingResponse,
@@ -98,7 +98,7 @@ def models() -> list[ModelMetadataResponse]:
 
 @router.get("/backtesting", response_model=BacktestingResponse)
 def backtesting(
-    model_type: ModelType = "oracle_v2",
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
 ) -> BacktestingResponse:
     """Return baseline backtesting metrics for completed fixtures."""
     return calculate_backtesting_metrics(model_type, get_data_mode())
@@ -132,7 +132,7 @@ def team_path(request: TeamPathRequest) -> TeamPathResponse:
 def team_path_head_to_head(
     team_a: str,
     team_b: str,
-    model_type: ModelType = "oracle_v2",
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
     n_simulations: int = 500,
     seed: int = 42,
 ) -> HeadToHeadResponse:
@@ -164,7 +164,7 @@ def scenario_compare(request: ScenarioSimulateRequest) -> ScenarioCompareRespons
 
 @router.get("/analytics/upsets", response_model=UpsetRadarResponse)
 def upset_radar(
-    model_type: ModelType = "oracle_v2",
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
     limit: int = 12,
 ) -> UpsetRadarResponse:
     """Return ranked upset-risk fixtures for the active tournament."""
@@ -173,7 +173,7 @@ def upset_radar(
 
 @router.get("/analytics/group-chaos", response_model=GroupChaosResponse)
 def group_chaos(
-    model_type: ModelType = "oracle_v2",
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
     n_simulations: int = 500,
     seed: int = 42,
 ) -> GroupChaosResponse:
@@ -190,7 +190,7 @@ def group_chaos(
 def model_comparison(
     n_simulations: int = 300,
     seed: int = 42,
-    baseline_model: ModelType = "oracle_v2",
+    baseline_model: ModelType = DEFAULT_MODEL_TYPE,
 ) -> ModelComparisonResponse:
     """Compare champion probabilities across supported models."""
     return calculate_model_comparison(
@@ -221,7 +221,7 @@ def probability_movers(limit: int = 8) -> ProbabilityMoversResponse:
 
 @router.get("/analytics/third-place", response_model=ThirdPlaceTrackerResponse)
 def third_place_tracker(
-    model_type: ModelType = "oracle_v2",
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
     n_simulations: int = 500,
     seed: int = 42,
 ) -> ThirdPlaceTrackerResponse:
@@ -237,7 +237,7 @@ def data_quality() -> DataQualityResponse:
 
 
 @router.get("/matchday", response_model=MatchdayResponse)
-def matchday(model_type: ModelType = "oracle_v2") -> MatchdayResponse:
+def matchday(model_type: ModelType = DEFAULT_MODEL_TYPE) -> MatchdayResponse:
     return calculate_matchday(get_data_mode(), model_type)
 
 

@@ -16,6 +16,7 @@ import { HelpText } from "@/components/ui/HelpText";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { StatCard } from "@/components/ui/StatCard";
 import {
+  DEFAULT_MODEL_TYPE,
   fetchGroupChaos,
   fetchProbabilityMovers,
   fetchUpsetRadar,
@@ -40,11 +41,11 @@ export function HomeDashboard() {
     Promise.all([
       simulateTournament({
         n_simulations: 1000,
-        model_type: "oracle_v2",
+        model_type: DEFAULT_MODEL_TYPE,
         seed: 42,
       }),
-      fetchUpsetRadar("oracle_v2", 6),
-      fetchGroupChaos("oracle_v2", 500, 42),
+      fetchUpsetRadar(DEFAULT_MODEL_TYPE, 6),
+      fetchGroupChaos(DEFAULT_MODEL_TYPE, 500, 42),
       fetchProbabilityMovers(8),
     ])
       .then(([simulation, upsetRadar, chaos, probabilityMovers]) => {

@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 
 from app.core.config import get_data_mode
 from app.main import app
-from app.services.data_loader import load_tournament
+from app.services.data_loader import load_metadata, load_tournament
 
 
 client = TestClient(app)
@@ -52,13 +52,14 @@ def test_metadata_returns_real_data_status(monkeypatch) -> None:  # type: ignore
 
     assert response.status_code == 200
     metadata = response.json()
+    expected = load_metadata("processed")
     assert metadata["data_mode"] == "processed"
     assert metadata["is_real_data"] is True
-    assert metadata["team_count"] == 48
-    assert metadata["group_count"] == 12
-    assert metadata["fixture_count"] == 72
-    assert metadata["completed_result_count"] == 4
-    assert metadata["rating_coverage_count"] == 48
+    assert metadata["team_count"] == expected["team_count"]
+    assert metadata["group_count"] == expected["group_count"]
+    assert metadata["fixture_count"] == expected["fixture_count"]
+    assert metadata["completed_result_count"] == expected["completed_result_count"]
+    assert metadata["rating_coverage_count"] == expected["rating_coverage_count"]
     assert metadata["data_quality_notes"]
     assert metadata["model_limitations"]
 

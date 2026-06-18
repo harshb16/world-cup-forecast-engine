@@ -2,6 +2,7 @@
 
 import numpy as np
 
+from app.core.config import DEFAULT_MODEL_TYPE
 from app.models.schemas import HeadToHeadResponse
 from app.services.data_loader import load_tournament
 from app.services.simulation_service import create_match_model
@@ -13,7 +14,7 @@ def calculate_head_to_head(
     team_a_id: str,
     team_b_id: str,
     data_mode: str,
-    model_type: str = "oracle_v2",
+    model_type: str = DEFAULT_MODEL_TYPE,
     n_simulations: int = 500,
     seed: int = 42,
 ) -> HeadToHeadResponse:

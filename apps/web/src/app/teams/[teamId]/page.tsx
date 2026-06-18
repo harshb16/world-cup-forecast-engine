@@ -22,7 +22,7 @@ export async function generateMetadata({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           n_simulations: 500,
-          model_type: "oracle_v2",
+          model_type: "oracle_v3",
           seed: 42,
         }),
         next: { revalidate: 300 },

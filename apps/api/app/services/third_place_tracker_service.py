@@ -4,6 +4,7 @@ from collections import Counter
 
 import numpy as np
 
+from app.core.config import DEFAULT_MODEL_TYPE
 from app.models.schemas import (
     ModelType,
     ThirdPlaceSlotDistributionResponse,
@@ -19,7 +20,7 @@ from app.simulation.knockout import WorldCup2026BracketBuilder
 
 def calculate_third_place_tracker(
     data_mode: str,
-    model_type: ModelType = "oracle_v2",
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
     n_simulations: int = 500,
     seed: int = 42,
 ) -> ThirdPlaceTrackerResponse:

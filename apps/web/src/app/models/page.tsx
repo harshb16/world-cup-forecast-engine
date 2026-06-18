@@ -17,6 +17,7 @@ import {
   fetchModelComparison,
   fetchModelMetadata,
   fetchTeams,
+  DEFAULT_MODEL_TYPE,
   BacktestingMetrics,
   DataQualityReport,
   ModelComparison,
@@ -34,7 +35,7 @@ export default function ModelsPage() {
   const [teamNames, setTeamNames] = useState<Record<string, string>>({});
   const [loadingComparison, setLoadingComparison] = useState(false);
   const [comparisonError, setComparisonError] = useState<string | null>(null);
-  const [calibrationModel, setCalibrationModel] = useState<ModelType>("oracle_v2");
+  const [calibrationModel, setCalibrationModel] = useState<ModelType>(DEFAULT_MODEL_TYPE);
   const [calibration, setCalibration] = useState<BacktestingMetrics | null>(null);
   const [calibrationError, setCalibrationError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -95,7 +96,7 @@ export default function ModelsPage() {
     setComparisonError(null);
 
     try {
-      const comparisonData = await fetchModelComparison(200, 42, "oracle_v2");
+      const comparisonData = await fetchModelComparison(200, 42, DEFAULT_MODEL_TYPE);
       setComparison(comparisonData);
     } catch (caughtError: unknown) {
       setComparisonError(
@@ -112,8 +113,8 @@ export default function ModelsPage() {
     <AppShell>
       <PageHeader
         eyebrow="Models"
-        title="Transparent baselines before ML"
-        description="Current simulations use honest statistical baselines. Machine learning comes after data coverage and evaluation are strong enough."
+        title="Model desk and calibration"
+        description="Statistical baselines, Dixon-Coles, GBM, and Oracle v3 ensemble — with backtesting on completed fixtures."
       />
 
       {error ? <ErrorState message={error} /> : null}
@@ -127,8 +128,8 @@ export default function ModelsPage() {
             <SummaryCard
               icon={Target}
               label="Default model"
-              value={formatModelLabel("oracle_v2")}
-              detail="Squad-aware calibrated baseline for all pages"
+              value={formatModelLabel(DEFAULT_MODEL_TYPE)}
+              detail="Dixon-Coles + Oracle v2 + GBM ensemble for all pages"
             />
             <SummaryCard
               icon={BarChart3}
@@ -139,8 +140,8 @@ export default function ModelsPage() {
             <SummaryCard
               icon={BrainCircuit}
               label="ML status"
-              value="Deferred"
-              detail="Planned after validation and backtesting"
+              value="GBM + Oracle v3"
+              detail="Gradient boosting and ensemble models available for comparison"
             />
           </section>
 

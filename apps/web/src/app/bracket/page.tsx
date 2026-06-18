@@ -18,6 +18,7 @@ import { PageHeader } from "@/components/PageHeader";
 import {
   BracketMatch,
   BracketSimulation,
+  DEFAULT_MODEL_TYPE,
   simulateBracket,
 } from "@/lib/api";
 import { formatNumber, formatPercent } from "@/lib/format";
@@ -46,7 +47,7 @@ export default function BracketPage() {
     let isActive = true;
 
     simulateBracket({
-      model_type: "oracle_v2",
+      model_type: DEFAULT_MODEL_TYPE,
       simulation_mode: simulationMode,
       seed,
     })

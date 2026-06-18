@@ -436,3 +436,11 @@ class OracleV3Model:
         team_b_goals = max(1, int(rng.poisson(team_b_expected)))
         team_a_goals = max(0, min(team_b_goals - 1, int(rng.poisson(team_a_expected))))
         return MatchResult(team_a_goals=team_a_goals, team_b_goals=team_b_goals)
+
+    def expected_goals(
+        self,
+        team_a: Team,
+        team_b: Team,
+        stage: str | None = None,
+    ) -> tuple[float, float]:
+        return self.oracle_v2.expected_goals(team_a, team_b, stage=stage)

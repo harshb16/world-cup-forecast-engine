@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from app.core.config import DEFAULT_MODEL_TYPE
 from app.models.domain import Group, Match, Team
 from app.models.schemas import (
     MatchdayFixtureResponse,
@@ -24,7 +25,7 @@ _MAX_SCORELINE = 6
 
 def calculate_matchday(
     data_mode: str,
-    model_type: ModelType = "oracle_v2",
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
 ) -> MatchdayResponse:
     """Return today's fixtures with model probabilities and real group standings."""
     config = load_tournament(data_mode)

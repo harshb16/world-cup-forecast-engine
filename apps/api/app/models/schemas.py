@@ -4,6 +4,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from app.core.config import DEFAULT_MODEL_TYPE
+
 ModelType = Literal[
     "elo",
     "poisson",
@@ -25,7 +27,7 @@ class SimulateRequest(BaseModel):
     """Request body for running a sample tournament simulation."""
 
     n_simulations: int = Field(default=1000, ge=1, le=10_000)
-    model_type: ModelType = "oracle_v2"
+    model_type: ModelType = DEFAULT_MODEL_TYPE
     seed: int | None = None
 
 
@@ -46,7 +48,7 @@ class ScenarioSimulateRequest(SimulateRequest):
 class BracketSimulateRequest(BaseModel):
     """Request body for simulating one revealable tournament bracket."""
 
-    model_type: ModelType = "oracle_v2"
+    model_type: ModelType = DEFAULT_MODEL_TYPE
     simulation_mode: Literal["favorite", "random"] = "favorite"
     seed: int | None = None
     result_overrides: list[MatchResultOverride] = Field(default_factory=list)
@@ -56,7 +58,7 @@ class TeamPathRequest(BaseModel):
     """Request body for exploring a team's likely knockout path."""
 
     team_id: str = Field(min_length=1)
-    model_type: ModelType = "oracle_v2"
+    model_type: ModelType = DEFAULT_MODEL_TYPE
     n_simulations: int = Field(default=500, ge=1, le=5_000)
     seed: int | None = None
 

@@ -1,38 +1,202 @@
 [
   {
     "match_id": "A1",
-    "source": "Reported in indexed match-result sources; verify against FIFA before live operations",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
     "status": "finished",
     "team_a_goals": 2,
     "team_a_id": "MEXICO",
-    "team_b_goals": 0,
-    "team_b_id": "RSA"
+    "team_b_goals": 0
   },
   {
     "match_id": "A2",
-    "source": "Reported in indexed match-result sources; verify against FIFA before live operations",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
     "status": "finished",
     "team_a_goals": 2,
     "team_a_id": "KOR",
-    "team_b_goals": 1,
-    "team_b_id": "CZECHIA"
+    "team_b_goals": 1
   },
   {
-    "match_id": "B1",
-    "source": "Reported in indexed match-result sources; verify against FIFA before live operations",
+    "match_id": "A4",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 1,
+    "team_a_id": "CZECHIA",
+    "team_b_goals": 1
+  },
+  {
+    "match_id": "B3",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
     "status": "finished",
     "team_a_goals": 1,
     "team_a_id": "CANADA",
-    "team_b_goals": 1,
-    "team_b_id": "QATAR"
+    "team_b_goals": 1
+  },
+  {
+    "match_id": "B4",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 1,
+    "team_a_id": "SWITZERLAND",
+    "team_b_goals": 1
+  },
+  {
+    "match_id": "C1",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 1,
+    "team_a_id": "BRAZIL",
+    "team_b_goals": 1
+  },
+  {
+    "match_id": "C2",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 0,
+    "team_a_id": "HAITI",
+    "team_b_goals": 1
   },
   {
     "match_id": "D1",
-    "source": "Reported in indexed match-result sources; verify against FIFA before live operations",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
     "status": "finished",
     "team_a_goals": 4,
     "team_a_id": "USA",
-    "team_b_goals": 1,
-    "team_b_id": "PARAGUAY"
+    "team_b_goals": 1
+  },
+  {
+    "match_id": "D2",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 2,
+    "team_a_id": "AUSTRALIA",
+    "team_b_goals": 0
+  },
+  {
+    "match_id": "E1",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 7,
+    "team_a_id": "GERMANY",
+    "team_b_goals": 1
+  },
+  {
+    "match_id": "E2",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 1,
+    "team_a_id": "CIV",
+    "team_b_goals": 0
+  },
+  {
+    "match_id": "F1",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 2,
+    "team_a_id": "NETHERLANDS",
+    "team_b_goals": 2
+  },
+  {
+    "match_id": "F2",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 5,
+    "team_a_id": "SWEDEN",
+    "team_b_goals": 1
+  },
+  {
+    "match_id": "G1",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 1,
+    "team_a_id": "BELGIUM",
+    "team_b_goals": 1
+  },
+  {
+    "match_id": "G2",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 2,
+    "team_a_id": "IRN",
+    "team_b_goals": 2
+  },
+  {
+    "match_id": "H1",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 0,
+    "team_a_id": "SPAIN",
+    "team_b_goals": 0
+  },
+  {
+    "match_id": "H2",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 1,
+    "team_a_id": "SAUDI_ARABIA",
+    "team_b_goals": 1
+  },
+  {
+    "match_id": "I1",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 3,
+    "team_a_id": "FRANCE",
+    "team_b_goals": 1
+  },
+  {
+    "match_id": "I2",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 1,
+    "team_a_id": "IRAQ",
+    "team_b_goals": 4
+  },
+  {
+    "match_id": "J1",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 3,
+    "team_a_id": "ARGENTINA",
+    "team_b_goals": 0
+  },
+  {
+    "match_id": "J2",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 3,
+    "team_a_id": "AUSTRIA",
+    "team_b_goals": 1
+  },
+  {
+    "match_id": "K1",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 1,
+    "team_a_id": "PORTUGAL",
+    "team_b_goals": 1
+  },
+  {
+    "match_id": "K2",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 1,
+    "team_a_id": "UZBEKISTAN",
+    "team_b_goals": 3
+  },
+  {
+    "match_id": "L1",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 4,
+    "team_a_id": "ENGLAND",
+    "team_b_goals": 2
+  },
+  {
+    "match_id": "L2",
+    "source": "FIFA API v3 calendar/matches (idSeason=285023)",
+    "status": "finished",
+    "team_a_goals": 1,
+    "team_a_id": "GHANA",
+    "team_b_goals": 0
   }
 ]

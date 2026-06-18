@@ -1,5 +1,5 @@
 {
-  "data_version": "open-elo-2026-06-18T17:02:00+00:00",
+  "data_version": "open-elo-2026-06-18T18:08:33+00:00",
   "method": {
     "base_rating": 1500.0,
     "goal_margin_adjustment": "sqrt(goal_margin)",

@@ -50,6 +50,7 @@ def run_data_sync() -> SyncResponse:
     if not errors:
         _refresh_metadata_timestamp(sync_timestamp)
         _refresh_data_quality_report()
+        _append_probability_snapshot(sync_timestamp)
 
     metadata_path = PROCESSED_DIR / "metadata.json"
     last_updated = sync_timestamp
@@ -84,3 +85,45 @@ def _refresh_data_quality_report() -> None:
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
+
+
+def _current_matchday() -> int:
+    fixtures_path = PROCESSED_DIR / "fixtures.json"
+    if not fixtures_path.exists():
+        return 1
+    fixtures = json.loads(fixtures_path.read_text(encoding="utf-8"))
+    played = sum(
+        1
+        for fixture in fixtures
+        if fixture.get("result", {}).get("played")
+    )
+    return max(1, (played // 24) + 1)
+
+
+def _append_probability_snapshot(timestamp: str) -> None:
+    """Append champion probabilities after a successful sync."""
+    try:
+        from app.models.schemas import SimulateRequest
+        from app.services.simulation_service import run_simulation
+
+        summary = run_simulation(
+            SimulateRequest(n_simulations=500, model_type="oracle_v2", seed=42),
+            "processed",
+        )
+        history_path = PROCESSED_DIR / "probability_history.json"
+        history: list[dict] = []
+        if history_path.exists():
+            history = json.loads(history_path.read_text(encoding="utf-8"))
+        history.append(
+            {
+                "timestamp": timestamp,
+                "matchday": _current_matchday(),
+                "champion_probabilities": summary.champion_probabilities,
+            }
+        )
+        history_path.write_text(
+            json.dumps(history, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+    except Exception:
+        return

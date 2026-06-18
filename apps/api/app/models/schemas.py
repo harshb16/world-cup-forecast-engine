@@ -137,6 +137,23 @@ class ModelMetadataResponse(BaseModel):
     supported_outputs: list[str] = Field(default_factory=list)
 
 
+class CalibrationBinResponse(BaseModel):
+    """One probability bucket for predicted vs actual outcome frequency."""
+
+    predicted_midpoint: float
+    actual_frequency: float
+    count: int
+
+
+class BacktestingMatchDetailResponse(BaseModel):
+    """Per-match backtesting detail row."""
+
+    match_id: str
+    predicted_outcome: str
+    actual_outcome: str
+    confidence: float
+
+
 class BacktestingResponse(BaseModel):
     """Baseline evaluation metrics for completed fixtures."""
 
@@ -146,6 +163,8 @@ class BacktestingResponse(BaseModel):
     accuracy: float | None = None
     brier_score: float | None = None
     log_loss: float | None = None
+    calibration_bins: list[CalibrationBinResponse] = Field(default_factory=list)
+    per_match_details: list[BacktestingMatchDetailResponse] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
 
 

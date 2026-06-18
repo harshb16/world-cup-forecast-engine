@@ -7,6 +7,7 @@ import { LoadingState } from "@/components/LoadingState";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { fetchThirdPlaceTracker, ThirdPlaceTracker as ThirdPlaceData } from "@/lib/api";
 import { formatPercent } from "@/lib/format";
+import { THIRD_PLACE_QUALIFIER_COUNT, GROUP_WINNERS_AND_RUNNERS_UP } from "@/lib/tournament";
 
 export function ThirdPlaceTrackerPanel() {
   const [data, setData] = useState<ThirdPlaceData | null>(null);
@@ -14,7 +15,7 @@ export function ThirdPlaceTrackerPanel() {
 
   useEffect(() => {
     let isActive = true;
-    fetchThirdPlaceTracker("oracle_v2", 500, 42)
+    fetchThirdPlaceTracker(undefined, 500, 42)
       .then((tracker) => {
         if (isActive) {
           setData(tracker);
@@ -51,7 +52,9 @@ export function ThirdPlaceTrackerPanel() {
         Best third-place bubble
       </h2>
       <p className="mt-1 text-sm text-zinc-400">
-        Top four third-place teams qualify for the Round of 32.
+        The best {THIRD_PLACE_QUALIFIER_COUNT} third-place teams join the{" "}
+        {GROUP_WINNERS_AND_RUNNERS_UP} group winners and runners-up in the Round
+        of 32.
       </p>
 
       <div className="mt-5 overflow-x-auto">
@@ -68,9 +71,9 @@ export function ThirdPlaceTrackerPanel() {
           <tbody>
             {data.teams.map((team, index) => {
               const inBubble =
-                team.qualification_probability >= 0.4 &&
-                team.qualification_probability <= 0.65;
-              const likelyQualifier = index < 4;
+                index >= THIRD_PLACE_QUALIFIER_COUNT - 3 &&
+                index <= THIRD_PLACE_QUALIFIER_COUNT + 2;
+              const likelyQualifier = index < THIRD_PLACE_QUALIFIER_COUNT;
               return (
                 <tr
                   key={team.team_id}
@@ -83,7 +86,12 @@ export function ThirdPlaceTrackerPanel() {
                   </td>
                   <td className="py-3 pr-4 font-semibold text-zinc-100">
                     {team.team_name}
-                    {inBubble ? (
+                    {likelyQualifier ? (
+                      <span className="ml-2 rounded border border-emerald-400/30 bg-emerald-400/10 px-1.5 py-0.5 text-[0.65rem] uppercase text-emerald-200">
+                        Likely
+                      </span>
+                    ) : null}
+                    {inBubble && !likelyQualifier ? (
                       <span className="ml-2 rounded border border-amber-400/30 bg-amber-400/10 px-1.5 py-0.5 text-[0.65rem] uppercase text-amber-200">
                         Bubble
                       </span>

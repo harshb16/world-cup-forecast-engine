@@ -8,7 +8,9 @@ import { LoadingState } from "@/components/LoadingState";
 import { DataStatusCard } from "@/components/DataStatusCard";
 import { GroupProbabilityCard } from "@/components/groups/GroupProbabilityCard";
 import { HelpText } from "@/components/ui/HelpText";
+import { THIRD_PLACE_QUALIFIER_COUNT } from "@/lib/tournament";
 import {
+  DEFAULT_MODEL_TYPE,
   fetchGroupChaos,
   fetchGroups,
   fetchMetadata,
@@ -42,10 +44,10 @@ export function GroupsDashboard() {
       fetchMetadata(),
       simulateTournament({
         n_simulations: 1000,
-        model_type: "oracle_v2",
+        model_type: DEFAULT_MODEL_TYPE,
         seed: 42,
       }),
-      fetchGroupChaos("oracle_v2", 500, 42),
+      fetchGroupChaos(DEFAULT_MODEL_TYPE, 500, 42),
     ])
       .then(([groups, teams, metadata, simulation, chaos]) => {
         if (isActive) {
@@ -93,7 +95,8 @@ export function GroupsDashboard() {
     <div className="space-y-5">
       <HelpText>
         Qualification probability combines finishing top two with the chance of
-        advancing as one of the best third-place teams.
+        advancing as one of the best {THIRD_PLACE_QUALIFIER_COUNT} third-place
+        teams.
       </HelpText>
       <DataStatusCard metadata={data.metadata} />
       <div className="grid gap-5 xl:grid-cols-2">

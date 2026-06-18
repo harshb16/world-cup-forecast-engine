@@ -18,6 +18,7 @@ from app.services.data_loader import (
     load_tournament,
 )
 from app.simulation.match_models import (
+    DixonColesModel,
     EloWinDrawLossModel,
     MatchModel,
     OracleV2Model,
@@ -41,6 +42,8 @@ def create_match_model(model_type: str, data_mode: str = "processed") -> MatchMo
         )
     if model_type == "poisson":
         return PoissonScoreModel()
+    if model_type == "dixon_coles":
+        return DixonColesModel()
     if model_type == "oracle_v2":
         parameters = load_model_parameters(data_mode)
         return OracleV2Model(

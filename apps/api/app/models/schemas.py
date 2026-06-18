@@ -4,7 +4,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-ModelType = Literal["elo", "poisson", "calibrated_elo", "oracle_v2"]
+ModelType = Literal["elo", "poisson", "calibrated_elo", "oracle_v2", "dixon_coles"]
 
 
 class HealthResponse(BaseModel):
@@ -129,6 +129,23 @@ class ModelMetadataResponse(BaseModel):
     supported_outputs: list[str] = Field(default_factory=list)
 
 
+class CalibrationBinResponse(BaseModel):
+    """One calibration bucket for predicted vs actual outcome frequency."""
+
+    predicted_midpoint: float
+    actual_frequency: float
+    count: int
+
+
+class BacktestingMatchDetailResponse(BaseModel):
+    """Per-match backtesting detail row."""
+
+    match_id: str
+    predicted_outcome: str
+    actual_outcome: str
+    confidence: float
+
+
 class BacktestingResponse(BaseModel):
     """Baseline evaluation metrics for completed fixtures."""
 
@@ -138,7 +155,13 @@ class BacktestingResponse(BaseModel):
     accuracy: float | None = None
     brier_score: float | None = None
     log_loss: float | None = None
+    calibration_bins: list[CalibrationBinResponse] = Field(default_factory=list)
+    per_match_details: list[BacktestingMatchDetailResponse] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
+    calibration_bins: list[dict[str, float]] = Field(default_factory=list)
+    # Each bin: {"predicted_midpoint": 0.15, "actual_frequency": 0.12, "count": 4}
+    per_match_details: list[dict[str, object]] = Field(default_factory=list)
+    # Each: {"match_id": "A1", "predicted_outcome": "team_a_win", "actual_outcome": "team_a_win", "confidence": 0.62}
 
 
 class BracketTeamResponse(BaseModel):
@@ -176,6 +199,7 @@ class BracketMatchResponse(BaseModel):
     team_b_expected_goals: float | None = None
     confidence_label: str | None = None
     drivers: list[str] = Field(default_factory=list)
+    confirmed: bool = False
 
 
 class BracketGroupTableResponse(BaseModel):
@@ -369,3 +393,71 @@ class SyncResponse(BaseModel):
     success: bool
     last_updated: str
     errors: list[str] = Field(default_factory=list)
+
+
+class MatchdayFixtureResponse(BaseModel):
+    """One fixture on the matchday page."""
+
+    match_id: str
+    group_id: str | None = None
+    kickoff_utc: str | None = None
+    status: str
+    team_a_id: str
+    team_a_name: str
+    team_b_id: str
+    team_b_name: str
+    team_a_win_probability: float
+    draw_probability: float
+    team_b_win_probability: float
+    projected_team_a_goals: float
+    projected_team_b_goals: float
+    team_a_goals: int | None = None
+    team_b_goals: int | None = None
+    what_still_matters: bool = False
+
+
+class MatchdayGroupStanding(BaseModel):
+    """One row in a matchday group standing table."""
+
+    position: int
+    team_id: str
+    team_name: str
+    played: int
+    wins: int
+    draws: int
+    losses: int
+    goals_for: int
+    goals_against: int
+    goal_difference: int
+    points: int
+
+
+class MatchdayGroupResponse(BaseModel):
+    """Group standing table for the matchday page."""
+
+    group_id: str
+    group_name: str
+    standings: list[MatchdayGroupStanding]
+    is_complete: bool = False
+
+
+class MatchdayResponse(BaseModel):
+    """Response body for the GET /matchday endpoint."""
+
+    date: str
+    matchday_label: str
+    fixtures: list[MatchdayFixtureResponse]
+    groups: list[MatchdayGroupResponse]
+
+
+class ProbabilitySnapshotResponse(BaseModel):
+    """One probability snapshot recorded after a sync."""
+
+    timestamp: str
+    champion_probabilities: dict[str, float]
+
+
+class ProbabilityHistoryResponse(BaseModel):
+    """Full history of probability snapshots."""
+
+    snapshots: list[ProbabilitySnapshotResponse]

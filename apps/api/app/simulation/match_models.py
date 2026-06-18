@@ -223,6 +223,96 @@ class OracleV2Model:
         return self.rating_for(team) + features.get("defense_bonus", 0.0)
 
 
+class DixonColesModel:
+    """Poisson model with Dixon-Coles low-score correlation correction."""
+
+    DEFAULT_RHO = -0.13
+
+    def __init__(
+        self,
+        rho: float = DEFAULT_RHO,
+        rating_overrides: dict[str, float] | None = None,
+        squad_features: dict[str, dict[str, float]] | None = None,
+    ) -> None:
+        self.rho = rho
+        self.rating_overrides = rating_overrides or {}
+        self.squad_features = squad_features or {}
+
+    def expected_goals(self, team_a: Team, team_b: Team) -> tuple[float, float]:
+        """Return expected goals using PoissonScoreModel logic."""
+        return expected_goals(team_a, team_b)
+
+    def predict_probabilities(self, team_a: Team, team_b: Team) -> dict[str, float]:
+        """Predict W/D/L using Dixon-Coles corrected joint probability matrix."""
+        mu, nu = self.expected_goals(team_a, team_b)
+        max_goals = 8
+
+        team_a_win = 0.0
+        draw = 0.0
+        team_b_win = 0.0
+        total = 0.0
+
+        for x in range(max_goals + 1):
+            prob_x = _poisson_probability(x, mu)
+            for y in range(max_goals + 1):
+                prob_y = _poisson_probability(y, nu)
+                corrected = prob_x * prob_y * _tau(x, y, mu, nu, self.rho)
+                total += corrected
+                if x > y:
+                    team_a_win += corrected
+                elif x < y:
+                    team_b_win += corrected
+                else:
+                    draw += corrected
+
+        return {
+            "team_a_win": team_a_win / total,
+            "draw": draw / total,
+            "team_b_win": team_b_win / total,
+        }
+
+    def simulate_result(
+        self,
+        team_a: Team,
+        team_b: Team,
+        rng: np.random.Generator,
+    ) -> MatchResult:
+        """Sample a scoreline from the Dixon-Coles corrected joint distribution."""
+        mu, nu = self.expected_goals(team_a, team_b)
+        max_goals = 8
+        n = max_goals + 1
+
+        probs: list[float] = []
+        pairs: list[tuple[int, int]] = []
+
+        for x in range(n):
+            prob_x = _poisson_probability(x, mu)
+            for y in range(n):
+                prob_y = _poisson_probability(y, nu)
+                corrected = prob_x * prob_y * _tau(x, y, mu, nu, self.rho)
+                probs.append(max(corrected, 0.0))
+                pairs.append((x, y))
+
+        total = sum(probs)
+        normalized = [p / total for p in probs]
+        chosen_index = int(rng.choice(len(pairs), p=normalized))
+        team_a_goals, team_b_goals = pairs[chosen_index]
+        return MatchResult(team_a_goals=team_a_goals, team_b_goals=team_b_goals)
+
+
+def _tau(x: int, y: int, mu: float, nu: float, rho: float) -> float:
+    """Dixon-Coles correction factor for low-score scorelines."""
+    if x == 0 and y == 0:
+        return 1.0 - mu * nu * rho
+    if x == 0 and y == 1:
+        return 1.0 + mu * rho
+    if x == 1 and y == 0:
+        return 1.0 + nu * rho
+    if x == 1 and y == 1:
+        return 1.0 - rho
+    return 1.0
+
+
 def _scoreline_probabilities(
     team_a_expected: float,
     team_b_expected: float,

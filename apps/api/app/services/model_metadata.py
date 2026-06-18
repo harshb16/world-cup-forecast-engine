@@ -83,6 +83,31 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
             ],
         ),
         ModelMetadataResponse(
+            id="dixon_coles",
+            name="Dixon-Coles Poisson model",
+            is_ml=False,
+            inputs=[
+                "team rating",
+                "opponent rating",
+            ],
+            assumptions=[
+                "Expected goals are rating-derived (same as Poisson baseline).",
+                "Joint score probabilities are corrected using the Dixon-Coles rho factor.",
+                "Low-score scorelines (0-0, 0-1, 1-0, 1-1) are given adjusted probabilities.",
+            ],
+            limitations=[
+                "Rho is fixed at -0.13 and not fitted from match data.",
+                "Expected goals are not calibrated from team-level attacking and defensive data.",
+                "Does not use player availability, venue, travel, or market data.",
+            ],
+            supported_outputs=[
+                "expected goals",
+                "win/draw/loss probabilities",
+                "simulated scorelines with low-score correction",
+                "Monte Carlo stage probabilities",
+            ],
+        ),
+        ModelMetadataResponse(
             id="oracle_v2",
             name="Oracle v2 ensemble",
             is_ml=False,

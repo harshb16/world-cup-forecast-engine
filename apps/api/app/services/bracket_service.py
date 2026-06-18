@@ -64,6 +64,7 @@ def run_bracket_simulation(
         **load_metadata(data_mode),
     )
     champion = teams_by_id[knockout.champion_team_id]
+    completed_groups = _completed_group_ids(config)
 
     return BracketSimulationResponse(
         metadata=metadata,
@@ -83,6 +84,7 @@ def run_bracket_simulation(
                     match_model,
                     index,
                     _source_match_ids(knockout.rounds, match, index),
+                    completed_groups=completed_groups,
                 )
                 for index, match in enumerate(matches, start=1)
             ]
@@ -99,6 +101,7 @@ def _to_bracket_match(
     match_model,
     match_number: int,
     source_match_ids: list[str],
+    completed_groups: set[str] | None = None,
 ) -> BracketMatchResponse:
     team_a = teams_by_id[match.team_a_id]
     team_b = teams_by_id[match.team_b_id]
@@ -116,6 +119,13 @@ def _to_bracket_match(
 
     if match.result is None or match.winner_team_id is None:
         raise ValueError("bracket trace match must include result and winner")
+
+    completed = completed_groups or set()
+    confirmed = (
+        match.stage == "Round of 32"
+        and team_a.group_id in completed
+        and team_b.group_id in completed
+    )
 
     return BracketMatchResponse(
         id=match.id,
@@ -140,7 +150,25 @@ def _to_bracket_match(
         team_b_expected_goals=expected_goals[1],
         confidence_label=_confidence_label(max(team_a_advance, team_b_advance)),
         drivers=_match_drivers(match_model, team_a, team_b),
+        confirmed=confirmed,
     )
+
+
+def _completed_group_ids(config: TournamentConfig) -> set[str]:
+    """Return group ids where every group fixture has a played result."""
+    group_match_counts: dict[str, int] = {}
+    group_played_counts: dict[str, int] = {}
+    for match in config.matches:
+        if match.stage != "group" or match.group_id is None:
+            continue
+        group_match_counts[match.group_id] = group_match_counts.get(match.group_id, 0) + 1
+        if match.result is not None and match.result.played:
+            group_played_counts[match.group_id] = group_played_counts.get(match.group_id, 0) + 1
+    return {
+        group_id
+        for group_id, total in group_match_counts.items()
+        if group_played_counts.get(group_id, 0) == total
+    }
 
 
 def _source_match_ids(

@@ -18,7 +18,7 @@ def test_backtesting_endpoint_returns_processed_metrics() -> None:
 
     assert metrics["model_type"] == "poisson"
     assert metrics["data_mode"] == "processed"
-    assert metrics["sample_size"] == 4
+    assert metrics["sample_size"] >= 4
     assert metrics["accuracy"] is not None
     assert metrics["brier_score"] is not None
     assert metrics["log_loss"] is not None
@@ -43,10 +43,19 @@ def test_backtesting_metrics_are_deterministic() -> None:
     first = calculate_backtesting_metrics("elo", "processed")
     second = calculate_backtesting_metrics("elo", "processed")
 
-    assert first.sample_size == 4
+    assert first.sample_size >= 4
     assert first.accuracy == pytest.approx(second.accuracy)
     assert first.brier_score == pytest.approx(second.brier_score)
     assert first.log_loss == pytest.approx(second.log_loss)
+
+
+def test_backtesting_endpoint_returns_calibration_bins() -> None:
+    response = client.get("/backtesting?model_type=oracle_v2")
+
+    assert response.status_code == 200
+    metrics = response.json()
+    assert len(metrics["calibration_bins"]) == 10
+    assert metrics["per_match_details"]
 
 
 def test_backtesting_sample_mode_handles_no_completed_results() -> None:

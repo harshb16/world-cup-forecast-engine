@@ -22,6 +22,7 @@ from app.simulation.match_models import (
     EloWinDrawLossModel,
     MatchModel,
     OracleV2Model,
+    OracleV3Model,
     PoissonScoreModel,
 )
 from app.simulation.monte_carlo import STAGES, run_simulations
@@ -54,6 +55,31 @@ def create_match_model(model_type: str, data_mode: str = "processed") -> MatchMo
             },
             squad_features=load_squad_features(data_mode),
         )
+    if model_type == "gbm":
+        from app.simulation.ml_model import GBMMatchModel
+
+        try:
+            return GBMMatchModel()
+        except FileNotFoundError as exc:
+            raise ValueError(str(exc)) from exc
+    if model_type == "oracle_v3":
+        parameters = load_model_parameters(data_mode)
+        oracle_v2 = OracleV2Model(
+            rating_overrides={
+                item["team_id"]: item["rating"]
+                for item in parameters.get("team_ratings", [])
+                if not item.get("fallback_used", False)
+            },
+            squad_features=load_squad_features(data_mode),
+        )
+        gbm = None
+        try:
+            from app.simulation.ml_model import GBMMatchModel
+
+            gbm = GBMMatchModel()
+        except FileNotFoundError:
+            gbm = None
+        return OracleV3Model(oracle_v2=oracle_v2, gbm=gbm)
     raise ValueError(f"unsupported model_type: {model_type}")
 
 

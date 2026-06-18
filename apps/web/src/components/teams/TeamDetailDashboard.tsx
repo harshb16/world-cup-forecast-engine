@@ -164,6 +164,35 @@ export function TeamDetailDashboard() {
 
       <TeamPathExplorer path={data.path} />
 
+      <SectionCard>
+        <p className="text-xs font-semibold uppercase text-emerald-200">
+          Likely road to final
+        </p>
+        <h2 className="mt-1 text-lg font-semibold text-white">
+          Most common opponents by round
+        </h2>
+        <ul className="mt-4 space-y-3">
+          {data.path.stages
+            .filter((stage) => stage.most_likely_opponent)
+            .map((stage) => (
+              <li
+                key={stage.stage}
+                className="flex items-center justify-between gap-3 rounded-md border border-white/10 bg-black/15 px-3 py-2"
+              >
+                <span className="text-sm font-semibold text-zinc-300">
+                  {stage.stage}
+                </span>
+                <span className="text-sm text-zinc-100">
+                  {stage.most_likely_opponent?.team_name ?? "—"}
+                </span>
+                <span className="text-xs text-zinc-500">
+                  {formatPercent(stage.most_likely_opponent?.probability ?? 0)}
+                </span>
+              </li>
+            ))}
+        </ul>
+      </SectionCard>
+
       {probability ? (
         <HelpText>
           These chances are not predictions for a single match. They are the

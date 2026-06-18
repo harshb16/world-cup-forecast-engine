@@ -469,6 +469,44 @@ export async function fetchDataQuality(): Promise<DataQualityReport> {
   return fetchJson<DataQualityReport>("/data-quality");
 }
 
+export async function fetchProbabilityHistory(): Promise<ProbabilityHistory> {
+  return fetchJson<ProbabilityHistory>("/analytics/probability-history");
+}
+
+export async function fetchProbabilityMovers(
+  limit = 8,
+): Promise<ProbabilityMovers> {
+  return fetchJson<ProbabilityMovers>(
+    `/analytics/probability-movers?limit=${limit}`,
+  );
+}
+
+export async function fetchMatchday(
+  modelType: ModelType = "oracle_v2",
+): Promise<MatchdayData> {
+  return fetchJson<MatchdayData>(`/matchday?model_type=${modelType}`);
+}
+
+export async function fetchThirdPlaceTracker(
+  modelType: ModelType = "oracle_v2",
+  nSimulations = 500,
+  seed = 42,
+): Promise<ThirdPlaceTracker> {
+  return fetchJson<ThirdPlaceTracker>(
+    `/analytics/third-place?model_type=${modelType}&n_simulations=${nSimulations}&seed=${seed}`,
+  );
+}
+
+export async function fetchHeadToHead(
+  teamAId: string,
+  teamBId: string,
+  modelType: ModelType = "oracle_v2",
+): Promise<HeadToHead> {
+  return fetchJson<HeadToHead>(
+    `/team-path/head-to-head?team_a=${teamAId}&team_b=${teamBId}&model_type=${modelType}`,
+  );
+}
+
 export type ProbabilityMover = {
   team_id: string;
   team_name: string;

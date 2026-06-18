@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { FlaskConical, GitBranch, Table2, Users, BarChart3 } from "lucide-react";
 
+import { ProbabilityMoversPanel } from "@/components/analytics/ProbabilityMoversPanel";
 import { UpsetRadarPanel } from "@/components/analytics/UpsetRadarPanel";
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
@@ -16,8 +17,10 @@ import { SectionCard } from "@/components/ui/SectionCard";
 import { StatCard } from "@/components/ui/StatCard";
 import {
   fetchGroupChaos,
+  fetchProbabilityMovers,
   fetchUpsetRadar,
   GroupChaosReport,
+  ProbabilityMovers,
   simulateTournament,
   SimulationSummary,
   UpsetRadar,
@@ -28,6 +31,7 @@ export function HomeDashboard() {
   const [summary, setSummary] = useState<SimulationSummary | null>(null);
   const [upsets, setUpsets] = useState<UpsetRadar | null>(null);
   const [groupChaos, setGroupChaos] = useState<GroupChaosReport | null>(null);
+  const [movers, setMovers] = useState<ProbabilityMovers | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -41,12 +45,14 @@ export function HomeDashboard() {
       }),
       fetchUpsetRadar("oracle_v2", 6),
       fetchGroupChaos("oracle_v2", 500, 42),
+      fetchProbabilityMovers(8),
     ])
-      .then(([simulation, upsetRadar, chaos]) => {
+      .then(([simulation, upsetRadar, chaos, probabilityMovers]) => {
         if (isActive) {
           setSummary(simulation);
           setUpsets(upsetRadar);
           setGroupChaos(chaos);
+          setMovers(probabilityMovers);
         }
       })
       .catch((caughtError: unknown) => {
@@ -161,8 +167,10 @@ export function HomeDashboard() {
         />
       </div>
 
+      {movers ? <ProbabilityMoversPanel movers={movers} /> : null}
+
       <SectionCard>
-        <h2 className="text-base font-semibold text-white">What changed?</h2>
+        <h2 className="text-base font-semibold text-white">Data status</h2>
         <div className="mt-3">
           <DataStatusCard metadata={summary.metadata} />
         </div>

@@ -245,19 +245,3 @@ def matchday(model_type: ModelType = "oracle_v2") -> MatchdayResponse:
 def sync_data() -> SyncResponse:
     """Re-run ingest scripts and refresh processed data."""
     return run_data_sync()
-
-
-@router.get("/analytics/probability-history", response_model=ProbabilityHistoryResponse)
-def probability_history() -> ProbabilityHistoryResponse:
-    """Return the full history of champion probability snapshots."""
-    import json
-
-    import app.services.data_sync_service as _dss
-
-    history_path = _dss.PROCESSED_DIR / "probability_history.json"
-    if not history_path.exists():
-        return ProbabilityHistoryResponse(snapshots=[])
-    raw: list[dict] = json.loads(history_path.read_text(encoding="utf-8"))
-    return ProbabilityHistoryResponse(
-        snapshots=[ProbabilitySnapshotResponse(**entry) for entry in raw]
-    )

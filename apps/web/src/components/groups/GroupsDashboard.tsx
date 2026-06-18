@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { ThirdPlaceTrackerPanel } from "@/components/analytics/ThirdPlaceTracker";
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
 import { DataStatusCard } from "@/components/DataStatusCard";
@@ -106,6 +107,7 @@ export function GroupsDashboard() {
           />
         ))}
       </div>
+      <ThirdPlaceTrackerPanel />
     </div>
   );
 }

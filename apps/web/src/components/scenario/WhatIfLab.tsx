@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
@@ -11,6 +12,7 @@ import { ScenarioResultDeltaTable } from "@/components/scenario/ScenarioResultDe
 import { DeltaBadge } from "@/components/ui/DeltaBadge";
 import { HelpText } from "@/components/ui/HelpText";
 import { SectionCard } from "@/components/ui/SectionCard";
+import { StatCard } from "@/components/ui/StatCard";
 import {
   compareScenario,
   fetchFixtures,
@@ -23,15 +25,54 @@ import {
   DataMetadata,
 } from "@/lib/api";
 
+function encodeOverrides(overrides: MatchResultOverride[]): string {
+  if (overrides.length === 0) {
+    return "";
+  }
+  return overrides
+    .map(
+      (override) =>
+        `${override.match_id}:${override.team_a_goals}-${override.team_b_goals}`,
+    )
+    .join(",");
+}
+
+function decodeOverrides(value: string | null): MatchResultOverride[] {
+  if (!value) {
+    return [];
+  }
+
+  return value
+    .split(",")
+    .map((entry) => {
+      const [matchId, score] = entry.split(":");
+      const [teamAGoals, teamBGoals] = (score ?? "").split("-").map(Number);
+      if (!matchId || Number.isNaN(teamAGoals) || Number.isNaN(teamBGoals)) {
+        return null;
+      }
+      return {
+        match_id: matchId,
+        team_a_goals: teamAGoals,
+        team_b_goals: teamBGoals,
+      };
+    })
+    .filter((item): item is MatchResultOverride => Boolean(item));
+}
+
 export function WhatIfLab() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [fixtures, setFixtures] = useState<Match[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
-  const [overrides, setOverrides] = useState<MatchResultOverride[]>([]);
+  const [overrides, setOverrides] = useState<MatchResultOverride[]>(() =>
+    decodeOverrides(searchParams.get("overrides")),
+  );
   const [result, setResult] = useState<ScenarioCompareResponse | null>(null);
   const [metadata, setMetadata] = useState<DataMetadata | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     let isActive = true;
@@ -60,6 +101,12 @@ export function WhatIfLab() {
     };
   }, []);
 
+  useEffect(() => {
+    const encoded = encodeOverrides(overrides);
+    const next = encoded ? `/what-if?overrides=${encoded}` : "/what-if";
+    router.replace(next, { scroll: false });
+  }, [overrides, router]);
+
   const teamsById = useMemo(
     () => new Map(teams.map((team) => [team.id, team])),
     [teams],
@@ -81,7 +128,7 @@ export function WhatIfLab() {
     setError(null);
     compareScenario({
       n_simulations: 1000,
-      model_type: "poisson",
+      model_type: "oracle_v2",
       seed: 42,
       result_overrides: overrides,
     })
@@ -94,6 +141,12 @@ export function WhatIfLab() {
         );
       })
       .finally(() => setIsRunning(false));
+  }
+
+  async function copyScenarioLink() {
+    await navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2000);
   }
 
   if (isLoading) {
@@ -112,7 +165,7 @@ export function WhatIfLab() {
             key={step}
             className="rounded-lg border border-white/10 bg-white/[0.05] p-4"
           >
-            <span className="flex size-7 items-center justify-center rounded-md bg-emerald-300/10 text-sm font-semibold text-emerald-200">
+            <span className="flex size-7 items-center justify-center rounded-md bg-[var(--turf)]/10 text-sm font-semibold text-[var(--turf)]">
               {index + 1}
             </span>
             <p className="mt-3 text-sm font-semibold text-white">{step}</p>
@@ -144,7 +197,7 @@ export function WhatIfLab() {
       <SectionCard>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase text-emerald-200">
+            <p className="text-xs font-semibold uppercase text-[var(--turf)]">
               Step 3
             </p>
             <h2 className="mt-1 text-lg font-semibold text-white">
@@ -152,23 +205,61 @@ export function WhatIfLab() {
             </h2>
             <p className="mt-1 text-sm text-zinc-400">
               The backend compares this scenario against the same seeded
-              baseline simulation.
+              baseline simulation. Scenario state is stored in the URL for
+              sharing.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={runScenario}
-            disabled={isRunning}
-            className="h-12 rounded-md bg-emerald-300 px-6 text-sm font-semibold text-zinc-950 transition hover:bg-emerald-200 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400"
-          >
-            {isRunning ? "Running scenario" : "Run scenario"}
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={copyScenarioLink}
+              className="h-12 rounded-md border border-white/10 bg-white/[0.05] px-4 text-sm font-semibold text-zinc-100 transition hover:bg-white/[0.08]"
+            >
+              {copied ? "Link copied" : "Copy scenario link"}
+            </button>
+            <button
+              type="button"
+              onClick={runScenario}
+              disabled={isRunning}
+              className="h-12 rounded-md bg-[var(--turf)] px-6 text-sm font-semibold text-zinc-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400"
+            >
+              {isRunning ? "Running scenario" : "Run scenario"}
+            </button>
+          </div>
         </div>
-        {error ? <p className="mt-3 text-sm text-rose-200">{error}</p> : null}
+        {error ? <p className="mt-3 text-sm text-[var(--risk-red)]">{error}</p> : null}
       </SectionCard>
 
       {result ? (
         <div className="space-y-6">
+          <div className="grid gap-4 md:grid-cols-3">
+            <StatCard
+              label="Baseline champion"
+              value={
+                [...result.baseline.teams].sort(
+                  (a, b) => b.champion - a.champion,
+                )[0]?.team_name ?? "-"
+              }
+              detail="Before overrides"
+            />
+            <StatCard
+              label="Scenario champion"
+              value={
+                [...result.scenario.teams].sort(
+                  (a, b) => b.champion - a.champion,
+                )[0]?.team_name ?? "-"
+              }
+              detail="After overrides"
+              tone="green"
+            />
+            <StatCard
+              label="Overrides applied"
+              value={String(overrides.length)}
+              detail="Manual result changes"
+              tone="amber"
+            />
+          </div>
+
           <HelpText>
             These deltas compare two Monte Carlo runs. Tiny movements can be
             sampling noise; focus on larger, directional shifts.

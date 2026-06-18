@@ -4,6 +4,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+ModelType = Literal["elo", "poisson", "calibrated_elo", "oracle_v2"]
+
 
 class HealthResponse(BaseModel):
     """Response body for the health endpoint."""
@@ -15,7 +17,7 @@ class SimulateRequest(BaseModel):
     """Request body for running a sample tournament simulation."""
 
     n_simulations: int = Field(default=1000, ge=1, le=10_000)
-    model_type: Literal["elo", "poisson", "calibrated_elo"] = "elo"
+    model_type: ModelType = "oracle_v2"
     seed: int | None = None
 
 
@@ -36,7 +38,7 @@ class ScenarioSimulateRequest(SimulateRequest):
 class BracketSimulateRequest(BaseModel):
     """Request body for simulating one revealable tournament bracket."""
 
-    model_type: Literal["elo", "poisson", "calibrated_elo"] = "poisson"
+    model_type: ModelType = "oracle_v2"
     simulation_mode: Literal["favorite", "random"] = "favorite"
     seed: int | None = None
     result_overrides: list[MatchResultOverride] = Field(default_factory=list)
@@ -46,7 +48,7 @@ class TeamPathRequest(BaseModel):
     """Request body for exploring a team's likely knockout path."""
 
     team_id: str = Field(min_length=1)
-    model_type: Literal["elo", "poisson", "calibrated_elo"] = "poisson"
+    model_type: ModelType = "oracle_v2"
     n_simulations: int = Field(default=500, ge=1, le=5_000)
     seed: int | None = None
 
@@ -118,7 +120,7 @@ class DataMetadataResponse(BaseModel):
 class ModelMetadataResponse(BaseModel):
     """Public description of a supported match model."""
 
-    id: Literal["elo", "poisson", "calibrated_elo"]
+    id: ModelType
     name: str
     is_ml: bool
     inputs: list[str] = Field(default_factory=list)
@@ -130,7 +132,7 @@ class ModelMetadataResponse(BaseModel):
 class BacktestingResponse(BaseModel):
     """Baseline evaluation metrics for completed fixtures."""
 
-    model_type: Literal["elo", "poisson", "calibrated_elo"]
+    model_type: ModelType
     data_mode: str
     sample_size: int
     accuracy: float | None = None
@@ -164,11 +166,16 @@ class BracketMatchResponse(BaseModel):
     id: str
     stage: str
     match_number: int
+    source_match_ids: list[str] = Field(default_factory=list)
     team_a: BracketTeamResponse
     team_b: BracketTeamResponse
     result: dict[str, int]
     winner_team_id: str
     probabilities: BracketMatchProbabilityResponse
+    team_a_expected_goals: float | None = None
+    team_b_expected_goals: float | None = None
+    confidence_label: str | None = None
+    drivers: list[str] = Field(default_factory=list)
 
 
 class BracketGroupTableResponse(BaseModel):
@@ -251,3 +258,114 @@ class ScenarioCompareResponse(BaseModel):
     deltas: list[TeamProbabilityDeltaResponse]
     biggest_risers: list[TeamProbabilityDeltaResponse]
     biggest_fallers: list[TeamProbabilityDeltaResponse]
+
+
+class UpsetFixtureResponse(BaseModel):
+    """One ranked upset-risk fixture."""
+
+    match_id: str
+    stage: str
+    group_id: str | None = None
+    team_a_id: str
+    team_a_name: str
+    team_b_id: str
+    team_b_name: str
+    favorite_team_id: str
+    underdog_team_id: str
+    favorite_advance_probability: float
+    underdog_advance_probability: float
+    advance_probability_gap: float
+    upset_score: float
+    risk_label: str
+    stage_importance: float
+    reasons: list[str] = Field(default_factory=list)
+
+
+class UpsetRadarResponse(BaseModel):
+    """Ranked upset-risk fixtures for the active tournament."""
+
+    model_type: ModelType
+    data_mode: str
+    fixtures: list[UpsetFixtureResponse]
+
+
+class GroupChaosScoreResponse(BaseModel):
+    """Chaos metrics for one group."""
+
+    group_id: str
+    group_name: str
+    chaos_score: float
+    chaos_label: str
+    qualification_entropy: float
+    average_point_spread: float
+    key_swing_match_id: str | None = None
+    key_swing_match_label: str | None = None
+    teams: list[dict[str, object]] = Field(default_factory=list)
+
+
+class GroupChaosResponse(BaseModel):
+    """Group chaos scores derived from simulation output."""
+
+    model_type: ModelType
+    data_mode: str
+    n_simulations: int
+    groups: list[GroupChaosScoreResponse]
+
+
+class ModelComparisonDeltaResponse(BaseModel):
+    """Champion probability deltas versus a baseline model."""
+
+    model_type: ModelType
+    baseline_model: ModelType
+    champion_probability_deltas: dict[str, float]
+    top_four_probability_deltas: dict[str, float]
+    largest_positive_delta_team_id: str
+    largest_negative_delta_team_id: str
+
+
+class ModelComparisonResponse(BaseModel):
+    """Cross-model champion probability comparison."""
+
+    data_mode: str
+    n_simulations: int
+    seed: int
+    baseline_model: ModelType
+    champion_probabilities: dict[str, dict[str, float]]
+    top_four_team_ids: list[str]
+    model_deltas: list[ModelComparisonDeltaResponse]
+
+
+class TeamDataQualityResponse(BaseModel):
+    """Coverage report for one team."""
+
+    team_id: str
+    team_name: str
+    group_id: str
+    has_rating: bool
+    has_squad_features: bool
+    squad_coverage: float | None = None
+    alias_confidence: float | None = None
+    missing_features: list[str] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
+
+
+class DataQualityResponse(BaseModel):
+    """Coverage report for active tournament data sources."""
+
+    data_mode: str
+    last_refresh: str
+    source_coverage: dict[str, int]
+    teams: list[TeamDataQualityResponse]
+    missing_squad_features: list[str] = Field(default_factory=list)
+    missing_ratings: list[str] = Field(default_factory=list)
+    low_alias_coverage: list[str] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+
+
+class SyncResponse(BaseModel):
+    """Response body for processed data sync."""
+
+    success: bool
+    last_updated: str
+    errors: list[str] = Field(default_factory=list)

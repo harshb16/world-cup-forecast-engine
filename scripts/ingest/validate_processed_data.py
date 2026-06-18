@@ -14,6 +14,7 @@ def validate_processed_data(base_dir=PROCESSED_DIR) -> list[str]:
     ratings = read_json(base_dir / "ratings.json")
     metadata = read_json(base_dir / "metadata.json")
     model_parameters = read_json(base_dir / "model_parameters.json")
+    squad_features = read_json(base_dir / "squad_features.json")
 
     if len(teams) != 48:
         errors.append("teams.json must contain 48 teams")
@@ -101,6 +102,12 @@ def validate_processed_data(base_dir=PROCESSED_DIR) -> list[str]:
         errors.append("model_parameters.json must contain one rating for every team")
     if any(item.get("fallback_used") for item in model_parameters.get("team_ratings", [])):
         errors.append("model_parameters.json must not use fallback ratings")
+
+    squad_feature_ids = {item["team_id"] for item in squad_features}
+    if squad_feature_ids != team_ids:
+        errors.append("squad_features.json must contain one row for every team")
+    if any(item.get("squad_power", 0) <= 0 for item in squad_features):
+        errors.append("squad_features.json squad_power values must be positive")
 
     return errors
 

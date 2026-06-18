@@ -2,7 +2,13 @@
 
 import numpy as np
 
-from app.models.domain import Match, MatchResult, Team
+from app.models.domain import (
+    GroupStageResult,
+    Match,
+    MatchResult,
+    Team,
+    TournamentConfig,
+)
 from app.models.schemas import (
     BracketGroupTableResponse,
     BracketMatchProbabilityResponse,
@@ -15,8 +21,10 @@ from app.models.schemas import (
 from app.services.data_loader import load_metadata, load_tournament
 from app.services.simulation_service import apply_result_overrides, create_match_model
 from app.simulation.group_stage import simulate_group_stage
-from app.simulation.knockout import simulate_knockout
+from app.simulation.group_table import calculate_group_table
+from app.simulation.knockout import ADVANCEMENT_PAIRINGS, ROUND_NAMES, simulate_knockout
 from app.simulation.match_models import MatchModel
+from app.simulation.third_place import get_best_third_place_qualifiers, rank_third_place_teams
 
 
 def run_bracket_simulation(
@@ -35,7 +43,13 @@ def run_bracket_simulation(
     )
     rng = np.random.default_rng(request.seed)
 
-    group_stage = simulate_group_stage(config, match_model, rng)
+    if request.simulation_mode == "favorite":
+        if request.result_overrides:
+            group_stage = simulate_group_stage(config, match_model, rng)
+        else:
+            group_stage = _project_favorite_group_stage(config, match_model)
+    else:
+        group_stage = simulate_group_stage(config, match_model, rng)
     knockout = simulate_knockout(
         group_stage.qualified_team_ids,
         teams_by_id,
@@ -63,7 +77,13 @@ def run_bracket_simulation(
         ],
         rounds={
             stage: [
-                _to_bracket_match(match, teams_by_id, match_model, index)
+                _to_bracket_match(
+                    match,
+                    teams_by_id,
+                    match_model,
+                    index,
+                    _source_match_ids(knockout.rounds, match, index),
+                )
                 for index, match in enumerate(matches, start=1)
             ]
             for stage, matches in knockout.rounds.items()
@@ -78,13 +98,21 @@ def _to_bracket_match(
     teams_by_id: dict[str, Team],
     match_model,
     match_number: int,
+    source_match_ids: list[str],
 ) -> BracketMatchResponse:
     team_a = teams_by_id[match.team_a_id]
     team_b = teams_by_id[match.team_b_id]
     probabilities = match_model.predict_probabilities(team_a, team_b)
-    team_a_tiebreak = 1 / (1 + 10 ** (-(team_a.rating - team_b.rating) / 400))
-    team_a_advance = probabilities["team_a_win"] + probabilities["draw"] * team_a_tiebreak
-    team_b_advance = probabilities["team_b_win"] + probabilities["draw"] * (1 - team_a_tiebreak)
+    team_a_rating = _model_rating(match_model, team_a)
+    team_b_rating = _model_rating(match_model, team_b)
+    team_a_tiebreak = 1 / (1 + 10 ** (-(team_a_rating - team_b_rating) / 400))
+    team_a_advance = (
+        probabilities["team_a_win"] + probabilities["draw"] * team_a_tiebreak
+    )
+    team_b_advance = probabilities["team_b_win"] + probabilities["draw"] * (
+        1 - team_a_tiebreak
+    )
+    expected_goals = _expected_goals(match_model, team_a, team_b)
 
     if match.result is None or match.winner_team_id is None:
         raise ValueError("bracket trace match must include result and winner")
@@ -93,6 +121,7 @@ def _to_bracket_match(
         id=match.id,
         stage=match.stage,
         match_number=match_number,
+        source_match_ids=source_match_ids,
         team_a=_to_bracket_team(team_a),
         team_b=_to_bracket_team(team_b),
         result={
@@ -107,7 +136,26 @@ def _to_bracket_match(
             team_a_advance=team_a_advance,
             team_b_advance=team_b_advance,
         ),
+        team_a_expected_goals=expected_goals[0],
+        team_b_expected_goals=expected_goals[1],
+        confidence_label=_confidence_label(max(team_a_advance, team_b_advance)),
+        drivers=_match_drivers(match_model, team_a, team_b),
     )
+
+
+def _source_match_ids(
+    rounds: dict[str, list[Match]],
+    match: Match,
+    match_number: int,
+) -> list[str]:
+    round_index = ROUND_NAMES.index(match.stage)
+    if round_index == 0:
+        return []
+
+    previous_round = ROUND_NAMES[round_index - 1]
+    pair_indices = ADVANCEMENT_PAIRINGS[match.stage][match_number - 1]
+    previous_matches = rounds[previous_round]
+    return [previous_matches[index].id for index in pair_indices]
 
 
 def _to_bracket_team(team: Team) -> BracketTeamResponse:
@@ -119,14 +167,73 @@ def _to_bracket_team(team: Team) -> BracketTeamResponse:
     )
 
 
-class _MostLikelyMatchModel:
-    """Deterministic wrapper that chooses the most likely match outcome."""
+def _expected_goals(
+    match_model,
+    team_a: Team,
+    team_b: Team,
+) -> tuple[float | None, float | None]:
+    expected_goals = getattr(match_model, "expected_goals", None)
+    if callable(expected_goals):
+        team_a_expected, team_b_expected = expected_goals(team_a, team_b)
+        return round(float(team_a_expected), 2), round(float(team_b_expected), 2)
 
-    def __init__(self, base_model: MatchModel) -> None:
+    base_model = getattr(match_model, "base_model", None)
+    base_expected_goals = getattr(base_model, "expected_goals", None)
+    if callable(base_expected_goals):
+        team_a_expected, team_b_expected = base_expected_goals(team_a, team_b)
+        return round(float(team_a_expected), 2), round(float(team_b_expected), 2)
+
+    return None, None
+
+
+def _confidence_label(advance_probability: float) -> str:
+    if advance_probability >= 0.68:
+        return "clear favorite"
+    if advance_probability >= 0.58:
+        return "lean"
+    return "coin flip"
+
+
+def _match_drivers(match_model, team_a: Team, team_b: Team) -> list[str]:
+    rating_gap = abs(_model_rating(match_model, team_a) - _model_rating(match_model, team_b))
+    drivers = ["rating blend"]
+    if rating_gap >= 120:
+        drivers.append("strength gap")
+    if _expected_goals(match_model, team_a, team_b) != (None, None):
+        drivers.append("xG proxy")
+    return drivers[:3]
+
+
+class _MostLikelyMatchModel:
+    """Deterministic projection wrapper for a human-readable favorite bracket."""
+
+    def __init__(self, base_model: MatchModel, strength_weight: float = 0.75) -> None:
         self.base_model = base_model
+        self.strength_weight = strength_weight
 
     def predict_probabilities(self, team_a: Team, team_b: Team) -> dict[str, float]:
-        return self.base_model.predict_probabilities(team_a, team_b)
+        rating_gap = self.rating_for(team_a) - self.rating_for(team_b)
+        expected_a = 1 / (1 + 10 ** (-rating_gap / 400))
+        draw_probability = max(0.12, 0.24 - min(abs(rating_gap) / 2200, 0.1))
+        decisive_probability = 1 - draw_probability
+
+        return {
+            "team_a_win": decisive_probability * expected_a,
+            "draw": draw_probability,
+            "team_b_win": decisive_probability * (1 - expected_a),
+        }
+
+    def rating_for(self, team: Team) -> float:
+        base_rating = _base_model_rating(self.base_model, team)
+        return (self.strength_weight * team.rating) + (
+            (1 - self.strength_weight) * base_rating
+        )
+
+    def projected_result(self, team_a: Team, team_b: Team) -> MatchResult:
+        projected_result = getattr(self.base_model, "projected_result", None)
+        if callable(projected_result):
+            return projected_result(team_a, team_b)
+        return self.simulate_result(team_a, team_b, np.random.default_rng(0))
 
     def simulate_result(
         self,
@@ -136,7 +243,12 @@ class _MostLikelyMatchModel:
     ) -> MatchResult:
         probabilities = self.predict_probabilities(team_a, team_b)
         outcome = max(probabilities, key=probabilities.get)
-        margin = _favorite_margin(abs(team_a.rating - team_b.rating))
+        margin = _favorite_margin(
+            abs(
+                _model_rating(self.base_model, team_a)
+                - _model_rating(self.base_model, team_b)
+            )
+        )
 
         if outcome == "draw":
             return MatchResult(team_a_goals=1, team_b_goals=1)
@@ -151,3 +263,88 @@ def _favorite_margin(rating_gap: float) -> int:
     if rating_gap >= 200:
         return 2
     return 1
+
+
+def _project_favorite_group_stage(
+    config: TournamentConfig,
+    match_model: MatchModel,
+) -> GroupStageResult:
+    """Create a deterministic projected group stage from expected scorelines."""
+    teams_by_id = {team.id: team for team in config.teams}
+    group_matches: list[Match] = []
+
+    for match in config.matches:
+        if match.stage != "group":
+            continue
+        if match.result is not None and match.result.played:
+            group_matches.append(match)
+            continue
+
+        team_a = teams_by_id[match.team_a_id]
+        team_b = teams_by_id[match.team_b_id]
+        result = _projected_match_result(match_model, team_a, team_b)
+        group_matches.append(match.model_copy(update={"result": result}))
+
+    group_tables = {
+        group.id: calculate_group_table(group, teams_by_id, group_matches)
+        for group in sorted(config.groups, key=lambda item: item.id)
+    }
+
+    top_two_qualifiers = [
+        row.team_id
+        for group_id in sorted(group_tables)
+        for row in group_tables[group_id][:2]
+    ]
+    third_place_rankings = rank_third_place_teams(group_tables)
+    third_place_qualifiers = [
+        row.team_id
+        for row in get_best_third_place_qualifiers(group_tables, count=8)
+    ]
+
+    return GroupStageResult(
+        simulated_matches=group_matches,
+        group_tables=group_tables,
+        top_two_qualifiers=top_two_qualifiers,
+        third_place_rankings=third_place_rankings,
+        third_place_qualifiers=third_place_qualifiers,
+        qualified_team_ids=top_two_qualifiers + third_place_qualifiers,
+    )
+
+
+def _projected_match_result(
+    match_model: MatchModel,
+    team_a: Team,
+    team_b: Team,
+) -> MatchResult:
+    projected_result = getattr(match_model, "projected_result", None)
+    if callable(projected_result):
+        return projected_result(team_a, team_b)
+
+    probabilities = match_model.predict_probabilities(team_a, team_b)
+    outcome = max(probabilities, key=probabilities.get)
+    if outcome == "draw":
+        return MatchResult(team_a_goals=1, team_b_goals=1)
+    if outcome == "team_a_win":
+        return MatchResult(team_a_goals=2, team_b_goals=1)
+    return MatchResult(team_a_goals=1, team_b_goals=2)
+
+
+def _model_rating(match_model, team: Team) -> float:
+    rating_for = getattr(match_model, "rating_for", None)
+    if callable(rating_for):
+        return float(rating_for(team))
+
+    return _base_model_rating(match_model, team)
+
+
+def _base_model_rating(match_model, team: Team) -> float:
+    base_model = getattr(match_model, "base_model", None)
+    base_rating_for = getattr(base_model, "rating_for", None)
+    if callable(base_rating_for):
+        return float(base_rating_for(team))
+
+    rating_for = getattr(match_model, "rating_for", None)
+    if callable(rating_for):
+        return float(rating_for(team))
+
+    return team.rating

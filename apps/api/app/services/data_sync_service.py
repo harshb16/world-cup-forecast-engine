@@ -1,0 +1,86 @@
+"""Run ingest scripts to refresh processed tournament data."""
+
+from __future__ import annotations
+
+import json
+import subprocess
+import sys
+from datetime import UTC, datetime
+from pathlib import Path
+
+from app.models.schemas import SyncResponse
+from app.services.data_quality_service import build_data_quality_payload
+
+REPO_ROOT = Path(__file__).resolve().parents[4]
+INGEST_DIR = REPO_ROOT / "scripts" / "ingest"
+PROCESSED_DIR = REPO_ROOT / "data" / "processed"
+PYTHON = sys.executable
+
+SYNC_SCRIPTS = (
+    "fetch_worldcup_fifa.py",
+    "fetch_historical_results.py",
+    "validate_processed_data.py",
+)
+
+
+def run_data_sync() -> SyncResponse:
+    """Re-run ingest scripts and refresh derived processed artifacts."""
+    errors: list[str] = []
+    sync_timestamp = datetime.now(tz=UTC).isoformat()
+
+    for script_name in SYNC_SCRIPTS:
+        script_path = INGEST_DIR / script_name
+        if not script_path.exists():
+            errors.append(f"missing ingest script: {script_name}")
+            continue
+
+        result = subprocess.run(
+            [PYTHON, str(script_path)],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            message = (result.stderr or result.stdout or "").strip()
+            errors.append(
+                f"{script_name} failed: {message or f'exit code {result.returncode}'}"
+            )
+
+    if not errors:
+        _refresh_metadata_timestamp(sync_timestamp)
+        _refresh_data_quality_report()
+
+    metadata_path = PROCESSED_DIR / "metadata.json"
+    last_updated = sync_timestamp
+    if metadata_path.exists():
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        last_updated = str(metadata.get("last_updated") or sync_timestamp)
+
+    return SyncResponse(
+        success=len(errors) == 0,
+        last_updated=last_updated,
+        errors=errors,
+    )
+
+
+def _refresh_metadata_timestamp(timestamp: str) -> None:
+    metadata_path = PROCESSED_DIR / "metadata.json"
+    if not metadata_path.exists():
+        return
+
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    metadata["last_updated"] = timestamp
+    metadata_path.write_text(
+        json.dumps(metadata, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _refresh_data_quality_report() -> None:
+    payload = build_data_quality_payload("processed")
+    quality_path = PROCESSED_DIR / "data_quality.json"
+    quality_path.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )

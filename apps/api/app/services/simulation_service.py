@@ -11,8 +11,18 @@ from app.models.schemas import (
     TeamProbabilityDeltaResponse,
     TeamStageProbabilityResponse,
 )
-from app.services.data_loader import load_metadata, load_model_parameters, load_tournament
-from app.simulation.match_models import EloWinDrawLossModel, MatchModel, PoissonScoreModel
+from app.services.data_loader import (
+    load_metadata,
+    load_model_parameters,
+    load_squad_features,
+    load_tournament,
+)
+from app.simulation.match_models import (
+    EloWinDrawLossModel,
+    MatchModel,
+    OracleV2Model,
+    PoissonScoreModel,
+)
 from app.simulation.monte_carlo import STAGES, run_simulations
 
 
@@ -31,6 +41,16 @@ def create_match_model(model_type: str, data_mode: str = "processed") -> MatchMo
         )
     if model_type == "poisson":
         return PoissonScoreModel()
+    if model_type == "oracle_v2":
+        parameters = load_model_parameters(data_mode)
+        return OracleV2Model(
+            rating_overrides={
+                item["team_id"]: item["rating"]
+                for item in parameters.get("team_ratings", [])
+                if not item.get("fallback_used", False)
+            },
+            squad_features=load_squad_features(data_mode),
+        )
     raise ValueError(f"unsupported model_type: {model_type}")
 
 

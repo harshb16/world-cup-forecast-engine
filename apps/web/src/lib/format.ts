@@ -15,3 +15,13 @@ export function formatNumber(value: number, maximumFractionDigits = 0): string {
     maximumFractionDigits,
   }).format(value);
 }
+
+export function formatModelLabel(modelType: string): string {
+  if (modelType === "oracle_v2") {
+    return "Oracle v2";
+  }
+  if (modelType === "calibrated_elo") {
+    return "Calibrated Elo";
+  }
+  return modelType.toUpperCase();
+}

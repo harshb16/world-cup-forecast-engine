@@ -43,7 +43,7 @@ class EloWinDrawLossModel:
 
     def predict_probabilities(self, team_a: Team, team_b: Team) -> dict[str, float]:
         """Predict team A win, draw, and team B win probabilities."""
-        rating_gap = self._rating(team_a) - self._rating(team_b)
+        rating_gap = self.rating_for(team_a) - self.rating_for(team_b)
         expected_a = 1 / (1 + 10 ** (-rating_gap / 400))
         draw_reduction = min(abs(rating_gap) / 2000, 0.1)
         draw_probability = max(0.12, self.base_draw_probability - draw_reduction)
@@ -87,7 +87,8 @@ class EloWinDrawLossModel:
             team_b_goals=int(team_b_goals),
         )
 
-    def _rating(self, team: Team) -> float:
+    def rating_for(self, team: Team) -> float:
+        """Return the model rating used for this team."""
         return self.rating_overrides.get(team.id, team.rating)
 
 
@@ -150,6 +151,104 @@ class PoissonScoreModel:
             team_a_goals=int(rng.poisson(team_a_expected)),
             team_b_goals=int(rng.poisson(team_b_expected)),
         )
+
+
+class OracleV2Model:
+    """Feature-blended Poisson model for stronger tournament projections."""
+
+    def __init__(
+        self,
+        rating_overrides: dict[str, float] | None = None,
+        squad_features: dict[str, dict[str, float]] | None = None,
+    ) -> None:
+        self.rating_overrides = rating_overrides or {}
+        self.squad_features = squad_features or {}
+
+    def rating_for(self, team: Team) -> float:
+        calibrated_rating = self.rating_overrides.get(team.id, team.rating)
+        squad_power = self.squad_features.get(team.id, {}).get("squad_power", team.rating)
+        return (0.45 * team.rating) + (0.20 * calibrated_rating) + (0.35 * squad_power)
+
+    def expected_goals(self, team_a: Team, team_b: Team) -> tuple[float, float]:
+        team_a_attack = self._attack_strength(team_a)
+        team_b_attack = self._attack_strength(team_b)
+        team_a_defense = self._defense_strength(team_a)
+        team_b_defense = self._defense_strength(team_b)
+
+        team_a_expected = 1.28 * np.exp(((team_a_attack - team_b_defense) / 400) * 0.42)
+        team_b_expected = 1.28 * np.exp(((team_b_attack - team_a_defense) / 400) * 0.42)
+        return (
+            float(min(max(team_a_expected, 0.25), 3.4)),
+            float(min(max(team_b_expected, 0.25), 3.4)),
+        )
+
+    def predict_probabilities(self, team_a: Team, team_b: Team) -> dict[str, float]:
+        team_a_expected, team_b_expected = self.expected_goals(team_a, team_b)
+        return _scoreline_probabilities(team_a_expected, team_b_expected)
+
+    def simulate_result(
+        self,
+        team_a: Team,
+        team_b: Team,
+        rng: np.random.Generator,
+    ) -> MatchResult:
+        team_a_expected, team_b_expected = self.expected_goals(team_a, team_b)
+        return MatchResult(
+            team_a_goals=int(rng.poisson(team_a_expected)),
+            team_b_goals=int(rng.poisson(team_b_expected)),
+        )
+
+    def projected_result(self, team_a: Team, team_b: Team) -> MatchResult:
+        """Return median-ish deterministic scoreline for favorite group tables."""
+        team_a_expected, team_b_expected = self.expected_goals(team_a, team_b)
+        team_a_goals = int(round(team_a_expected))
+        team_b_goals = int(round(team_b_expected))
+        if team_a_goals == team_b_goals:
+            advance = self.predict_probabilities(team_a, team_b)
+            if advance["team_a_win"] > advance["team_b_win"] + 0.08:
+                team_a_goals += 1
+            elif advance["team_b_win"] > advance["team_a_win"] + 0.08:
+                team_b_goals += 1
+        return MatchResult(
+            team_a_goals=max(team_a_goals, 0),
+            team_b_goals=max(team_b_goals, 0),
+        )
+
+    def _attack_strength(self, team: Team) -> float:
+        features = self.squad_features.get(team.id, {})
+        return self.rating_for(team) + features.get("attack_bonus", 0.0)
+
+    def _defense_strength(self, team: Team) -> float:
+        features = self.squad_features.get(team.id, {})
+        return self.rating_for(team) + features.get("defense_bonus", 0.0)
+
+
+def _scoreline_probabilities(
+    team_a_expected: float,
+    team_b_expected: float,
+) -> dict[str, float]:
+    max_goals = 8
+    team_a_win = 0.0
+    draw = 0.0
+    team_b_win = 0.0
+
+    for team_a_goals in range(max_goals + 1):
+        prob_a = _poisson_probability(team_a_goals, team_a_expected)
+        for team_b_goals in range(max_goals + 1):
+            probability = prob_a * _poisson_probability(team_b_goals, team_b_expected)
+            if team_a_goals > team_b_goals:
+                team_a_win += probability
+            elif team_a_goals < team_b_goals:
+                team_b_win += probability
+            else:
+                draw += probability
+
+    total = team_a_win + draw + team_b_win
+    return {
+        "team_a_win": team_a_win / total,
+        "draw": draw / total,
+        "team_b_win": team_b_win / total,
+    }
 
 
 def _poisson_probability(goals: int, expected: float) -> float:

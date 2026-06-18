@@ -32,6 +32,13 @@ def test_backtesting_endpoint_supports_calibrated_elo() -> None:
     assert response.json()["model_type"] == "calibrated_elo"
 
 
+def test_backtesting_endpoint_supports_oracle_v2() -> None:
+    response = client.get("/backtesting?model_type=oracle_v2")
+
+    assert response.status_code == 200
+    assert response.json()["model_type"] == "oracle_v2"
+
+
 def test_backtesting_metrics_are_deterministic() -> None:
     first = calculate_backtesting_metrics("elo", "processed")
     second = calculate_backtesting_metrics("elo", "processed")

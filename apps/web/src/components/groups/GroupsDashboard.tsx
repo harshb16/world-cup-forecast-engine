@@ -8,10 +8,12 @@ import { DataStatusCard } from "@/components/DataStatusCard";
 import { GroupProbabilityCard } from "@/components/groups/GroupProbabilityCard";
 import { HelpText } from "@/components/ui/HelpText";
 import {
+  fetchGroupChaos,
   fetchGroups,
   fetchMetadata,
   fetchTeams,
   Group,
+  GroupChaosScore,
   simulateTournament,
   SimulationSummary,
   Team,
@@ -23,6 +25,7 @@ type GroupData = {
   teams: Team[];
   simulation: SimulationSummary;
   metadata: DataMetadata;
+  chaosByGroupId: Map<string, GroupChaosScore>;
 };
 
 export function GroupsDashboard() {
@@ -38,13 +41,22 @@ export function GroupsDashboard() {
       fetchMetadata(),
       simulateTournament({
         n_simulations: 1000,
-        model_type: "poisson",
+        model_type: "oracle_v2",
         seed: 42,
       }),
+      fetchGroupChaos("oracle_v2", 500, 42),
     ])
-      .then(([groups, teams, metadata, simulation]) => {
+      .then(([groups, teams, metadata, simulation, chaos]) => {
         if (isActive) {
-          setData({ groups, teams, metadata, simulation });
+          setData({
+            groups,
+            teams,
+            metadata,
+            simulation,
+            chaosByGroupId: new Map(
+              chaos.groups.map((group) => [group.group_id, group]),
+            ),
+          });
         }
       })
       .catch((caughtError: unknown) => {
@@ -90,6 +102,7 @@ export function GroupsDashboard() {
             group={group}
             teams={data.teams}
             probabilitiesByTeamId={probabilitiesByTeamId}
+            chaos={data.chaosByGroupId.get(group.id)}
           />
         ))}
       </div>

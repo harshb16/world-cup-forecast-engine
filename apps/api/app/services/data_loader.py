@@ -117,6 +117,26 @@ def load_model_parameters(mode: str) -> dict[str, Any]:
     raise ValueError(f"unsupported data mode: {mode}")
 
 
+def load_squad_features(mode: str) -> dict[str, dict[str, float]]:
+    """Load computed squad features for active teams when available."""
+    if mode != "processed":
+        return {}
+
+    path = PROCESSED_DATA_DIR / "squad_features.json"
+    if not path.exists():
+        return {}
+
+    data = _load_json(path)
+    return {
+        str(item["team_id"]): {
+            key: float(value)
+            for key, value in item.items()
+            if key != "team_id" and isinstance(value, (int, float))
+        }
+        for item in data
+    }
+
+
 def _processed_quality_metadata() -> dict[str, Any]:
     tournament = load_processed_tournament()
     ratings = _load_json(PROCESSED_DATA_DIR / "ratings.json")

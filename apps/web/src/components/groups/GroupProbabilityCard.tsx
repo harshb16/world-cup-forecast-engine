@@ -1,17 +1,19 @@
-import { GroupChaosScore } from "@/components/groups/GroupChaosScore";
+import { GroupChaosScore as GroupChaosScoreComponent } from "@/components/groups/GroupChaosScore";
 import { ProbabilityBar } from "@/components/ui/ProbabilityBar";
 import { SectionCard } from "@/components/ui/SectionCard";
-import { Group, Team, TeamProbability } from "@/lib/api";
+import { Group, GroupChaosScore, Team, TeamProbability } from "@/lib/api";
 import { formatNumber, formatPercent } from "@/lib/format";
 
 export function GroupProbabilityCard({
   group,
   teams,
   probabilitiesByTeamId,
+  chaos,
 }: {
   group: Group;
   teams: Team[];
   probabilitiesByTeamId: Map<string, TeamProbability>;
+  chaos?: GroupChaosScore;
 }) {
   const groupTeams = group.team_ids
     .map((teamId) => {
@@ -52,7 +54,17 @@ export function GroupProbabilityCard({
       </div>
 
       <div className="mt-5">
-        <GroupChaosScore teams={groupTeams.map((item) => item.probability)} />
+        <GroupChaosScoreComponent
+          teams={groupTeams.map((item) => item.probability)}
+        />
+        {chaos?.key_swing_match_label ? (
+          <p className="mt-3 text-sm text-zinc-400">
+            Key swing match:{" "}
+            <span className="font-semibold text-[var(--score-amber)]">
+              {chaos.key_swing_match_label}
+            </span>
+          </p>
+        ) : null}
       </div>
 
       <div className="mt-5 space-y-3">

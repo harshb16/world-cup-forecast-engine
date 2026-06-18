@@ -1,26 +1,46 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BarChart3, BrainCircuit, Target, type LucideIcon } from "lucide-react";
+import { BarChart3, BrainCircuit, Loader2, Target, type LucideIcon } from "lucide-react";
 
+import { DataQualityDesk } from "@/components/analytics/DataQualityDesk";
+import { ModelComparisonPanel } from "@/components/analytics/ModelComparisonPanel";
 import { AppShell } from "@/components/AppShell";
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
 import { PageHeader } from "@/components/PageHeader";
 import { SectionCard } from "@/components/ui/SectionCard";
-import { fetchModelMetadata, ModelMetadata } from "@/lib/api";
+import {
+  fetchDataQuality,
+  fetchModelComparison,
+  fetchModelMetadata,
+  fetchTeams,
+  DataQualityReport,
+  ModelComparison,
+  ModelMetadata,
+} from "@/lib/api";
+import { formatModelLabel } from "@/lib/format";
 
 export default function ModelsPage() {
   const [models, setModels] = useState<ModelMetadata[]>([]);
+  const [dataQuality, setDataQuality] = useState<DataQualityReport | null>(null);
+  const [comparison, setComparison] = useState<ModelComparison | null>(null);
+  const [teamNames, setTeamNames] = useState<Record<string, string>>({});
+  const [loadingComparison, setLoadingComparison] = useState(false);
+  const [comparisonError, setComparisonError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let isActive = true;
 
-    fetchModelMetadata()
-      .then((data) => {
+    Promise.all([fetchModelMetadata(), fetchDataQuality(), fetchTeams()])
+      .then(([modelData, quality, teams]) => {
         if (isActive) {
-          setModels(data);
+          setModels(modelData);
+          setDataQuality(quality);
+          setTeamNames(
+            Object.fromEntries(teams.map((team) => [team.id, team.name])),
+          );
         }
       })
       .catch((caughtError: unknown) => {
@@ -37,6 +57,24 @@ export default function ModelsPage() {
       isActive = false;
     };
   }, []);
+
+  async function loadComparison() {
+    setLoadingComparison(true);
+    setComparisonError(null);
+
+    try {
+      const comparisonData = await fetchModelComparison(200, 42, "oracle_v2");
+      setComparison(comparisonData);
+    } catch (caughtError: unknown) {
+      setComparisonError(
+        caughtError instanceof Error
+          ? caughtError.message
+          : "Model comparison request failed",
+      );
+    } finally {
+      setLoadingComparison(false);
+    }
+  }
 
   return (
     <AppShell>
@@ -56,9 +94,9 @@ export default function ModelsPage() {
           <section className="grid gap-4 md:grid-cols-3">
             <SummaryCard
               icon={Target}
-              label="Current model class"
-              value="Open-data calibrated"
-              detail="Historical match results now drive one Elo option"
+              label="Default model"
+              value={formatModelLabel("oracle_v2")}
+              detail="Squad-aware calibrated baseline for all pages"
             />
             <SummaryCard
               icon={BarChart3}
@@ -101,6 +139,44 @@ export default function ModelsPage() {
               </SectionCard>
             ))}
           </div>
+
+          {dataQuality ? <DataQualityDesk report={dataQuality} /> : null}
+
+          {!comparison ? (
+            <SectionCard>
+              <p className="text-xs font-semibold uppercase text-[var(--turf)]">
+                Model comparison
+              </p>
+              <h2 className="mt-1 text-lg font-semibold text-white">
+                Compare champion probabilities across models
+              </h2>
+              <p className="mt-1 text-sm text-zinc-400">
+                Runs four simulations on demand — load only when you want to
+                inspect model divergence.
+              </p>
+              <div className="mt-4">
+                <button
+                  type="button"
+                  onClick={loadComparison}
+                  disabled={loadingComparison}
+                  className="inline-flex items-center gap-2 rounded-md bg-[var(--turf)] px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {loadingComparison ? (
+                    <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+                  ) : null}
+                  {loadingComparison ? "Loading comparison…" : "Load model comparison"}
+                </button>
+                {comparisonError ? (
+                  <p className="mt-3 text-sm text-red-200">{comparisonError}</p>
+                ) : null}
+              </div>
+            </SectionCard>
+          ) : (
+            <ModelComparisonPanel
+              comparison={comparison}
+              teamNames={teamNames}
+            />
+          )}
         </div>
       ) : null}
     </AppShell>

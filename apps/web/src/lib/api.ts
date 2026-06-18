@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "@/lib/config";
 export { formatPercent } from "@/lib/format";
 
-export type ModelType = "elo" | "poisson" | "calibrated_elo";
+export type ModelType = "elo" | "poisson" | "calibrated_elo" | "oracle_v2";
 
 export type SimulationRequest = {
   n_simulations: number;
@@ -117,6 +117,7 @@ export type BracketMatch = {
   id: string;
   stage: string;
   match_number: number;
+  source_match_ids: string[];
   team_a: BracketTeam;
   team_b: BracketTeam;
   result: {
@@ -125,6 +126,10 @@ export type BracketMatch = {
   };
   winner_team_id: string;
   probabilities: BracketMatchProbabilities;
+  team_a_expected_goals: number | null;
+  team_b_expected_goals: number | null;
+  confidence_label: string | null;
+  drivers: string[];
 };
 
 export type BracketSimulation = {
@@ -206,6 +211,99 @@ export type ScenarioCompareResponse = {
   biggest_fallers: TeamProbabilityDelta[];
 };
 
+export type UpsetFixture = {
+  match_id: string;
+  stage: string;
+  group_id: string | null;
+  team_a_id: string;
+  team_a_name: string;
+  team_b_id: string;
+  team_b_name: string;
+  favorite_team_id: string;
+  underdog_team_id: string;
+  favorite_advance_probability: number;
+  underdog_advance_probability: number;
+  advance_probability_gap: number;
+  upset_score: number;
+  risk_label: string;
+  stage_importance: number;
+  reasons: string[];
+};
+
+export type UpsetRadar = {
+  model_type: ModelType;
+  data_mode: string;
+  fixtures: UpsetFixture[];
+};
+
+export type GroupChaosScore = {
+  group_id: string;
+  group_name: string;
+  chaos_score: number;
+  chaos_label: string;
+  qualification_entropy: number;
+  average_point_spread: number;
+  key_swing_match_id: string | null;
+  key_swing_match_label: string | null;
+  teams: Array<{
+    team_id: string;
+    team_name: string;
+    group_qualification_probability: number;
+    top_two_probability: number;
+    average_points: number;
+  }>;
+};
+
+export type GroupChaosReport = {
+  model_type: ModelType;
+  data_mode: string;
+  n_simulations: number;
+  groups: GroupChaosScore[];
+};
+
+export type ModelComparisonDelta = {
+  model_type: ModelType;
+  baseline_model: ModelType;
+  champion_probability_deltas: Record<string, number>;
+  top_four_probability_deltas: Record<string, number>;
+  largest_positive_delta_team_id: string;
+  largest_negative_delta_team_id: string;
+};
+
+export type ModelComparison = {
+  data_mode: string;
+  n_simulations: number;
+  seed: number;
+  baseline_model: ModelType;
+  champion_probabilities: Record<ModelType, Record<string, number>>;
+  top_four_team_ids: string[];
+  model_deltas: ModelComparisonDelta[];
+};
+
+export type TeamDataQuality = {
+  team_id: string;
+  team_name: string;
+  group_id: string;
+  has_rating: boolean;
+  has_squad_features: boolean;
+  squad_coverage: number | null;
+  alias_confidence: number | null;
+  missing_features: string[];
+  warnings: string[];
+};
+
+export type DataQualityReport = {
+  data_mode: string;
+  last_refresh: string;
+  source_coverage: Record<string, number>;
+  teams: TeamDataQuality[];
+  missing_squad_features: string[];
+  missing_ratings: string[];
+  low_alias_coverage: string[];
+  warnings: string[];
+  notes: string[];
+};
+
 export async function simulateTournament(
   request: SimulationRequest,
 ): Promise<SimulationSummary> {
@@ -284,7 +382,7 @@ export async function fetchModelMetadata(): Promise<ModelMetadata[]> {
 }
 
 export async function fetchBacktestingMetrics(
-  modelType: ModelType = "poisson",
+  modelType: ModelType = "oracle_v2",
 ): Promise<BacktestingMetrics> {
   return fetchJson<BacktestingMetrics>(`/backtesting?model_type=${modelType}`);
 }
@@ -295,7 +393,7 @@ export async function fetchTeamPath(teamId: string): Promise<TeamPath> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       team_id: teamId,
-      model_type: "calibrated_elo",
+      model_type: "oracle_v2",
       n_simulations: 500,
       seed: 42,
     }),
@@ -303,6 +401,57 @@ export async function fetchTeamPath(teamId: string): Promise<TeamPath> {
 
   if (!response.ok) {
     throw new Error(`Team path request failed with status ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function fetchUpsetRadar(
+  modelType: ModelType = "oracle_v2",
+  limit = 8,
+): Promise<UpsetRadar> {
+  return fetchJson<UpsetRadar>(
+    `/analytics/upsets?model_type=${modelType}&limit=${limit}`,
+  );
+}
+
+export async function fetchGroupChaos(
+  modelType: ModelType = "oracle_v2",
+  nSimulations = 500,
+  seed = 42,
+): Promise<GroupChaosReport> {
+  return fetchJson<GroupChaosReport>(
+    `/analytics/group-chaos?model_type=${modelType}&n_simulations=${nSimulations}&seed=${seed}`,
+  );
+}
+
+export async function fetchModelComparison(
+  nSimulations = 300,
+  seed = 42,
+  baselineModel: ModelType = "oracle_v2",
+): Promise<ModelComparison> {
+  return fetchJson<ModelComparison>(
+    `/analytics/model-comparison?n_simulations=${nSimulations}&seed=${seed}&baseline_model=${baselineModel}`,
+  );
+}
+
+export async function fetchDataQuality(): Promise<DataQualityReport> {
+  return fetchJson<DataQualityReport>("/data-quality");
+}
+
+export type SyncResponse = {
+  success: boolean;
+  last_updated: string;
+  errors: string[];
+};
+
+export async function syncData(): Promise<SyncResponse> {
+  const response = await fetch(`${API_BASE_URL}/sync`, {
+    method: "POST",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Sync failed with status ${response.status}`);
   }
 
   return response.json();

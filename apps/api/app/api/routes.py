@@ -1,7 +1,5 @@
 """HTTP routes for the API."""
 
-from typing import Literal
-
 from fastapi import APIRouter, HTTPException
 
 from app.core.config import get_data_mode
@@ -11,18 +9,31 @@ from app.models.schemas import (
     BracketSimulateRequest,
     BracketSimulationResponse,
     DataMetadataResponse,
+    DataQualityResponse,
+    GroupChaosResponse,
     HealthResponse,
+    ModelComparisonResponse,
     ModelMetadataResponse,
+    ModelType,
     ScenarioCompareResponse,
     ScenarioSimulateRequest,
     SimulateRequest,
     SimulationSummaryResponse,
+    SyncResponse,
     TeamPathRequest,
     TeamPathResponse,
+    UpsetRadarResponse,
+)
+from app.services.analytics_service import (
+    calculate_group_chaos,
+    calculate_model_comparison,
+    calculate_upset_radar,
 )
 from app.services.backtesting import calculate_backtesting_metrics
 from app.services.bracket_service import run_bracket_simulation
 from app.services.data_loader import load_metadata, load_tournament
+from app.services.data_quality_service import calculate_data_quality
+from app.services.data_sync_service import run_data_sync
 from app.services.model_metadata import list_model_metadata
 from app.services.simulation_service import (
     run_scenario_compare,
@@ -75,7 +86,7 @@ def models() -> list[ModelMetadataResponse]:
 
 @router.get("/backtesting", response_model=BacktestingResponse)
 def backtesting(
-    model_type: Literal["elo", "poisson", "calibrated_elo"] = "poisson",
+    model_type: ModelType = "oracle_v2",
 ) -> BacktestingResponse:
     """Return baseline backtesting metrics for completed fixtures."""
     return calculate_backtesting_metrics(model_type, get_data_mode())
@@ -121,3 +132,54 @@ def scenario_compare(request: ScenarioSimulateRequest) -> ScenarioCompareRespons
         return run_scenario_compare(request, get_data_mode())
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.get("/analytics/upsets", response_model=UpsetRadarResponse)
+def upset_radar(
+    model_type: ModelType = "oracle_v2",
+    limit: int = 12,
+) -> UpsetRadarResponse:
+    """Return ranked upset-risk fixtures for the active tournament."""
+    return calculate_upset_radar(get_data_mode(), model_type, limit)
+
+
+@router.get("/analytics/group-chaos", response_model=GroupChaosResponse)
+def group_chaos(
+    model_type: ModelType = "oracle_v2",
+    n_simulations: int = 500,
+    seed: int = 42,
+) -> GroupChaosResponse:
+    """Return group chaos scores from simulation output."""
+    return calculate_group_chaos(
+        get_data_mode(),
+        model_type,
+        n_simulations=n_simulations,
+        seed=seed,
+    )
+
+
+@router.get("/analytics/model-comparison", response_model=ModelComparisonResponse)
+def model_comparison(
+    n_simulations: int = 300,
+    seed: int = 42,
+    baseline_model: ModelType = "oracle_v2",
+) -> ModelComparisonResponse:
+    """Compare champion probabilities across supported models."""
+    return calculate_model_comparison(
+        get_data_mode(),
+        n_simulations=n_simulations,
+        seed=seed,
+        baseline_model=baseline_model,
+    )
+
+
+@router.get("/data-quality", response_model=DataQualityResponse)
+def data_quality() -> DataQualityResponse:
+    """Return source coverage and missing feature warnings."""
+    return calculate_data_quality(get_data_mode())
+
+
+@router.post("/sync", response_model=SyncResponse)
+def sync_data() -> SyncResponse:
+    """Re-run ingest scripts and refresh processed data."""
+    return run_data_sync()

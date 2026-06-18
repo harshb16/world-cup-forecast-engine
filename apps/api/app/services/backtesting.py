@@ -5,7 +5,7 @@ from typing import Literal
 
 from app.core.config import get_data_mode
 from app.models.domain import Match, MatchResult, Team
-from app.models.schemas import BacktestingResponse
+from app.models.schemas import BacktestingResponse, ModelType
 from app.services.data_loader import load_tournament
 from app.services.simulation_service import create_match_model
 
@@ -13,7 +13,7 @@ Outcome = Literal["team_a_win", "draw", "team_b_win"]
 
 
 def calculate_backtesting_metrics(
-    model_type: Literal["elo", "poisson"] = "poisson",
+    model_type: ModelType = "poisson",
     data_mode: str | None = None,
 ) -> BacktestingResponse:
     """Score model probabilities against completed group-stage fixtures."""

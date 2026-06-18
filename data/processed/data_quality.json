@@ -1,0 +1,579 @@
+{
+  "data_mode": "processed",
+  "last_refresh": "2026-06-13T06:25:00+00:00",
+  "source_coverage": {
+    "teams": 48,
+    "groups": 12,
+    "group_fixtures": 72,
+    "completed_results": 4,
+    "ratings": 48,
+    "squad_features": 48
+  },
+  "teams": [
+    {
+      "team_id": "MEXICO",
+      "team_name": "Mexico",
+      "group_id": "A",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "RSA",
+      "team_name": "South Africa",
+      "group_id": "A",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "KOR",
+      "team_name": "Korea Republic",
+      "group_id": "A",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "CZECHIA",
+      "team_name": "Czechia",
+      "group_id": "A",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "CANADA",
+      "team_name": "Canada",
+      "group_id": "B",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "QATAR",
+      "team_name": "Qatar",
+      "group_id": "B",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "BIH",
+      "team_name": "Bosnia and Herzegovina",
+      "group_id": "B",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "SWITZERLAND",
+      "team_name": "Switzerland",
+      "group_id": "B",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "BRAZIL",
+      "team_name": "Brazil",
+      "group_id": "C",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "MOROCCO",
+      "team_name": "Morocco",
+      "group_id": "C",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "HAITI",
+      "team_name": "Haiti",
+      "group_id": "C",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 0.0,
+      "alias_confidence": 0.0,
+      "missing_features": [
+        "full_squad_alias"
+      ],
+      "warnings": [
+        "Squad alias coverage is partial."
+      ]
+    },
+    {
+      "team_id": "SCOTLAND",
+      "team_name": "Scotland",
+      "group_id": "C",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "USA",
+      "team_name": "United States",
+      "group_id": "D",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "PARAGUAY",
+      "team_name": "Paraguay",
+      "group_id": "D",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "AUSTRALIA",
+      "team_name": "Australia",
+      "group_id": "D",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "TURKIYE",
+      "team_name": "T\u00fcrkiye",
+      "group_id": "D",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "GERMANY",
+      "team_name": "Germany",
+      "group_id": "E",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "CURACAO",
+      "team_name": "Cura\u00e7ao",
+      "group_id": "E",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 0.0,
+      "alias_confidence": 0.0,
+      "missing_features": [
+        "full_squad_alias"
+      ],
+      "warnings": [
+        "Squad alias coverage is partial."
+      ]
+    },
+    {
+      "team_id": "CIV",
+      "team_name": "C\u00f4te d\u2019Ivoire",
+      "group_id": "E",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 0.0,
+      "alias_confidence": 0.0,
+      "missing_features": [
+        "full_squad_alias"
+      ],
+      "warnings": [
+        "Squad alias coverage is partial."
+      ]
+    },
+    {
+      "team_id": "ECUADOR",
+      "team_name": "Ecuador",
+      "group_id": "E",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "NETHERLANDS",
+      "team_name": "Netherlands",
+      "group_id": "F",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "JAPAN",
+      "team_name": "Japan",
+      "group_id": "F",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "SWEDEN",
+      "team_name": "Sweden",
+      "group_id": "F",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "TUNISIA",
+      "team_name": "Tunisia",
+      "group_id": "F",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "BELGIUM",
+      "team_name": "Belgium",
+      "group_id": "G",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "EGYPT",
+      "team_name": "Egypt",
+      "group_id": "G",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "IRN",
+      "team_name": "IR Iran",
+      "group_id": "G",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "NEW_ZEALAND",
+      "team_name": "New Zealand",
+      "group_id": "G",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "SPAIN",
+      "team_name": "Spain",
+      "group_id": "H",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "CPV",
+      "team_name": "Cabo Verde",
+      "group_id": "H",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 0.0,
+      "alias_confidence": 0.0,
+      "missing_features": [
+        "full_squad_alias"
+      ],
+      "warnings": [
+        "Squad alias coverage is partial."
+      ]
+    },
+    {
+      "team_id": "SAUDI_ARABIA",
+      "team_name": "Saudi Arabia",
+      "group_id": "H",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "URUGUAY",
+      "team_name": "Uruguay",
+      "group_id": "H",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "FRANCE",
+      "team_name": "France",
+      "group_id": "I",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "SENEGAL",
+      "team_name": "Senegal",
+      "group_id": "I",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "IRAQ",
+      "team_name": "Iraq",
+      "group_id": "I",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "NORWAY",
+      "team_name": "Norway",
+      "group_id": "I",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "ARGENTINA",
+      "team_name": "Argentina",
+      "group_id": "J",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "ALGERIA",
+      "team_name": "Algeria",
+      "group_id": "J",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "AUSTRIA",
+      "team_name": "Austria",
+      "group_id": "J",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "JORDAN",
+      "team_name": "Jordan",
+      "group_id": "J",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "PORTUGAL",
+      "team_name": "Portugal",
+      "group_id": "K",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "COD",
+      "team_name": "Congo DR",
+      "group_id": "K",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 0.0,
+      "alias_confidence": 0.0,
+      "missing_features": [
+        "full_squad_alias"
+      ],
+      "warnings": [
+        "Squad alias coverage is partial."
+      ]
+    },
+    {
+      "team_id": "UZBEKISTAN",
+      "team_name": "Uzbekistan",
+      "group_id": "K",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "COLOMBIA",
+      "team_name": "Colombia",
+      "group_id": "K",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "ENGLAND",
+      "team_name": "England",
+      "group_id": "L",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "CROATIA",
+      "team_name": "Croatia",
+      "group_id": "L",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "GHANA",
+      "team_name": "Ghana",
+      "group_id": "L",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    },
+    {
+      "team_id": "PANAMA",
+      "team_name": "Panama",
+      "group_id": "L",
+      "has_rating": true,
+      "has_squad_features": true,
+      "squad_coverage": 1.0,
+      "alias_confidence": 1.0,
+      "missing_features": [],
+      "warnings": []
+    }
+  ],
+  "missing_squad_features": [],
+  "missing_ratings": [],
+  "low_alias_coverage": [
+    "HAITI",
+    "CURACAO",
+    "CIV",
+    "CPV",
+    "COD"
+  ],
+  "warnings": [
+    "5 teams have partial squad alias coverage."
+  ],
+  "notes": [
+    "Ratings are rank-derived model inputs, not official FIFA strength scores.",
+    "Squad features come from Transfermarkt datasets with alias matching.",
+    "Availability is represented as computed squad coverage, not live injury feeds."
+  ]
+}

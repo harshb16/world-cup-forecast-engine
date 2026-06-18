@@ -44,7 +44,7 @@ export function TeamsDashboard() {
       fetchMetadata(),
       simulateTournament({
         n_simulations: 1000,
-        model_type: "poisson",
+        model_type: "oracle_v2",
         seed: 42,
       }),
     ])

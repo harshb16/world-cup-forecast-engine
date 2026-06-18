@@ -12,6 +12,31 @@ ROUND_NAMES = [
     "Semi-finals",
     "Final",
 ]
+ADVANCEMENT_PAIRINGS = {
+    "Round of 16": [
+        (0, 2),  # Match 89: winner 73 vs winner 75
+        (1, 4),  # Match 90: winner 74 vs winner 77
+        (3, 5),  # Match 91: winner 76 vs winner 78
+        (6, 7),  # Match 92: winner 79 vs winner 80
+        (10, 11),  # Match 93: winner 83 vs winner 84
+        (8, 9),  # Match 94: winner 81 vs winner 82
+        (13, 15),  # Match 95: winner 86 vs winner 88
+        (12, 14),  # Match 96: winner 85 vs winner 87
+    ],
+    "Quarter-finals": [
+        (0, 1),  # Match 97: winner 89 vs winner 90
+        (4, 5),  # Match 98: winner 93 vs winner 94
+        (2, 3),  # Match 99: winner 91 vs winner 92
+        (6, 7),  # Match 100: winner 95 vs winner 96
+    ],
+    "Semi-finals": [
+        (0, 1),  # Match 101: winner 97 vs winner 98
+        (2, 3),  # Match 102: winner 99 vs winner 100
+    ],
+    "Final": [
+        (0, 1),  # Match 104: winner 101 vs winner 102
+    ],
+}
 
 GROUP_ORDER = tuple("ABCDEFGHIJKL")
 THIRD_PLACE_SLOT_ALLOWED_GROUPS = {
@@ -96,7 +121,7 @@ def simulate_knockout(
         if round_name == "Round of 32":
             pairs = builder.build_round_of_32(current_team_ids, teams_by_id)
         else:
-            pairs = _pair_sequentially(current_team_ids)
+            pairs = _pair_by_indices(current_team_ids, ADVANCEMENT_PAIRINGS[round_name])
 
         if round_name == "Final":
             finalists = list(current_team_ids)
@@ -136,12 +161,16 @@ def simulate_knockout(
     )
 
 
-def _pair_sequentially(team_ids: list[str]) -> list[tuple[str, str]]:
-    if len(team_ids) % 2 != 0:
-        raise ValueError("knockout rounds require an even number of teams")
+def _pair_by_indices(
+    team_ids: list[str],
+    pair_indices: list[tuple[int, int]],
+) -> list[tuple[str, str]]:
+    max_index = max(index for pair in pair_indices for index in pair)
+    if len(team_ids) <= max_index:
+        raise ValueError("knockout advancement map references missing teams")
     return [
-        (team_ids[index], team_ids[index + 1])
-        for index in range(0, len(team_ids), 2)
+        (team_ids[first_index], team_ids[second_index])
+        for first_index, second_index in pair_indices
     ]
 
 

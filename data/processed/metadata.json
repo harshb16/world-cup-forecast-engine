@@ -21,6 +21,11 @@
       "name": "Public indexed schedule/group references",
       "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup",
       "usage": "Fallback normalization aid when official dynamic pages are unavailable to automation."
+    },
+    {
+      "name": "Transfermarkt Datasets",
+      "url": "https://github.com/dcaribou/transfermarkt-datasets",
+      "usage": "Free squad market-value features for Oracle v2 model calibration."
     }
   ]
 }

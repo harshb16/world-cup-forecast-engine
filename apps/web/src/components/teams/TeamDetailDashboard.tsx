@@ -51,7 +51,7 @@ export function TeamDetailDashboard() {
       fetchTeamPath(teamId),
       simulateTournament({
         n_simulations: 1000,
-        model_type: "poisson",
+        model_type: "oracle_v2",
         seed: 42,
       }),
     ])
@@ -188,10 +188,7 @@ function TeamPathExplorer({ path }: { path: TeamPath }) {
           </h2>
         </div>
         <p className="text-xs text-zinc-500">
-          {formatNumber(path.metadata.n_simulations)} simulations ·{" "}
-          {path.metadata.model_type === "calibrated_elo"
-            ? "Calibrated Elo"
-            : path.metadata.model_type.toUpperCase()}
+          {formatNumber(path.metadata.n_simulations)} simulations · Oracle v2
         </p>
       </div>
 

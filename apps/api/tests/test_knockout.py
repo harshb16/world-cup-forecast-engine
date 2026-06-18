@@ -19,6 +19,17 @@ class AlwaysDrawModel(EloWinDrawLossModel):
         return MatchResult(team_a_goals=1, team_b_goals=1)
 
 
+class FavoriteTeamModel(EloWinDrawLossModel):
+    def __init__(self, favorite_team_ids: set[str]) -> None:
+        super().__init__()
+        self.favorite_team_ids = favorite_team_ids
+
+    def simulate_result(self, team_a, team_b, rng) -> MatchResult:  # type: ignore[no-untyped-def]
+        if team_b.id in self.favorite_team_ids and team_a.id not in self.favorite_team_ids:
+            return MatchResult(team_a_goals=0, team_b_goals=1)
+        return MatchResult(team_a_goals=1, team_b_goals=0)
+
+
 def _qualified_team_ids() -> list[str]:
     config = load_sample_tournament()
     group_stage = simulate_group_stage(config, EloWinDrawLossModel(), np.random.default_rng(1))
@@ -121,6 +132,19 @@ def test_round_of_32_uses_world_cup_2026_fixed_slots() -> None:
     assert pairs[11] == ("T29", "T38")  # 1H vs 2J
     assert pairs[13] == ("T37", "T30")  # 1J vs 2H
     assert pairs[15] == ("T14", "T26")  # 2D vs 2G
+
+
+def test_official_advancement_places_group_h_and_i_winners_in_same_semifinal() -> None:
+    result = simulate_knockout(
+        _rank_ordered_sample_qualifiers(),
+        _teams_by_id(),
+        FavoriteTeamModel({"T29", "T33"}),  # 1H and 1I
+        np.random.default_rng(1),
+    )
+
+    first_semifinal = result.rounds["Semi-finals"][0]
+
+    assert {first_semifinal.team_a_id, first_semifinal.team_b_id} == {"T29", "T33"}
 
 
 def test_round_of_32_assigns_thirds_to_allowed_winner_slots() -> None:

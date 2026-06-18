@@ -82,4 +82,32 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
                 "team path distributions",
             ],
         ),
+        ModelMetadataResponse(
+            id="oracle_v2",
+            name="Oracle v2 ensemble",
+            is_ml=False,
+            inputs=[
+                "rank-derived tournament rating",
+                "open-data Elo from senior international results",
+                "computed squad market-value strength",
+                "attack/defense expected-goals shape",
+            ],
+            assumptions=[
+                "Ratings, recent results, and squad value together beat any single noisy source.",
+                "Expected goals should be generated from separate attack and defense strength.",
+                "Favorite paths use projected group tables, not raw third-place strength sorting.",
+            ],
+            limitations=[
+                "No private injury, lineup, or event feed is used.",
+                "Squad-value coverage depends on the free Transfermarkt dataset refresh.",
+                "xG is still a computed proxy until direct international xG coverage is available.",
+            ],
+            supported_outputs=[
+                "expected goals",
+                "win/draw/loss probabilities",
+                "simulated scorelines",
+                "favorite-path bracket reveal",
+                "Monte Carlo stage probabilities",
+            ],
+        ),
     ]

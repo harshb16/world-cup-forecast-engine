@@ -9,9 +9,10 @@
   --line: rgba(244, 247, 245, 0.12);
   --floodlight: #f4f7f5;
   --muted: #93a19a;
-  --turf: #39ff88;
-  --var-blue: #6ea8ff;
-  --score-amber: #f6c85f;
+  --turf: #2fd17c;
+  --var-blue: #4b8dff;
+  --score-amber: #f2b84b;
+  --risk-red: #e5484d;
 }
 
 @theme inline {
@@ -46,7 +47,7 @@ body::before {
 }
 
 ::selection {
-  background: rgba(57, 255, 136, 0.28);
+  background: rgba(47, 209, 124, 0.28);
   color: var(--floodlight);
 }
 

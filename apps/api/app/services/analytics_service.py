@@ -1,6 +1,11 @@
 """Analytics services for upset radar, group chaos, and model comparison."""
 
+import json
 import math
+from collections import Counter
+from pathlib import Path
+
+import numpy as np
 
 from app.models.schemas import (
     BracketSimulateRequest,
@@ -9,13 +14,23 @@ from app.models.schemas import (
     ModelComparisonDeltaResponse,
     ModelComparisonResponse,
     ModelType,
+    ProbabilityMoverResponse,
+    ProbabilityMoversResponse,
     SimulateRequest,
+    ThirdPlaceSlotDistributionResponse,
+    ThirdPlaceTeamResponse,
+    ThirdPlaceTrackerResponse,
     UpsetFixtureResponse,
     UpsetRadarResponse,
 )
 from app.services.bracket_service import run_bracket_simulation
 from app.services.data_loader import load_tournament
 from app.services.simulation_service import create_match_model, run_simulation
+from app.simulation.group_stage import simulate_group_stage
+from app.simulation.group_table import calculate_group_table
+from app.simulation.knockout import WorldCup2026BracketBuilder
+
+PROCESSED_DIR = Path(__file__).resolve().parents[4] / "data" / "processed"
 
 
 STAGE_IMPORTANCE: dict[str, float] = {

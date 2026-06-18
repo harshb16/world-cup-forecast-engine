@@ -4,7 +4,15 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-ModelType = Literal["elo", "poisson", "calibrated_elo", "oracle_v2", "dixon_coles"]
+ModelType = Literal[
+    "elo",
+    "poisson",
+    "calibrated_elo",
+    "oracle_v2",
+    "dixon_coles",
+    "gbm",
+    "oracle_v3",
+]
 
 
 class HealthResponse(BaseModel):
@@ -129,23 +137,6 @@ class ModelMetadataResponse(BaseModel):
     supported_outputs: list[str] = Field(default_factory=list)
 
 
-class CalibrationBinResponse(BaseModel):
-    """One calibration bucket for predicted vs actual outcome frequency."""
-
-    predicted_midpoint: float
-    actual_frequency: float
-    count: int
-
-
-class BacktestingMatchDetailResponse(BaseModel):
-    """Per-match backtesting detail row."""
-
-    match_id: str
-    predicted_outcome: str
-    actual_outcome: str
-    confidence: float
-
-
 class BacktestingResponse(BaseModel):
     """Baseline evaluation metrics for completed fixtures."""
 
@@ -155,13 +146,7 @@ class BacktestingResponse(BaseModel):
     accuracy: float | None = None
     brier_score: float | None = None
     log_loss: float | None = None
-    calibration_bins: list[CalibrationBinResponse] = Field(default_factory=list)
-    per_match_details: list[BacktestingMatchDetailResponse] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
-    calibration_bins: list[dict[str, float]] = Field(default_factory=list)
-    # Each bin: {"predicted_midpoint": 0.15, "actual_frequency": 0.12, "count": 4}
-    per_match_details: list[dict[str, object]] = Field(default_factory=list)
-    # Each: {"match_id": "A1", "predicted_outcome": "team_a_win", "actual_outcome": "team_a_win", "confidence": 0.62}
 
 
 class BracketTeamResponse(BaseModel):
@@ -229,6 +214,14 @@ class TeamPathOpponentResponse(BaseModel):
     probability: float
 
 
+class TeamPathMostLikelyOpponentResponse(BaseModel):
+    """Most likely opponent at one knockout stage."""
+
+    team_id: str
+    team_name: str
+    probability: float
+
+
 class TeamPathStageResponse(BaseModel):
     """Likely path distribution for one knockout stage."""
 
@@ -236,6 +229,7 @@ class TeamPathStageResponse(BaseModel):
     reached_count: int
     reached_probability: float
     opponents: list[TeamPathOpponentResponse] = Field(default_factory=list)
+    most_likely_opponent: TeamPathMostLikelyOpponentResponse | None = None
 
 
 class TeamPathResponse(BaseModel):
@@ -395,6 +389,39 @@ class SyncResponse(BaseModel):
     errors: list[str] = Field(default_factory=list)
 
 
+class ProbabilitySnapshotResponse(BaseModel):
+    """One probability snapshot recorded after a sync."""
+
+    timestamp: str
+    matchday: int = 1
+    champion_probabilities: dict[str, float]
+
+
+class ProbabilityHistoryResponse(BaseModel):
+    """Full history of probability snapshots."""
+
+    snapshots: list[ProbabilitySnapshotResponse]
+
+
+class ProbabilityMoverResponse(BaseModel):
+    """Champion probability delta for one team."""
+
+    team_id: str
+    team_name: str
+    previous_probability: float
+    current_probability: float
+    delta: float
+
+
+class ProbabilityMoversResponse(BaseModel):
+    """Top champion probability risers and fallers."""
+
+    risers: list[ProbabilityMoverResponse]
+    fallers: list[ProbabilityMoverResponse]
+    previous_timestamp: str | None = None
+    current_timestamp: str | None = None
+
+
 class MatchdayFixtureResponse(BaseModel):
     """One fixture on the matchday page."""
 
@@ -450,14 +477,44 @@ class MatchdayResponse(BaseModel):
     groups: list[MatchdayGroupResponse]
 
 
-class ProbabilitySnapshotResponse(BaseModel):
-    """One probability snapshot recorded after a sync."""
+class ThirdPlaceSlotDistributionResponse(BaseModel):
+    """Knockout slot assignment probability for one third-place candidate."""
 
-    timestamp: str
-    champion_probabilities: dict[str, float]
+    slot_label: str
+    probability: float
 
 
-class ProbabilityHistoryResponse(BaseModel):
-    """Full history of probability snapshots."""
+class ThirdPlaceTeamResponse(BaseModel):
+    """One third-place qualification candidate."""
 
-    snapshots: list[ProbabilitySnapshotResponse]
+    team_id: str
+    team_name: str
+    group_id: str
+    qualification_probability: float
+    current_points: int
+    simulated_average_points: float
+    slot_distribution: list[ThirdPlaceSlotDistributionResponse] = Field(default_factory=list)
+
+
+class ThirdPlaceTrackerResponse(BaseModel):
+    """Ranked third-place qualification bubble."""
+
+    model_type: ModelType
+    data_mode: str
+    n_simulations: int
+    teams: list[ThirdPlaceTeamResponse]
+
+
+class HeadToHeadResponse(BaseModel):
+    """Probability of two teams meeting at a knockout stage."""
+
+    team_a_id: str
+    team_a_name: str
+    team_b_id: str
+    team_b_name: str
+    probability: float = 0.0
+    stages_they_could_meet: list[str] = Field(default_factory=list)
+    meet_before_final_probability: float = 0.0
+    meet_in_semi_final_probability: float = 0.0
+    meet_in_final_probability: float = 0.0
+    n_simulations: int

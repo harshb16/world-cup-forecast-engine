@@ -1,5 +1,7 @@
 """HTTP routes for the API."""
 
+import json
+
 from fastapi import APIRouter, HTTPException
 
 from app.core.config import get_data_mode
@@ -11,15 +13,21 @@ from app.models.schemas import (
     DataMetadataResponse,
     DataQualityResponse,
     GroupChaosResponse,
+    HeadToHeadResponse,
     HealthResponse,
+    MatchdayResponse,
     ModelComparisonResponse,
     ModelMetadataResponse,
     ModelType,
+    ProbabilityHistoryResponse,
+    ProbabilityMoversResponse,
+    ProbabilitySnapshotResponse,
     ScenarioCompareResponse,
     ScenarioSimulateRequest,
     SimulateRequest,
     SimulationSummaryResponse,
     SyncResponse,
+    ThirdPlaceTrackerResponse,
     TeamPathRequest,
     TeamPathResponse,
     UpsetRadarResponse,
@@ -34,7 +42,10 @@ from app.services.bracket_service import run_bracket_simulation
 from app.services.data_loader import load_metadata, load_tournament
 from app.services.data_quality_service import calculate_data_quality
 from app.services.data_sync_service import run_data_sync
+from app.services.head_to_head_service import calculate_head_to_head
+from app.services.matchday_service import calculate_matchday
 from app.services.model_metadata import list_model_metadata
+from app.services.probability_movers_service import calculate_probability_movers
 from app.services.simulation_service import (
     run_scenario_compare,
     run_scenario_simulation,
@@ -44,6 +55,7 @@ from app.services.simulation_service import (
     run_sample_simulation,
 )
 from app.services.team_path_service import calculate_team_path
+from app.services.third_place_tracker_service import calculate_third_place_tracker
 
 router = APIRouter()
 
@@ -116,6 +128,22 @@ def team_path(request: TeamPathRequest) -> TeamPathResponse:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
+@router.get("/team-path/head-to-head", response_model=HeadToHeadResponse)
+def team_path_head_to_head(
+    team_a: str,
+    team_b: str,
+    model_type: ModelType = "oracle_v2",
+    n_simulations: int = 500,
+    seed: int = 42,
+) -> HeadToHeadResponse:
+    try:
+        return calculate_head_to_head(
+            team_a, team_b, get_data_mode(), model_type, n_simulations, seed
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
 @router.post("/scenario/simulate", response_model=SimulationSummaryResponse)
 def scenario_simulate(request: ScenarioSimulateRequest) -> SimulationSummaryResponse:
     """Run a what-if simulation against sample tournament data."""
@@ -173,13 +201,63 @@ def model_comparison(
     )
 
 
+@router.get("/analytics/probability-history", response_model=ProbabilityHistoryResponse)
+def probability_history() -> ProbabilityHistoryResponse:
+    import app.services.data_sync_service as data_sync_service
+
+    history_path = data_sync_service.PROCESSED_DIR / "probability_history.json"
+    if not history_path.exists():
+        return ProbabilityHistoryResponse(snapshots=[])
+    raw: list[dict] = json.loads(history_path.read_text(encoding="utf-8"))
+    return ProbabilityHistoryResponse(
+        snapshots=[ProbabilitySnapshotResponse(**entry) for entry in raw]
+    )
+
+
+@router.get("/analytics/probability-movers", response_model=ProbabilityMoversResponse)
+def probability_movers(limit: int = 8) -> ProbabilityMoversResponse:
+    return calculate_probability_movers(limit=limit)
+
+
+@router.get("/analytics/third-place", response_model=ThirdPlaceTrackerResponse)
+def third_place_tracker(
+    model_type: ModelType = "oracle_v2",
+    n_simulations: int = 500,
+    seed: int = 42,
+) -> ThirdPlaceTrackerResponse:
+    return calculate_third_place_tracker(
+        get_data_mode(), model_type, n_simulations=n_simulations, seed=seed
+    )
+
+
 @router.get("/data-quality", response_model=DataQualityResponse)
 def data_quality() -> DataQualityResponse:
     """Return source coverage and missing feature warnings."""
     return calculate_data_quality(get_data_mode())
 
 
+@router.get("/matchday", response_model=MatchdayResponse)
+def matchday(model_type: ModelType = "oracle_v2") -> MatchdayResponse:
+    return calculate_matchday(get_data_mode(), model_type)
+
+
 @router.post("/sync", response_model=SyncResponse)
 def sync_data() -> SyncResponse:
     """Re-run ingest scripts and refresh processed data."""
     return run_data_sync()
+
+
+@router.get("/analytics/probability-history", response_model=ProbabilityHistoryResponse)
+def probability_history() -> ProbabilityHistoryResponse:
+    """Return the full history of champion probability snapshots."""
+    import json
+
+    import app.services.data_sync_service as _dss
+
+    history_path = _dss.PROCESSED_DIR / "probability_history.json"
+    if not history_path.exists():
+        return ProbabilityHistoryResponse(snapshots=[])
+    raw: list[dict] = json.loads(history_path.read_text(encoding="utf-8"))
+    return ProbabilityHistoryResponse(
+        snapshots=[ProbabilitySnapshotResponse(**entry) for entry in raw]
+    )

@@ -1,5 +1,6 @@
 import { DataMetadata } from "@/lib/api";
 import { formatNumber } from "@/lib/format";
+import { DataFreshness } from "@/components/DataFreshness";
 
 export function DataStatusCard({ metadata }: { metadata: DataMetadata }) {
   return (
@@ -8,10 +9,10 @@ export function DataStatusCard({ metadata }: { metadata: DataMetadata }) {
         label="Version"
         value={metadata.data_version ?? "Unknown"}
       />
-      <StatusChip
-        label="Updated"
-        value={metadata.last_updated ?? "Unknown"}
-      />
+      <span className="text-zinc-400">
+        <span className="mr-1 text-xs uppercase text-zinc-500">Data</span>
+        <DataFreshness timestamp={metadata.last_updated} />
+      </span>
       <StatusChip
         label="Results"
         value={formatNumber(metadata.completed_result_count)}

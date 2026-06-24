@@ -10,6 +10,7 @@ from pathlib import Path
 
 from app.models.schemas import SyncResponse
 from app.services.data_quality_service import build_data_quality_payload
+from app.services.world_cup_schedule import group_matchday_for_date
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 PROCESSED_DIR = REPO_ROOT / "data" / "processed"
@@ -89,16 +90,7 @@ def _refresh_data_quality_report() -> None:
 
 
 def _current_matchday() -> int:
-    fixtures_path = PROCESSED_DIR / "fixtures.json"
-    if not fixtures_path.exists():
-        return 1
-    fixtures = json.loads(fixtures_path.read_text(encoding="utf-8"))
-    played = sum(
-        1
-        for fixture in fixtures
-        if (fixture.get("result") or {}).get("played")
-    )
-    return max(1, (played // 24) + 1)
+    return group_matchday_for_date(datetime.now(tz=UTC).date()) or 1
 
 
 def _append_probability_snapshot(timestamp: str) -> None:

@@ -8,6 +8,7 @@ import { SectionCard } from "@/components/ui/SectionCard";
 import { fetchThirdPlaceTracker, ThirdPlaceTracker as ThirdPlaceData } from "@/lib/api";
 import { formatPercent } from "@/lib/format";
 import { THIRD_PLACE_QUALIFIER_COUNT, GROUP_WINNERS_AND_RUNNERS_UP } from "@/lib/tournament";
+import { ANALYTICS_SIMULATION_COUNT } from "@/lib/config";
 
 export function ThirdPlaceTrackerPanel() {
   const [data, setData] = useState<ThirdPlaceData | null>(null);
@@ -15,7 +16,7 @@ export function ThirdPlaceTrackerPanel() {
 
   useEffect(() => {
     let isActive = true;
-    fetchThirdPlaceTracker(undefined, 500, 42)
+    fetchThirdPlaceTracker(undefined, ANALYTICS_SIMULATION_COUNT, 42)
       .then((tracker) => {
         if (isActive) {
           setData(tracker);

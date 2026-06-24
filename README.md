@@ -2,6 +2,28 @@
 
 World Cup Oracle is a FastAPI + Next.js World Cup simulation dashboard.
 
+## Quick Start
+
+Run both servers with one command:
+
+```bash
+./scripts/dev.sh
+```
+
+The launcher opens `http://127.0.0.1:3000`, enables hot reload, and uses a
+small simulation profile so pages load quickly while testing. Press `Ctrl+C`
+to stop both servers.
+
+Override the fast profile when needed:
+
+```bash
+NEXT_PUBLIC_WCO_SIMULATIONS=100 \
+NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS=50 \
+./scripts/dev.sh
+```
+
+Set `WCO_NO_OPEN=1` to prevent the browser from opening automatically.
+
 ## Data Mode
 
 Backend defaults to real processed World Cup 2026 data:

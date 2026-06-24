@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from typing import Any
 
 from app.core.config import DEFAULT_MODEL_TYPE
@@ -21,11 +21,14 @@ from app.services.data_loader import (
     load_tournament,
 )
 from app.services.simulation_service import create_match_model
+from app.services.world_cup_schedule import group_matchday_label
 from app.simulation.group_table import calculate_group_table
+
 
 def calculate_matchday(
     data_mode: str,
     model_type: ModelType = DEFAULT_MODEL_TYPE,
+    as_of_date: date | None = None,
 ) -> MatchdayResponse:
     """Return today's fixtures with model probabilities and real group standings."""
     config = load_tournament(data_mode)
@@ -34,21 +37,38 @@ def calculate_matchday(
     match_model = create_match_model(model_type, data_mode)
     raw_fixtures = _load_raw_fixture_index(data_mode)
 
-    today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    requested_date = as_of_date or datetime.now(timezone.utc).date()
     group_matches = [m for m in config.matches if m.stage == "group"]
+    unplayed_matches = [
+        match
+        for match in group_matches
+        if match.result is None or not match.result.played
+    ]
 
     today_fixtures = [
         m
-        for m in group_matches
-        if m.result is None or not m.result.played
-        if _kickoff_date(m, raw_fixtures) == today_str
+        for m in unplayed_matches
+        if _kickoff_date(m, raw_fixtures) == requested_date
     ]
 
-    # Fallback: if no matches today use all unplayed matches
+    display_date = requested_date
+    # If today is idle, show the next scheduled group-stage date.
     if not today_fixtures:
-        today_fixtures = [
-            m for m in group_matches if m.result is None or not m.result.played
+        future_dates = [
+            kickoff_date
+            for match in unplayed_matches
+            if (kickoff_date := _kickoff_date(match, raw_fixtures)) is not None
+            and kickoff_date >= requested_date
         ]
+        if future_dates:
+            display_date = min(future_dates)
+            today_fixtures = [
+                match
+                for match in unplayed_matches
+                if _kickoff_date(match, raw_fixtures) == display_date
+            ]
+        else:
+            today_fixtures = unplayed_matches
 
     fixture_responses = [
         _build_fixture_response(match, teams_by_id, match_model, raw_fixtures)
@@ -64,11 +84,9 @@ def calculate_matchday(
         for group in sorted(config.groups, key=lambda g: g.id)
     ]
 
-    matchday_label = _matchday_label(raw_fixtures)
-
     return MatchdayResponse(
-        date=today_str,
-        matchday_label=matchday_label,
+        date=display_date.isoformat(),
+        matchday_label=group_matchday_label(display_date),
         model_type=model_type,
         fixtures=fixture_responses,
         groups=group_responses,
@@ -78,14 +96,14 @@ def calculate_matchday(
 def _kickoff_date(
     match: Match,
     raw_fixtures: dict[str, dict[str, Any]],
-) -> str | None:
-    """Return the UTC date string for a match's kickoff_utc field."""
+) -> date | None:
+    """Return the UTC date for a match's kickoff_utc field."""
     raw = raw_fixtures.get(match.id, {}).get("kickoff_utc")
     if raw is None:
         return None
     try:
         dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
-        return dt.strftime("%Y-%m-%d")
+        return dt.date()
     except (ValueError, AttributeError):
         return None
 
@@ -233,20 +251,3 @@ def _build_group_response(
         standings=standings,
         is_complete=is_complete,
     )
-
-
-def _matchday_label(raw_fixtures: dict[str, dict[str, Any]]) -> str:
-    """Derive a human-readable matchday label from completed match count."""
-    try:
-        played = sum(
-            1
-            for fixture in raw_fixtures.values()
-            if fixture.get("status") == "finished"
-            or (fixture.get("result") or {}).get("played")
-        )
-        if played == 0:
-            return "Matchday 1"
-        matchday = (played // 24) + 1
-        return f"Matchday {matchday}"
-    except Exception:
-        return "Matchday"

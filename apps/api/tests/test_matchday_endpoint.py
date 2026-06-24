@@ -1,5 +1,7 @@
 """Tests for the matchday endpoint."""
 
+from datetime import date
+
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -103,3 +105,30 @@ def test_matchday_sample_mode() -> None:
     assert result.date
     assert len(result.groups) > 0
     assert all(fixture.kickoff_utc is None for fixture in result.fixtures)
+
+
+def test_matchday_uses_official_world_cup_date_windows() -> None:
+    matchday_two = calculate_matchday(
+        "processed",
+        "oracle_v2",
+        as_of_date=date(2026, 6, 23),
+    )
+    matchday_three = calculate_matchday(
+        "processed",
+        "oracle_v2",
+        as_of_date=date(2026, 6, 24),
+    )
+
+    assert matchday_two.matchday_label == "Matchday 2"
+    assert matchday_three.matchday_label == "Matchday 3"
+
+
+def test_matchday_idle_date_advances_to_next_fixture_date() -> None:
+    result = calculate_matchday(
+        "processed",
+        "oracle_v2",
+        as_of_date=date(2026, 6, 17),
+    )
+
+    assert result.date == "2026-06-18"
+    assert result.matchday_label == "Matchday 2"

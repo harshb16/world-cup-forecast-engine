@@ -10,6 +10,10 @@ import { GroupProbabilityCard } from "@/components/groups/GroupProbabilityCard";
 import { HelpText } from "@/components/ui/HelpText";
 import { THIRD_PLACE_QUALIFIER_COUNT } from "@/lib/tournament";
 import {
+  ANALYTICS_SIMULATION_COUNT,
+  SIMULATION_COUNT,
+} from "@/lib/config";
+import {
   DEFAULT_MODEL_TYPE,
   fetchGroupChaos,
   fetchGroups,
@@ -43,11 +47,11 @@ export function GroupsDashboard() {
       fetchTeams(),
       fetchMetadata(),
       simulateTournament({
-        n_simulations: 1000,
+        n_simulations: SIMULATION_COUNT,
         model_type: DEFAULT_MODEL_TYPE,
         seed: 42,
       }),
-      fetchGroupChaos(DEFAULT_MODEL_TYPE, 500, 42),
+      fetchGroupChaos(DEFAULT_MODEL_TYPE, ANALYTICS_SIMULATION_COUNT, 42),
     ])
       .then(([groups, teams, metadata, simulation, chaos]) => {
         if (isActive) {

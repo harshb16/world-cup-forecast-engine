@@ -25,6 +25,7 @@ import {
   Team,
   DataMetadata,
 } from "@/lib/api";
+import { SIMULATION_COUNT } from "@/lib/config";
 
 function encodeOverrides(overrides: MatchResultOverride[]): string {
   if (overrides.length === 0) {
@@ -128,7 +129,7 @@ export function WhatIfLab() {
     setIsRunning(true);
     setError(null);
     compareScenario({
-      n_simulations: 1000,
+      n_simulations: SIMULATION_COUNT,
       model_type: DEFAULT_MODEL_TYPE,
       seed: 42,
       result_overrides: overrides,

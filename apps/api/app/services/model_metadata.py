@@ -10,6 +10,7 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
             id="elo",
             name="Elo win/draw/loss baseline",
             is_ml=False,
+            maturity="baseline",
             inputs=[
                 "team rating",
                 "opponent rating",
@@ -34,6 +35,7 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
             id="poisson",
             name="Poisson scoreline baseline",
             is_ml=False,
+            maturity="baseline",
             inputs=[
                 "team rating",
                 "opponent rating",
@@ -59,6 +61,7 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
             id="calibrated_elo",
             name="Open-data calibrated Elo",
             is_ml=False,
+            maturity="production",
             inputs=[
                 "open international match results since 2018",
                 "active team identity",
@@ -86,6 +89,7 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
             id="dixon_coles",
             name="Dixon-Coles Poisson model",
             is_ml=False,
+            maturity="baseline",
             inputs=[
                 "team rating",
                 "opponent rating",
@@ -109,8 +113,9 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
         ),
         ModelMetadataResponse(
             id="oracle_v2",
-            name="Oracle v2 ensemble",
+            name="Oracle v2 ensemble (experimental)",
             is_ml=False,
+            maturity="experimental",
             inputs=[
                 "rank-derived tournament rating",
                 "open-data Elo from senior international results",
@@ -118,7 +123,7 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
                 "attack/defense expected-goals shape",
             ],
             assumptions=[
-                "Ratings, recent results, and squad value together beat any single noisy source.",
+                "Ratings, recent results, and squad value may complement one another.",
                 "Expected goals should be generated from separate attack and defense strength.",
                 "Favorite paths use projected group tables, not raw third-place strength sorting.",
                 "Knockout rounds apply a lower expected-goals scale than group-stage matches.",
@@ -127,6 +132,7 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
                 "No private injury, lineup, or event feed is used.",
                 "Squad-value coverage depends on the free Transfermarkt dataset refresh.",
                 "xG is still a computed proxy until direct international xG coverage is available.",
+                "The blend has not shown a repeatable holdout gain over calibrated Elo.",
             ],
             supported_outputs=[
                 "expected goals",
@@ -138,8 +144,9 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
         ),
         ModelMetadataResponse(
             id="gbm",
-            name="Gradient boosting classifier",
+            name="Gradient boosting classifier (experimental)",
             is_ml=True,
+            maturity="experimental",
             inputs=[
                 "rating difference",
                 "team ratings",
@@ -162,21 +169,23 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
         ),
         ModelMetadataResponse(
             id="oracle_v3",
-            name="Oracle v3 ensemble",
+            name="Oracle v3 ensemble (experimental)",
             is_ml=True,
+            maturity="experimental",
             inputs=[
                 "Dixon-Coles scoreline model",
                 "Oracle v2 squad-aware model",
                 "GBM classifier (when artifact available)",
             ],
             assumptions=[
-                "Blended W/D/L probabilities outperform any single baseline on calibration.",
+                "Blended W/D/L probabilities are intended to combine complementary model signals.",
                 "Default weights are 35% Dixon-Coles, 35% Oracle v2, 30% GBM.",
                 "Falls back to 50/50 Dixon-Coles + Oracle v2 when GBM artifact is missing.",
             ],
             limitations=[
                 "Ensemble weights are fixed, not re-fit after every matchday.",
                 "GBM availability depends on scripts/train_gbm_model.py being run.",
+                "No repeatable historical holdout gain over calibrated Elo has been established.",
             ],
             supported_outputs=[
                 "win/draw/loss probabilities",

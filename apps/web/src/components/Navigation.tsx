@@ -20,7 +20,8 @@ import {
   Users,
 } from "lucide-react";
 
-import { fetchMetadata, syncData } from "@/lib/api";
+import { DEFAULT_MODEL_TYPE, fetchMetadata, syncData } from "@/lib/api";
+import { formatModelLabel } from "@/lib/format";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: Gauge },
@@ -186,10 +187,10 @@ export function Navigation() {
         <div className="mt-auto hidden rounded-lg border border-white/10 bg-[#101722] p-3 text-sm text-[#f4f7f5] lg:block">
           <div className="flex items-center gap-2 font-semibold">
             <Shield size={16} aria-hidden="true" className="text-[var(--turf)]" />
-            Oracle v2
+            {formatModelLabel(DEFAULT_MODEL_TYPE)}
           </div>
           <p className="mt-1 text-xs leading-5 text-[#93a19a]">
-            Squad-aware predictions on checked-in World Cup data.
+            Trusted default using open international match results.
           </p>
         </div>
       ) : null}

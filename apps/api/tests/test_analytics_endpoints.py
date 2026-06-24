@@ -66,11 +66,11 @@ def test_model_comparison_response_shape() -> None:
         assert len(delta["champion_probability_deltas"]) == 48
 
 
-def test_model_comparison_defaults_to_oracle_v3_baseline() -> None:
+def test_model_comparison_defaults_to_calibrated_elo_baseline() -> None:
     response = client.get("/analytics/model-comparison?n_simulations=20&seed=11")
 
     assert response.status_code == 200
-    assert response.json()["baseline_model"] == "oracle_v3"
+    assert response.json()["baseline_model"] == "calibrated_elo"
 
 
 def test_data_quality_covers_all_teams() -> None:

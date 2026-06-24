@@ -8,7 +8,7 @@ export default function Home() {
       <PageHeader
         eyebrow="Tournament dashboard"
         title="World Cup simulation overview"
-        description="Live simulation output from the backend API."
+        description="Latest simulation output from the active processed dataset."
       />
       <HomeDashboard />
     </AppShell>

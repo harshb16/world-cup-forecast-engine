@@ -1,4 +1,5 @@
 import { SectionCard } from "@/components/ui/SectionCard";
+import { DataFreshness } from "@/components/DataFreshness";
 import { DataQualityReport } from "@/lib/api";
 import { formatNumber } from "@/lib/format";
 
@@ -14,8 +15,8 @@ export function DataQualityDesk({ report }: { report: DataQualityReport }) {
         Source coverage and gaps
       </h2>
       <p className="mt-1 text-sm text-zinc-400">
-        Last refresh {report.last_refresh}. All inputs are computed from open
-        sources or flagged as missing.
+        Last refresh <DataFreshness timestamp={report.last_refresh} />. All
+        inputs are computed from open sources or flagged as missing.
       </p>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">

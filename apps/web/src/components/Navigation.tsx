@@ -20,6 +20,7 @@ import {
 
 import { DEFAULT_MODEL_TYPE, fetchMetadata } from "@/lib/api";
 import { formatModelLabel } from "@/lib/format";
+import { DataFreshness } from "@/components/DataFreshness";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: Gauge },
@@ -131,7 +132,7 @@ export function Navigation() {
       <div className={`mt-4 ${collapsed ? "lg:px-0" : ""}`}>
         {!collapsed && lastUpdated ? (
           <p className="px-1 text-[0.68rem] leading-5 text-zinc-500">
-            Updated {lastUpdated}
+            Data <DataFreshness timestamp={lastUpdated} compact />
           </p>
         ) : null}
       </div>

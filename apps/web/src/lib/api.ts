@@ -98,7 +98,7 @@ export type ModelMetadata = {
   supported_outputs: string[];
 };
 
-export type BacktestingMetrics = {
+export type CurrentTournamentScoring = {
   model_type: ModelType;
   data_mode: string;
   sample_size: number;
@@ -106,7 +106,7 @@ export type BacktestingMetrics = {
   brier_score: number | null;
   log_loss: number | null;
   calibration_bins: CalibrationBin[];
-  per_match_details: BacktestingMatchDetail[];
+  per_match_details: CurrentTournamentMatchScore[];
   limitations: string[];
 };
 
@@ -116,7 +116,7 @@ export type CalibrationBin = {
   count: number;
 };
 
-export type BacktestingMatchDetail = {
+export type CurrentTournamentMatchScore = {
   match_id: string;
   predicted_outcome: string;
   actual_outcome: string;
@@ -414,10 +414,12 @@ export async function fetchModelMetadata(): Promise<ModelMetadata[]> {
   return fetchJson<ModelMetadata[]>("/models");
 }
 
-export async function fetchBacktestingMetrics(
+export async function fetchCurrentTournamentScoring(
   modelType: ModelType = DEFAULT_MODEL_TYPE,
-): Promise<BacktestingMetrics> {
-  return fetchJson<BacktestingMetrics>(`/backtesting?model_type=${modelType}`);
+): Promise<CurrentTournamentScoring> {
+  return fetchJson<CurrentTournamentScoring>(
+    `/evaluation/current?model_type=${modelType}`,
+  );
 }
 
 export async function fetchTeamPath(teamId: string): Promise<TeamPath> {

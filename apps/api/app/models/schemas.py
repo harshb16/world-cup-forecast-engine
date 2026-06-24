@@ -148,8 +148,8 @@ class CalibrationBinResponse(BaseModel):
     count: int
 
 
-class BacktestingMatchDetailResponse(BaseModel):
-    """Per-match backtesting detail row."""
+class CurrentTournamentMatchScoreResponse(BaseModel):
+    """Per-match score against a completed current-tournament fixture."""
 
     match_id: str
     predicted_outcome: str
@@ -157,8 +157,8 @@ class BacktestingMatchDetailResponse(BaseModel):
     confidence: float
 
 
-class BacktestingResponse(BaseModel):
-    """Baseline evaluation metrics for completed fixtures."""
+class CurrentTournamentScoringResponse(BaseModel):
+    """Model scores against completed fixtures in the active tournament."""
 
     model_type: ModelType
     data_mode: str
@@ -167,7 +167,9 @@ class BacktestingResponse(BaseModel):
     brier_score: float | None = None
     log_loss: float | None = None
     calibration_bins: list[CalibrationBinResponse] = Field(default_factory=list)
-    per_match_details: list[BacktestingMatchDetailResponse] = Field(default_factory=list)
+    per_match_details: list[CurrentTournamentMatchScoreResponse] = Field(
+        default_factory=list
+    )
     limitations: list[str] = Field(default_factory=list)
 
 

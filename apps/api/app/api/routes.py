@@ -7,9 +7,9 @@ from fastapi import APIRouter, HTTPException, Query
 from app.core.config import DEFAULT_MODEL_TYPE, get_data_mode
 from app.models.domain import Group, Match, Team
 from app.models.schemas import (
-    BacktestingResponse,
     BracketSimulateRequest,
     BracketSimulationResponse,
+    CurrentTournamentScoringResponse,
     DataMetadataResponse,
     DataQualityResponse,
     GroupChaosResponse,
@@ -36,8 +36,10 @@ from app.services.analytics_service import (
     calculate_model_comparison,
     calculate_upset_radar,
 )
-from app.services.backtesting import calculate_backtesting_metrics
 from app.services.bracket_service import run_bracket_simulation
+from app.services.current_tournament_scoring import (
+    calculate_current_tournament_scores,
+)
 from app.services.data_loader import load_metadata, load_tournament
 from app.services.data_quality_service import calculate_data_quality
 from app.services.head_to_head_service import calculate_head_to_head
@@ -94,12 +96,15 @@ def models() -> list[ModelMetadataResponse]:
     return list_model_metadata()
 
 
-@router.get("/backtesting", response_model=BacktestingResponse)
-def backtesting(
+@router.get(
+    "/evaluation/current",
+    response_model=CurrentTournamentScoringResponse,
+)
+def current_tournament_scoring(
     model_type: ModelType = DEFAULT_MODEL_TYPE,
-) -> BacktestingResponse:
-    """Return baseline backtesting metrics for completed fixtures."""
-    return calculate_backtesting_metrics(model_type, get_data_mode())
+) -> CurrentTournamentScoringResponse:
+    """Score model predictions against completed active-tournament fixtures."""
+    return calculate_current_tournament_scores(model_type, get_data_mode())
 
 
 @router.post("/simulate", response_model=SimulationSummaryResponse)

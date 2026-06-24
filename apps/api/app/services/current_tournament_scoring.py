@@ -1,4 +1,4 @@
-"""Baseline backtesting metrics for completed fixtures."""
+"""Current-tournament model scoring against completed fixtures."""
 
 import math
 from typing import Literal
@@ -6,9 +6,9 @@ from typing import Literal
 from app.core.config import get_data_mode
 from app.models.domain import MatchResult, Team
 from app.models.schemas import (
-    BacktestingMatchDetailResponse,
-    BacktestingResponse,
     CalibrationBinResponse,
+    CurrentTournamentMatchScoreResponse,
+    CurrentTournamentScoringResponse,
     ModelType,
 )
 from app.services.data_loader import load_tournament
@@ -19,10 +19,10 @@ OUTCOMES: list[Outcome] = ["team_a_win", "draw", "team_b_win"]
 NUM_CALIBRATION_BINS = 10
 
 
-def calculate_backtesting_metrics(
+def calculate_current_tournament_scores(
     model_type: ModelType = "poisson",
     data_mode: str | None = None,
-) -> BacktestingResponse:
+) -> CurrentTournamentScoringResponse:
     """Score model probabilities against completed group-stage fixtures."""
     mode = data_mode or get_data_mode()
     tournament = load_tournament(mode)
@@ -36,7 +36,7 @@ def calculate_backtesting_metrics(
     ]
 
     if not completed_matches:
-        return BacktestingResponse(
+        return CurrentTournamentScoringResponse(
             model_type=model_type,
             data_mode=mode,
             sample_size=0,
@@ -45,7 +45,7 @@ def calculate_backtesting_metrics(
             log_loss=None,
             limitations=[
                 "No completed fixtures are available in this data mode.",
-                "Backtesting will become meaningful after real results are ingested.",
+                "Historical out-of-sample backtesting is not provided by this endpoint.",
             ],
         )
 
@@ -53,7 +53,7 @@ def calculate_backtesting_metrics(
     exact_predictions = 0
     brier_total = 0.0
     log_loss_total = 0.0
-    per_match_details: list[BacktestingMatchDetailResponse] = []
+    per_match_details: list[CurrentTournamentMatchScoreResponse] = []
     bin_counts = [0 for _ in range(NUM_CALIBRATION_BINS)]
     bin_hits = [0 for _ in range(NUM_CALIBRATION_BINS)]
 
@@ -75,7 +75,7 @@ def calculate_backtesting_metrics(
         log_loss_total += -math.log(max(probabilities[actual], 1e-15))
 
         per_match_details.append(
-            BacktestingMatchDetailResponse(
+            CurrentTournamentMatchScoreResponse(
                 match_id=match.id,
                 predicted_outcome=predicted,
                 actual_outcome=actual,
@@ -102,7 +102,7 @@ def calculate_backtesting_metrics(
     ]
 
     sample_size = len(completed_matches)
-    return BacktestingResponse(
+    return CurrentTournamentScoringResponse(
         model_type=model_type,
         data_mode=mode,
         sample_size=sample_size,
@@ -113,8 +113,9 @@ def calculate_backtesting_metrics(
         per_match_details=per_match_details,
         limitations=[
             "Metric sample is small until more completed fixtures are ingested.",
-            "This evaluates baseline probability quality only; no model training happens here.",
-            "Current fixtures are group-stage only, so knockout behavior is not backtested yet.",
+            "This scores the current model against matches from this tournament only.",
+            "This is not a historical out-of-sample backtest and must not be read as proof of model superiority.",
+            "Current fixtures are group-stage only, so knockout behavior is not evaluated.",
         ],
     )
 

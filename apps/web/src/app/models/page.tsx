@@ -114,7 +114,7 @@ export default function ModelsPage() {
       <PageHeader
         eyebrow="Models"
         title="Model desk and calibration"
-        description="Statistical baselines, Dixon-Coles, GBM, and Oracle v3 ensemble — with backtesting on completed fixtures."
+        description="Production, baseline, and experimental models — with scoring on completed tournament fixtures."
       />
 
       {error ? <ErrorState message={error} /> : null}
@@ -129,7 +129,7 @@ export default function ModelsPage() {
               icon={Target}
               label="Default model"
               value={formatModelLabel(DEFAULT_MODEL_TYPE)}
-              detail="Dixon-Coles + Oracle v2 + GBM ensemble for all pages"
+              detail="Open-data Elo from senior international results"
             />
             <SummaryCard
               icon={BarChart3}
@@ -140,8 +140,8 @@ export default function ModelsPage() {
             <SummaryCard
               icon={BrainCircuit}
               label="ML status"
-              value="GBM + Oracle v3"
-              detail="Gradient boosting and ensemble models available for comparison"
+              value="Experimental"
+              detail="GBM and Oracle v3 are comparison-only until validated"
             />
           </section>
 
@@ -157,9 +157,14 @@ export default function ModelsPage() {
                       {model.name}
                     </h2>
                   </div>
-                  <span className="rounded-md border border-white/10 bg-white/[0.06] px-2.5 py-1 text-xs font-semibold text-zinc-300">
-                    {model.is_ml ? "ML" : "No ML"}
-                  </span>
+                  <div className="flex flex-wrap justify-end gap-2">
+                    <span className="rounded-md border border-white/10 bg-white/[0.06] px-2.5 py-1 text-xs font-semibold text-zinc-300">
+                      {model.is_ml ? "ML" : "Statistical"}
+                    </span>
+                    <span className="rounded-md border border-white/10 bg-white/[0.06] px-2.5 py-1 text-xs font-semibold capitalize text-zinc-300">
+                      {model.maturity}
+                    </span>
+                  </div>
                 </div>
 
                 <ModelList title="Inputs" items={model.inputs} />

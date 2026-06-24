@@ -4,6 +4,7 @@ import { AppShell } from "@/components/AppShell";
 import { PageHeader } from "@/components/PageHeader";
 import { TeamDetailDashboard } from "@/components/teams/TeamDetailDashboard";
 import { API_BASE_URL, SIMULATION_COUNT } from "@/lib/config";
+import { DEFAULT_MODEL_TYPE } from "@/lib/api";
 
 type TeamDetailPageProps = {
   params: Promise<{ teamId: string }>;
@@ -22,7 +23,7 @@ export async function generateMetadata({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           n_simulations: SIMULATION_COUNT,
-          model_type: "oracle_v3",
+          model_type: DEFAULT_MODEL_TYPE,
           seed: 42,
         }),
         next: { revalidate: 300 },

@@ -4,7 +4,7 @@ import os
 from typing import Literal
 
 API_TITLE = "World Cup Oracle API"
-DEFAULT_MODEL_TYPE = "oracle_v3"
+DEFAULT_MODEL_TYPE = "calibrated_elo"
 
 DataMode = Literal["sample", "processed"]
 

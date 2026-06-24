@@ -27,7 +27,7 @@ import {
   TeamPathStage,
 } from "@/lib/api";
 import { SIMULATION_COUNT } from "@/lib/config";
-import { formatNumber, formatPercent } from "@/lib/format";
+import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
 
 type TeamDetailData = {
   groups: Group[];
@@ -219,7 +219,8 @@ function TeamPathExplorer({ path }: { path: TeamPath }) {
           </h2>
         </div>
         <p className="text-xs text-zinc-500">
-          {formatNumber(path.metadata.n_simulations)} simulations · Oracle v2
+          {formatNumber(path.metadata.n_simulations)} simulations ·{" "}
+          {formatModelLabel(path.metadata.model_type)}
         </p>
       </div>
 

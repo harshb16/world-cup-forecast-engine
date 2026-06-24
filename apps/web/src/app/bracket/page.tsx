@@ -21,7 +21,7 @@ import {
   DEFAULT_MODEL_TYPE,
   simulateBracket,
 } from "@/lib/api";
-import { formatNumber, formatPercent } from "@/lib/format";
+import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
 
 const ROUND_ORDER = [
   "Round of 32",
@@ -183,7 +183,7 @@ export default function BracketPage() {
               <TraceStat
                 icon={Sparkles}
                 label="Model"
-                value="Oracle v2"
+                value={formatModelLabel(DEFAULT_MODEL_TYPE)}
               />
               <TraceStat
                 icon={Shuffle}

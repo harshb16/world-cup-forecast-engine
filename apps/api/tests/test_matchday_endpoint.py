@@ -22,7 +22,7 @@ def test_matchday_response_has_required_fields() -> None:
 
     assert "date" in data
     assert "matchday_label" in data
-    assert data["model_type"] == "oracle_v3"
+    assert data["model_type"] == "calibrated_elo"
     assert "fixtures" in data
     assert "groups" in data
     assert isinstance(data["fixtures"], list)

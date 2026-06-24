@@ -10,7 +10,7 @@ export type ModelType =
   | "gbm"
   | "oracle_v3";
 
-export const DEFAULT_MODEL_TYPE: ModelType = "oracle_v3";
+export const DEFAULT_MODEL_TYPE: ModelType = "calibrated_elo";
 
 export type SimulationRequest = {
   n_simulations: number;
@@ -91,6 +91,7 @@ export type ModelMetadata = {
   id: ModelType;
   name: string;
   is_ml: boolean;
+  maturity: "baseline" | "production" | "experimental";
   inputs: string[];
   assumptions: string[];
   limitations: string[];

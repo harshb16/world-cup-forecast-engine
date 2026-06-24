@@ -133,6 +133,7 @@ class ModelMetadataResponse(BaseModel):
     id: ModelType
     name: str
     is_ml: bool
+    maturity: Literal["baseline", "production", "experimental"]
     inputs: list[str] = Field(default_factory=list)
     assumptions: list[str] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)

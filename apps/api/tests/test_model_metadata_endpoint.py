@@ -25,12 +25,20 @@ def test_models_endpoint_returns_current_baselines() -> None:
         "oracle_v3",
     }
     assert any(model["is_ml"] for model in models)
+    assert next(model for model in models if model["id"] == "calibrated_elo")[
+        "maturity"
+    ] == "production"
+    assert all(
+        model["maturity"] == "experimental"
+        for model in models
+        if model["id"] in {"oracle_v2", "gbm", "oracle_v3"}
+    )
     assert all(model["is_ml"] is False for model in models if model["id"] in {"elo", "poisson", "calibrated_elo", "dixon_coles", "oracle_v2"})
     assert all(model["assumptions"] for model in models)
     assert all(model["limitations"] for model in models)
 
 
-def test_models_endpoint_does_not_claim_ml_exists() -> None:
+def test_models_endpoint_describes_experimental_models_honestly() -> None:
     response = client.get("/models")
 
     assert response.status_code == 200
@@ -39,7 +47,7 @@ def test_models_endpoint_does_not_claim_ml_exists() -> None:
         for model in response.json()
     ).lower()
 
-    assert "not trained" in combined_text or "not calibrated" in combined_text
-    assert "machine-learning" in combined_text or "learn from historical" in combined_text
+    assert "holdout gain" in combined_text
+    assert "synthetic labels" in combined_text
     assert "oracle v2" in " ".join(model["name"].lower() for model in response.json())
     assert "oracle v3" in " ".join(model["name"].lower() for model in response.json())

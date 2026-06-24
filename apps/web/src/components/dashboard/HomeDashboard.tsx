@@ -126,9 +126,9 @@ export function HomeDashboard() {
               {insights.topChampion.team_name} leads the current title race.
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-300">
-              Oracle v2 runs World Cup 2026 data through the Monte Carlo engine
-              and surfaces champion odds, group volatility, upset risk, and
-              data coverage in one broadcast-style desk.
+              {formatModelLabel(DEFAULT_MODEL_TYPE)} runs World Cup 2026 data
+              through the Monte Carlo engine and surfaces champion odds, group
+              volatility, upset risk, and data coverage.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
@@ -300,7 +300,7 @@ const quickLinks = [
   {
     href: "/models",
     title: "Models",
-    description: "Track the model roadmap from Elo to Oracle v2.",
+    description: "Review production, baseline, and experimental models.",
     icon: BarChart3,
   },
 ];

@@ -156,14 +156,15 @@ def _processed_quality_metadata() -> dict[str, Any]:
             {team.id for team in tournament.teams if team.id in rated_team_ids}
         ),
         "data_quality_notes": [
-            "Processed mode uses checked-in World Cup 2026 teams, groups, fixtures, results, and rank-derived ratings.",
+            "Processed mode uses checked-in World Cup 2026 teams, groups, fixtures, results, rating references, and open-data Elo parameters.",
             "Completed results are included only when present in processed fixtures.",
-            "Ratings cover all active teams but are derived from rankings, not official FIFA strength scores.",
+            "The public default uses open-data Elo ratings; FIFA rank-derived ratings remain available only to baseline and comparison models.",
         ],
         "model_limitations": [
             "The GBM uses a small real-result sample supplemented by synthetic Oracle v2 labels.",
             "Oracle v3 ensemble weights are fixed rather than re-fit after every matchday.",
             "Knockout bracket uses FIFA World Cup 2026 round-of-32 slots with deterministic third-place assignment.",
+            "Group and third-place ties currently use points, goal difference, goals scored, then team ID; full FIFA head-to-head and fair-play ordering is not implemented.",
             "Small Monte Carlo probability gaps can be sampling noise.",
         ],
     }

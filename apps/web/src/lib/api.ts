@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/lib/config";
+import { API_BASE_URL, TEAM_PATH_SIMULATION_COUNT } from "@/lib/config";
 export { formatPercent } from "@/lib/format";
 
 export type ModelType =
@@ -426,7 +426,7 @@ export async function fetchTeamPath(teamId: string): Promise<TeamPath> {
     body: JSON.stringify({
       team_id: teamId,
       model_type: DEFAULT_MODEL_TYPE,
-      n_simulations: 500,
+      n_simulations: TEAM_PATH_SIMULATION_COUNT,
       seed: 42,
     }),
   });

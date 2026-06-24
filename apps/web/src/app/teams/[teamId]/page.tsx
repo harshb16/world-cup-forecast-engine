@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { AppShell } from "@/components/AppShell";
 import { PageHeader } from "@/components/PageHeader";
 import { TeamDetailDashboard } from "@/components/teams/TeamDetailDashboard";
-import { API_BASE_URL } from "@/lib/config";
+import { API_BASE_URL, SIMULATION_COUNT } from "@/lib/config";
 
 type TeamDetailPageProps = {
   params: Promise<{ teamId: string }>;
@@ -21,7 +21,7 @@ export async function generateMetadata({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          n_simulations: 500,
+          n_simulations: SIMULATION_COUNT,
           model_type: "oracle_v3",
           seed: 42,
         }),

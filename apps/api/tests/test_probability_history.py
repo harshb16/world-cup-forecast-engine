@@ -70,17 +70,11 @@ def test_append_probability_snapshot_grows_array(tmp_path: Path) -> None:
     assert data[1]["champion_probabilities"] == champion_probs
 
 
-def test_current_matchday_handles_unplayed_null_results(tmp_path: Path) -> None:
+def test_current_matchday_uses_official_schedule() -> None:
     import app.services.data_sync_service as dss
 
-    fixtures = [
-        {"id": "A1", "result": {"played": True}},
-        {"id": "A2", "result": None},
-    ]
-    (tmp_path / "fixtures.json").write_text(json.dumps(fixtures))
-
-    with patch.object(dss, "PROCESSED_DIR", tmp_path):
-        assert dss._current_matchday() == 1
+    with patch.object(dss, "group_matchday_for_date", return_value=3):
+        assert dss._current_matchday() == 3
 
 
 def test_append_probability_snapshot_silences_errors(tmp_path: Path) -> None:

@@ -27,6 +27,10 @@ import {
   UpsetRadar,
 } from "@/lib/api";
 import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
+import {
+  ANALYTICS_SIMULATION_COUNT,
+  SIMULATION_COUNT,
+} from "@/lib/config";
 
 export function HomeDashboard() {
   const [summary, setSummary] = useState<SimulationSummary | null>(null);
@@ -40,12 +44,12 @@ export function HomeDashboard() {
 
     Promise.all([
       simulateTournament({
-        n_simulations: 1000,
+        n_simulations: SIMULATION_COUNT,
         model_type: DEFAULT_MODEL_TYPE,
         seed: 42,
       }),
       fetchUpsetRadar(DEFAULT_MODEL_TYPE, 6),
-      fetchGroupChaos(DEFAULT_MODEL_TYPE, 500, 42),
+      fetchGroupChaos(DEFAULT_MODEL_TYPE, ANALYTICS_SIMULATION_COUNT, 42),
       fetchProbabilityMovers(8),
     ])
       .then(([simulation, upsetRadar, chaos, probabilityMovers]) => {

@@ -22,6 +22,7 @@ import {
   Team,
   DataMetadata,
 } from "@/lib/api";
+import { SIMULATION_COUNT } from "@/lib/config";
 
 type TeamIndexData = {
   groups: Group[];
@@ -44,7 +45,7 @@ export function TeamsDashboard() {
       fetchTeams(),
       fetchMetadata(),
       simulateTournament({
-        n_simulations: 1000,
+        n_simulations: SIMULATION_COUNT,
         model_type: DEFAULT_MODEL_TYPE,
         seed: 42,
       }),

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   BarChart3,
+  BookOpenText,
   Calendar,
   ChevronLeft,
   ChevronRight,
@@ -30,6 +31,7 @@ const navItems = [
   { href: "/timeline", label: "Timeline", icon: TrendingUp },
   { href: "/what-if", label: "What-if", icon: FlaskConical },
   { href: "/teams", label: "Teams", icon: Users },
+  { href: "/methodology", label: "Methodology", icon: BookOpenText },
   { href: "/models", label: "Models", icon: BarChart3 },
 ];
 

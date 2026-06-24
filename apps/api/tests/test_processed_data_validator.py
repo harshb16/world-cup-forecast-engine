@@ -1,6 +1,7 @@
 """Tests for processed World Cup data validation."""
 
 import sys
+import json
 from pathlib import Path
 
 import pytest
@@ -52,7 +53,8 @@ def _write_valid_dataset(base_dir: Path) -> None:
                     "group_id": group_id,
                     "team_a_id": team_ids[a_index],
                     "team_b_id": team_ids[b_index],
-                    "kickoff": None,
+                    "kickoff": f"2026-06-{11 + group_index:02d}",
+                    "kickoff_utc": f"2026-06-{11 + group_index:02d}T19:00:00Z",
                     "venue": None,
                     "city": None,
                     "status": "scheduled",
@@ -117,7 +119,7 @@ def test_validate_processed_data_accepts_valid_dataset(tmp_path: Path) -> None:
 
 def test_validate_processed_data_rejects_wrong_fixture_group(tmp_path: Path) -> None:
     _write_valid_dataset(tmp_path)
-    fixtures = __import__("json").loads((tmp_path / "fixtures.json").read_text())
+    fixtures = json.loads((tmp_path / "fixtures.json").read_text())
     fixtures[0]["group_id"] = "B"
     write_json(tmp_path / "fixtures.json", fixtures)
 
@@ -128,10 +130,126 @@ def test_validate_processed_data_rejects_wrong_fixture_group(tmp_path: Path) -> 
 
 def test_validate_processed_data_rejects_missing_metadata(tmp_path: Path) -> None:
     _write_valid_dataset(tmp_path)
-    metadata = __import__("json").loads((tmp_path / "metadata.json").read_text())
+    metadata = json.loads((tmp_path / "metadata.json").read_text())
     del metadata["rating_source"]
     write_json(tmp_path / "metadata.json", metadata)
 
     errors = validate_processed_data(tmp_path)
 
     assert "metadata missing rating_source" in errors
+
+
+def test_validate_processed_data_rejects_duplicate_fixture_ids(tmp_path: Path) -> None:
+    _write_valid_dataset(tmp_path)
+    fixtures = json.loads((tmp_path / "fixtures.json").read_text())
+    fixtures[1]["id"] = fixtures[0]["id"]
+    write_json(tmp_path / "fixtures.json", fixtures)
+
+    errors = validate_processed_data(tmp_path)
+
+    assert "fixtures.json contains duplicate fixture ids" in errors
+
+
+def test_validate_processed_data_rejects_contradictory_kickoff_dates(
+    tmp_path: Path,
+) -> None:
+    _write_valid_dataset(tmp_path)
+    fixtures = json.loads((tmp_path / "fixtures.json").read_text())
+    fixtures[0]["kickoff_utc"] = "2026-06-18T19:00:00Z"
+    write_json(tmp_path / "fixtures.json", fixtures)
+
+    errors = validate_processed_data(tmp_path)
+
+    assert "A-1 kickoff date contradicts kickoff_utc" in errors
+
+
+@pytest.mark.parametrize("status", ["live", "postponed", None])
+def test_validate_processed_data_rejects_unknown_fixture_status(
+    tmp_path: Path,
+    status: str | None,
+) -> None:
+    _write_valid_dataset(tmp_path)
+    fixtures = json.loads((tmp_path / "fixtures.json").read_text())
+    fixtures[0]["status"] = status
+    write_json(tmp_path / "fixtures.json", fixtures)
+
+    errors = validate_processed_data(tmp_path)
+
+    assert f"A-1 has invalid status {status}" in errors
+
+
+def test_validate_processed_data_rejects_scheduled_winner(tmp_path: Path) -> None:
+    _write_valid_dataset(tmp_path)
+    fixtures = json.loads((tmp_path / "fixtures.json").read_text())
+    fixtures[0]["winner_team_id"] = fixtures[0]["team_a_id"]
+    write_json(tmp_path / "fixtures.json", fixtures)
+
+    errors = validate_processed_data(tmp_path)
+
+    assert "A-1 is scheduled but winner_team_id is not null" in errors
+
+
+def test_validate_processed_data_rejects_finished_winner_mismatch(
+    tmp_path: Path,
+) -> None:
+    _write_valid_dataset(tmp_path)
+    fixtures = json.loads((tmp_path / "fixtures.json").read_text())
+    fixture = fixtures[0]
+    fixture["status"] = "finished"
+    fixture["result"] = {
+        "played": True,
+        "team_a_goals": 2,
+        "team_b_goals": 0,
+    }
+    fixture["winner_team_id"] = fixture["team_b_id"]
+    write_json(tmp_path / "fixtures.json", fixtures)
+    write_json(
+        tmp_path / "results.json",
+        [
+            {
+                "match_id": fixture["id"],
+                "team_a_id": fixture["team_a_id"],
+                "team_b_id": fixture["team_b_id"],
+                "team_a_goals": 2,
+                "team_b_goals": 0,
+                "status": "finished",
+            }
+        ],
+    )
+
+    errors = validate_processed_data(tmp_path)
+
+    assert "A-1 winner_team_id does not match result" in errors
+
+
+def test_validate_processed_data_rejects_results_score_mismatch(
+    tmp_path: Path,
+) -> None:
+    _write_valid_dataset(tmp_path)
+    fixtures = json.loads((tmp_path / "fixtures.json").read_text())
+    fixture = fixtures[0]
+    fixture["status"] = "finished"
+    fixture["result"] = {
+        "played": True,
+        "team_a_goals": 2,
+        "team_b_goals": 0,
+    }
+    fixture["winner_team_id"] = fixture["team_a_id"]
+    write_json(tmp_path / "fixtures.json", fixtures)
+    write_json(
+        tmp_path / "results.json",
+        [
+            {
+                "match_id": fixture["id"],
+                "team_a_id": fixture["team_a_id"],
+                "team_b_id": fixture["team_b_id"],
+                "team_a_goals": 1,
+                "team_b_goals": 0,
+                "status": "finished",
+            }
+        ],
+    )
+
+    errors = validate_processed_data(tmp_path)
+
+    assert "A-1 result score does not match fixtures.json" in errors

@@ -166,12 +166,19 @@ def apply_fifa_updates(
         kickoff = kickoff_utc_from_fifa(fifa_match)
         if kickoff is not None:
             updated["kickoff_utc"] = kickoff
+            updated["kickoff"] = kickoff[:10]
         stadium = fifa_match.get("StadiumName")
         if isinstance(stadium, str) and stadium:
             updated["venue"] = stadium
         updated["status"] = fixture_status_from_fifa(fifa_match)
         result = extract_fixture_result(updated, fifa_match)
         updated["result"] = result
+        updated["winner_team_id"] = None
+        if result is not None:
+            if result["team_a_goals"] > result["team_b_goals"]:
+                updated["winner_team_id"] = updated["team_a_id"]
+            elif result["team_b_goals"] > result["team_a_goals"]:
+                updated["winner_team_id"] = updated["team_b_id"]
         updated_fixtures.append(updated)
         if result is not None:
             results.append(

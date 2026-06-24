@@ -12,13 +12,13 @@ import { LoadingState } from "@/components/LoadingState";
 import { PageHeader } from "@/components/PageHeader";
 import { SectionCard } from "@/components/ui/SectionCard";
 import {
-  fetchBacktestingMetrics,
+  fetchCurrentTournamentScoring,
   fetchDataQuality,
   fetchModelComparison,
   fetchModelMetadata,
   fetchTeams,
   DEFAULT_MODEL_TYPE,
-  BacktestingMetrics,
+  CurrentTournamentScoring,
   DataQualityReport,
   ModelComparison,
   ModelMetadata,
@@ -26,7 +26,13 @@ import {
 } from "@/lib/api";
 import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
 
-const CALIBRATION_MODELS: ModelType[] = ["elo", "poisson", "oracle_v2", "dixon_coles", "oracle_v3"];
+const SCORING_MODELS: ModelType[] = [
+  "elo",
+  "poisson",
+  "oracle_v2",
+  "dixon_coles",
+  "oracle_v3",
+];
 
 export default function ModelsPage() {
   const [models, setModels] = useState<ModelMetadata[]>([]);
@@ -35,33 +41,34 @@ export default function ModelsPage() {
   const [teamNames, setTeamNames] = useState<Record<string, string>>({});
   const [loadingComparison, setLoadingComparison] = useState(false);
   const [comparisonError, setComparisonError] = useState<string | null>(null);
-  const [calibrationModel, setCalibrationModel] = useState<ModelType>(DEFAULT_MODEL_TYPE);
-  const [calibration, setCalibration] = useState<BacktestingMetrics | null>(null);
-  const [calibrationError, setCalibrationError] = useState<string | null>(null);
+  const [scoringModel, setScoringModel] =
+    useState<ModelType>(DEFAULT_MODEL_TYPE);
+  const [scoring, setScoring] = useState<CurrentTournamentScoring | null>(null);
+  const [scoringError, setScoringError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let isActive = true;
-    fetchBacktestingMetrics(calibrationModel)
+    fetchCurrentTournamentScoring(scoringModel)
       .then((metrics) => {
         if (isActive) {
-          setCalibration(metrics);
-          setCalibrationError(null);
+          setScoring(metrics);
+          setScoringError(null);
         }
       })
       .catch((caughtError: unknown) => {
         if (isActive) {
-          setCalibrationError(
+          setScoringError(
             caughtError instanceof Error
               ? caughtError.message
-              : "Calibration request failed",
+              : "Current tournament scoring request failed",
           );
         }
       });
     return () => {
       isActive = false;
     };
-  }, [calibrationModel]);
+  }, [scoringModel]);
 
   useEffect(() => {
     let isActive = true;
@@ -113,7 +120,7 @@ export default function ModelsPage() {
     <AppShell>
       <PageHeader
         eyebrow="Models"
-        title="Model desk and calibration"
+        title="Model trust desk"
         description="Production, baseline, and experimental models — with scoring on completed tournament fixtures."
       />
 
@@ -184,26 +191,26 @@ export default function ModelsPage() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase text-[var(--turf)]">
-                  Calibration desk
+                  Current tournament scoring
                 </p>
                 <h2 className="mt-1 text-lg font-semibold text-white">
-                  Predicted vs actual outcomes
+                  Scores against completed fixtures
                 </h2>
                 <p className="mt-1 text-sm text-zinc-400">
-                  Compare model confidence buckets against completed group-stage
-                  fixtures.
+                  A current-tournament check only. This is not historical
+                  out-of-sample backtesting.
                 </p>
               </div>
               <label className="flex flex-col gap-1 text-xs text-zinc-400">
                 Model
                 <select
-                  value={calibrationModel}
+                  value={scoringModel}
                   onChange={(event) =>
-                    setCalibrationModel(event.target.value as ModelType)
+                    setScoringModel(event.target.value as ModelType)
                   }
                   className="rounded-md border border-white/10 bg-black/20 px-3 py-2 text-sm text-white"
                 >
-                  {CALIBRATION_MODELS.map((model) => (
+                  {SCORING_MODELS.map((model) => (
                     <option key={model} value={model}>
                       {formatModelLabel(model)}
                     </option>
@@ -212,30 +219,30 @@ export default function ModelsPage() {
               </label>
             </div>
 
-            {calibrationError ? (
-              <p className="mt-4 text-sm text-red-200">{calibrationError}</p>
+            {scoringError ? (
+              <p className="mt-4 text-sm text-red-200">{scoringError}</p>
             ) : null}
 
-            {calibration ? (
+            {scoring ? (
               <>
                 <div className="mt-5 grid gap-3 sm:grid-cols-3">
                   <SummaryCard
                     icon={Target}
                     label="Accuracy"
                     value={
-                      calibration.accuracy === null
+                      scoring.accuracy === null
                         ? "—"
-                        : formatPercent(calibration.accuracy)
+                        : formatPercent(scoring.accuracy)
                     }
-                    detail={`${calibration.sample_size} completed fixtures`}
+                    detail={`${scoring.sample_size} completed fixtures`}
                   />
                   <SummaryCard
                     icon={BarChart3}
                     label="Brier score"
                     value={
-                      calibration.brier_score === null
+                      scoring.brier_score === null
                         ? "—"
-                        : formatNumber(calibration.brier_score, 3)
+                        : formatNumber(scoring.brier_score, 3)
                     }
                     detail="Lower is better"
                   />
@@ -243,16 +250,21 @@ export default function ModelsPage() {
                     icon={BrainCircuit}
                     label="Log loss"
                     value={
-                      calibration.log_loss === null
+                      scoring.log_loss === null
                         ? "—"
-                        : formatNumber(calibration.log_loss, 3)
+                        : formatNumber(scoring.log_loss, 3)
                     }
                     detail="Lower is better"
                   />
                 </div>
                 <div className="mt-6">
-                  <CalibrationChart bins={calibration.calibration_bins} />
+                  <CalibrationChart bins={scoring.calibration_bins} />
                 </div>
+                <ul className="mt-5 space-y-1 text-sm text-zinc-400">
+                  {scoring.limitations.map((limitation) => (
+                    <li key={limitation}>• {limitation}</li>
+                  ))}
+                </ul>
               </>
             ) : null}
           </SectionCard>

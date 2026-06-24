@@ -1,6 +1,5 @@
 """Tests for the matchday endpoint."""
 
-import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -21,6 +20,7 @@ def test_matchday_response_has_required_fields() -> None:
 
     assert "date" in data
     assert "matchday_label" in data
+    assert data["model_type"] == "oracle_v3"
     assert "fixtures" in data
     assert "groups" in data
     assert isinstance(data["fixtures"], list)
@@ -51,6 +51,7 @@ def test_matchday_fixtures_have_probabilities() -> None:
 
     for fixture in data["fixtures"]:
         assert "match_id" in fixture
+        assert fixture["stage"] == "group"
         assert "team_a_id" in fixture
         assert "team_b_id" in fixture
         assert "team_a_win_probability" in fixture
@@ -101,3 +102,4 @@ def test_matchday_sample_mode() -> None:
     result = calculate_matchday("sample", "oracle_v2")
     assert result.date
     assert len(result.groups) > 0
+    assert all(fixture.kickoff_utc is None for fixture in result.fixtures)

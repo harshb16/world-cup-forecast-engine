@@ -578,6 +578,7 @@ export type MatchdayGroup = {
 export type MatchdayData = {
   date: string;
   matchday_label: string;
+  model_type: ModelType;
   fixtures: MatchdayFixture[];
   groups: MatchdayGroup[];
 };
@@ -609,6 +610,8 @@ export type HeadToHead = {
   team_a_name: string;
   team_b_id: string;
   team_b_name: string;
+  probability: number;
+  stages_they_could_meet: string[];
   meet_before_final_probability: number;
   meet_in_semi_final_probability: number;
   meet_in_final_probability: number;

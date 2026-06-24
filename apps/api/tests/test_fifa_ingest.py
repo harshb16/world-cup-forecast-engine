@@ -132,8 +132,9 @@ def test_apply_fifa_updates_builds_results_for_finished_group_matches() -> None:
         {
             "match_id": "A1",
             "team_a_id": "MEXICO",
-            "team_b_goals": 0,
+            "team_b_id": "RSA",
             "team_a_goals": 2,
+            "team_b_goals": 0,
             "status": "finished",
             "source": fifa.RESULT_SOURCE,
         }

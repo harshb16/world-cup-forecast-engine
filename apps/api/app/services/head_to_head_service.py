@@ -1,5 +1,7 @@
 """Head-to-head meeting probability between two teams."""
 
+from collections import Counter
+
 import numpy as np
 
 from app.core.config import DEFAULT_MODEL_TYPE
@@ -18,6 +20,11 @@ def calculate_head_to_head(
     n_simulations: int = 500,
     seed: int = 42,
 ) -> HeadToHeadResponse:
+    if n_simulations < 1:
+        raise ValueError("n_simulations must be at least 1")
+    if team_a_id == team_b_id:
+        raise ValueError("team ids must be different")
+
     config = load_tournament(data_mode)
     teams_by_id = {team.id: team for team in config.teams}
     if team_a_id not in teams_by_id or team_b_id not in teams_by_id:
@@ -25,9 +32,7 @@ def calculate_head_to_head(
 
     match_model = create_match_model(model_type, data_mode)
     rng = np.random.default_rng(seed)
-    meet_before_final = 0
-    meet_semi = 0
-    meet_final = 0
+    meeting_counts: Counter[str] = Counter()
 
     for _ in range(n_simulations):
         group_stage = simulate_group_stage(config, match_model, rng)
@@ -44,21 +49,25 @@ def calculate_head_to_head(
             for match in knockout.rounds[stage]:
                 pair = {match.team_a_id, match.team_b_id}
                 if team_a_id in pair and team_b_id in pair:
-                    if stage == "Final":
-                        meet_final += 1
-                        meet_before_final += 1
-                    elif stage == "Semi-finals":
-                        meet_semi += 1
-                        meet_before_final += 1
+                    meeting_counts[stage] += 1
                     break
+
+    total_meetings = sum(meeting_counts.values())
+    meetings_before_final = sum(
+        count for stage, count in meeting_counts.items() if stage != "Final"
+    )
 
     return HeadToHeadResponse(
         team_a_id=team_a_id,
         team_a_name=teams_by_id[team_a_id].name,
         team_b_id=team_b_id,
         team_b_name=teams_by_id[team_b_id].name,
-        meet_before_final_probability=meet_before_final / n_simulations,
-        meet_in_semi_final_probability=meet_semi / n_simulations,
-        meet_in_final_probability=meet_final / n_simulations,
+        probability=total_meetings / n_simulations,
+        stages_they_could_meet=[
+            stage for stage in ROUND_NAMES if meeting_counts[stage] > 0
+        ],
+        meet_before_final_probability=meetings_before_final / n_simulations,
+        meet_in_semi_final_probability=meeting_counts["Semi-finals"] / n_simulations,
+        meet_in_final_probability=meeting_counts["Final"] / n_simulations,
         n_simulations=n_simulations,
     )

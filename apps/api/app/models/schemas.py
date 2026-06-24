@@ -450,6 +450,7 @@ class MatchdayFixtureResponse(BaseModel):
     group_id: str | None = None
     kickoff_utc: str | None = None
     status: str
+    stage: str
     team_a_id: str
     team_a_name: str
     team_b_id: str
@@ -494,6 +495,7 @@ class MatchdayResponse(BaseModel):
 
     date: str
     matchday_label: str
+    model_type: ModelType
     fixtures: list[MatchdayFixtureResponse]
     groups: list[MatchdayGroupResponse]
 

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Any
 
 from app.core.config import DEFAULT_MODEL_TYPE
@@ -16,12 +15,13 @@ from app.models.schemas import (
     MatchdayResponse,
     ModelType,
 )
-from app.services.data_loader import PROCESSED_DATA_DIR, load_tournament
+from app.services.data_loader import (
+    PROCESSED_DATA_DIR,
+    SAMPLE_DATA_DIR,
+    load_tournament,
+)
 from app.services.simulation_service import create_match_model
 from app.simulation.group_table import calculate_group_table
-
-_MAX_SCORELINE = 6
-
 
 def calculate_matchday(
     data_mode: str,
@@ -32,6 +32,7 @@ def calculate_matchday(
     teams_by_id: dict[str, Team] = {t.id: t for t in config.teams}
 
     match_model = create_match_model(model_type, data_mode)
+    raw_fixtures = _load_raw_fixture_index(data_mode)
 
     today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     group_matches = [m for m in config.matches if m.stage == "group"]
@@ -40,7 +41,7 @@ def calculate_matchday(
         m
         for m in group_matches
         if m.result is None or not m.result.played
-        if _kickoff_date(m) == today_str
+        if _kickoff_date(m, raw_fixtures) == today_str
     ]
 
     # Fallback: if no matches today use all unplayed matches
@@ -50,7 +51,7 @@ def calculate_matchday(
         ]
 
     fixture_responses = [
-        _build_fixture_response(match, teams_by_id, match_model)
+        _build_fixture_response(match, teams_by_id, match_model, raw_fixtures)
         for match in today_fixtures
     ]
 
@@ -63,7 +64,7 @@ def calculate_matchday(
         for group in sorted(config.groups, key=lambda g: g.id)
     ]
 
-    matchday_label = _matchday_label(data_mode)
+    matchday_label = _matchday_label(raw_fixtures)
 
     return MatchdayResponse(
         date=today_str,
@@ -74,9 +75,12 @@ def calculate_matchday(
     )
 
 
-def _kickoff_date(match: Match) -> str | None:
+def _kickoff_date(
+    match: Match,
+    raw_fixtures: dict[str, dict[str, Any]],
+) -> str | None:
     """Return the UTC date string for a match's kickoff_utc field."""
-    raw = _raw_fixture_field(match.id, "kickoff_utc")
+    raw = raw_fixtures.get(match.id, {}).get("kickoff_utc")
     if raw is None:
         return None
     try:
@@ -86,41 +90,33 @@ def _kickoff_date(match: Match) -> str | None:
         return None
 
 
-def _raw_fixture_field(match_id: str, field: str) -> Any:
-    """Read a raw field from fixtures.json (supports extra fields not in domain model)."""
-    cache = _fixture_raw_cache()
-    entry = cache.get(match_id)
-    if entry is None:
-        return None
-    return entry.get(field)
-
-
-_fixture_cache: dict[str, dict[str, Any]] | None = None
-
-
-def _fixture_raw_cache() -> dict[str, dict[str, Any]]:
-    global _fixture_cache
-    if _fixture_cache is None:
-        path = PROCESSED_DATA_DIR / "fixtures.json"
-        if path.exists():
-            data: list[dict[str, Any]] = json.loads(path.read_text())
-            _fixture_cache = {item["id"]: item for item in data}
-        else:
-            _fixture_cache = {}
-    return _fixture_cache
+def _load_raw_fixture_index(data_mode: str) -> dict[str, dict[str, Any]]:
+    path = (
+        PROCESSED_DATA_DIR / "fixtures.json"
+        if data_mode == "processed"
+        else SAMPLE_DATA_DIR / "sample_fixtures.json"
+    )
+    if not path.exists():
+        return {}
+    data: list[dict[str, Any]] = json.loads(path.read_text(encoding="utf-8"))
+    return {item["id"]: item for item in data}
 
 
 def _build_fixture_response(
     match: Match,
     teams_by_id: dict[str, Team],
     match_model: Any,
+    raw_fixtures: dict[str, dict[str, Any]],
 ) -> MatchdayFixtureResponse:
     team_a = teams_by_id[match.team_a_id]
     team_b = teams_by_id[match.team_b_id]
 
-    raw = _fixture_raw_cache().get(match.id, {})
+    raw = raw_fixtures.get(match.id, {})
     kickoff_utc: str | None = raw.get("kickoff_utc")
-    status: str = raw.get("status", "scheduled")
+    status: str = raw.get(
+        "status",
+        "finished" if match.result is not None and match.result.played else "scheduled",
+    )
 
     probs = match_model.predict_probabilities(team_a, team_b)
 
@@ -239,14 +235,15 @@ def _build_group_response(
     )
 
 
-def _matchday_label(data_mode: str) -> str:
+def _matchday_label(raw_fixtures: dict[str, dict[str, Any]]) -> str:
     """Derive a human-readable matchday label from completed match count."""
     try:
-        path = PROCESSED_DATA_DIR / "fixtures.json"
-        if not path.exists():
-            return "Matchday"
-        data: list[dict[str, Any]] = json.loads(path.read_text())
-        played = sum(1 for f in data if f.get("status") == "finished")
+        played = sum(
+            1
+            for fixture in raw_fixtures.values()
+            if fixture.get("status") == "finished"
+            or (fixture.get("result") or {}).get("played")
+        )
         if played == 0:
             return "Matchday 1"
         matchday = (played // 24) + 1

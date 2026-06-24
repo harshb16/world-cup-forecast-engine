@@ -2,7 +2,7 @@
 
 import json
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from app.core.config import DEFAULT_MODEL_TYPE, get_data_mode
 from app.models.domain import Group, Match, Team
@@ -133,7 +133,7 @@ def team_path_head_to_head(
     team_a: str,
     team_b: str,
     model_type: ModelType = DEFAULT_MODEL_TYPE,
-    n_simulations: int = 500,
+    n_simulations: int = Query(default=500, ge=1, le=5_000),
     seed: int = 42,
 ) -> HeadToHeadResponse:
     try:
@@ -215,19 +215,24 @@ def probability_history() -> ProbabilityHistoryResponse:
 
 
 @router.get("/analytics/probability-movers", response_model=ProbabilityMoversResponse)
-def probability_movers(limit: int = 8) -> ProbabilityMoversResponse:
+def probability_movers(
+    limit: int = Query(default=8, ge=1, le=48),
+) -> ProbabilityMoversResponse:
     return calculate_probability_movers(limit=limit)
 
 
 @router.get("/analytics/third-place", response_model=ThirdPlaceTrackerResponse)
 def third_place_tracker(
     model_type: ModelType = DEFAULT_MODEL_TYPE,
-    n_simulations: int = 500,
+    n_simulations: int = Query(default=500, ge=1, le=5_000),
     seed: int = 42,
 ) -> ThirdPlaceTrackerResponse:
-    return calculate_third_place_tracker(
-        get_data_mode(), model_type, n_simulations=n_simulations, seed=seed
-    )
+    try:
+        return calculate_third_place_tracker(
+            get_data_mode(), model_type, n_simulations=n_simulations, seed=seed
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 @router.get("/data-quality", response_model=DataQualityResponse)

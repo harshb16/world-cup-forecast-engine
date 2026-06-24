@@ -39,3 +39,12 @@ def test_oracle_v3_simulation_is_deterministic_with_seed() -> None:
     second = model.simulate_result(team_a, team_b, rng_b)
     assert first.team_a_goals == second.team_a_goals
     assert first.team_b_goals == second.team_b_goals
+
+
+def test_oracle_v3_exposes_knockout_scale_from_oracle_v2() -> None:
+    model = OracleV3Model(
+        oracle_v2=OracleV2Model(knockout_lambda_scale=0.84),
+        gbm=None,
+    )
+
+    assert model.knockout_lambda_scale == pytest.approx(0.84)

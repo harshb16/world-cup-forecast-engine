@@ -70,6 +70,19 @@ def test_append_probability_snapshot_grows_array(tmp_path: Path) -> None:
     assert data[1]["champion_probabilities"] == champion_probs
 
 
+def test_current_matchday_handles_unplayed_null_results(tmp_path: Path) -> None:
+    import app.services.data_sync_service as dss
+
+    fixtures = [
+        {"id": "A1", "result": {"played": True}},
+        {"id": "A2", "result": None},
+    ]
+    (tmp_path / "fixtures.json").write_text(json.dumps(fixtures))
+
+    with patch.object(dss, "PROCESSED_DIR", tmp_path):
+        assert dss._current_matchday() == 1
+
+
 def test_append_probability_snapshot_silences_errors(tmp_path: Path) -> None:
     """_append_probability_snapshot does not raise if simulation fails."""
     import app.services.data_sync_service as dss

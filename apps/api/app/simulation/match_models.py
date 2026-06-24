@@ -380,6 +380,7 @@ class OracleV3Model:
         self.oracle_v2 = oracle_v2
         self.dixon_coles = dixon_coles or DixonColesModel()
         self.gbm = gbm
+        self.knockout_lambda_scale = oracle_v2.knockout_lambda_scale
         self.weights = dict(weights or self.DEFAULT_WEIGHTS)
         if self.gbm is None:
             self.weights = {"dixon_coles": 0.5, "oracle_v2": 0.5, "gbm": 0.0}

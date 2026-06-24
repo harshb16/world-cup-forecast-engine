@@ -178,8 +178,9 @@ def apply_fifa_updates(
                 {
                     "match_id": fixture["id"],
                     "team_a_id": fixture["team_a_id"],
-                    "team_b_goals": result["team_b_goals"],
+                    "team_b_id": fixture["team_b_id"],
                     "team_a_goals": result["team_a_goals"],
+                    "team_b_goals": result["team_b_goals"],
                     "status": "finished",
                     "source": RESULT_SOURCE,
                 }

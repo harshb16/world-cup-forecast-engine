@@ -12,14 +12,14 @@ from app.models.schemas import SyncResponse
 from app.services.data_quality_service import build_data_quality_payload
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
-INGEST_DIR = REPO_ROOT / "scripts" / "ingest"
 PROCESSED_DIR = REPO_ROOT / "data" / "processed"
 PYTHON = sys.executable
 
 SYNC_SCRIPTS = (
-    "fetch_worldcup_fifa.py",
-    "fetch_historical_results.py",
-    "validate_processed_data.py",
+    Path("scripts/ingest/fetch_worldcup_fifa.py"),
+    Path("scripts/ingest/fetch_historical_results.py"),
+    Path("scripts/ingest/validate_processed_data.py"),
+    Path("scripts/train_gbm_model.py"),
 )
 
 
@@ -28,8 +28,9 @@ def run_data_sync() -> SyncResponse:
     errors: list[str] = []
     sync_timestamp = datetime.now(tz=UTC).isoformat()
 
-    for script_name in SYNC_SCRIPTS:
-        script_path = INGEST_DIR / script_name
+    for relative_path in SYNC_SCRIPTS:
+        script_path = REPO_ROOT / relative_path
+        script_name = relative_path.as_posix()
         if not script_path.exists():
             errors.append(f"missing ingest script: {script_name}")
             continue
@@ -95,7 +96,7 @@ def _current_matchday() -> int:
     played = sum(
         1
         for fixture in fixtures
-        if fixture.get("result", {}).get("played")
+        if (fixture.get("result") or {}).get("played")
     )
     return max(1, (played // 24) + 1)
 

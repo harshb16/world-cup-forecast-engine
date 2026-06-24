@@ -87,6 +87,7 @@ def test_apply_fifa_updates_builds_results_for_finished_group_matches() -> None:
             "team_b_id": "RSA",
             "status": "scheduled",
             "result": None,
+            "winner_team_id": None,
         },
         {
             "id": "A2",
@@ -95,6 +96,7 @@ def test_apply_fifa_updates_builds_results_for_finished_group_matches() -> None:
             "team_b_id": "CZECHIA",
             "status": "scheduled",
             "result": None,
+            "winner_team_id": None,
         },
     ]
     fifa_matches = [
@@ -127,7 +129,10 @@ def test_apply_fifa_updates_builds_results_for_finished_group_matches() -> None:
         "team_b_goals": 0,
     }
     assert updated_fixtures[0]["venue"] == "Estadio Azteca"
+    assert updated_fixtures[0]["kickoff"] == "2026-06-11"
+    assert updated_fixtures[0]["winner_team_id"] == "MEXICO"
     assert updated_fixtures[1]["status"] == "scheduled"
+    assert updated_fixtures[1]["winner_team_id"] is None
     assert results == [
         {
             "match_id": "A1",

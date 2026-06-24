@@ -99,7 +99,7 @@
     "city": null,
     "group_id": "B",
     "id": "B1",
-    "kickoff": "2026-06-12",
+    "kickoff": "2026-06-18",
     "kickoff_utc": "2026-06-18T22:00:00Z",
     "result": null,
     "stage": "group",
@@ -113,7 +113,7 @@
     "city": null,
     "group_id": "B",
     "id": "B2",
-    "kickoff": "2026-06-12",
+    "kickoff": "2026-06-18",
     "kickoff_utc": "2026-06-18T19:00:00Z",
     "result": null,
     "stage": "group",
@@ -127,7 +127,7 @@
     "city": null,
     "group_id": "B",
     "id": "B3",
-    "kickoff": "2026-06-18",
+    "kickoff": "2026-06-12",
     "kickoff_utc": "2026-06-12T19:00:00Z",
     "result": {
       "played": true,
@@ -145,7 +145,7 @@
     "city": null,
     "group_id": "B",
     "id": "B4",
-    "kickoff": "2026-06-18",
+    "kickoff": "2026-06-13",
     "kickoff_utc": "2026-06-13T19:00:00Z",
     "result": {
       "played": true,
@@ -221,7 +221,7 @@
     "team_a_id": "HAITI",
     "team_b_id": "SCOTLAND",
     "venue": "New York New Jersey Stadium",
-    "winner_team_id": null
+    "winner_team_id": "SCOTLAND"
   },
   {
     "city": null,
@@ -301,7 +301,7 @@
     "city": null,
     "group_id": "D",
     "id": "D2",
-    "kickoff": "2026-06-12",
+    "kickoff": "2026-06-14",
     "kickoff_utc": "2026-06-14T04:00:00Z",
     "result": {
       "played": true,
@@ -313,7 +313,7 @@
     "team_a_id": "AUSTRALIA",
     "team_b_id": "TURKIYE",
     "venue": "BC Place Vancouver",
-    "winner_team_id": null
+    "winner_team_id": "AUSTRALIA"
   },
   {
     "city": null,
@@ -387,7 +387,7 @@
     "team_a_id": "GERMANY",
     "team_b_id": "CURACAO",
     "venue": "Houston Stadium",
-    "winner_team_id": null
+    "winner_team_id": "GERMANY"
   },
   {
     "city": null,
@@ -405,7 +405,7 @@
     "team_a_id": "CIV",
     "team_b_id": "ECUADOR",
     "venue": "Philadelphia Stadium",
-    "winner_team_id": null
+    "winner_team_id": "CIV"
   },
   {
     "city": null,
@@ -497,7 +497,7 @@
     "team_a_id": "SWEDEN",
     "team_b_id": "TUNISIA",
     "venue": "Estadio Monterrey",
-    "winner_team_id": null
+    "winner_team_id": "SWEDEN"
   },
   {
     "city": null,
@@ -755,7 +755,7 @@
     "team_a_id": "FRANCE",
     "team_b_id": "SENEGAL",
     "venue": "New York New Jersey Stadium",
-    "winner_team_id": null
+    "winner_team_id": "FRANCE"
   },
   {
     "city": null,
@@ -773,7 +773,7 @@
     "team_a_id": "IRAQ",
     "team_b_id": "NORWAY",
     "venue": "Boston Stadium",
-    "winner_team_id": null
+    "winner_team_id": "NORWAY"
   },
   {
     "city": null,
@@ -847,7 +847,7 @@
     "team_a_id": "ARGENTINA",
     "team_b_id": "ALGERIA",
     "venue": "Kansas City Stadium",
-    "winner_team_id": null
+    "winner_team_id": "ARGENTINA"
   },
   {
     "city": null,
@@ -865,7 +865,7 @@
     "team_a_id": "AUSTRIA",
     "team_b_id": "JORDAN",
     "venue": "San Francisco Bay Area Stadium",
-    "winner_team_id": null
+    "winner_team_id": "AUSTRIA"
   },
   {
     "city": null,
@@ -957,7 +957,7 @@
     "team_a_id": "UZBEKISTAN",
     "team_b_id": "COLOMBIA",
     "venue": "Mexico City Stadium",
-    "winner_team_id": null
+    "winner_team_id": "COLOMBIA"
   },
   {
     "city": null,
@@ -1031,7 +1031,7 @@
     "team_a_id": "ENGLAND",
     "team_b_id": "CROATIA",
     "venue": "Dallas Stadium",
-    "winner_team_id": null
+    "winner_team_id": "ENGLAND"
   },
   {
     "city": null,
@@ -1049,7 +1049,7 @@
     "team_a_id": "GHANA",
     "team_b_id": "PANAMA",
     "venue": "Toronto Stadium",
-    "winner_team_id": null
+    "winner_team_id": "GHANA"
   },
   {
     "city": null,

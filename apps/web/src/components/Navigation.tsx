@@ -11,8 +11,6 @@ import {
   FlaskConical,
   Gauge,
   GitBranch,
-  Loader2,
-  RefreshCw,
   Shield,
   Table2,
   TrendingUp,
@@ -20,7 +18,7 @@ import {
   Users,
 } from "lucide-react";
 
-import { DEFAULT_MODEL_TYPE, fetchMetadata, syncData } from "@/lib/api";
+import { DEFAULT_MODEL_TYPE, fetchMetadata } from "@/lib/api";
 import { formatModelLabel } from "@/lib/format";
 
 const navItems = [
@@ -45,8 +43,6 @@ export function Navigation() {
     return window.localStorage.getItem(COLLAPSE_STORAGE_KEY) === "true";
   });
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
-  const [isSyncing, setIsSyncing] = useState(false);
-  const [syncError, setSyncError] = useState<string | null>(null);
 
   useEffect(() => {
     let isActive = true;
@@ -74,26 +70,6 @@ export function Navigation() {
       window.localStorage.setItem(COLLAPSE_STORAGE_KEY, String(next));
       return next;
     });
-  }
-
-  async function handleSync() {
-    setIsSyncing(true);
-    setSyncError(null);
-    try {
-      const result = await syncData();
-      if (!result.success) {
-        setSyncError(result.errors[0] ?? "Sync failed");
-        return;
-      }
-      setLastUpdated(result.last_updated);
-      window.location.reload();
-    } catch (caughtError: unknown) {
-      setSyncError(
-        caughtError instanceof Error ? caughtError.message : "Sync failed",
-      );
-    } finally {
-      setIsSyncing(false);
-    }
   }
 
   return (
@@ -153,32 +129,9 @@ export function Navigation() {
       </nav>
 
       <div className={`mt-4 ${collapsed ? "lg:px-0" : ""}`}>
-        <button
-          type="button"
-          onClick={handleSync}
-          disabled={isSyncing}
-          title="Sync results"
-          className={`flex w-full items-center rounded-md border border-white/10 bg-white/[0.05] text-sm font-semibold text-zinc-100 transition hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-60 ${
-            collapsed
-              ? "justify-center px-2 py-2 lg:w-10"
-              : "gap-2 px-3 py-2"
-          }`}
-        >
-          {isSyncing ? (
-            <Loader2 size={16} className="animate-spin" aria-hidden="true" />
-          ) : (
-            <RefreshCw size={16} aria-hidden="true" />
-          )}
-          {!collapsed ? (isSyncing ? "Syncing..." : "Sync results") : null}
-        </button>
         {!collapsed && lastUpdated ? (
-          <p className="mt-2 px-1 text-[0.68rem] leading-5 text-zinc-500">
+          <p className="px-1 text-[0.68rem] leading-5 text-zinc-500">
             Updated {lastUpdated}
-          </p>
-        ) : null}
-        {!collapsed && syncError ? (
-          <p className="mt-1 px-1 text-[0.68rem] leading-5 text-[var(--risk-red)]">
-            {syncError}
           </p>
         ) : null}
       </div>

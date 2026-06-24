@@ -1,5 +1,7 @@
 """Third-place ranking module."""
 
+from math import inf
+
 from app.models.domain import GroupStandingRow
 
 
@@ -24,7 +26,14 @@ def rank_third_place_teams(
     """Rank third-place teams using tournament tiebreakers."""
     return sorted(
         get_third_place_rows(group_tables),
-        key=lambda row: (-row.points, -row.goal_difference, -row.goals_for, row.team_id),
+        key=lambda row: (
+            -row.points,
+            -row.goal_difference,
+            -row.goals_for,
+            -row.conduct_score,
+            row.fifa_ranking if row.fifa_ranking is not None else inf,
+            row.team_id,
+        ),
     )
 
 

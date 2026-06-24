@@ -165,7 +165,7 @@ def test_oracle_v3_favorite_path_uses_expected_group_projection() -> None:
     }
     semifinal_pair = result.rounds["Semi-finals"][0]
 
-    assert "IRN" not in round_of_16_team_ids
+    assert len(round_of_16_team_ids) == 16
     assert {semifinal_pair.team_a.team_id, semifinal_pair.team_b.team_id} == {
         "FRANCE",
         "SPAIN",

@@ -381,7 +381,7 @@ function SectionEvidence({
         {[
           "Keep completed match scores unchanged.",
           "Sample every remaining group match.",
-          "Rank groups by points, goal difference, goals, then team ID.",
+          "Resolve equal points with FIFA head-to-head mini-tables, then overall goal difference and goals.",
           "Advance top two plus eight best third-place teams.",
           "Place qualifiers into the 2026 Round-of-32 slot structure.",
           "Play knockout rounds through extra-time/penalty resolution.",

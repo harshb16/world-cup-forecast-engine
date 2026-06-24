@@ -26,7 +26,6 @@ from app.models.schemas import (
     ScenarioSimulateRequest,
     SimulateRequest,
     SimulationSummaryResponse,
-    SyncResponse,
     ThirdPlaceTrackerResponse,
     TeamPathRequest,
     TeamPathResponse,
@@ -41,7 +40,6 @@ from app.services.backtesting import calculate_backtesting_metrics
 from app.services.bracket_service import run_bracket_simulation
 from app.services.data_loader import load_metadata, load_tournament
 from app.services.data_quality_service import calculate_data_quality
-from app.services.data_sync_service import run_data_sync
 from app.services.head_to_head_service import calculate_head_to_head
 from app.services.matchday_service import calculate_matchday
 from app.services.model_metadata import list_model_metadata
@@ -244,9 +242,3 @@ def data_quality() -> DataQualityResponse:
 @router.get("/matchday", response_model=MatchdayResponse)
 def matchday(model_type: ModelType = DEFAULT_MODEL_TYPE) -> MatchdayResponse:
     return calculate_matchday(get_data_mode(), model_type)
-
-
-@router.post("/sync", response_model=SyncResponse)
-def sync_data() -> SyncResponse:
-    """Re-run ingest scripts and refresh processed data."""
-    return run_data_sync()

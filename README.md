@@ -43,6 +43,9 @@ Runtime does not fetch internet. App reads checked-in JSON from
 
 ## Refresh Data
 
+Data refresh is an operator-only CLI workflow. The public API does not expose a
+sync endpoint.
+
 ```bash
 python scripts/ingest/fetch_worldcup_fifa.py
 python scripts/ingest/fetch_fifa_rankings.py

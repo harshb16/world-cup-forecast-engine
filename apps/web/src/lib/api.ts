@@ -619,24 +619,6 @@ export type HeadToHead = {
   n_simulations: number;
 };
 
-export type SyncResponse = {
-  success: boolean;
-  last_updated: string;
-  errors: string[];
-};
-
-export async function syncData(): Promise<SyncResponse> {
-  const response = await fetch(`${API_BASE_URL}/sync`, {
-    method: "POST",
-  });
-
-  if (!response.ok) {
-    throw new Error(`Sync failed with status ${response.status}`);
-  }
-
-  return response.json();
-}
-
 async function fetchJson<T>(path: string): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`);
 

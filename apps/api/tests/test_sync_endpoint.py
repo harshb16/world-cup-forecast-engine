@@ -1,49 +1,19 @@
-"""Tests for data sync API endpoint."""
+"""Tests for operator-managed data sync."""
 
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.models.schemas import SyncResponse
 
 
 client = TestClient(app)
 
 
-def test_sync_endpoint_returns_response_shape() -> None:
-    with patch(
-        "app.api.routes.run_data_sync",
-        return_value=SyncResponse(
-            success=True,
-            last_updated="2026-06-18T12:00:00+00:00",
-            errors=[],
-        ),
-    ):
-        response = client.post("/sync")
+def test_sync_endpoint_is_not_public() -> None:
+    response = client.post("/sync")
 
-    assert response.status_code == 200
-    payload = response.json()
-    assert payload["success"] is True
-    assert payload["last_updated"] == "2026-06-18T12:00:00+00:00"
-    assert payload["errors"] == []
-
-
-def test_sync_endpoint_reports_errors() -> None:
-    with patch(
-        "app.api.routes.run_data_sync",
-        return_value=SyncResponse(
-            success=False,
-            last_updated="2026-06-18T12:00:00+00:00",
-            errors=["fetch_worldcup_fifa.py failed: blocked"],
-        ),
-    ):
-        response = client.post("/sync")
-
-    assert response.status_code == 200
-    payload = response.json()
-    assert payload["success"] is False
-    assert len(payload["errors"]) == 1
+    assert response.status_code == 404
 
 
 def test_run_data_sync_collects_script_failures() -> None:

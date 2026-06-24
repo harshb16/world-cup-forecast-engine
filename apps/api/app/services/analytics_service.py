@@ -1,7 +1,13 @@
 """Analytics services for upset radar, group chaos, and model comparison."""
 
+import json
 import math
+from collections import Counter
+from pathlib import Path
 
+import numpy as np
+
+from app.core.config import DEFAULT_MODEL_TYPE
 from app.models.schemas import (
     BracketSimulateRequest,
     GroupChaosResponse,
@@ -9,13 +15,23 @@ from app.models.schemas import (
     ModelComparisonDeltaResponse,
     ModelComparisonResponse,
     ModelType,
+    ProbabilityMoverResponse,
+    ProbabilityMoversResponse,
     SimulateRequest,
+    ThirdPlaceSlotDistributionResponse,
+    ThirdPlaceTeamResponse,
+    ThirdPlaceTrackerResponse,
     UpsetFixtureResponse,
     UpsetRadarResponse,
 )
 from app.services.bracket_service import run_bracket_simulation
 from app.services.data_loader import load_tournament
 from app.services.simulation_service import create_match_model, run_simulation
+from app.simulation.group_stage import simulate_group_stage
+from app.simulation.group_table import calculate_group_table
+from app.simulation.knockout import WorldCup2026BracketBuilder
+
+PROCESSED_DIR = Path(__file__).resolve().parents[4] / "data" / "processed"
 
 
 STAGE_IMPORTANCE: dict[str, float] = {
@@ -36,7 +52,7 @@ RISK_LABELS = (
 
 def calculate_upset_radar(
     data_mode: str,
-    model_type: ModelType = "oracle_v2",
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
     limit: int = 12,
 ) -> UpsetRadarResponse:
     """Rank fixtures by upset risk using advance probability gaps."""
@@ -141,7 +157,7 @@ def calculate_upset_radar(
 
 def calculate_group_chaos(
     data_mode: str,
-    model_type: ModelType = "oracle_v2",
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
     n_simulations: int = 500,
     seed: int = 42,
 ) -> GroupChaosResponse:
@@ -209,10 +225,17 @@ def calculate_model_comparison(
     data_mode: str,
     n_simulations: int = 300,
     seed: int = 42,
-    baseline_model: ModelType = "oracle_v2",
+    baseline_model: ModelType = DEFAULT_MODEL_TYPE,
 ) -> ModelComparisonResponse:
     """Compare champion and top-four probabilities across model types."""
-    model_types: list[ModelType] = ["elo", "poisson", "calibrated_elo", "oracle_v2"]
+    model_types: list[ModelType] = [
+        "elo",
+        "poisson",
+        "calibrated_elo",
+        "oracle_v2",
+        "dixon_coles",
+        "oracle_v3",
+    ]
     summaries = {
         model_type: run_simulation(
             SimulateRequest(

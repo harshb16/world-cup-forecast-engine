@@ -15,6 +15,7 @@ import { SectionCard } from "@/components/ui/SectionCard";
 import { StatCard } from "@/components/ui/StatCard";
 import {
   compareScenario,
+  DEFAULT_MODEL_TYPE,
   fetchFixtures,
   fetchMetadata,
   fetchTeams,
@@ -128,7 +129,7 @@ export function WhatIfLab() {
     setError(null);
     compareScenario({
       n_simulations: 1000,
-      model_type: "oracle_v2",
+      model_type: DEFAULT_MODEL_TYPE,
       seed: 42,
       result_overrides: overrides,
     })

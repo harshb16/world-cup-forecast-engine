@@ -131,7 +131,7 @@ def simulate_knockout(
         for index, (team_a_id, team_b_id) in enumerate(pairs, start=1):
             team_a = teams_by_id[team_a_id]
             team_b = teams_by_id[team_b_id]
-            result = match_model.simulate_result(team_a, team_b, rng)
+            result = _simulate_knockout_result(match_model, team_a, team_b, rng)
             winner_team_id = _winner_from_result(team_a, team_b, result, rng)
             loser_team_id = team_b_id if winner_team_id == team_a_id else team_a_id
             eliminated_stage_by_team[loser_team_id] = round_name
@@ -262,6 +262,17 @@ def _winner_from_result(
 
     team_a_probability = 1 / (1 + 10 ** (-(team_a.rating - team_b.rating) / 400))
     return team_a.id if rng.random() < team_a_probability else team_b.id
+
+
+def _simulate_knockout_result(
+    match_model: MatchModel,
+    team_a: Team,
+    team_b: Team,
+    rng: np.random.Generator,
+) -> MatchResult:
+    if hasattr(match_model, "knockout_lambda_scale"):
+        return match_model.simulate_result(team_a, team_b, rng, stage="knockout")
+    return match_model.simulate_result(team_a, team_b, rng)
 
 
 def _round_code(round_name: str) -> str:

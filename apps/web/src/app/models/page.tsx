@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { BarChart3, BrainCircuit, Loader2, Target, type LucideIcon } from "lucide-react";
 
+import { CalibrationChart } from "@/components/analytics/CalibrationChart";
 import { DataQualityDesk } from "@/components/analytics/DataQualityDesk";
 import { ModelComparisonPanel } from "@/components/analytics/ModelComparisonPanel";
 import { AppShell } from "@/components/AppShell";
@@ -11,15 +12,21 @@ import { LoadingState } from "@/components/LoadingState";
 import { PageHeader } from "@/components/PageHeader";
 import { SectionCard } from "@/components/ui/SectionCard";
 import {
+  fetchBacktestingMetrics,
   fetchDataQuality,
   fetchModelComparison,
   fetchModelMetadata,
   fetchTeams,
+  DEFAULT_MODEL_TYPE,
+  BacktestingMetrics,
   DataQualityReport,
   ModelComparison,
   ModelMetadata,
+  ModelType,
 } from "@/lib/api";
-import { formatModelLabel } from "@/lib/format";
+import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
+
+const CALIBRATION_MODELS: ModelType[] = ["elo", "poisson", "oracle_v2", "dixon_coles", "oracle_v3"];
 
 export default function ModelsPage() {
   const [models, setModels] = useState<ModelMetadata[]>([]);
@@ -28,7 +35,33 @@ export default function ModelsPage() {
   const [teamNames, setTeamNames] = useState<Record<string, string>>({});
   const [loadingComparison, setLoadingComparison] = useState(false);
   const [comparisonError, setComparisonError] = useState<string | null>(null);
+  const [calibrationModel, setCalibrationModel] = useState<ModelType>(DEFAULT_MODEL_TYPE);
+  const [calibration, setCalibration] = useState<BacktestingMetrics | null>(null);
+  const [calibrationError, setCalibrationError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isActive = true;
+    fetchBacktestingMetrics(calibrationModel)
+      .then((metrics) => {
+        if (isActive) {
+          setCalibration(metrics);
+          setCalibrationError(null);
+        }
+      })
+      .catch((caughtError: unknown) => {
+        if (isActive) {
+          setCalibrationError(
+            caughtError instanceof Error
+              ? caughtError.message
+              : "Calibration request failed",
+          );
+        }
+      });
+    return () => {
+      isActive = false;
+    };
+  }, [calibrationModel]);
 
   useEffect(() => {
     let isActive = true;
@@ -63,7 +96,7 @@ export default function ModelsPage() {
     setComparisonError(null);
 
     try {
-      const comparisonData = await fetchModelComparison(200, 42, "oracle_v2");
+      const comparisonData = await fetchModelComparison(200, 42, DEFAULT_MODEL_TYPE);
       setComparison(comparisonData);
     } catch (caughtError: unknown) {
       setComparisonError(
@@ -80,8 +113,8 @@ export default function ModelsPage() {
     <AppShell>
       <PageHeader
         eyebrow="Models"
-        title="Transparent baselines before ML"
-        description="Current simulations use honest statistical baselines. Machine learning comes after data coverage and evaluation are strong enough."
+        title="Model desk and calibration"
+        description="Statistical baselines, Dixon-Coles, GBM, and Oracle v3 ensemble — with backtesting on completed fixtures."
       />
 
       {error ? <ErrorState message={error} /> : null}
@@ -95,8 +128,8 @@ export default function ModelsPage() {
             <SummaryCard
               icon={Target}
               label="Default model"
-              value={formatModelLabel("oracle_v2")}
-              detail="Squad-aware calibrated baseline for all pages"
+              value={formatModelLabel(DEFAULT_MODEL_TYPE)}
+              detail="Dixon-Coles + Oracle v2 + GBM ensemble for all pages"
             />
             <SummaryCard
               icon={BarChart3}
@@ -107,8 +140,8 @@ export default function ModelsPage() {
             <SummaryCard
               icon={BrainCircuit}
               label="ML status"
-              value="Deferred"
-              detail="Planned after validation and backtesting"
+              value="GBM + Oracle v3"
+              detail="Gradient boosting and ensemble models available for comparison"
             />
           </section>
 
@@ -141,6 +174,83 @@ export default function ModelsPage() {
           </div>
 
           {dataQuality ? <DataQualityDesk report={dataQuality} /> : null}
+
+          <SectionCard>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase text-[var(--turf)]">
+                  Calibration desk
+                </p>
+                <h2 className="mt-1 text-lg font-semibold text-white">
+                  Predicted vs actual outcomes
+                </h2>
+                <p className="mt-1 text-sm text-zinc-400">
+                  Compare model confidence buckets against completed group-stage
+                  fixtures.
+                </p>
+              </div>
+              <label className="flex flex-col gap-1 text-xs text-zinc-400">
+                Model
+                <select
+                  value={calibrationModel}
+                  onChange={(event) =>
+                    setCalibrationModel(event.target.value as ModelType)
+                  }
+                  className="rounded-md border border-white/10 bg-black/20 px-3 py-2 text-sm text-white"
+                >
+                  {CALIBRATION_MODELS.map((model) => (
+                    <option key={model} value={model}>
+                      {formatModelLabel(model)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            {calibrationError ? (
+              <p className="mt-4 text-sm text-red-200">{calibrationError}</p>
+            ) : null}
+
+            {calibration ? (
+              <>
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  <SummaryCard
+                    icon={Target}
+                    label="Accuracy"
+                    value={
+                      calibration.accuracy === null
+                        ? "—"
+                        : formatPercent(calibration.accuracy)
+                    }
+                    detail={`${calibration.sample_size} completed fixtures`}
+                  />
+                  <SummaryCard
+                    icon={BarChart3}
+                    label="Brier score"
+                    value={
+                      calibration.brier_score === null
+                        ? "—"
+                        : formatNumber(calibration.brier_score, 3)
+                    }
+                    detail="Lower is better"
+                  />
+                  <SummaryCard
+                    icon={BrainCircuit}
+                    label="Log loss"
+                    value={
+                      calibration.log_loss === null
+                        ? "—"
+                        : formatNumber(calibration.log_loss, 3)
+                    }
+                    detail="Lower is better"
+                  />
+                </div>
+                <div className="mt-6">
+                  <CalibrationChart bins={calibration.calibration_bins} />
+                </div>
+              </>
+            ) : null}
+          </SectionCard>
 
           {!comparison ? (
             <SectionCard>

@@ -83,6 +83,31 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
             ],
         ),
         ModelMetadataResponse(
+            id="dixon_coles",
+            name="Dixon-Coles Poisson model",
+            is_ml=False,
+            inputs=[
+                "team rating",
+                "opponent rating",
+            ],
+            assumptions=[
+                "Expected goals are rating-derived (same as Poisson baseline).",
+                "Joint score probabilities are corrected using the Dixon-Coles rho factor.",
+                "Low-score scorelines (0-0, 0-1, 1-0, 1-1) are given adjusted probabilities.",
+            ],
+            limitations=[
+                "Rho is fixed at -0.13 and not fitted from match data.",
+                "Expected goals are not calibrated from team-level attacking and defensive data.",
+                "Does not use player availability, venue, travel, or market data.",
+            ],
+            supported_outputs=[
+                "expected goals",
+                "win/draw/loss probabilities",
+                "simulated scorelines with low-score correction",
+                "Monte Carlo stage probabilities",
+            ],
+        ),
+        ModelMetadataResponse(
             id="oracle_v2",
             name="Oracle v2 ensemble",
             is_ml=False,
@@ -96,6 +121,7 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
                 "Ratings, recent results, and squad value together beat any single noisy source.",
                 "Expected goals should be generated from separate attack and defense strength.",
                 "Favorite paths use projected group tables, not raw third-place strength sorting.",
+                "Knockout rounds apply a lower expected-goals scale than group-stage matches.",
             ],
             limitations=[
                 "No private injury, lineup, or event feed is used.",
@@ -108,6 +134,55 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
                 "simulated scorelines",
                 "favorite-path bracket reveal",
                 "Monte Carlo stage probabilities",
+            ],
+        ),
+        ModelMetadataResponse(
+            id="gbm",
+            name="Gradient boosting classifier",
+            is_ml=True,
+            inputs=[
+                "rating difference",
+                "team ratings",
+                "absolute rating gap",
+            ],
+            assumptions=[
+                "Historical and synthetic international fixtures train a calibrated GBM.",
+                "Scorelines are sampled from Oracle v2 expected goals after W/D/L draw.",
+            ],
+            limitations=[
+                "Training data is sparse for the 2026 tournament window.",
+                "Synthetic labels supplement real results until more fixtures finish.",
+                "Feature set is minimal compared with full event or xG models.",
+            ],
+            supported_outputs=[
+                "win/draw/loss probabilities",
+                "simulated scorelines",
+                "Monte Carlo stage probabilities",
+            ],
+        ),
+        ModelMetadataResponse(
+            id="oracle_v3",
+            name="Oracle v3 ensemble",
+            is_ml=True,
+            inputs=[
+                "Dixon-Coles scoreline model",
+                "Oracle v2 squad-aware model",
+                "GBM classifier (when artifact available)",
+            ],
+            assumptions=[
+                "Blended W/D/L probabilities outperform any single baseline on calibration.",
+                "Default weights are 35% Dixon-Coles, 35% Oracle v2, 30% GBM.",
+                "Falls back to 50/50 Dixon-Coles + Oracle v2 when GBM artifact is missing.",
+            ],
+            limitations=[
+                "Ensemble weights are fixed, not re-fit after every matchday.",
+                "GBM availability depends on scripts/train_gbm_model.py being run.",
+            ],
+            supported_outputs=[
+                "win/draw/loss probabilities",
+                "simulated scorelines",
+                "Monte Carlo stage probabilities",
+                "favorite-path bracket reveal",
             ],
         ),
     ]

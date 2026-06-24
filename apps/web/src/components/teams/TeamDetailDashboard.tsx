@@ -13,6 +13,7 @@ import { HelpText } from "@/components/ui/HelpText";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { StatCard } from "@/components/ui/StatCard";
 import {
+  DEFAULT_MODEL_TYPE,
   fetchGroups,
   fetchMetadata,
   fetchTeams,
@@ -51,7 +52,7 @@ export function TeamDetailDashboard() {
       fetchTeamPath(teamId),
       simulateTournament({
         n_simulations: 1000,
-        model_type: "oracle_v2",
+        model_type: DEFAULT_MODEL_TYPE,
         seed: 42,
       }),
     ])
@@ -163,6 +164,35 @@ export function TeamDetailDashboard() {
       <DataStatusCard metadata={data.metadata} />
 
       <TeamPathExplorer path={data.path} />
+
+      <SectionCard>
+        <p className="text-xs font-semibold uppercase text-emerald-200">
+          Likely road to final
+        </p>
+        <h2 className="mt-1 text-lg font-semibold text-white">
+          Most common opponents by round
+        </h2>
+        <ul className="mt-4 space-y-3">
+          {data.path.stages
+            .filter((stage) => stage.most_likely_opponent)
+            .map((stage) => (
+              <li
+                key={stage.stage}
+                className="flex items-center justify-between gap-3 rounded-md border border-white/10 bg-black/15 px-3 py-2"
+              >
+                <span className="text-sm font-semibold text-zinc-300">
+                  {stage.stage}
+                </span>
+                <span className="text-sm text-zinc-100">
+                  {stage.most_likely_opponent?.team_name ?? "—"}
+                </span>
+                <span className="text-xs text-zinc-500">
+                  {formatPercent(stage.most_likely_opponent?.probability ?? 0)}
+                </span>
+              </li>
+            ))}
+        </ul>
+      </SectionCard>
 
       {probability ? (
         <HelpText>

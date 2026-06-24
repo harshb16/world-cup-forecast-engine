@@ -10,13 +10,14 @@ from app.services.simulation_service import (
     create_match_model,
     run_sample_simulation,
 )
-from app.simulation.match_models import EloWinDrawLossModel, OracleV2Model, PoissonScoreModel
+from app.simulation.match_models import EloWinDrawLossModel, OracleV2Model, OracleV3Model, PoissonScoreModel
 
 
 def test_create_match_model_accepts_valid_models() -> None:
     assert isinstance(create_match_model("elo"), EloWinDrawLossModel)
     assert isinstance(create_match_model("poisson"), PoissonScoreModel)
     assert isinstance(create_match_model("oracle_v2"), OracleV2Model)
+    assert isinstance(create_match_model("oracle_v3"), OracleV3Model)
 
 
 def test_create_match_model_rejects_invalid_model_type() -> None:

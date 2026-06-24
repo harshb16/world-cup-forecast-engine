@@ -6,7 +6,12 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.models.schemas import BracketSimulateRequest
 from app.services.data_loader import load_tournament
-from app.services.bracket_service import run_bracket_simulation
+from app.services.bracket_service import (
+    _MostLikelyMatchModel,
+    _project_favorite_group_stage,
+    run_bracket_simulation,
+)
+from app.services.simulation_service import create_match_model
 
 
 client = TestClient(app)
@@ -87,13 +92,10 @@ def test_favorite_bracket_projection_ignores_seed() -> None:
     assert first.champion_team_id == second.champion_team_id
 
 
-def test_favorite_bracket_projects_groups_by_strength_sheet() -> None:
+def test_favorite_bracket_projects_groups_from_favorite_path() -> None:
     config = load_tournament("processed")
-    teams_by_id = {team.id: team for team in config.teams}
-    expected_group_winners = {
-        group.id: max(group.team_ids, key=lambda team_id: teams_by_id[team_id].rating)
-        for group in config.groups
-    }
+    match_model = _MostLikelyMatchModel(create_match_model("calibrated_elo", "processed"))
+    expected = _project_favorite_group_stage(config, match_model)
 
     result = run_bracket_simulation(
         BracketSimulateRequest(
@@ -107,6 +109,10 @@ def test_favorite_bracket_projects_groups_by_strength_sheet() -> None:
     projected_group_winners = {
         table.group_id: table.rows[0]["team_id"]
         for table in result.group_tables
+    }
+    expected_group_winners = {
+        group_id: rows[0].team_id
+        for group_id, rows in expected.group_tables.items()
     }
     assert projected_group_winners == expected_group_winners
 
@@ -144,9 +150,9 @@ def test_bracket_probabilities_sum_to_one() -> None:
             ) == pytest.approx(1.0)
 
 
-def test_oracle_v2_favorite_path_uses_expected_group_projection() -> None:
+def test_oracle_v3_favorite_path_uses_expected_group_projection() -> None:
     result = run_bracket_simulation(
-        BracketSimulateRequest(model_type="oracle_v2", simulation_mode="favorite", seed=42),
+        BracketSimulateRequest(model_type="oracle_v3", simulation_mode="favorite", seed=42),
         "processed",
     )
 

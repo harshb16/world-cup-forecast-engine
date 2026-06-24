@@ -1,11 +1,11 @@
 {
   "data_mode": "processed",
-  "last_refresh": "2026-06-13T06:25:00+00:00",
+  "last_refresh": "2026-06-18T18:08:30.739485+00:00",
   "source_coverage": {
     "teams": 48,
     "groups": 12,
     "group_fixtures": 72,
-    "completed_results": 4,
+    "completed_results": 25,
     "ratings": 48,
     "squad_features": 48
   },
@@ -181,7 +181,7 @@
     },
     {
       "team_id": "TURKIYE",
-      "team_name": "T\u00fcrkiye",
+      "team_name": "Türkiye",
       "group_id": "D",
       "has_rating": true,
       "has_squad_features": true,
@@ -203,7 +203,7 @@
     },
     {
       "team_id": "CURACAO",
-      "team_name": "Cura\u00e7ao",
+      "team_name": "Curaçao",
       "group_id": "E",
       "has_rating": true,
       "has_squad_features": true,
@@ -218,7 +218,7 @@
     },
     {
       "team_id": "CIV",
-      "team_name": "C\u00f4te d\u2019Ivoire",
+      "team_name": "Côte d’Ivoire",
       "group_id": "E",
       "has_rating": true,
       "has_squad_features": true,

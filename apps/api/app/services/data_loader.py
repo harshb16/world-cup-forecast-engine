@@ -161,7 +161,8 @@ def _processed_quality_metadata() -> dict[str, Any]:
             "Ratings cover all active teams but are derived from rankings, not official FIFA strength scores.",
         ],
         "model_limitations": [
-            "Current models are statistical baselines, not trained machine-learning models.",
+            "The GBM uses a small real-result sample supplemented by synthetic Oracle v2 labels.",
+            "Oracle v3 ensemble weights are fixed rather than re-fit after every matchday.",
             "Knockout bracket uses FIFA World Cup 2026 round-of-32 slots with deterministic third-place assignment.",
             "Small Monte Carlo probability gaps can be sampling noise.",
         ],

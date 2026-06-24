@@ -12,6 +12,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { HelpText } from "@/components/ui/HelpText";
 import { SectionCard } from "@/components/ui/SectionCard";
 import {
+  DEFAULT_MODEL_TYPE,
   fetchGroups,
   fetchMetadata,
   fetchTeams,
@@ -44,7 +45,7 @@ export function TeamsDashboard() {
       fetchMetadata(),
       simulateTournament({
         n_simulations: 1000,
-        model_type: "oracle_v2",
+        model_type: DEFAULT_MODEL_TYPE,
         seed: 42,
       }),
     ])

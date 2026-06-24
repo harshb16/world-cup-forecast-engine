@@ -70,7 +70,26 @@ def validate_processed_data(base_dir=PROCESSED_DIR) -> list[str]:
         elif result is not None:
             errors.append(f"{fixture['id']} is scheduled but result is not null")
 
-    result_fixture_ids = {result["match_id"] for result in results}
+    fixtures_by_id = {fixture["id"]: fixture for fixture in group_stage_fixtures}
+    result_fixture_ids: set[str] = set()
+    for result in results:
+        match_id = result.get("match_id")
+        if match_id in result_fixture_ids:
+            errors.append(f"results.json contains duplicate match {match_id}")
+            continue
+        result_fixture_ids.add(match_id)
+
+        fixture = fixtures_by_id.get(match_id)
+        if fixture is None:
+            errors.append(f"results.json references unknown match {match_id}")
+            continue
+        for side in ["team_a_id", "team_b_id"]:
+            if result.get(side) != fixture.get(side):
+                errors.append(f"{match_id} result has mismatched {side}")
+        for score in ["team_a_goals", "team_b_goals"]:
+            if not isinstance(result.get(score), int) or result[score] < 0:
+                errors.append(f"{match_id} result has invalid {score}")
+
     for fixture in group_stage_fixtures:
         if fixture.get("status") == "finished" and fixture["id"] not in result_fixture_ids:
             errors.append(f"{fixture['id']} finished fixture missing from results.json")

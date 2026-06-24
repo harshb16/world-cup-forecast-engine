@@ -57,11 +57,20 @@ def test_model_comparison_response_shape() -> None:
         "poisson",
         "calibrated_elo",
         "oracle_v2",
+        "dixon_coles",
+        "oracle_v3",
     }
-    assert len(payload["model_deltas"]) == 3
+    assert len(payload["model_deltas"]) == 5
     for delta in payload["model_deltas"]:
         assert delta["baseline_model"] == "oracle_v2"
         assert len(delta["champion_probability_deltas"]) == 48
+
+
+def test_model_comparison_defaults_to_oracle_v3_baseline() -> None:
+    response = client.get("/analytics/model-comparison?n_simulations=20&seed=11")
+
+    assert response.status_code == 200
+    assert response.json()["baseline_model"] == "oracle_v3"
 
 
 def test_data_quality_covers_all_teams() -> None:

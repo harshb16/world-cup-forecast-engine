@@ -69,3 +69,9 @@ def test_run_data_sync_collects_script_failures() -> None:
     assert response.errors
     refresh_metadata.assert_not_called()
     refresh_quality.assert_not_called()
+
+
+def test_sync_pipeline_retrains_gbm() -> None:
+    from app.services.data_sync_service import SYNC_SCRIPTS
+
+    assert SYNC_SCRIPTS[-1].as_posix() == "scripts/train_gbm_model.py"

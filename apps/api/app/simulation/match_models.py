@@ -160,16 +160,23 @@ class OracleV2Model:
         self,
         rating_overrides: dict[str, float] | None = None,
         squad_features: dict[str, dict[str, float]] | None = None,
+        knockout_lambda_scale: float = 0.88,
     ) -> None:
         self.rating_overrides = rating_overrides or {}
         self.squad_features = squad_features or {}
+        self.knockout_lambda_scale = knockout_lambda_scale
 
     def rating_for(self, team: Team) -> float:
         calibrated_rating = self.rating_overrides.get(team.id, team.rating)
         squad_power = self.squad_features.get(team.id, {}).get("squad_power", team.rating)
         return (0.45 * team.rating) + (0.20 * calibrated_rating) + (0.35 * squad_power)
 
-    def expected_goals(self, team_a: Team, team_b: Team) -> tuple[float, float]:
+    def expected_goals(
+        self,
+        team_a: Team,
+        team_b: Team,
+        stage: str | None = None,
+    ) -> tuple[float, float]:
         team_a_attack = self._attack_strength(team_a)
         team_b_attack = self._attack_strength(team_b)
         team_a_defense = self._defense_strength(team_a)
@@ -177,13 +184,21 @@ class OracleV2Model:
 
         team_a_expected = 1.28 * np.exp(((team_a_attack - team_b_defense) / 400) * 0.42)
         team_b_expected = 1.28 * np.exp(((team_b_attack - team_a_defense) / 400) * 0.42)
+        if stage is not None and stage != "group":
+            team_a_expected *= self.knockout_lambda_scale
+            team_b_expected *= self.knockout_lambda_scale
         return (
             float(min(max(team_a_expected, 0.25), 3.4)),
             float(min(max(team_b_expected, 0.25), 3.4)),
         )
 
-    def predict_probabilities(self, team_a: Team, team_b: Team) -> dict[str, float]:
-        team_a_expected, team_b_expected = self.expected_goals(team_a, team_b)
+    def predict_probabilities(
+        self,
+        team_a: Team,
+        team_b: Team,
+        stage: str | None = None,
+    ) -> dict[str, float]:
+        team_a_expected, team_b_expected = self.expected_goals(team_a, team_b, stage=stage)
         return _scoreline_probabilities(team_a_expected, team_b_expected)
 
     def simulate_result(
@@ -191,8 +206,9 @@ class OracleV2Model:
         team_a: Team,
         team_b: Team,
         rng: np.random.Generator,
+        stage: str | None = None,
     ) -> MatchResult:
-        team_a_expected, team_b_expected = self.expected_goals(team_a, team_b)
+        team_a_expected, team_b_expected = self.expected_goals(team_a, team_b, stage=stage)
         return MatchResult(
             team_a_goals=int(rng.poisson(team_a_expected)),
             team_b_goals=int(rng.poisson(team_b_expected)),
@@ -221,6 +237,96 @@ class OracleV2Model:
     def _defense_strength(self, team: Team) -> float:
         features = self.squad_features.get(team.id, {})
         return self.rating_for(team) + features.get("defense_bonus", 0.0)
+
+
+class DixonColesModel:
+    """Poisson model with Dixon-Coles low-score correlation correction."""
+
+    DEFAULT_RHO = -0.13
+
+    def __init__(
+        self,
+        rho: float = DEFAULT_RHO,
+        rating_overrides: dict[str, float] | None = None,
+        squad_features: dict[str, dict[str, float]] | None = None,
+    ) -> None:
+        self.rho = rho
+        self.rating_overrides = rating_overrides or {}
+        self.squad_features = squad_features or {}
+
+    def expected_goals(self, team_a: Team, team_b: Team) -> tuple[float, float]:
+        """Return expected goals using PoissonScoreModel logic."""
+        return expected_goals(team_a, team_b)
+
+    def predict_probabilities(self, team_a: Team, team_b: Team) -> dict[str, float]:
+        """Predict W/D/L using Dixon-Coles corrected joint probability matrix."""
+        mu, nu = self.expected_goals(team_a, team_b)
+        max_goals = 8
+
+        team_a_win = 0.0
+        draw = 0.0
+        team_b_win = 0.0
+        total = 0.0
+
+        for x in range(max_goals + 1):
+            prob_x = _poisson_probability(x, mu)
+            for y in range(max_goals + 1):
+                prob_y = _poisson_probability(y, nu)
+                corrected = prob_x * prob_y * _tau(x, y, mu, nu, self.rho)
+                total += corrected
+                if x > y:
+                    team_a_win += corrected
+                elif x < y:
+                    team_b_win += corrected
+                else:
+                    draw += corrected
+
+        return {
+            "team_a_win": team_a_win / total,
+            "draw": draw / total,
+            "team_b_win": team_b_win / total,
+        }
+
+    def simulate_result(
+        self,
+        team_a: Team,
+        team_b: Team,
+        rng: np.random.Generator,
+    ) -> MatchResult:
+        """Sample a scoreline from the Dixon-Coles corrected joint distribution."""
+        mu, nu = self.expected_goals(team_a, team_b)
+        max_goals = 8
+        n = max_goals + 1
+
+        probs: list[float] = []
+        pairs: list[tuple[int, int]] = []
+
+        for x in range(n):
+            prob_x = _poisson_probability(x, mu)
+            for y in range(n):
+                prob_y = _poisson_probability(y, nu)
+                corrected = prob_x * prob_y * _tau(x, y, mu, nu, self.rho)
+                probs.append(max(corrected, 0.0))
+                pairs.append((x, y))
+
+        total = sum(probs)
+        normalized = [p / total for p in probs]
+        chosen_index = int(rng.choice(len(pairs), p=normalized))
+        team_a_goals, team_b_goals = pairs[chosen_index]
+        return MatchResult(team_a_goals=team_a_goals, team_b_goals=team_b_goals)
+
+
+def _tau(x: int, y: int, mu: float, nu: float, rho: float) -> float:
+    """Dixon-Coles correction factor for low-score scorelines."""
+    if x == 0 and y == 0:
+        return 1.0 - mu * nu * rho
+    if x == 0 and y == 1:
+        return 1.0 + mu * rho
+    if x == 1 and y == 0:
+        return 1.0 + nu * rho
+    if x == 1 and y == 1:
+        return 1.0 - rho
+    return 1.0
 
 
 def _scoreline_probabilities(
@@ -253,3 +359,89 @@ def _scoreline_probabilities(
 
 def _poisson_probability(goals: int, expected: float) -> float:
     return float((expected**goals) * np.exp(-expected) / math.factorial(goals))
+
+
+class OracleV3Model:
+    """Ensemble blending Dixon-Coles, Oracle v2, and GBM match models."""
+
+    DEFAULT_WEIGHTS: dict[str, float] = {
+        "dixon_coles": 0.35,
+        "oracle_v2": 0.35,
+        "gbm": 0.30,
+    }
+
+    def __init__(
+        self,
+        oracle_v2: OracleV2Model,
+        gbm: object | None = None,
+        dixon_coles: DixonColesModel | None = None,
+        weights: dict[str, float] | None = None,
+    ) -> None:
+        self.oracle_v2 = oracle_v2
+        self.dixon_coles = dixon_coles or DixonColesModel()
+        self.gbm = gbm
+        self.knockout_lambda_scale = oracle_v2.knockout_lambda_scale
+        self.weights = dict(weights or self.DEFAULT_WEIGHTS)
+        if self.gbm is None:
+            self.weights = {"dixon_coles": 0.5, "oracle_v2": 0.5, "gbm": 0.0}
+
+    def predict_probabilities(
+        self,
+        team_a: Team,
+        team_b: Team,
+        stage: str | None = None,
+    ) -> dict[str, float]:
+        blended = {"team_a_win": 0.0, "draw": 0.0, "team_b_win": 0.0}
+        for model_name, weight in self.weights.items():
+            if weight <= 0:
+                continue
+            if model_name == "dixon_coles":
+                probs = self.dixon_coles.predict_probabilities(team_a, team_b)
+            elif model_name == "oracle_v2":
+                probs = self.oracle_v2.predict_probabilities(team_a, team_b, stage=stage)
+            elif model_name == "gbm" and self.gbm is not None:
+                probs = self.gbm.predict_probabilities(team_a, team_b)
+            else:
+                continue
+            for outcome in blended:
+                blended[outcome] += weight * probs[outcome]
+        total = sum(blended.values())
+        return {outcome: value / total for outcome, value in blended.items()}
+
+    def simulate_result(
+        self,
+        team_a: Team,
+        team_b: Team,
+        rng: np.random.Generator,
+        stage: str | None = None,
+    ) -> MatchResult:
+        probabilities = self.predict_probabilities(team_a, team_b, stage=stage)
+        outcome = rng.choice(
+            ["team_a_win", "draw", "team_b_win"],
+            p=[
+                probabilities["team_a_win"],
+                probabilities["draw"],
+                probabilities["team_b_win"],
+            ],
+        )
+        team_a_expected, team_b_expected = self.oracle_v2.expected_goals(
+            team_a, team_b, stage=stage
+        )
+        if outcome == "draw":
+            goals = max(0, int(round((team_a_expected + team_b_expected) / 2)))
+            return MatchResult(team_a_goals=goals, team_b_goals=goals)
+        if outcome == "team_a_win":
+            team_a_goals = max(1, int(rng.poisson(team_a_expected)))
+            team_b_goals = max(0, min(team_a_goals - 1, int(rng.poisson(team_b_expected))))
+            return MatchResult(team_a_goals=team_a_goals, team_b_goals=team_b_goals)
+        team_b_goals = max(1, int(rng.poisson(team_b_expected)))
+        team_a_goals = max(0, min(team_b_goals - 1, int(rng.poisson(team_a_expected))))
+        return MatchResult(team_a_goals=team_a_goals, team_b_goals=team_b_goals)
+
+    def expected_goals(
+        self,
+        team_a: Team,
+        team_b: Team,
+        stage: str | None = None,
+    ) -> tuple[float, float]:
+        return self.oracle_v2.expected_goals(team_a, team_b, stage=stage)

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   BarChart3,
+  Calendar,
   ChevronLeft,
   ChevronRight,
   FlaskConical,
@@ -14,6 +15,7 @@ import {
   RefreshCw,
   Shield,
   Table2,
+  TrendingUp,
   Trophy,
   Users,
 } from "lucide-react";
@@ -22,8 +24,10 @@ import { fetchMetadata, syncData } from "@/lib/api";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: Gauge },
+  { href: "/matchday", label: "Matchday", icon: Calendar },
   { href: "/bracket", label: "Bracket", icon: GitBranch },
   { href: "/groups", label: "Groups", icon: Table2 },
+  { href: "/timeline", label: "Timeline", icon: TrendingUp },
   { href: "/what-if", label: "What-if", icon: FlaskConical },
   { href: "/teams", label: "Teams", icon: Users },
   { href: "/models", label: "Models", icon: BarChart3 },

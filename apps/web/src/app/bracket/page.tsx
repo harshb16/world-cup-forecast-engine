@@ -18,6 +18,7 @@ import { PageHeader } from "@/components/PageHeader";
 import {
   BracketMatch,
   BracketSimulation,
+  DEFAULT_MODEL_TYPE,
   simulateBracket,
 } from "@/lib/api";
 import { formatNumber, formatPercent } from "@/lib/format";
@@ -46,7 +47,7 @@ export default function BracketPage() {
     let isActive = true;
 
     simulateBracket({
-      model_type: "oracle_v2",
+      model_type: DEFAULT_MODEL_TYPE,
       simulation_mode: simulationMode,
       seed,
     })
@@ -610,11 +611,13 @@ function BracketMatchCard({
   return (
     <article
       className={`rounded-md border p-2.5 transition sm:p-3 lg:p-2.5 xl:p-3 ${
-        revealed
+        match.confirmed
+          ? "border-emerald-400/50 bg-emerald-400/[0.08] ring-1 ring-emerald-400/30"
+          : revealed
           ? "border-emerald-300/35 bg-emerald-300/[0.08]"
           : eligible
-            ? "border-white/15 bg-white/[0.055] hover:border-emerald-300/30"
-            : "border-white/8 bg-white/[0.025] opacity-60"
+            ? "border-dashed border-white/20 bg-white/[0.04] hover:border-emerald-300/30"
+            : "border-dashed border-white/8 bg-white/[0.02] opacity-60"
       }`}
     >
       <button
@@ -625,6 +628,22 @@ function BracketMatchCard({
       <div className="mb-3 flex items-center justify-between gap-3">
         <span className="text-[0.68rem] font-semibold uppercase text-zinc-500">
           {match.id}
+        </span>
+        <span className="text-right text-[0.68rem] font-semibold text-zinc-500">
+          {match.confirmed ? (
+            <span className="rounded border border-emerald-400/30 bg-emerald-400/10 px-1.5 py-0.5 text-emerald-200">
+              Confirmed
+            </span>
+          ) : (
+            <span className="rounded border border-white/10 bg-white/[0.05] px-1.5 py-0.5 text-zinc-400">
+              Projected
+            </span>
+          )}
+        </span>
+      </div>
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <span className="text-[0.68rem] font-semibold uppercase text-zinc-500">
+          Advance odds
         </span>
         <span className="text-right text-[0.68rem] font-semibold text-zinc-500">
           {showOdds

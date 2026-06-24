@@ -7,6 +7,7 @@ import numpy as np
 from app.models.schemas import (
     BracketTeamResponse,
     SimulationMetadataResponse,
+    TeamPathMostLikelyOpponentResponse,
     TeamPathOpponentResponse,
     TeamPathRequest,
     TeamPathResponse,
@@ -85,20 +86,46 @@ def calculate_team_path(
             rating=team.rating,
         ),
         stages=[
-            TeamPathStageResponse(
-                stage=stage,
-                reached_count=reached_counts[stage],
-                reached_probability=reached_counts[stage] / request.n_simulations,
-                opponents=[
-                    TeamPathOpponentResponse(
-                        team_id=opponent_id,
-                        team_name=teams_by_id[opponent_id].name,
-                        count=count,
-                        probability=count / request.n_simulations,
-                    )
-                    for opponent_id, count in opponent_counts[stage].most_common(5)
-                ],
+            _build_stage_response(
+                stage,
+                reached_counts[stage],
+                opponent_counts[stage],
+                teams_by_id,
+                request.n_simulations,
             )
             for stage in ROUND_NAMES
         ],
+    )
+
+
+def _build_stage_response(
+    stage: str,
+    reached_count: int,
+    opponent_counter: Counter[str],
+    teams_by_id: dict[str, object],
+    n_simulations: int,
+) -> TeamPathStageResponse:
+    opponents = [
+        TeamPathOpponentResponse(
+            team_id=opponent_id,
+            team_name=teams_by_id[opponent_id].name,
+            count=count,
+            probability=count / n_simulations,
+        )
+        for opponent_id, count in opponent_counter.most_common(5)
+    ]
+    most_likely = None
+    if opponents:
+        top = opponents[0]
+        most_likely = TeamPathMostLikelyOpponentResponse(
+            team_id=top.team_id,
+            team_name=top.team_name,
+            probability=top.probability,
+        )
+    return TeamPathStageResponse(
+        stage=stage,
+        reached_count=reached_count,
+        reached_probability=reached_count / n_simulations,
+        opponents=opponents,
+        most_likely_opponent=most_likely,
     )

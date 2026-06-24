@@ -44,7 +44,14 @@ Backend validation:
 ```bash
 cd apps/api
 source .venv/bin/activate
+bash ../../scripts/clean_pycache.sh
 pytest
+```
+
+Optional one-time setup to clear Python caches on every commit:
+
+```bash
+bash scripts/install-git-hooks.sh
 ```
 
 ## Run Frontend

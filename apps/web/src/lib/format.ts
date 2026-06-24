@@ -17,6 +17,9 @@ export function formatNumber(value: number, maximumFractionDigits = 0): string {
 }
 
 export function formatModelLabel(modelType: string): string {
+  if (modelType === "oracle_v3") {
+    return "Oracle v3";
+  }
   if (modelType === "oracle_v2") {
     return "Oracle v2";
   }

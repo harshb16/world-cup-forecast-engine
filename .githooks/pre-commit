@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+bash "$ROOT/scripts/clean_pycache.sh"
+
+# Fail if bytecode caches are still staged (should never happen with .gitignore).
+if git diff --cached --name-only | grep -E '(^|/)__pycache__/|\.pyc$|\.pyo$' >/dev/null; then
+  echo "pre-commit: remove __pycache__ / .pyc files from the commit" >&2
+  exit 1
+fi

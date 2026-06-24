@@ -94,7 +94,7 @@ Do not simplify the World Cup format incorrectly. The tournament format includes
 - 48 teams
 - 12 groups of 4
 - top 2 teams from each group qualifying
-- best third-place teams qualifying
+- best 8 third-place teams qualifying
 - Round of 32
 - knockout rounds until champion
 
@@ -139,10 +139,32 @@ Before making changes:
 
 After making changes:
 
+- run `bash scripts/clean_pycache.sh` before commits and after local test runs
 - run relevant tests
 - summarize changed files
 - summarize test results
 - mention any assumptions
+
+## Git Workflow
+
+Never commit directly to main or dev.
+
+For every feature, bug fix, or chore:
+1. Branch from the current base branch: `git checkout -b <type>/<short-name>`
+2. Make changes in small, focused commits.
+3. Open a pull request targeting the base branch.
+4. Review the diff yourself (or request a reviewer) before merging.
+5. Merge via PR only — no direct pushes to main or dev.
+
+Branch naming: `feat/`, `fix/`, `chore/`, `refactor/`, `test/`
+
+## Repo hygiene
+
+- Never commit `__pycache__/`, `*.pyc`, or `.pytest_cache/` directories.
+- Root `.gitignore` blocks these artifacts.
+- **Agents:** run `bash scripts/clean_pycache.sh` at the start of Python work and again after tests — do not wait for the user to ask.
+- `pytest` auto-runs cache cleanup via `apps/api/conftest.py`.
+- Optional (local): run `bash scripts/install-git-hooks.sh` once to clear caches on every commit.
 
 ## Communication Style
 

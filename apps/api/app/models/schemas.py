@@ -4,7 +4,17 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-ModelType = Literal["elo", "poisson", "calibrated_elo", "oracle_v2"]
+from app.core.config import DEFAULT_MODEL_TYPE
+
+ModelType = Literal[
+    "elo",
+    "poisson",
+    "calibrated_elo",
+    "oracle_v2",
+    "dixon_coles",
+    "gbm",
+    "oracle_v3",
+]
 
 
 class HealthResponse(BaseModel):
@@ -17,7 +27,7 @@ class SimulateRequest(BaseModel):
     """Request body for running a sample tournament simulation."""
 
     n_simulations: int = Field(default=1000, ge=1, le=10_000)
-    model_type: ModelType = "oracle_v2"
+    model_type: ModelType = DEFAULT_MODEL_TYPE
     seed: int | None = None
 
 
@@ -38,7 +48,7 @@ class ScenarioSimulateRequest(SimulateRequest):
 class BracketSimulateRequest(BaseModel):
     """Request body for simulating one revealable tournament bracket."""
 
-    model_type: ModelType = "oracle_v2"
+    model_type: ModelType = DEFAULT_MODEL_TYPE
     simulation_mode: Literal["favorite", "random"] = "favorite"
     seed: int | None = None
     result_overrides: list[MatchResultOverride] = Field(default_factory=list)
@@ -48,7 +58,7 @@ class TeamPathRequest(BaseModel):
     """Request body for exploring a team's likely knockout path."""
 
     team_id: str = Field(min_length=1)
-    model_type: ModelType = "oracle_v2"
+    model_type: ModelType = DEFAULT_MODEL_TYPE
     n_simulations: int = Field(default=500, ge=1, le=5_000)
     seed: int | None = None
 
@@ -129,6 +139,23 @@ class ModelMetadataResponse(BaseModel):
     supported_outputs: list[str] = Field(default_factory=list)
 
 
+class CalibrationBinResponse(BaseModel):
+    """One probability bucket for predicted vs actual outcome frequency."""
+
+    predicted_midpoint: float
+    actual_frequency: float
+    count: int
+
+
+class BacktestingMatchDetailResponse(BaseModel):
+    """Per-match backtesting detail row."""
+
+    match_id: str
+    predicted_outcome: str
+    actual_outcome: str
+    confidence: float
+
+
 class BacktestingResponse(BaseModel):
     """Baseline evaluation metrics for completed fixtures."""
 
@@ -138,6 +165,8 @@ class BacktestingResponse(BaseModel):
     accuracy: float | None = None
     brier_score: float | None = None
     log_loss: float | None = None
+    calibration_bins: list[CalibrationBinResponse] = Field(default_factory=list)
+    per_match_details: list[BacktestingMatchDetailResponse] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
 
 
@@ -176,6 +205,7 @@ class BracketMatchResponse(BaseModel):
     team_b_expected_goals: float | None = None
     confidence_label: str | None = None
     drivers: list[str] = Field(default_factory=list)
+    confirmed: bool = False
 
 
 class BracketGroupTableResponse(BaseModel):
@@ -205,6 +235,14 @@ class TeamPathOpponentResponse(BaseModel):
     probability: float
 
 
+class TeamPathMostLikelyOpponentResponse(BaseModel):
+    """Most likely opponent at one knockout stage."""
+
+    team_id: str
+    team_name: str
+    probability: float
+
+
 class TeamPathStageResponse(BaseModel):
     """Likely path distribution for one knockout stage."""
 
@@ -212,6 +250,7 @@ class TeamPathStageResponse(BaseModel):
     reached_count: int
     reached_probability: float
     opponents: list[TeamPathOpponentResponse] = Field(default_factory=list)
+    most_likely_opponent: TeamPathMostLikelyOpponentResponse | None = None
 
 
 class TeamPathResponse(BaseModel):
@@ -369,3 +408,136 @@ class SyncResponse(BaseModel):
     success: bool
     last_updated: str
     errors: list[str] = Field(default_factory=list)
+
+
+class ProbabilitySnapshotResponse(BaseModel):
+    """One probability snapshot recorded after a sync."""
+
+    timestamp: str
+    matchday: int = 1
+    champion_probabilities: dict[str, float]
+
+
+class ProbabilityHistoryResponse(BaseModel):
+    """Full history of probability snapshots."""
+
+    snapshots: list[ProbabilitySnapshotResponse]
+
+
+class ProbabilityMoverResponse(BaseModel):
+    """Champion probability delta for one team."""
+
+    team_id: str
+    team_name: str
+    previous_probability: float
+    current_probability: float
+    delta: float
+
+
+class ProbabilityMoversResponse(BaseModel):
+    """Top champion probability risers and fallers."""
+
+    risers: list[ProbabilityMoverResponse]
+    fallers: list[ProbabilityMoverResponse]
+    previous_timestamp: str | None = None
+    current_timestamp: str | None = None
+
+
+class MatchdayFixtureResponse(BaseModel):
+    """One fixture on the matchday page."""
+
+    match_id: str
+    group_id: str | None = None
+    kickoff_utc: str | None = None
+    status: str
+    stage: str
+    team_a_id: str
+    team_a_name: str
+    team_b_id: str
+    team_b_name: str
+    team_a_win_probability: float
+    draw_probability: float
+    team_b_win_probability: float
+    projected_team_a_goals: float
+    projected_team_b_goals: float
+    team_a_goals: int | None = None
+    team_b_goals: int | None = None
+    what_still_matters: bool = False
+
+
+class MatchdayGroupStanding(BaseModel):
+    """One row in a matchday group standing table."""
+
+    position: int
+    team_id: str
+    team_name: str
+    played: int
+    wins: int
+    draws: int
+    losses: int
+    goals_for: int
+    goals_against: int
+    goal_difference: int
+    points: int
+
+
+class MatchdayGroupResponse(BaseModel):
+    """Group standing table for the matchday page."""
+
+    group_id: str
+    group_name: str
+    standings: list[MatchdayGroupStanding]
+    is_complete: bool = False
+
+
+class MatchdayResponse(BaseModel):
+    """Response body for the GET /matchday endpoint."""
+
+    date: str
+    matchday_label: str
+    model_type: ModelType
+    fixtures: list[MatchdayFixtureResponse]
+    groups: list[MatchdayGroupResponse]
+
+
+class ThirdPlaceSlotDistributionResponse(BaseModel):
+    """Knockout slot assignment probability for one third-place candidate."""
+
+    slot_label: str
+    probability: float
+
+
+class ThirdPlaceTeamResponse(BaseModel):
+    """One third-place qualification candidate."""
+
+    team_id: str
+    team_name: str
+    group_id: str
+    qualification_probability: float
+    current_points: int
+    simulated_average_points: float
+    slot_distribution: list[ThirdPlaceSlotDistributionResponse] = Field(default_factory=list)
+
+
+class ThirdPlaceTrackerResponse(BaseModel):
+    """Ranked third-place qualification bubble."""
+
+    model_type: ModelType
+    data_mode: str
+    n_simulations: int
+    teams: list[ThirdPlaceTeamResponse]
+
+
+class HeadToHeadResponse(BaseModel):
+    """Probability of two teams meeting at a knockout stage."""
+
+    team_a_id: str
+    team_a_name: str
+    team_b_id: str
+    team_b_name: str
+    probability: float = 0.0
+    stages_they_could_meet: list[str] = Field(default_factory=list)
+    meet_before_final_probability: float = 0.0
+    meet_in_semi_final_probability: float = 0.0
+    meet_in_final_probability: float = 0.0
+    n_simulations: int

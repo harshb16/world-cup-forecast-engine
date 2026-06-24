@@ -50,3 +50,10 @@ def test_processed_fixtures_include_known_completed_results() -> None:
         "team_a_goals": 2,
         "team_b_goals": 1,
     }
+
+
+def test_processed_results_include_both_team_ids() -> None:
+    results = _read("results.json")
+
+    assert results
+    assert all(result.get("team_a_id") and result.get("team_b_id") for result in results)

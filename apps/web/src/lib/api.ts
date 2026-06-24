@@ -1,7 +1,16 @@
 import { API_BASE_URL } from "@/lib/config";
 export { formatPercent } from "@/lib/format";
 
-export type ModelType = "elo" | "poisson" | "calibrated_elo" | "oracle_v2";
+export type ModelType =
+  | "elo"
+  | "poisson"
+  | "calibrated_elo"
+  | "oracle_v2"
+  | "dixon_coles"
+  | "gbm"
+  | "oracle_v3";
+
+export const DEFAULT_MODEL_TYPE: ModelType = "oracle_v3";
 
 export type SimulationRequest = {
   n_simulations: number;
@@ -95,7 +104,22 @@ export type BacktestingMetrics = {
   accuracy: number | null;
   brier_score: number | null;
   log_loss: number | null;
+  calibration_bins: CalibrationBin[];
+  per_match_details: BacktestingMatchDetail[];
   limitations: string[];
+};
+
+export type CalibrationBin = {
+  predicted_midpoint: number;
+  actual_frequency: number;
+  count: number;
+};
+
+export type BacktestingMatchDetail = {
+  match_id: string;
+  predicted_outcome: string;
+  actual_outcome: string;
+  confidence: number;
 };
 
 export type BracketTeam = {
@@ -130,6 +154,7 @@ export type BracketMatch = {
   team_b_expected_goals: number | null;
   confidence_label: string | null;
   drivers: string[];
+  confirmed: boolean;
 };
 
 export type BracketSimulation = {
@@ -156,11 +181,18 @@ export type TeamPathOpponent = {
   probability: number;
 };
 
+export type TeamPathMostLikelyOpponent = {
+  team_id: string;
+  team_name: string;
+  probability: number;
+};
+
 export type TeamPathStage = {
   stage: string;
   reached_count: number;
   reached_probability: number;
   opponents: TeamPathOpponent[];
+  most_likely_opponent: TeamPathMostLikelyOpponent | null;
 };
 
 export type TeamPath = {
@@ -382,7 +414,7 @@ export async function fetchModelMetadata(): Promise<ModelMetadata[]> {
 }
 
 export async function fetchBacktestingMetrics(
-  modelType: ModelType = "oracle_v2",
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
 ): Promise<BacktestingMetrics> {
   return fetchJson<BacktestingMetrics>(`/backtesting?model_type=${modelType}`);
 }
@@ -393,7 +425,7 @@ export async function fetchTeamPath(teamId: string): Promise<TeamPath> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       team_id: teamId,
-      model_type: "oracle_v2",
+      model_type: DEFAULT_MODEL_TYPE,
       n_simulations: 500,
       seed: 42,
     }),
@@ -407,7 +439,7 @@ export async function fetchTeamPath(teamId: string): Promise<TeamPath> {
 }
 
 export async function fetchUpsetRadar(
-  modelType: ModelType = "oracle_v2",
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
   limit = 8,
 ): Promise<UpsetRadar> {
   return fetchJson<UpsetRadar>(
@@ -416,7 +448,7 @@ export async function fetchUpsetRadar(
 }
 
 export async function fetchGroupChaos(
-  modelType: ModelType = "oracle_v2",
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
   nSimulations = 500,
   seed = 42,
 ): Promise<GroupChaosReport> {
@@ -428,7 +460,7 @@ export async function fetchGroupChaos(
 export async function fetchModelComparison(
   nSimulations = 300,
   seed = 42,
-  baselineModel: ModelType = "oracle_v2",
+  baselineModel: ModelType = DEFAULT_MODEL_TYPE,
 ): Promise<ModelComparison> {
   return fetchJson<ModelComparison>(
     `/analytics/model-comparison?n_simulations=${nSimulations}&seed=${seed}&baseline_model=${baselineModel}`,
@@ -438,6 +470,153 @@ export async function fetchModelComparison(
 export async function fetchDataQuality(): Promise<DataQualityReport> {
   return fetchJson<DataQualityReport>("/data-quality");
 }
+
+export async function fetchProbabilityHistory(): Promise<ProbabilityHistory> {
+  return fetchJson<ProbabilityHistory>("/analytics/probability-history");
+}
+
+export async function fetchProbabilityMovers(
+  limit = 8,
+): Promise<ProbabilityMovers> {
+  return fetchJson<ProbabilityMovers>(
+    `/analytics/probability-movers?limit=${limit}`,
+  );
+}
+
+export async function fetchMatchday(
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
+): Promise<MatchdayData> {
+  return fetchJson<MatchdayData>(`/matchday?model_type=${modelType}`);
+}
+
+export async function fetchThirdPlaceTracker(
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
+  nSimulations = 500,
+  seed = 42,
+): Promise<ThirdPlaceTracker> {
+  return fetchJson<ThirdPlaceTracker>(
+    `/analytics/third-place?model_type=${modelType}&n_simulations=${nSimulations}&seed=${seed}`,
+  );
+}
+
+export async function fetchHeadToHead(
+  teamAId: string,
+  teamBId: string,
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
+): Promise<HeadToHead> {
+  return fetchJson<HeadToHead>(
+    `/team-path/head-to-head?team_a=${teamAId}&team_b=${teamBId}&model_type=${modelType}`,
+  );
+}
+
+export type ProbabilityMover = {
+  team_id: string;
+  team_name: string;
+  previous_probability: number;
+  current_probability: number;
+  delta: number;
+};
+
+export type ProbabilityMovers = {
+  risers: ProbabilityMover[];
+  fallers: ProbabilityMover[];
+  previous_timestamp: string | null;
+  current_timestamp: string | null;
+};
+
+export type ProbabilitySnapshot = {
+  timestamp: string;
+  matchday: number | null;
+  champion_probabilities: Record<string, number>;
+};
+
+export type ProbabilityHistory = {
+  snapshots: ProbabilitySnapshot[];
+};
+
+export type MatchdayFixture = {
+  match_id: string;
+  group_id: string | null;
+  kickoff_utc: string | null;
+  status: string;
+  stage: string;
+  team_a_id: string;
+  team_a_name: string;
+  team_b_id: string;
+  team_b_name: string;
+  team_a_win_probability: number;
+  draw_probability: number;
+  team_b_win_probability: number;
+  projected_team_a_goals: number;
+  projected_team_b_goals: number;
+  team_a_goals: number | null;
+  team_b_goals: number | null;
+  what_still_matters: boolean;
+};
+
+export type MatchdayGroupStanding = {
+  position: number;
+  team_id: string;
+  team_name: string;
+  played: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  goals_for: number;
+  goals_against: number;
+  goal_difference: number;
+  points: number;
+};
+
+export type MatchdayGroup = {
+  group_id: string;
+  group_name: string;
+  standings: MatchdayGroupStanding[];
+  is_complete: boolean;
+};
+
+export type MatchdayData = {
+  date: string;
+  matchday_label: string;
+  model_type: ModelType;
+  fixtures: MatchdayFixture[];
+  groups: MatchdayGroup[];
+};
+
+export type ThirdPlaceSlotDistribution = {
+  slot_label: string;
+  probability: number;
+};
+
+export type ThirdPlaceTeam = {
+  team_id: string;
+  team_name: string;
+  group_id: string;
+  qualification_probability: number;
+  current_points: number;
+  simulated_average_points: number;
+  slot_distribution: ThirdPlaceSlotDistribution[];
+};
+
+export type ThirdPlaceTracker = {
+  model_type: ModelType;
+  data_mode: string;
+  n_simulations: number;
+  teams: ThirdPlaceTeam[];
+};
+
+export type HeadToHead = {
+  team_a_id: string;
+  team_a_name: string;
+  team_b_id: string;
+  team_b_name: string;
+  probability: number;
+  stages_they_could_meet: string[];
+  meet_before_final_probability: number;
+  meet_in_semi_final_probability: number;
+  meet_in_final_probability: number;
+  n_simulations: number;
+};
 
 export type SyncResponse = {
   success: boolean;

@@ -1,4 +1,4 @@
-"""In-memory async job orchestration for operator result sync."""
+"""Async job orchestration for operator result sync."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import threading
 import uuid
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
-from typing import Callable
+from typing import Any
 
 from app.models.schemas import (
     SyncJobDetailResponse,
@@ -16,6 +16,7 @@ from app.models.schemas import (
     SyncResponse,
 )
 from app.services.results_sync_service import sync_results
+from app.services.runtime_store import get_sync_job_record, upsert_sync_job
 
 MANUAL_SYNC_COOLDOWN_SECONDS = 60
 
@@ -77,6 +78,7 @@ def start_sync_job() -> SyncJobStartResponse:
         _jobs[job_id] = record
         _last_manual_sync_at = now
         _running = True
+        _persist_record(record)
 
     thread = threading.Thread(
         target=_execute_job,
@@ -92,9 +94,26 @@ def get_sync_job(job_id: str) -> SyncJobDetailResponse:
     """Return one sync job record."""
     with _jobs_lock:
         record = _jobs.get(job_id)
-        if record is None:
-            raise KeyError(job_id)
+    if record is not None:
         return _to_response(record)
+
+    stored = get_sync_job_record(job_id)
+    if stored is None:
+        raise KeyError(job_id)
+    return SyncJobDetailResponse(
+        job_id=stored["job_id"],
+        status=stored["status"],
+        stage=stored["stage"],
+        created_at=stored["created_at"],
+        started_at=stored.get("started_at"),
+        finished_at=stored.get("finished_at"),
+        provider=stored.get("provider"),
+        completed_result_count=stored.get("completed_result_count"),
+        changed_fixture_count=stored.get("changed_fixture_count"),
+        conflicts=stored.get("conflicts", []),
+        errors=stored.get("errors", []),
+        result=stored.get("result"),
+    )
 
 
 def _execute_job(job_id: str) -> None:
@@ -114,13 +133,16 @@ def _execute_job(job_id: str) -> None:
             if message and message not in record.conflicts:
                 if stage == "compare" and "conflict" in message.lower():
                     record.conflicts.append(message)
+            _persist_record(record)
 
     try:
         _update_job(job_id, status="running", stage="fetch")
         result = sync_results(on_stage=on_stage)
         finished_at = datetime.now(tz=UTC).replace(microsecond=0).isoformat()
         with _jobs_lock:
-            record = _jobs[job_id]
+            record = _jobs.get(job_id)
+            if record is None:
+                return
             record.finished_at = finished_at
             record.provider = result.provider
             record.completed_result_count = result.completed_result_count
@@ -133,10 +155,13 @@ def _execute_job(job_id: str) -> None:
             record.result = result
             record.stage = "done"
             record.status = "succeeded" if result.success else "failed"
+            _persist_record(record)
     except Exception as exc:  # pragma: no cover - defensive guardrail
         finished_at = datetime.now(tz=UTC).replace(microsecond=0).isoformat()
         with _jobs_lock:
-            record = _jobs[job_id]
+            record = _jobs.get(job_id)
+            if record is None:
+                return
             record.finished_at = finished_at
             record.stage = "done"
             record.status = "failed"
@@ -146,6 +171,7 @@ def _execute_job(job_id: str) -> None:
                 last_updated=record.created_at,
                 errors=[str(exc)],
             )
+            _persist_record(record)
     finally:
         with _jobs_lock:
             _running = False
@@ -169,6 +195,28 @@ def _update_job(
             record.started_at = datetime.now(tz=UTC).replace(
                 microsecond=0
             ).isoformat()
+        _persist_record(record)
+
+
+def _record_payload(record: SyncJobRecord) -> dict[str, Any]:
+    return {
+        "job_id": record.job_id,
+        "status": record.status,
+        "stage": record.stage,
+        "created_at": record.created_at,
+        "started_at": record.started_at,
+        "finished_at": record.finished_at,
+        "provider": record.provider,
+        "completed_result_count": record.completed_result_count,
+        "changed_fixture_count": record.changed_fixture_count,
+        "conflicts": record.conflicts,
+        "errors": record.errors,
+        "result": record.result.model_dump(mode="json") if record.result else None,
+    }
+
+
+def _persist_record(record: SyncJobRecord) -> None:
+    upsert_sync_job(_record_payload(record))
 
 
 def _to_response(record: SyncJobRecord) -> SyncJobDetailResponse:

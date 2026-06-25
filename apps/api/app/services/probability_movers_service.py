@@ -4,14 +4,11 @@ import json
 from pathlib import Path
 
 from app.models.schemas import ProbabilityMoverResponse, ProbabilityMoversResponse
-from app.services.data_loader import load_tournament
-
-REPO_ROOT = Path(__file__).resolve().parents[4]
-PROCESSED_DIR = REPO_ROOT / "data" / "processed"
+from app.services.data_loader import get_processed_data_dir, load_tournament
 
 
 def calculate_probability_movers(limit: int = 8) -> ProbabilityMoversResponse:
-    history_path = PROCESSED_DIR / "probability_history.json"
+    history_path = get_processed_data_dir() / "probability_history.json"
     if not history_path.exists():
         return ProbabilityMoversResponse(risers=[], fallers=[])
     snapshots = json.loads(history_path.read_text(encoding="utf-8"))

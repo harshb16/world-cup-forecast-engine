@@ -10,8 +10,7 @@ from app.models.schemas import SyncResponse
 from app.services.results_sync_service import sync_results
 from app.services.world_cup_schedule import group_matchday_for_date
 
-REPO_ROOT = Path(__file__).resolve().parents[4]
-PROCESSED_DIR = REPO_ROOT / "data" / "processed"
+from app.services.data_loader import get_processed_data_dir
 
 
 def run_data_sync() -> SyncResponse:
@@ -38,7 +37,7 @@ def _append_probability_snapshot(timestamp: str) -> None:
             ),
             "processed",
         )
-        history_path = PROCESSED_DIR / "probability_history.json"
+        history_path = get_processed_data_dir() / "probability_history.json"
         history: list[dict] = []
         if history_path.exists():
             history = json.loads(history_path.read_text(encoding="utf-8"))

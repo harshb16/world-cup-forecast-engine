@@ -63,11 +63,12 @@ def test_admin_sync_accepts_background_job(monkeypatch) -> None:  # type: ignore
             headers={"X-WCO-Admin-Key": "correct-key"},
         )
 
-    assert response.status_code == 202
-    job_id = response.json()["job_id"]
-    assert response.json()["status"] == "queued"
+        assert response.status_code == 202
+        job_id = response.json()["job_id"]
+        assert response.json()["status"] == "queued"
 
-    job = _wait_for_terminal_job(job_id, "correct-key")
+        job = _wait_for_terminal_job(job_id, "correct-key")
+
     assert job["status"] == "succeeded"
     assert job["provider"] == "football-data.org"
     assert job["result"]["completed_result_count"] == 54
@@ -117,10 +118,10 @@ def test_admin_sync_rejects_concurrent_job(monkeypatch) -> None:  # type: ignore
             headers={"X-WCO-Admin-Key": "correct-key"},
         )
 
-    assert first.status_code == 202
-    assert second.status_code == 409
-    release.set()
-    _wait_for_terminal_job(first.json()["job_id"], "correct-key")
+        assert first.status_code == 202
+        assert second.status_code == 409
+        release.set()
+        _wait_for_terminal_job(first.json()["job_id"], "correct-key")
 
 
 def test_admin_sync_enforces_manual_cooldown(monkeypatch) -> None:  # type: ignore[no-untyped-def]

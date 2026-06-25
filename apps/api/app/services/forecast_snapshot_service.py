@@ -3,12 +3,10 @@
 from __future__ import annotations
 
 import json
-import os
-import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
 
-from app.core.config import DEFAULT_MODEL_TYPE
+from app.core.config import BOOTSTRAP_PROCESSED_DIR, DEFAULT_MODEL_TYPE
 from app.models.schemas import (
     BracketSimulateRequest,
     ForecastSnapshotResponse,
@@ -20,12 +18,14 @@ from app.services.analytics_service import (
     calculate_upset_radar,
 )
 from app.services.bracket_service import run_bracket_simulation
+from app.services.runtime_store import (
+    get_active_forecast_payload_path,
+    publish_forecast_snapshot_record,
+)
 from app.services.simulation_service import run_simulation
 from app.services.third_place_tracker_service import calculate_third_place_tracker
 
-REPO_ROOT = Path(__file__).resolve().parents[4]
-PROCESSED_DIR = REPO_ROOT / "data" / "processed"
-SNAPSHOT_PATH = PROCESSED_DIR / "forecast_snapshot.json"
+BOOTSTRAP_SNAPSHOT_PATH = BOOTSTRAP_PROCESSED_DIR / "forecast_snapshot.json"
 SNAPSHOT_SIMULATIONS = 5_000
 SNAPSHOT_SEED = 42
 
@@ -39,6 +39,13 @@ def build_snapshot_id(
 ) -> str:
     """Return a stable identifier for one published forecast snapshot."""
     return f"{data_version or 'unknown'}:{generated_at}:{model_type}:{n_simulations}"
+
+
+def _resolve_snapshot_path() -> Path:
+    active_path = get_active_forecast_payload_path()
+    if active_path is not None and active_path.exists():
+        return active_path
+    return BOOTSTRAP_SNAPSHOT_PATH
 
 
 def build_forecast_snapshot(
@@ -97,35 +104,21 @@ def publish_forecast_snapshot(
 ) -> ForecastSnapshotResponse:
     """Build then atomically publish a forecast snapshot."""
     snapshot = build_forecast_snapshot(data_mode)
-    payload = json.dumps(
-        snapshot.model_dump(mode="json"),
-        indent=2,
-        ensure_ascii=False,
-        sort_keys=True,
-    ) + "\n"
-    SNAPSHOT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(
-        mode="w",
-        encoding="utf-8",
-        prefix=".forecast-snapshot-",
-        suffix=".json",
-        dir=SNAPSHOT_PATH.parent,
-        delete=False,
-    ) as temporary_file:
-        temporary_path = Path(temporary_file.name)
-        temporary_file.write(payload)
-    temporary_path.chmod(0o644)
-    os.replace(temporary_path, SNAPSHOT_PATH)
+    publish_forecast_snapshot_record(
+        snapshot_id=snapshot.snapshot_id,
+        payload=snapshot.model_dump(mode="json"),
+    )
     return snapshot
 
 
 def load_forecast_snapshot() -> ForecastSnapshotResponse:
     """Load the published snapshot without running Monte Carlo work."""
-    if not SNAPSHOT_PATH.exists():
+    snapshot_path = _resolve_snapshot_path()
+    if not snapshot_path.exists():
         raise FileNotFoundError(
             "Forecast snapshot is missing. Run result sync or publish it explicitly."
         )
-    payload = json.loads(SNAPSHOT_PATH.read_text(encoding="utf-8"))
+    payload = json.loads(snapshot_path.read_text(encoding="utf-8"))
     if "snapshot_id" not in payload:
         metadata = payload.get("summary", {}).get("metadata", {})
         payload["snapshot_id"] = build_snapshot_id(

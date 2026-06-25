@@ -6,9 +6,14 @@ from typing import Any
 
 from app.models.domain import Group, Match, Team, TournamentConfig
 
+from app.services.runtime_store import resolve_processed_data_directory
 REPO_ROOT = Path(__file__).resolve().parents[4]
 SAMPLE_DATA_DIR = REPO_ROOT / "data" / "sample"
-PROCESSED_DATA_DIR = REPO_ROOT / "data" / "processed"
+
+
+def get_processed_data_dir() -> Path:
+    """Return active runtime processed data or bootstrap seed."""
+    return resolve_processed_data_directory()
 
 
 def _load_json(path: str | Path) -> list[dict[str, Any]]:
@@ -53,7 +58,7 @@ def load_processed_tournament() -> TournamentConfig:
     """Load checked-in processed World Cup 2026 data."""
     ratings = {
         item["team_id"]: item
-        for item in _load_json(PROCESSED_DATA_DIR / "ratings.json")
+        for item in _load_json(get_processed_data_dir() / "ratings.json")
     }
     teams = [
         Team.model_validate(
@@ -62,10 +67,10 @@ def load_processed_tournament() -> TournamentConfig:
                 "fifa_ranking": ratings.get(item["id"], {}).get("fifa_rank"),
             }
         )
-        for item in _load_json(PROCESSED_DATA_DIR / "teams.json")
+        for item in _load_json(get_processed_data_dir() / "teams.json")
     ]
-    groups = load_groups(PROCESSED_DATA_DIR / "groups.json")
-    matches = load_matches(PROCESSED_DATA_DIR / "fixtures.json")
+    groups = load_groups(get_processed_data_dir() / "groups.json")
+    matches = load_matches(get_processed_data_dir() / "fixtures.json")
 
     return TournamentConfig(teams=teams, groups=groups, matches=matches)
 
@@ -82,7 +87,7 @@ def load_tournament(mode: str) -> TournamentConfig:
 def load_metadata(mode: str) -> dict[str, Any]:
     """Load data-source metadata for the selected mode."""
     if mode == "processed":
-        metadata = _load_object(PROCESSED_DATA_DIR / "metadata.json")
+        metadata = _load_object(get_processed_data_dir() / "metadata.json")
         return {**metadata, **_processed_quality_metadata()}
     if mode == "sample":
         sample = load_sample_tournament()
@@ -119,7 +124,7 @@ def load_metadata(mode: str) -> dict[str, Any]:
 def load_model_parameters(mode: str) -> dict[str, Any]:
     """Load model parameter metadata for the selected mode."""
     if mode == "processed":
-        return _load_object(PROCESSED_DATA_DIR / "model_parameters.json")
+        return _load_object(get_processed_data_dir() / "model_parameters.json")
     if mode == "sample":
         return {
             "data_version": "sample-model-parameters",
@@ -134,7 +139,7 @@ def load_squad_features(mode: str) -> dict[str, dict[str, float]]:
     if mode != "processed":
         return {}
 
-    path = PROCESSED_DATA_DIR / "squad_features.json"
+    path = get_processed_data_dir() / "squad_features.json"
     if not path.exists():
         return {}
 
@@ -151,7 +156,7 @@ def load_squad_features(mode: str) -> dict[str, dict[str, float]]:
 
 def _processed_quality_metadata() -> dict[str, Any]:
     tournament = load_processed_tournament()
-    ratings = _load_json(PROCESSED_DATA_DIR / "ratings.json")
+    ratings = _load_json(get_processed_data_dir() / "ratings.json")
     rated_team_ids = {item["team_id"] for item in ratings}
     completed_result_count = sum(
         1

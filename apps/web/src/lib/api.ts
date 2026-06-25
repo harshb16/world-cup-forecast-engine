@@ -88,6 +88,25 @@ export type DataMetadata = {
   model_limitations: string[];
 };
 
+export type ProviderStatus = {
+  name: string;
+  configured: boolean;
+  is_primary: boolean;
+  last_used: string | null;
+};
+
+export type DataStatus = {
+  metadata: DataMetadata;
+  match_status_counts: Record<"scheduled" | "in_play" | "finished", number>;
+  providers: ProviderStatus[];
+  tournament_active: boolean;
+  scheduler_active_interval_minutes: number;
+  scheduler_idle_interval_minutes: number;
+  recommended_interval_minutes: number;
+  admin_sync_configured: boolean;
+  latest_job: SyncJobDetail | null;
+};
+
 export type ResultsSyncResponse = {
   success: boolean;
   last_updated: string;
@@ -466,6 +485,10 @@ export async function fetchFixtures(): Promise<Match[]> {
 
 export async function fetchMetadata(): Promise<DataMetadata> {
   return fetchJson<DataMetadata>("/metadata");
+}
+
+export async function fetchDataStatus(): Promise<DataStatus> {
+  return fetchJson<DataStatus>("/data/status");
 }
 
 export async function fetchLatestForecast(): Promise<ForecastSnapshot> {

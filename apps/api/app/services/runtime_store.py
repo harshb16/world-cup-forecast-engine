@@ -286,6 +286,29 @@ def upsert_sync_job(record: dict[str, Any]) -> None:
         )
 
 
+def get_latest_sync_job_record() -> dict[str, Any] | None:
+    init_runtime_store()
+    with _connect() as connection:
+        row = connection.execute(
+            """
+            SELECT * FROM sync_jobs
+            ORDER BY created_at DESC
+            LIMIT 1
+            """
+        ).fetchone()
+    if row is None:
+        return None
+    payload = dict(row)
+    payload["conflicts"] = json.loads(payload.pop("conflicts_json") or "[]")
+    payload["errors"] = json.loads(payload.pop("errors_json") or "[]")
+    if payload.get("result_json"):
+        payload["result"] = SyncResponse.model_validate_json(payload.pop("result_json"))
+    else:
+        payload.pop("result_json", None)
+        payload["result"] = None
+    return payload
+
+
 def get_sync_job_record(job_id: str) -> dict[str, Any] | None:
     init_runtime_store()
     with _connect() as connection:

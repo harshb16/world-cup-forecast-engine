@@ -9,6 +9,7 @@ import {
   Calendar,
   ChevronLeft,
   ChevronRight,
+  Database,
   FlaskConical,
   Gauge,
   GitBranch,
@@ -31,6 +32,7 @@ const navItems = [
   { href: "/timeline", label: "Timeline", icon: TrendingUp },
   { href: "/what-if", label: "What-if", icon: FlaskConical },
   { href: "/teams", label: "Teams", icon: Users },
+  { href: "/data-status", label: "Data Status", icon: Database },
   { href: "/methodology", label: "Methodology", icon: BookOpenText },
   { href: "/models", label: "Models", icon: BarChart3 },
 ];

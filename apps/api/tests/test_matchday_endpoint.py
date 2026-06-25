@@ -127,8 +127,8 @@ def test_matchday_idle_date_advances_to_next_fixture_date() -> None:
     result = calculate_matchday(
         "processed",
         "oracle_v2",
-        as_of_date=date(2026, 6, 17),
+        as_of_date=date(2026, 6, 10),
     )
 
-    assert result.date == "2026-06-18"
-    assert result.matchday_label == "Matchday 2"
+    assert result.date == "2026-06-11"
+    assert result.matchday_label == "Matchday 1"

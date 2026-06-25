@@ -44,10 +44,11 @@ def calculate_matchday(
         for match in group_matches
         if match.result is None or not match.result.played
     ]
+    display_candidates = group_matches if as_of_date is not None else unplayed_matches
 
     today_fixtures = [
         m
-        for m in unplayed_matches
+        for m in display_candidates
         if _kickoff_date(m, raw_fixtures) == requested_date
     ]
 
@@ -56,7 +57,7 @@ def calculate_matchday(
     if not today_fixtures:
         future_dates = [
             kickoff_date
-            for match in unplayed_matches
+            for match in display_candidates
             if (kickoff_date := _kickoff_date(match, raw_fixtures)) is not None
             and kickoff_date >= requested_date
         ]
@@ -64,11 +65,11 @@ def calculate_matchday(
             display_date = min(future_dates)
             today_fixtures = [
                 match
-                for match in unplayed_matches
+                for match in display_candidates
                 if _kickoff_date(match, raw_fixtures) == display_date
             ]
         else:
-            today_fixtures = unplayed_matches
+            today_fixtures = display_candidates
 
     fixture_responses = [
         _build_fixture_response(match, teams_by_id, match_model, raw_fixtures)

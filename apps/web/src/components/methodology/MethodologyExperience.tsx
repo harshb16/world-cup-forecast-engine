@@ -59,7 +59,7 @@ const pipeline: PipelineSection[] = [
     eyebrow: "Team strength",
     title: "Update an Elo rating from senior internationals",
     summary:
-      "The production model uses open international results from 2018 onward. Match importance is represented by a fixed K-factor, non-neutral games include home advantage, and score margin scales each update.",
+      "The current baseline uses open international results from 2018 onward. Match importance is represented by a fixed K-factor, non-neutral games include home advantage, and score margin scales each update.",
     icon: Scale,
   },
   {
@@ -68,7 +68,7 @@ const pipeline: PipelineSection[] = [
     eyebrow: "Match probabilities",
     title: "Turn rating gaps into win, draw, and loss chances",
     summary:
-      "An Elo curve estimates the decisive-result share. Draw probability starts at 26%, shrinks for large rating gaps, and never falls below 12%. The production model does not claim direct xG or player-level inputs.",
+      "An Elo curve estimates the decisive-result share. Draw probability starts at 26%, shrinks for large rating gaps, and never falls below 12%. The baseline does not claim direct xG or player-level inputs.",
     icon: Braces,
   },
   {

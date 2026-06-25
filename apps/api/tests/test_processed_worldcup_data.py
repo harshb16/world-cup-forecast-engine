@@ -57,3 +57,19 @@ def test_processed_results_include_both_team_ids() -> None:
 
     assert results
     assert all(result.get("team_a_id") and result.get("team_b_id") for result in results)
+
+
+def test_processed_quality_snapshot_matches_checked_in_results() -> None:
+    metadata = _read("metadata.json")
+    quality = _read("data_quality.json")
+    fixtures = _read("fixtures.json")
+    results = _read("results.json")
+    finished_fixture_ids = {
+        fixture["id"]
+        for fixture in fixtures
+        if fixture["status"] == "finished" and fixture["result"]["played"]
+    }
+
+    assert {result["match_id"] for result in results} == finished_fixture_ids
+    assert quality["source_coverage"]["completed_results"] == len(results)
+    assert quality["last_refresh"] == metadata["last_updated"]

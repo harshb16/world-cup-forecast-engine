@@ -27,7 +27,7 @@ def test_models_endpoint_returns_current_baselines() -> None:
     assert any(model["is_ml"] for model in models)
     assert next(model for model in models if model["id"] == "calibrated_elo")[
         "maturity"
-    ] == "production"
+    ] == "baseline"
     assert all(
         model["maturity"] == "experimental"
         for model in models

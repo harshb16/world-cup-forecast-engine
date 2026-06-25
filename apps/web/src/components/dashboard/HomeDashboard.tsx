@@ -92,7 +92,8 @@ export function HomeDashboard() {
 
     return {
       topChampion,
-      finalistPair: `${finalSorted[0]?.team_name ?? "-"} vs ${finalSorted[1]?.team_name ?? "-"}`,
+      finalReachLeader: finalSorted[0],
+      secondFinalReach: finalSorted[1],
       closestTitleRace: formatPercent(
         topChampion.champion - (secondChampion?.champion ?? 0),
       ),
@@ -133,7 +134,7 @@ export function HomeDashboard() {
             <div>
               <div className="flex flex-wrap items-center gap-3">
                 <span className="rounded-full border border-[var(--turf)]/30 bg-[var(--turf)]/10 px-3 py-1 font-mono text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--turf)]">
-                  Forecast live
+                  Forecast snapshot
                 </span>
                 <DataFreshness
                   timestamp={summary.metadata.last_updated}
@@ -191,9 +192,13 @@ export function HomeDashboard() {
 
         <div className="relative grid border-t border-white/10 sm:grid-cols-2 xl:grid-cols-4">
           <Signal
-            label="Projected final"
-            value={insights.finalistPair}
-            detail={`Leader gap ${insights.closestTitleRace}`}
+            label="Final reach leader"
+            value={`${insights.finalReachLeader?.team_name ?? "-"} · ${formatPercent(insights.finalReachLeader?.final ?? 0)}`}
+            detail={
+              insights.secondFinalReach
+                ? `Next: ${insights.secondFinalReach.team_name} · ${formatPercent(insights.secondFinalReach.final)}`
+                : `Title leader gap ${insights.closestTitleRace}`
+            }
           />
           <Signal
             label="Title concentration"
@@ -236,7 +241,7 @@ export function HomeDashboard() {
         <StatCard
           label="Model"
           value={formatModelLabel(summary.metadata.model_type)}
-          detail="Production baseline"
+          detail="Current baseline · validation pending"
         />
         <StatCard
           label="Known results"

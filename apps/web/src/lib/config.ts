@@ -24,6 +24,3 @@ export const TEAM_PATH_SIMULATION_COUNT = positiveInteger(
   process.env.NEXT_PUBLIC_WCO_TEAM_PATH_SIMULATIONS,
   FAST_TEST_MODE ? 10 : 500,
 );
-
-export const FORECAST_REFRESH_INTERVAL_MS =
-  positiveInteger(process.env.NEXT_PUBLIC_WCO_REFRESH_MINUTES, 5) * 60_000;

@@ -61,7 +61,7 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
             id="calibrated_elo",
             name="Open-data calibrated Elo",
             is_ml=False,
-            maturity="production",
+            maturity="baseline",
             inputs=[
                 "open international match results since 2018",
                 "active team identity",
@@ -77,6 +77,7 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
                 "Still not an xG, player, injury, market, or event-data model.",
                 "Team aliases and open-data coverage can miss edge cases.",
                 "Current calibration updates team ratings, not attack/defense shape.",
+                "It has not yet earned production status through leakage-free historical holdout validation.",
             ],
             supported_outputs=[
                 "win/draw/loss probabilities",

@@ -418,6 +418,43 @@ class SyncResponse(BaseModel):
     errors: list[str] = Field(default_factory=list)
 
 
+SyncJobState = Literal["queued", "running", "succeeded", "failed", "rejected"]
+SyncJobStage = Literal[
+    "queued",
+    "fetch",
+    "normalize",
+    "compare",
+    "validate",
+    "forecast",
+    "publish",
+    "done",
+]
+
+
+class SyncJobStartResponse(BaseModel):
+    """Accepted async result-sync job."""
+
+    job_id: str
+    status: SyncJobState
+
+
+class SyncJobDetailResponse(BaseModel):
+    """Progress and outcome for one async result-sync job."""
+
+    job_id: str
+    status: SyncJobState
+    stage: SyncJobStage
+    created_at: str
+    started_at: str | None = None
+    finished_at: str | None = None
+    provider: str | None = None
+    completed_result_count: int | None = None
+    changed_fixture_count: int | None = None
+    conflicts: list[str] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
+    result: SyncResponse | None = None
+
+
 class ProbabilitySnapshotResponse(BaseModel):
     """One probability snapshot recorded after a sync."""
 

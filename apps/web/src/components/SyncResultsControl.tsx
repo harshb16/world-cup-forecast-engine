@@ -3,9 +3,22 @@
 import { useState } from "react";
 import { DatabaseZap } from "lucide-react";
 
-import { syncMatchResults } from "@/lib/api";
+import { syncMatchResults, type SyncJobDetail } from "@/lib/api";
 
 const ADMIN_KEY_STORAGE = "wco-admin-sync-key";
+
+function formatStage(job: SyncJobDetail | null): string | null {
+  if (!job) {
+    return null;
+  }
+  if (job.status === "succeeded") {
+    return `${job.completed_result_count ?? 0} results · ${job.changed_fixture_count ?? 0} changed · ${job.provider ?? "provider"}`;
+  }
+  if (job.status === "failed") {
+    return job.errors[0] ?? "Sync failed";
+  }
+  return job.stage.replaceAll("_", " ");
+}
 
 export function SyncResultsControl({
   onSynced,
@@ -28,9 +41,11 @@ export function SyncResultsControl({
 
     window.sessionStorage.setItem(ADMIN_KEY_STORAGE, adminKey);
     setIsSyncing(true);
-    setMessage(null);
+    setMessage("queued");
     try {
-      const result = await syncMatchResults(adminKey);
+      const result = await syncMatchResults(adminKey, (job) => {
+        setMessage(formatStage(job));
+      });
       setMessage(
         `${result.completed_result_count ?? 0} results · ${result.changed_fixture_count} changed · ${result.provider ?? "provider"}`,
       );

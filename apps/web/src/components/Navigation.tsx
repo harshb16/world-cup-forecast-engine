@@ -146,7 +146,7 @@ export function Navigation() {
             {formatModelLabel(DEFAULT_MODEL_TYPE)}
           </div>
           <p className="mt-1 text-xs leading-5 text-[#93a19a]">
-            Trusted default using open international match results.
+            Current baseline using open international match results.
           </p>
         </div>
       ) : null}

@@ -96,6 +96,7 @@ class SimulationMetadataResponse(BaseModel):
     last_updated: str | None = None
     sources: list[dict[str, object]] = Field(default_factory=list)
     rating_source: str | None = None
+    result_source: str | None = None
     ratings_are_official: bool = False
     bracket_status: str | None = None
     team_count: int | None = None
@@ -116,6 +117,7 @@ class DataMetadataResponse(BaseModel):
     last_updated: str | None = None
     sources: list[dict[str, object]] = Field(default_factory=list)
     rating_source: str | None = None
+    result_source: str | None = None
     ratings_are_official: bool = False
     bracket_status: str | None = None
     team_count: int
@@ -410,6 +412,9 @@ class SyncResponse(BaseModel):
 
     success: bool
     last_updated: str
+    provider: str | None = None
+    completed_result_count: int | None = None
+    changed_fixture_count: int = 0
     errors: list[str] = Field(default_factory=list)
 
 

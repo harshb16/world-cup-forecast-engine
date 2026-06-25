@@ -16,6 +16,6 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=LOCAL_FRONTEND_ORIGINS,
     allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type"],
+    allow_headers=["Content-Type", "X-WCO-Admin-Key"],
 )
 app.include_router(router)

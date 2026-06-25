@@ -235,9 +235,8 @@ def _match_drivers(match_model, team_a: Team, team_b: Team) -> list[str]:
 class _MostLikelyMatchModel:
     """Deterministic projection wrapper for a human-readable favorite bracket."""
 
-    def __init__(self, base_model: MatchModel, strength_weight: float = 0.75) -> None:
+    def __init__(self, base_model: MatchModel) -> None:
         self.base_model = base_model
-        self.strength_weight = strength_weight
 
     def predict_probabilities(self, team_a: Team, team_b: Team) -> dict[str, float]:
         rating_gap = self.rating_for(team_a) - self.rating_for(team_b)
@@ -252,10 +251,7 @@ class _MostLikelyMatchModel:
         }
 
     def rating_for(self, team: Team) -> float:
-        base_rating = _base_model_rating(self.base_model, team)
-        return (self.strength_weight * team.rating) + (
-            (1 - self.strength_weight) * base_rating
-        )
+        return _base_model_rating(self.base_model, team)
 
     def projected_result(self, team_a: Team, team_b: Team) -> MatchResult:
         projected_result = getattr(self.base_model, "projected_result", None)

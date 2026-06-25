@@ -76,6 +76,7 @@ export type DataMetadata = {
   last_updated: string | null;
   sources: Array<Record<string, unknown>>;
   rating_source: string | null;
+  result_source: string | null;
   ratings_are_official: boolean;
   bracket_status: string | null;
   team_count: number;
@@ -85,6 +86,15 @@ export type DataMetadata = {
   rating_coverage_count: number;
   data_quality_notes: string[];
   model_limitations: string[];
+};
+
+export type ResultsSyncResponse = {
+  success: boolean;
+  last_updated: string;
+  provider: string | null;
+  completed_result_count: number | null;
+  changed_fixture_count: number;
+  errors: string[];
 };
 
 export type ModelMetadata = {
@@ -408,6 +418,28 @@ export async function fetchFixtures(): Promise<Match[]> {
 
 export async function fetchMetadata(): Promise<DataMetadata> {
   return fetchJson<DataMetadata>("/metadata");
+}
+
+export async function syncMatchResults(
+  adminKey: string,
+): Promise<ResultsSyncResponse> {
+  const response = await fetch(`${API_BASE_URL}/admin/sync/results`, {
+    method: "POST",
+    headers: {
+      "X-WCO-Admin-Key": adminKey,
+    },
+  });
+
+  if (!response.ok) {
+    const payload = await response.json().catch(() => null);
+    const detail =
+      typeof payload?.detail === "string"
+        ? payload.detail
+        : payload?.detail?.errors?.join(" ");
+    throw new Error(detail || `Result sync failed with status ${response.status}`);
+  }
+
+  return response.json();
 }
 
 export async function fetchModelMetadata(): Promise<ModelMetadata[]> {

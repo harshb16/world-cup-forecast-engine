@@ -22,6 +22,7 @@ import { LoadingState } from "@/components/LoadingState";
 import { DataStatusCard } from "@/components/DataStatusCard";
 import { ChampionOddsTable } from "@/components/dashboard/ChampionOddsTable";
 import { StageProbabilityTable } from "@/components/dashboard/StageProbabilityTable";
+import { SyncResultsControl } from "@/components/SyncResultsControl";
 import { TitleRaceRail } from "@/components/dashboard/TitleRaceRail";
 import { HelpText } from "@/components/ui/HelpText";
 import { SectionCard } from "@/components/ui/SectionCard";
@@ -142,11 +143,14 @@ export function HomeDashboard() {
                 />
               </div>
               <div className="mt-4">
-                <ForecastRefreshControl
-                  isRefreshing={isRefreshing}
-                  lastRunAt={lastRunAt}
-                  onRefresh={refresh}
-                />
+                <div className="flex flex-wrap items-start gap-3">
+                  <SyncResultsControl onSynced={refresh} />
+                  <ForecastRefreshControl
+                    isRefreshing={isRefreshing}
+                    lastRunAt={lastRunAt}
+                    onRefresh={refresh}
+                  />
+                </div>
               </div>
               <p className="mt-8 font-mono text-xs uppercase tracking-[0.16em] text-zinc-500">
                 Current title leader

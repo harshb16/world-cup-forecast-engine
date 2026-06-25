@@ -2,7 +2,7 @@
 
 import json
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Header, HTTPException, Query
 
 from app.core.config import DEFAULT_MODEL_TYPE, get_data_mode
 from app.models.domain import Group, Match, Team
@@ -26,6 +26,7 @@ from app.models.schemas import (
     ScenarioSimulateRequest,
     SimulateRequest,
     SimulationSummaryResponse,
+    SyncResponse,
     ThirdPlaceTrackerResponse,
     TeamPathRequest,
     TeamPathResponse,
@@ -46,6 +47,11 @@ from app.services.head_to_head_service import calculate_head_to_head
 from app.services.matchday_service import calculate_matchday
 from app.services.model_metadata import list_model_metadata
 from app.services.probability_movers_service import calculate_probability_movers
+from app.services.results_sync_service import (
+    admin_key_is_valid,
+    admin_sync_is_configured,
+    sync_results,
+)
 from app.services.simulation_service import (
     run_scenario_compare,
     run_scenario_simulation,
@@ -88,6 +94,24 @@ def fixtures() -> list[Match]:
 def metadata() -> DataMetadataResponse:
     """Return active tournament data metadata."""
     return DataMetadataResponse.model_validate(load_metadata(get_data_mode()))
+
+
+@router.post("/admin/sync/results", response_model=SyncResponse)
+def sync_match_results(
+    admin_key: str | None = Header(default=None, alias="X-WCO-Admin-Key"),
+) -> SyncResponse:
+    """Refresh match results for an authenticated operator."""
+    if not admin_sync_is_configured():
+        raise HTTPException(
+            status_code=503,
+            detail="Admin result sync is not configured.",
+        )
+    if not admin_key_is_valid(admin_key):
+        raise HTTPException(status_code=401, detail="Invalid admin sync key.")
+    response = sync_results()
+    if not response.success:
+        raise HTTPException(status_code=502, detail=response.model_dump())
+    return response
 
 
 @router.get("/models", response_model=list[ModelMetadataResponse])

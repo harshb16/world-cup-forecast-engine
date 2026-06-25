@@ -1,0 +1,75 @@
+"use client";
+
+import { useState } from "react";
+import { DatabaseZap } from "lucide-react";
+
+import { syncMatchResults } from "@/lib/api";
+
+const ADMIN_KEY_STORAGE = "wco-admin-sync-key";
+
+export function SyncResultsControl({
+  onSynced,
+}: {
+  onSynced: () => Promise<void>;
+}) {
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
+  async function syncResults() {
+    const storedKey = window.sessionStorage.getItem(ADMIN_KEY_STORAGE);
+    const adminKey =
+      storedKey ??
+      window.prompt(
+        "Enter the admin sync key. It stays in this browser tab only.",
+      );
+    if (!adminKey) {
+      return;
+    }
+
+    window.sessionStorage.setItem(ADMIN_KEY_STORAGE, adminKey);
+    setIsSyncing(true);
+    setMessage(null);
+    try {
+      const result = await syncMatchResults(adminKey);
+      setMessage(
+        `${result.completed_result_count ?? 0} results · ${result.changed_fixture_count} changed · ${result.provider ?? "provider"}`,
+      );
+      await onSynced();
+    } catch (caught: unknown) {
+      const error =
+        caught instanceof Error ? caught.message : "Result sync failed.";
+      if (error.toLowerCase().includes("key")) {
+        window.sessionStorage.removeItem(ADMIN_KEY_STORAGE);
+      }
+      setMessage(error);
+    } finally {
+      setIsSyncing(false);
+    }
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        onClick={() => void syncResults()}
+        disabled={isSyncing}
+        className="inline-flex items-center gap-2 rounded-md bg-[var(--turf)] px-3 py-2 text-sm font-semibold text-zinc-950 transition hover:brightness-110 disabled:cursor-wait disabled:opacity-60"
+      >
+        <DatabaseZap
+          size={15}
+          aria-hidden="true"
+          className={isSyncing ? "animate-pulse" : ""}
+        />
+        {isSyncing ? "Syncing results" : "Sync match results"}
+      </button>
+      {message ? (
+        <span
+          role="status"
+          className="max-w-lg font-mono text-[0.65rem] uppercase tracking-[0.08em] text-zinc-400"
+        >
+          {message}
+        </span>
+      ) : null}
+    </div>
+  );
+}

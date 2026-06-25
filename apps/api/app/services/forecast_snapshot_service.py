@@ -10,6 +10,7 @@ from pathlib import Path
 
 from app.core.config import DEFAULT_MODEL_TYPE
 from app.models.schemas import (
+    BracketSimulateRequest,
     ForecastSnapshotResponse,
     SimulateRequest,
 )
@@ -17,6 +18,7 @@ from app.services.analytics_service import (
     calculate_group_chaos_from_summary,
     calculate_upset_radar,
 )
+from app.services.bracket_service import run_bracket_simulation
 from app.services.simulation_service import run_simulation
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
@@ -44,11 +46,21 @@ def build_forecast_snapshot(
         DEFAULT_MODEL_TYPE,
     )
     upsets = calculate_upset_radar(data_mode, DEFAULT_MODEL_TYPE, limit=6)
+    bracket = run_bracket_simulation(
+        BracketSimulateRequest(
+            model_type=DEFAULT_MODEL_TYPE,
+            simulation_mode="favorite",
+            seed=SNAPSHOT_SEED,
+        ),
+        data_mode,
+    )
+    featured_final = bracket.rounds["Final"][0]
     return ForecastSnapshotResponse(
         generated_at=datetime.now(tz=UTC).replace(microsecond=0).isoformat(),
         summary=summary,
         group_chaos=group_chaos,
         upsets=upsets,
+        featured_final=featured_final,
     )
 
 

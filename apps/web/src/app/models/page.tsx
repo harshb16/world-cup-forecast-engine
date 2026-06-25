@@ -121,7 +121,7 @@ export default function ModelsPage() {
       <PageHeader
         eyebrow="Models"
         title="Model trust desk"
-        description="Production, baseline, and experimental models — with scoring on completed tournament fixtures."
+        description="Baseline and experimental models — with scoring on completed tournament fixtures."
       />
 
       {error ? <ErrorState message={error} /> : null}
@@ -134,9 +134,9 @@ export default function ModelsPage() {
           <section className="grid gap-4 md:grid-cols-3">
             <SummaryCard
               icon={Target}
-              label="Default model"
+              label="Active baseline"
               value={formatModelLabel(DEFAULT_MODEL_TYPE)}
-              detail="Open-data Elo from senior international results"
+              detail="Default until leakage-free holdout promotion"
             />
             <SummaryCard
               icon={BarChart3}

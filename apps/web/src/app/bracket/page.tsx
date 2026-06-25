@@ -633,7 +633,7 @@ function BracketMatchCard({
             </span>
           ) : (
             <span className="rounded border border-white/10 bg-white/[0.05] px-1.5 py-0.5 text-zinc-400">
-              Projected
+              Forecast
             </span>
           )}
         </span>

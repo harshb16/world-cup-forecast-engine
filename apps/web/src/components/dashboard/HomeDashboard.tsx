@@ -35,6 +35,7 @@ import {
   ProbabilityMovers,
   SimulationSummary,
   UpsetRadar,
+  BracketMatch,
 } from "@/lib/api";
 import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
 import { useAutoForecast } from "@/hooks/useAutoForecast";
@@ -44,6 +45,7 @@ type DashboardForecast = {
   upsets: UpsetRadar;
   groupChaos: GroupChaosReport;
   movers: ProbabilityMovers;
+  featuredFinal: BracketMatch;
 };
 
 export function HomeDashboard() {
@@ -57,6 +59,7 @@ export function HomeDashboard() {
       upsets: snapshot.upsets,
       groupChaos: snapshot.group_chaos,
       movers,
+      featuredFinal: snapshot.featured_final,
     };
   }, []);
 
@@ -71,6 +74,12 @@ export function HomeDashboard() {
   const upsets = data?.upsets ?? null;
   const groupChaos = data?.groupChaos ?? null;
   const movers = data?.movers ?? null;
+  const featuredFinal = data?.featuredFinal ?? null;
+
+  const featuredFinalWinner =
+    featuredFinal?.winner_team_id === featuredFinal?.team_a.team_id
+      ? featuredFinal.team_a
+      : featuredFinal?.team_b;
 
   const insights = useMemo(() => {
     if (!summary || !groupChaos) {
@@ -79,15 +88,12 @@ export function HomeDashboard() {
 
     const teams = summary.teams;
     const championSorted = [...teams].sort((a, b) => b.champion - a.champion);
-    const finalSorted = [...teams].sort((a, b) => b.final - a.final);
     const topChampion = championSorted[0];
     const secondChampion = championSorted[1];
     const mostVolatileGroup = groupChaos.groups[0];
 
     return {
       topChampion,
-      finalReachLeader: finalSorted[0],
-      secondFinalReach: finalSorted[1],
       closestTitleRace: formatPercent(
         topChampion.champion - (secondChampion?.champion ?? 0),
       ),
@@ -101,8 +107,8 @@ export function HomeDashboard() {
     return <ErrorState message={error} />;
   }
 
-  if (!summary || !insights) {
-    return <LoadingState label="Running simulation" />;
+  if (!summary || !insights || !featuredFinal) {
+    return <LoadingState label="Loading forecast" />;
   }
 
   const teams = summary.teams;
@@ -189,13 +195,13 @@ export function HomeDashboard() {
 
         <div className="relative grid border-t border-white/10 sm:grid-cols-2 xl:grid-cols-4">
           <Signal
-            label="Final reach leader"
-            value={`${insights.finalReachLeader?.team_name ?? "-"} · ${formatPercent(insights.finalReachLeader?.final ?? 0)}`}
-            detail={
-              insights.secondFinalReach
-                ? `Next: ${insights.secondFinalReach.team_name} · ${formatPercent(insights.secondFinalReach.final)}`
-                : `Title leader gap ${insights.closestTitleRace}`
-            }
+            label="Featured final"
+            value={`${featuredFinal.team_a.team_name} vs ${featuredFinal.team_b.team_name}`}
+            detail={`Favorite-path winner ${featuredFinalWinner?.team_name ?? "-"} · ${formatPercent(
+              featuredFinal.winner_team_id === featuredFinal.team_a.team_id
+                ? featuredFinal.probabilities.team_a_advance
+                : featuredFinal.probabilities.team_b_advance,
+            )}`}
           />
           <Signal
             label="Title concentration"
@@ -419,7 +425,7 @@ const quickLinks = [
   {
     href: "/models",
     title: "Models",
-    description: "Review production, baseline, and experimental models.",
+    description: "Review baseline and experimental models.",
     icon: BarChart3,
   },
   {

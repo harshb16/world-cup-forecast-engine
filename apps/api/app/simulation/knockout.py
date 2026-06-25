@@ -3,6 +3,7 @@
 import numpy as np
 
 from app.models.domain import KnockoutResult, Match, MatchResult, Team
+from app.simulation.knockout_resolution import resolve_knockout_match
 from app.simulation.match_models import MatchModel
 
 ROUND_NAMES = [
@@ -123,8 +124,12 @@ def simulate_knockout(
         for index, (team_a_id, team_b_id) in enumerate(pairs, start=1):
             team_a = teams_by_id[team_a_id]
             team_b = teams_by_id[team_b_id]
-            result = _simulate_knockout_result(match_model, team_a, team_b, rng)
-            winner_team_id = _winner_from_result(team_a, team_b, result, rng)
+            result, winner_team_id = resolve_knockout_match(
+                match_model,
+                team_a,
+                team_b,
+                rng,
+            )
             loser_team_id = team_b_id if winner_team_id == team_a_id else team_a_id
             eliminated_stage_by_team[loser_team_id] = round_name
             winners.append(winner_team_id)
@@ -195,32 +200,6 @@ def _third_place_qualifiers_by_group(
     if len(third_by_group) != 8:
         raise ValueError("round of 32 requires exactly eight third-place qualifiers")
     return third_by_group
-
-
-def _winner_from_result(
-    team_a: Team,
-    team_b: Team,
-    result: MatchResult,
-    rng: np.random.Generator,
-) -> str:
-    if result.team_a_goals > result.team_b_goals:
-        return team_a.id
-    if result.team_b_goals > result.team_a_goals:
-        return team_b.id
-
-    team_a_probability = 1 / (1 + 10 ** (-(team_a.rating - team_b.rating) / 400))
-    return team_a.id if rng.random() < team_a_probability else team_b.id
-
-
-def _simulate_knockout_result(
-    match_model: MatchModel,
-    team_a: Team,
-    team_b: Team,
-    rng: np.random.Generator,
-) -> MatchResult:
-    if hasattr(match_model, "knockout_lambda_scale"):
-        return match_model.simulate_result(team_a, team_b, rng, stage="knockout")
-    return match_model.simulate_result(team_a, team_b, rng)
 
 
 def _round_code(round_name: str) -> str:

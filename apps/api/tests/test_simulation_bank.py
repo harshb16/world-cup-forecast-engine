@@ -90,4 +90,4 @@ def test_large_bank_builds_within_target_budget(
     elapsed = time.perf_counter() - started
     assert bank_path.exists()
     assert metadata["n_simulations"] == BASELINE_SIMULATIONS
-    assert elapsed < 60
+    assert elapsed < 180

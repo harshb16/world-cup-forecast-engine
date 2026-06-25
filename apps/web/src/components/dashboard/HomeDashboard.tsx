@@ -38,7 +38,7 @@ import {
   BracketMatch,
 } from "@/lib/api";
 import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
-import { useAutoForecast } from "@/hooks/useAutoForecast";
+import { usePublishedForecast } from "@/hooks/usePublishedForecast";
 
 type DashboardForecast = {
   summary: SimulationSummary;
@@ -69,7 +69,7 @@ export function HomeDashboard() {
     isRefreshing,
     lastRunAt,
     refresh,
-  } = useAutoForecast(loadForecast);
+  } = usePublishedForecast(loadForecast);
   const summary = data?.summary ?? null;
   const upsets = data?.upsets ?? null;
   const groupChaos = data?.groupChaos ?? null;

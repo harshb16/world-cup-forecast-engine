@@ -356,16 +356,6 @@ class GroupChaosResponse(BaseModel):
     groups: list[GroupChaosScoreResponse]
 
 
-class ForecastSnapshotResponse(BaseModel):
-    """Published forecast artifacts derived from one simulation run."""
-
-    generated_at: str
-    summary: SimulationSummaryResponse
-    group_chaos: GroupChaosResponse
-    upsets: UpsetRadarResponse
-    featured_final: BracketMatchResponse
-
-
 class ModelComparisonDeltaResponse(BaseModel):
     """Champion probability deltas versus a baseline model."""
 
@@ -558,4 +548,28 @@ class HeadToHeadResponse(BaseModel):
     meet_before_final_probability: float = 0.0
     meet_in_semi_final_probability: float = 0.0
     meet_in_final_probability: float = 0.0
+    n_simulations: int
+
+
+class ForecastSnapshotResponse(BaseModel):
+    """Published forecast artifacts derived from one simulation run."""
+
+    snapshot_id: str
+    generated_at: str
+    summary: SimulationSummaryResponse
+    group_chaos: GroupChaosResponse
+    upsets: UpsetRadarResponse
+    third_place: ThirdPlaceTrackerResponse
+    featured_final: BracketMatchResponse
+
+
+class ForecastStatusResponse(BaseModel):
+    """Lightweight forecast freshness pointer for polling clients."""
+
+    snapshot_id: str
+    data_version: str | None = None
+    forecast_generated_at: str
+    data_updated_at: str | None = None
+    completed_result_count: int | None = None
+    model_type: str
     n_simulations: int

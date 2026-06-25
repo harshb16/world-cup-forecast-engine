@@ -12,6 +12,7 @@ from app.core.config import DEFAULT_MODEL_TYPE
 from app.models.schemas import (
     BracketSimulateRequest,
     ForecastSnapshotResponse,
+    ForecastStatusResponse,
     SimulateRequest,
 )
 from app.services.analytics_service import (
@@ -20,12 +21,24 @@ from app.services.analytics_service import (
 )
 from app.services.bracket_service import run_bracket_simulation
 from app.services.simulation_service import run_simulation
+from app.services.third_place_tracker_service import calculate_third_place_tracker
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 PROCESSED_DIR = REPO_ROOT / "data" / "processed"
 SNAPSHOT_PATH = PROCESSED_DIR / "forecast_snapshot.json"
 SNAPSHOT_SIMULATIONS = 5_000
 SNAPSHOT_SEED = 42
+
+
+def build_snapshot_id(
+    *,
+    data_version: str | None,
+    generated_at: str,
+    model_type: str,
+    n_simulations: int,
+) -> str:
+    """Return a stable identifier for one published forecast snapshot."""
+    return f"{data_version or 'unknown'}:{generated_at}:{model_type}:{n_simulations}"
 
 
 def build_forecast_snapshot(
@@ -46,6 +59,12 @@ def build_forecast_snapshot(
         DEFAULT_MODEL_TYPE,
     )
     upsets = calculate_upset_radar(data_mode, DEFAULT_MODEL_TYPE, limit=6)
+    third_place = calculate_third_place_tracker(
+        data_mode,
+        DEFAULT_MODEL_TYPE,
+        n_simulations=SNAPSHOT_SIMULATIONS,
+        seed=SNAPSHOT_SEED,
+    )
     bracket = run_bracket_simulation(
         BracketSimulateRequest(
             model_type=DEFAULT_MODEL_TYPE,
@@ -55,11 +74,20 @@ def build_forecast_snapshot(
         data_mode,
     )
     featured_final = bracket.rounds["Final"][0]
+    generated_at = datetime.now(tz=UTC).replace(microsecond=0).isoformat()
+    snapshot_id = build_snapshot_id(
+        data_version=summary.metadata.data_version,
+        generated_at=generated_at,
+        model_type=summary.metadata.model_type,
+        n_simulations=summary.metadata.n_simulations,
+    )
     return ForecastSnapshotResponse(
-        generated_at=datetime.now(tz=UTC).replace(microsecond=0).isoformat(),
+        snapshot_id=snapshot_id,
+        generated_at=generated_at,
         summary=summary,
         group_chaos=group_chaos,
         upsets=upsets,
+        third_place=third_place,
         featured_final=featured_final,
     )
 
@@ -98,4 +126,27 @@ def load_forecast_snapshot() -> ForecastSnapshotResponse:
             "Forecast snapshot is missing. Run result sync or publish it explicitly."
         )
     payload = json.loads(SNAPSHOT_PATH.read_text(encoding="utf-8"))
+    if "snapshot_id" not in payload:
+        metadata = payload.get("summary", {}).get("metadata", {})
+        payload["snapshot_id"] = build_snapshot_id(
+            data_version=metadata.get("data_version"),
+            generated_at=payload.get("generated_at", ""),
+            model_type=metadata.get("model_type", DEFAULT_MODEL_TYPE),
+            n_simulations=metadata.get("n_simulations", SNAPSHOT_SIMULATIONS),
+        )
     return ForecastSnapshotResponse.model_validate(payload)
+
+
+def load_forecast_status() -> ForecastStatusResponse:
+    """Return lightweight forecast freshness metadata for polling clients."""
+    snapshot = load_forecast_snapshot()
+    metadata = snapshot.summary.metadata
+    return ForecastStatusResponse(
+        snapshot_id=snapshot.snapshot_id,
+        data_version=metadata.data_version,
+        forecast_generated_at=snapshot.generated_at,
+        data_updated_at=metadata.last_updated,
+        completed_result_count=metadata.completed_result_count,
+        model_type=metadata.model_type,
+        n_simulations=metadata.n_simulations,
+    )

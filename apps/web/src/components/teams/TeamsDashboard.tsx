@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
@@ -11,6 +11,7 @@ import { TeamSearch } from "@/components/teams/TeamSearch";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { HelpText } from "@/components/ui/HelpText";
 import { SectionCard } from "@/components/ui/SectionCard";
+import { usePublishedForecast } from "@/hooks/usePublishedForecast";
 import {
   fetchGroups,
   fetchLatestForecast,
@@ -30,44 +31,26 @@ type TeamIndexData = {
 };
 
 export function TeamsDashboard() {
-  const [data, setData] = useState<TeamIndexData | null>(null);
   const [query, setQuery] = useState("");
   const [selectedGroupId, setSelectedGroupId] = useState("all");
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    let isActive = true;
-
-    Promise.all([
+  const loadTeams = useCallback(async (): Promise<TeamIndexData> => {
+    const [groups, teams, metadata, snapshot] = await Promise.all([
       fetchGroups(),
       fetchTeams(),
       fetchMetadata(),
       fetchLatestForecast(),
-    ])
-      .then(([groups, teams, metadata, snapshot]) => {
-        if (isActive) {
-          setData({
-            groups,
-            teams,
-            metadata,
-            simulation: snapshot.summary,
-          });
-        }
-      })
-      .catch((caughtError: unknown) => {
-        if (isActive) {
-          setError(
-            caughtError instanceof Error
-              ? caughtError.message
-              : "Team data request failed",
-          );
-        }
-      });
+    ]);
 
-    return () => {
-      isActive = false;
+    return {
+      groups,
+      teams,
+      metadata,
+      simulation: snapshot.summary,
     };
   }, []);
+
+  const { data, error } = usePublishedForecast(loadTeams);
 
   const probabilitiesByTeamId = useMemo(() => {
     return new Map(
@@ -119,7 +102,7 @@ export function TeamsDashboard() {
       .filter((groupData) => groupData.teams.length > 0);
   }, [data, filteredTeams]);
 
-  if (error) {
+  if (error && !data) {
     return <ErrorState message={error} />;
   }
 
@@ -163,7 +146,7 @@ export function TeamsDashboard() {
       </SectionCard>
 
       <HelpText>
-        Team cards use latest seeded World Cup data. Open a profile for a
+        Team cards use the published forecast snapshot. Open a profile for a
         fuller stage-by-stage ladder.
       </HelpText>
       <DataStatusCard metadata={data.metadata} />

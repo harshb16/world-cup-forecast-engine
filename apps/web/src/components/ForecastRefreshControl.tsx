@@ -31,11 +31,11 @@ export function ForecastRefreshControl({
         className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-zinc-500"
       >
         {lastRunAt
-          ? `Using published forecast · loaded ${lastRunAt.toLocaleTimeString([], {
+          ? `Published forecast · loaded ${lastRunAt.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
             })}`
-          : "Uses published forecast · no simulation on page load"}
+          : "Published forecast · polls for updates"}
       </span>
     </div>
   );

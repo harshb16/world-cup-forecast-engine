@@ -21,11 +21,27 @@ def test_latest_forecast_reads_published_snapshot_without_simulating() -> None:
 
     assert response.status_code == 200
     payload = response.json()
+    assert payload["snapshot_id"]
     assert payload["summary"]["metadata"]["n_simulations"] == 5_000
     assert len(payload["summary"]["teams"]) == 48
     assert len(payload["group_chaos"]["groups"]) == 12
     assert payload["upsets"]["fixtures"]
+    assert payload["third_place"]["teams"]
     assert payload["featured_final"]["stage"] == "Final"
+
+
+def test_forecast_status_matches_latest_snapshot_pointer() -> None:
+    with patch(
+        "app.services.forecast_snapshot_service.publish_forecast_snapshot",
+        side_effect=AssertionError("snapshot should already exist"),
+    ):
+        status = client.get("/forecast/status").json()
+        snapshot = client.get("/forecast/latest").json()
+
+    assert status["snapshot_id"] == snapshot["snapshot_id"]
+    assert status["forecast_generated_at"] == snapshot["generated_at"]
+    assert status["completed_result_count"] == 54
+    assert status["n_simulations"] == 5_000
 
 
 def test_snapshot_featured_final_matches_favorite_bracket_trace() -> None:

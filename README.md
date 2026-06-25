@@ -51,12 +51,15 @@ rerun simulations against that snapshot; they do not silently fetch results.
 
 ## Refresh Data
 
-Configure the backend result sync:
+Configure the backend result sync in repo-root `.env` (or `apps/web/.env.local`
+when using `./scripts/dev.sh`):
 
 ```bash
 WCO_ADMIN_SYNC_KEY=choose-a-long-random-secret
 FOOTBALL_DATA_API_TOKEN=your-football-data-token
 ```
+
+These variables are read by the FastAPI process, not by the Next.js client.
 
 The dashboard's **Sync match results** button calls the protected
 `POST /admin/sync/results` endpoint. It tries football-data.org first and falls

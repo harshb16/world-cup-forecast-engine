@@ -13,6 +13,7 @@ from app.models.schemas import (
     DataMetadataResponse,
     DataQualityResponse,
     DataStatusResponse,
+    DiagnosticSimulateRequest,
     ForecastSnapshotResponse,
     ForecastStatusResponse,
     GroupChaosResponse,
@@ -297,9 +298,16 @@ def current_tournament_scoring(
 
 
 @router.post("/simulate", response_model=SimulationSummaryResponse)
-def simulate(request: SimulateRequest) -> SimulationSummaryResponse:
+def simulate(request: DiagnosticSimulateRequest) -> SimulationSummaryResponse:
     """Run a capped diagnostic simulation. Published UI forecasts use snapshot banks."""
-    return run_simulation(request, get_data_mode())
+    return run_simulation(
+        SimulateRequest(
+            n_simulations=request.n_simulations,
+            model_type=request.model_type,
+            seed=request.seed,
+        ),
+        get_data_mode(),
+    )
 
 
 @router.post("/bracket/simulate", response_model=BracketSimulationResponse)

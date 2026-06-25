@@ -645,11 +645,41 @@ class ForecastSnapshotResponse(BaseModel):
 
     snapshot_id: str
     generated_at: str
+    model_version: str
     summary: SimulationSummaryResponse
     group_chaos: GroupChaosResponse
     upsets: UpsetRadarResponse
     third_place: ThirdPlaceTrackerResponse
+    bracket: BracketSimulationResponse
     featured_final: BracketMatchResponse
+    upcoming_fixtures: list[ForecastFixtureOutlookResponse] = Field(
+        default_factory=list
+    )
+    uncertainty: ForecastUncertaintyResponse
+
+
+class ForecastFixtureOutlookResponse(BaseModel):
+    """Pre-match outlook for one upcoming fixture."""
+
+    match_id: str
+    group_id: str | None = None
+    kickoff_utc: str | None = None
+    team_a_id: str
+    team_a_name: str
+    team_b_id: str
+    team_b_name: str
+    team_a_win: float
+    draw: float
+    team_b_win: float
+    team_a_expected_goals: float
+    team_b_expected_goals: float
+
+
+class ForecastUncertaintyResponse(BaseModel):
+    """Monte Carlo uncertainty bands for published champion probabilities."""
+
+    n_simulations: int
+    champion_standard_error: dict[str, float] = Field(default_factory=dict)
 
 
 class ForecastStatusResponse(BaseModel):

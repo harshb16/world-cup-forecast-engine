@@ -28,6 +28,8 @@ def test_latest_forecast_reads_published_snapshot_without_simulating() -> None:
     assert payload["upsets"]["fixtures"]
     assert payload["third_place"]["teams"]
     assert payload["featured_final"]["stage"] == "Final"
+    assert payload["bracket"]["rounds"]["Final"]
+    assert payload["model_version"]
 
 
 def test_forecast_status_matches_latest_snapshot_pointer() -> None:
@@ -46,16 +48,8 @@ def test_forecast_status_matches_latest_snapshot_pointer() -> None:
 
 def test_snapshot_featured_final_matches_favorite_bracket_trace() -> None:
     snapshot = client.get("/forecast/latest").json()
-    bracket = client.post(
-        "/bracket/simulate",
-        json={
-            "model_type": "calibrated_elo",
-            "simulation_mode": "favorite",
-            "seed": 42,
-        },
-    ).json()
     featured = snapshot["featured_final"]
-    bracket_final = bracket["rounds"]["Final"][0]
+    bracket_final = snapshot["bracket"]["rounds"]["Final"][0]
 
     assert {featured["team_a"]["team_id"], featured["team_b"]["team_id"]} == {
         bracket_final["team_a"]["team_id"],

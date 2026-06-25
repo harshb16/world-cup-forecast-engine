@@ -361,14 +361,38 @@ export type ForecastStatus = {
   n_simulations: number;
 };
 
+export type ForecastUncertainty = {
+  n_simulations: number;
+  champion_standard_error: Record<string, number>;
+};
+
+export type ForecastFixtureOutlook = {
+  match_id: string;
+  group_id: string | null;
+  kickoff_utc: string | null;
+  team_a_id: string;
+  team_a_name: string;
+  team_b_id: string;
+  team_b_name: string;
+  team_a_win: number;
+  draw: number;
+  team_b_win: number;
+  team_a_expected_goals: number;
+  team_b_expected_goals: number;
+};
+
 export type ForecastSnapshot = {
   snapshot_id: string;
   generated_at: string;
+  model_version: ModelType;
   summary: SimulationSummary;
   group_chaos: GroupChaosReport;
   upsets: UpsetRadar;
   third_place: ThirdPlaceTracker;
+  bracket: BracketSimulation;
   featured_final: BracketMatch;
+  upcoming_fixtures: ForecastFixtureOutlook[];
+  uncertainty: ForecastUncertainty;
 };
 
 export type ModelComparisonDelta = {

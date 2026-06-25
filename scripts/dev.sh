@@ -35,6 +35,21 @@ export NEXT_PUBLIC_WCO_SIMULATIONS="${NEXT_PUBLIC_WCO_SIMULATIONS:-1000}"
 export NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS="${NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS:-500}"
 export NEXT_PUBLIC_WCO_TEAM_PATH_SIMULATIONS="${NEXT_PUBLIC_WCO_TEAM_PATH_SIMULATIONS:-500}"
 
+load_env_file() {
+  local file="$1"
+  if [[ -f "$file" ]]; then
+    set -a
+    # shellcheck disable=SC1090
+    source "$file"
+    set +a
+  fi
+}
+
+# API secrets (WCO_ADMIN_SYNC_KEY, FOOTBALL_DATA_API_TOKEN) must reach the backend.
+load_env_file "$ROOT/.env"
+load_env_file "$ROOT/apps/api/.env"
+load_env_file "$ROOT/apps/web/.env.local"
+
 cleanup() {
   trap - EXIT INT TERM
   [[ -n "${API_PID:-}" ]] && kill "$API_PID" 2>/dev/null || true

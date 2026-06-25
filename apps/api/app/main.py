@@ -5,6 +5,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.core.env import load_local_env
+
+load_local_env()
+
 from app.api.routes import router
 from app.core.config import API_TITLE
 from app.services.runtime_store import init_runtime_store

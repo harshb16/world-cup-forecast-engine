@@ -7,11 +7,11 @@ from app.models.domain import MatchResult
 from app.services.data_loader import load_sample_tournament
 from app.simulation.group_stage import simulate_group_stage
 from app.simulation.knockout import (
-    THIRD_PLACE_SLOT_ALLOWED_GROUPS,
     WorldCup2026BracketBuilder,
     simulate_knockout,
 )
 from app.simulation.match_models import EloWinDrawLossModel
+from app.simulation.third_place_allocation import assign_third_place_slots
 
 
 class AlwaysDrawModel(EloWinDrawLossModel):
@@ -147,12 +147,17 @@ def test_official_advancement_places_group_h_and_i_winners_in_same_semifinal() -
     assert {first_semifinal.team_a_id, first_semifinal.team_b_id} == {"T29", "T33"}
 
 
-def test_round_of_32_assigns_thirds_to_allowed_winner_slots() -> None:
+def test_round_of_32_assigns_thirds_to_fifa_slots() -> None:
     teams_by_id = _teams_by_id()
+    qualified_team_ids = _rank_ordered_sample_qualifiers()
     pairs = WorldCup2026BracketBuilder().build_round_of_32(
-        _rank_ordered_sample_qualifiers(),
+        qualified_team_ids,
         teams_by_id,
     )
+    third_groups = {
+        teams_by_id[team_id].group_id for team_id in qualified_team_ids[24:]
+    }
+    assignments = assign_third_place_slots(third_groups)
     third_slot_pair_indexes = {
         "1E": 1,
         "1I": 4,
@@ -168,7 +173,7 @@ def test_round_of_32_assigns_thirds_to_allowed_winner_slots() -> None:
         third_team_id = pairs[pair_index][1]
         third_group_id = teams_by_id[third_team_id].group_id
 
-        assert third_group_id in THIRD_PLACE_SLOT_ALLOWED_GROUPS[slot_id]
+        assert third_group_id == assignments[slot_id]
 
 
 def test_round_of_32_rejects_wrong_group_rank_order() -> None:

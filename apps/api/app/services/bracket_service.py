@@ -23,6 +23,7 @@ from app.services.simulation_service import apply_result_overrides, create_match
 from app.simulation.group_stage import simulate_group_stage
 from app.simulation.group_table import calculate_group_table
 from app.simulation.knockout import ADVANCEMENT_PAIRINGS, ROUND_NAMES, simulate_knockout
+from app.simulation.knockout_resolution import with_host_advantage
 from app.simulation.match_models import MatchModel
 from app.simulation.third_place import get_best_third_place_qualifiers, rank_third_place_teams
 
@@ -105,9 +106,11 @@ def _to_bracket_match(
 ) -> BracketMatchResponse:
     team_a = teams_by_id[match.team_a_id]
     team_b = teams_by_id[match.team_b_id]
-    probabilities = match_model.predict_probabilities(team_a, team_b)
-    team_a_rating = _model_rating(match_model, team_a)
-    team_b_rating = _model_rating(match_model, team_b)
+    probability_team_a = with_host_advantage(team_a) if match.stage != "group" else team_a
+    probability_team_b = with_host_advantage(team_b) if match.stage != "group" else team_b
+    probabilities = match_model.predict_probabilities(probability_team_a, probability_team_b)
+    team_a_rating = _model_rating(match_model, probability_team_a)
+    team_b_rating = _model_rating(match_model, probability_team_b)
     team_a_tiebreak = 1 / (1 + 10 ** (-(team_a_rating - team_b_rating) / 400))
     team_a_advance = (
         probabilities["team_a_win"] + probabilities["draw"] * team_a_tiebreak
@@ -115,7 +118,7 @@ def _to_bracket_match(
     team_b_advance = probabilities["team_b_win"] + probabilities["draw"] * (
         1 - team_a_tiebreak
     )
-    expected_goals = _expected_goals(match_model, team_a, team_b)
+    expected_goals = _expected_goals(match_model, probability_team_a, probability_team_b)
 
     if match.result is None or match.winner_team_id is None:
         raise ValueError("bracket trace match must include result and winner")
@@ -264,8 +267,19 @@ class _MostLikelyMatchModel:
         team_a: Team,
         team_b: Team,
         rng: np.random.Generator,
+        stage: str | None = None,
     ) -> MatchResult:
         probabilities = self.predict_probabilities(team_a, team_b)
+        if stage == "extra_time":
+            favorite_is_a = self._team_a_advance_probability(team_a, team_b) >= (
+                1 - self._team_a_advance_probability(team_a, team_b)
+            )
+            return (
+                MatchResult(team_a_goals=1, team_b_goals=0)
+                if favorite_is_a
+                else MatchResult(team_a_goals=0, team_b_goals=1)
+            )
+
         outcome = max(probabilities, key=probabilities.get)
         margin = _favorite_margin(
             abs(
@@ -279,6 +293,12 @@ class _MostLikelyMatchModel:
         if outcome == "team_a_win":
             return MatchResult(team_a_goals=1 + margin, team_b_goals=1)
         return MatchResult(team_a_goals=1, team_b_goals=1 + margin)
+
+    def _team_a_advance_probability(self, team_a: Team, team_b: Team) -> float:
+        probabilities = self.predict_probabilities(team_a, team_b)
+        rating_gap = self.rating_for(team_a) - self.rating_for(team_b)
+        team_a_tiebreak = 1 / (1 + 10 ** (-rating_gap / 400))
+        return probabilities["team_a_win"] + probabilities["draw"] * team_a_tiebreak
 
 
 def _favorite_margin(rating_gap: float) -> int:

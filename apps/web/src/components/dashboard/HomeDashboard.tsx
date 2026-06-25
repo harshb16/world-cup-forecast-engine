@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -17,6 +17,7 @@ import { ProbabilityMoversPanel } from "@/components/analytics/ProbabilityMovers
 import { UpsetRadarPanel } from "@/components/analytics/UpsetRadarPanel";
 import { DataFreshness } from "@/components/DataFreshness";
 import { ErrorState } from "@/components/ErrorState";
+import { ForecastRefreshControl } from "@/components/ForecastRefreshControl";
 import { LoadingState } from "@/components/LoadingState";
 import { DataStatusCard } from "@/components/DataStatusCard";
 import { ChampionOddsTable } from "@/components/dashboard/ChampionOddsTable";
@@ -41,18 +42,18 @@ import {
   ANALYTICS_SIMULATION_COUNT,
   SIMULATION_COUNT,
 } from "@/lib/config";
+import { useAutoForecast } from "@/hooks/useAutoForecast";
+
+type DashboardForecast = {
+  summary: SimulationSummary;
+  upsets: UpsetRadar;
+  groupChaos: GroupChaosReport;
+  movers: ProbabilityMovers;
+};
 
 export function HomeDashboard() {
-  const [summary, setSummary] = useState<SimulationSummary | null>(null);
-  const [upsets, setUpsets] = useState<UpsetRadar | null>(null);
-  const [groupChaos, setGroupChaos] = useState<GroupChaosReport | null>(null);
-  const [movers, setMovers] = useState<ProbabilityMovers | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let isActive = true;
-
-    Promise.all([
+  const loadForecast = useCallback(async (): Promise<DashboardForecast> => {
+    const [summary, upsets, groupChaos, movers] = await Promise.all([
       simulateTournament({
         n_simulations: SIMULATION_COUNT,
         model_type: DEFAULT_MODEL_TYPE,
@@ -61,29 +62,21 @@ export function HomeDashboard() {
       fetchUpsetRadar(DEFAULT_MODEL_TYPE, 6),
       fetchGroupChaos(DEFAULT_MODEL_TYPE, ANALYTICS_SIMULATION_COUNT, 42),
       fetchProbabilityMovers(8),
-    ])
-      .then(([simulation, upsetRadar, chaos, probabilityMovers]) => {
-        if (isActive) {
-          setSummary(simulation);
-          setUpsets(upsetRadar);
-          setGroupChaos(chaos);
-          setMovers(probabilityMovers);
-        }
-      })
-      .catch((caughtError: unknown) => {
-        if (isActive) {
-          setError(
-            caughtError instanceof Error
-              ? caughtError.message
-              : "Simulation request failed",
-          );
-        }
-      });
-
-    return () => {
-      isActive = false;
-    };
+    ]);
+    return { summary, upsets, groupChaos, movers };
   }, []);
+
+  const {
+    data,
+    error,
+    isRefreshing,
+    lastRunAt,
+    refresh,
+  } = useAutoForecast(loadForecast);
+  const summary = data?.summary ?? null;
+  const upsets = data?.upsets ?? null;
+  const groupChaos = data?.groupChaos ?? null;
+  const movers = data?.movers ?? null;
 
   const insights = useMemo(() => {
     if (!summary || !groupChaos) {
@@ -109,7 +102,7 @@ export function HomeDashboard() {
     };
   }, [summary, groupChaos]);
 
-  if (error) {
+  if (error && !summary) {
     return <ErrorState message={error} />;
   }
 
@@ -145,6 +138,13 @@ export function HomeDashboard() {
                 <DataFreshness
                   timestamp={summary.metadata.last_updated}
                   compact
+                />
+              </div>
+              <div className="mt-4">
+                <ForecastRefreshControl
+                  isRefreshing={isRefreshing}
+                  lastRunAt={lastRunAt}
+                  onRefresh={refresh}
                 />
               </div>
               <p className="mt-8 font-mono text-xs uppercase tracking-[0.16em] text-zinc-500">
@@ -222,6 +222,15 @@ export function HomeDashboard() {
           />
         </div>
       </section>
+
+      {error ? (
+        <p
+          role="status"
+          className="rounded-md border border-[var(--risk-red)]/25 bg-[var(--risk-red)]/10 px-4 py-3 text-sm text-red-200"
+        >
+          Latest refresh failed. Showing previous forecast. {error}
+        </p>
+      ) : null}
 
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard

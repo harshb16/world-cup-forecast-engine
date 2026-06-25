@@ -19,6 +19,7 @@ Override the fast profile when needed:
 ```bash
 NEXT_PUBLIC_WCO_SIMULATIONS=100 \
 NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS=50 \
+NEXT_PUBLIC_WCO_REFRESH_MINUTES=5 \
 ./scripts/dev.sh
 ```
 
@@ -40,6 +41,10 @@ WORLD_CUP_DATA_MODE=sample
 
 Runtime does not fetch internet. App reads checked-in JSON from
 `data/processed`.
+
+Dashboard and bracket automatically refetch API data and rerun simulations
+every five minutes while visible. `NEXT_PUBLIC_WCO_REFRESH_MINUTES` changes
+that browser refresh interval. This does not run operator ingest scripts.
 
 ## Refresh Data
 

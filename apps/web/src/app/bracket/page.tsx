@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Download,
   RotateCcw,
@@ -13,6 +13,7 @@ import {
 
 import { AppShell } from "@/components/AppShell";
 import { ErrorState } from "@/components/ErrorState";
+import { ForecastRefreshControl } from "@/components/ForecastRefreshControl";
 import { LoadingState } from "@/components/LoadingState";
 import { PageHeader } from "@/components/PageHeader";
 import {
@@ -22,6 +23,7 @@ import {
   simulateBracket,
 } from "@/lib/api";
 import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
+import { useAutoForecast } from "@/hooks/useAutoForecast";
 
 const ROUND_ORDER = [
   "Round of 32",
@@ -36,42 +38,28 @@ export default function BracketPage() {
     "favorite",
   );
   const [seed, setSeed] = useState(42);
-  const [trace, setTrace] = useState<BracketSimulation | null>(null);
   const [revealedMatchIds, setRevealedMatchIds] = useState<Set<string>>(
     () => new Set(),
   );
-  const [error, setError] = useState<string | null>(null);
   const [selectedMatch, setSelectedMatch] = useState<BracketMatch | null>(null);
 
-  useEffect(() => {
-    let isActive = true;
-
-    simulateBracket({
-      model_type: DEFAULT_MODEL_TYPE,
-      simulation_mode: simulationMode,
-      seed,
-    })
-      .then((data) => {
-        if (isActive) {
-          setTrace(data);
-          setRevealedMatchIds(new Set());
-          setError(null);
-        }
-      })
-      .catch((caughtError: unknown) => {
-        if (isActive) {
-          setError(
-            caughtError instanceof Error
-              ? caughtError.message
-              : "Bracket simulation failed",
-          );
-        }
-      });
-
-    return () => {
-      isActive = false;
-    };
-  }, [simulationMode, seed]);
+  const loadBracket = useCallback(
+    () =>
+      simulateBracket({
+        model_type: DEFAULT_MODEL_TYPE,
+        simulation_mode: simulationMode,
+        seed,
+      }),
+    [seed, simulationMode],
+  );
+  const {
+    data: trace,
+    error,
+    isRefreshing,
+    lastRunAt,
+    clear,
+    refresh,
+  } = useAutoForecast<BracketSimulation>(loadBracket);
 
   const finalMatch = trace?.rounds.Final?.[0] ?? null;
   const championRevealed =
@@ -212,8 +200,9 @@ export default function BracketPage() {
                     if (mode === simulationMode) {
                       return;
                     }
-                    setTrace(null);
-                    setError(null);
+                    clear();
+                    setRevealedMatchIds(new Set());
+                    setSelectedMatch(null);
                     setSimulationMode(mode);
                   }}
                   className={`rounded-md border px-3 py-2 text-sm font-semibold transition ${
@@ -236,11 +225,17 @@ export default function BracketPage() {
                 icon={Shuffle}
                 label="New seed"
                 onClick={() => {
-                  setTrace(null);
-                  setError(null);
+                  clear();
+                  setRevealedMatchIds(new Set());
+                  setSelectedMatch(null);
                   setSimulationMode("random");
                   setSeed((current) => current + 1);
                 }}
+              />
+              <ForecastRefreshControl
+                isRefreshing={isRefreshing}
+                lastRunAt={lastRunAt}
+                onRefresh={refresh}
               />
               <ActionButton
                 icon={Download}

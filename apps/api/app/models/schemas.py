@@ -28,7 +28,15 @@ class HealthResponse(BaseModel):
 
 
 class SimulateRequest(BaseModel):
-    """Request body for running a sample tournament simulation."""
+    """Request body for running a tournament simulation."""
+
+    n_simulations: int = Field(default=1000, ge=1, le=10_000)
+    model_type: ModelType = DEFAULT_MODEL_TYPE
+    seed: int | None = None
+
+
+class DiagnosticSimulateRequest(BaseModel):
+    """Capped request body for the public /simulate diagnostic endpoint."""
 
     n_simulations: int = Field(default=1000, ge=1, le=1_000)
     model_type: ModelType = DEFAULT_MODEL_TYPE

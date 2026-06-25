@@ -1,5 +1,7 @@
 """Pydantic schemas for API requests and responses."""
 
+from __future__ import annotations
+
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -15,6 +17,8 @@ ModelType = Literal[
     "gbm",
     "oracle_v3",
 ]
+
+MatchStatus = Literal["scheduled", "in_play", "finished"]
 
 
 class HealthResponse(BaseModel):
@@ -127,6 +131,29 @@ class DataMetadataResponse(BaseModel):
     rating_coverage_count: int
     data_quality_notes: list[str] = Field(default_factory=list)
     model_limitations: list[str] = Field(default_factory=list)
+
+
+class ProviderStatusResponse(BaseModel):
+    """Configured result provider and last successful use."""
+
+    name: str
+    configured: bool
+    is_primary: bool
+    last_used: str | None = None
+
+
+class DataStatusResponse(BaseModel):
+    """Operator-facing data freshness, providers, and scheduler state."""
+
+    metadata: DataMetadataResponse
+    match_status_counts: dict[str, int]
+    providers: list[ProviderStatusResponse]
+    tournament_active: bool
+    scheduler_active_interval_minutes: int
+    scheduler_idle_interval_minutes: int
+    recommended_interval_minutes: int
+    admin_sync_configured: bool
+    latest_job: SyncJobDetailResponse | None = None
 
 
 class ModelMetadataResponse(BaseModel):

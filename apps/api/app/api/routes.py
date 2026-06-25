@@ -12,6 +12,7 @@ from app.models.schemas import (
     CurrentTournamentScoringResponse,
     DataMetadataResponse,
     DataQualityResponse,
+    DataStatusResponse,
     ForecastSnapshotResponse,
     ForecastStatusResponse,
     GroupChaosResponse,
@@ -48,6 +49,7 @@ from app.services.current_tournament_scoring import (
 )
 from app.services.data_loader import get_processed_data_dir, load_metadata, load_tournament
 from app.services.data_quality_service import calculate_data_quality
+from app.services.data_status_service import build_data_status
 from app.services.head_to_head_service import calculate_head_to_head
 from app.services.forecast_snapshot_service import (
     load_forecast_snapshot,
@@ -114,6 +116,12 @@ def fixtures() -> list[Match]:
 def metadata() -> DataMetadataResponse:
     """Return active tournament data metadata."""
     return DataMetadataResponse.model_validate(load_metadata(get_data_mode()))
+
+
+@router.get("/data/status", response_model=DataStatusResponse)
+def data_status() -> DataStatusResponse:
+    """Return provider freshness, match status counts, and sync scheduler state."""
+    return build_data_status()
 
 
 @router.get("/forecast/latest", response_model=ForecastSnapshotResponse)

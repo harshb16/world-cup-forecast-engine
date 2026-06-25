@@ -336,9 +336,25 @@ def _apply_match_update(
         updated["kickoff_utc"] = incoming["kickoff_utc"]
         updated["kickoff"] = incoming["kickoff_utc"][:10]
 
-    if incoming["status"] != "finished":
+    incoming_status = incoming.get("status", "scheduled")
+    if incoming_status == "in_play":
+        updated["status"] = "in_play"
+        score_a = incoming.get("team_a_goals")
+        score_b = incoming.get("team_b_goals")
+        if score_a is not None and score_b is not None:
+            updated["result"] = {
+                "played": False,
+                "team_a_goals": score_a,
+                "team_b_goals": score_b,
+            }
+        updated["result_source"] = provider
         return updated
 
+    if incoming_status != "finished":
+        updated["status"] = incoming_status
+        return updated
+
+    updated["status"] = "finished"
     score_a, score_b = _orient_score(fixture, incoming)
     existing = fixture.get("result")
     if isinstance(existing, dict) and existing.get("played"):
@@ -373,6 +389,8 @@ def _parse_football_data_matches(
     matches: list[dict[str, Any]],
     aliases: dict[str, str],
 ) -> list[dict[str, Any]]:
+    from app.services.provider_status import football_data_status
+
     parsed: list[dict[str, Any]] = []
     for match in matches:
         home = match.get("homeTeam") or {}
@@ -382,7 +400,8 @@ def _parse_football_data_matches(
         if home_id is None or away_id is None:
             continue
         full_time = (match.get("score") or {}).get("fullTime") or {}
-        finished = match.get("status") == "FINISHED"
+        status = football_data_status(match.get("status"))
+        finished = status == "finished"
         home_goals = full_time.get("home")
         away_goals = full_time.get("away")
         if finished and (home_goals is None or away_goals is None):
@@ -391,10 +410,10 @@ def _parse_football_data_matches(
             {
                 "team_a_id": home_id,
                 "team_b_id": away_id,
-                "team_a_goals": int(home_goals) if finished else None,
-                "team_b_goals": int(away_goals) if finished else None,
+                "team_a_goals": int(home_goals) if home_goals is not None else None,
+                "team_b_goals": int(away_goals) if away_goals is not None else None,
                 "kickoff_utc": match.get("utcDate"),
-                "status": "finished" if finished else "scheduled",
+                "status": status,
             }
         )
     return parsed
@@ -415,6 +434,8 @@ def _football_data_team_id(
 
 
 def _parse_fifa_matches(matches: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    from app.services.provider_status import fifa_status
+
     parsed: list[dict[str, Any]] = []
     for match in matches:
         home = match.get("Home") or {}
@@ -423,7 +444,8 @@ def _parse_fifa_matches(matches: list[dict[str, Any]]) -> list[dict[str, Any]]:
         away_id = FIFA_ABBREVIATIONS.get(str(away.get("Abbreviation", "")).upper())
         if home_id is None or away_id is None:
             continue
-        finished = match.get("MatchStatus") in (0, 3)
+        status = fifa_status(match.get("MatchStatus"))
+        finished = status == "finished"
         home_goals = match.get("HomeTeamScore")
         away_goals = match.get("AwayTeamScore")
         if finished and (home_goals is None or away_goals is None):
@@ -432,10 +454,10 @@ def _parse_fifa_matches(matches: list[dict[str, Any]]) -> list[dict[str, Any]]:
             {
                 "team_a_id": home_id,
                 "team_b_id": away_id,
-                "team_a_goals": int(home_goals) if finished else None,
-                "team_b_goals": int(away_goals) if finished else None,
+                "team_a_goals": int(home_goals) if home_goals is not None else None,
+                "team_b_goals": int(away_goals) if away_goals is not None else None,
                 "kickoff_utc": match.get("KickOffTimeUtc") or match.get("Date"),
-                "status": "finished" if finished else "scheduled",
+                "status": status,
             }
         )
     return parsed

@@ -1,0 +1,18 @@
+[
+  {
+    "timestamp": "2026-06-18T00:00:00+00:00",
+    "matchday": 3,
+    "champion_probabilities": {
+      "ARGENTINA": 0.22,
+      "FRANCE": 0.18
+    }
+  },
+  {
+    "timestamp": "2026-06-18T00:00:00+00:00",
+    "matchday": 3,
+    "champion_probabilities": {
+      "ARGENTINA": 0.25,
+      "FRANCE": 0.15
+    }
+  }
+]

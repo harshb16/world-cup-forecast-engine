@@ -29,20 +29,14 @@ import { SectionCard } from "@/components/ui/SectionCard";
 import { StatCard } from "@/components/ui/StatCard";
 import {
   DEFAULT_MODEL_TYPE,
-  fetchGroupChaos,
+  fetchLatestForecast,
   fetchProbabilityMovers,
-  fetchUpsetRadar,
   GroupChaosReport,
   ProbabilityMovers,
-  simulateTournament,
   SimulationSummary,
   UpsetRadar,
 } from "@/lib/api";
 import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
-import {
-  ANALYTICS_SIMULATION_COUNT,
-  SIMULATION_COUNT,
-} from "@/lib/config";
 import { useAutoForecast } from "@/hooks/useAutoForecast";
 
 type DashboardForecast = {
@@ -54,17 +48,16 @@ type DashboardForecast = {
 
 export function HomeDashboard() {
   const loadForecast = useCallback(async (): Promise<DashboardForecast> => {
-    const [summary, upsets, groupChaos, movers] = await Promise.all([
-      simulateTournament({
-        n_simulations: SIMULATION_COUNT,
-        model_type: DEFAULT_MODEL_TYPE,
-        seed: 42,
-      }),
-      fetchUpsetRadar(DEFAULT_MODEL_TYPE, 6),
-      fetchGroupChaos(DEFAULT_MODEL_TYPE, ANALYTICS_SIMULATION_COUNT, 42),
+    const [snapshot, movers] = await Promise.all([
+      fetchLatestForecast(),
       fetchProbabilityMovers(8),
     ]);
-    return { summary, upsets, groupChaos, movers };
+    return {
+      summary: snapshot.summary,
+      upsets: snapshot.upsets,
+      groupChaos: snapshot.group_chaos,
+      movers,
+    };
   }, []);
 
   const {

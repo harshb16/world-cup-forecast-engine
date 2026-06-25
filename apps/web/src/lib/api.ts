@@ -304,6 +304,13 @@ export type GroupChaosReport = {
   groups: GroupChaosScore[];
 };
 
+export type ForecastSnapshot = {
+  generated_at: string;
+  summary: SimulationSummary;
+  group_chaos: GroupChaosReport;
+  upsets: UpsetRadar;
+};
+
 export type ModelComparisonDelta = {
   model_type: ModelType;
   baseline_model: ModelType;
@@ -418,6 +425,10 @@ export async function fetchFixtures(): Promise<Match[]> {
 
 export async function fetchMetadata(): Promise<DataMetadata> {
   return fetchJson<DataMetadata>("/metadata");
+}
+
+export async function fetchLatestForecast(): Promise<ForecastSnapshot> {
+  return fetchJson<ForecastSnapshot>("/forecast/latest");
 }
 
 export async function syncMatchResults(

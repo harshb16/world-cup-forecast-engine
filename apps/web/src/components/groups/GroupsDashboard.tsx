@@ -10,18 +10,12 @@ import { GroupProbabilityCard } from "@/components/groups/GroupProbabilityCard";
 import { HelpText } from "@/components/ui/HelpText";
 import { THIRD_PLACE_QUALIFIER_COUNT } from "@/lib/tournament";
 import {
-  ANALYTICS_SIMULATION_COUNT,
-  SIMULATION_COUNT,
-} from "@/lib/config";
-import {
-  DEFAULT_MODEL_TYPE,
-  fetchGroupChaos,
   fetchGroups,
+  fetchLatestForecast,
   fetchMetadata,
   fetchTeams,
   Group,
   GroupChaosScore,
-  simulateTournament,
   SimulationSummary,
   Team,
   DataMetadata,
@@ -46,22 +40,20 @@ export function GroupsDashboard() {
       fetchGroups(),
       fetchTeams(),
       fetchMetadata(),
-      simulateTournament({
-        n_simulations: SIMULATION_COUNT,
-        model_type: DEFAULT_MODEL_TYPE,
-        seed: 42,
-      }),
-      fetchGroupChaos(DEFAULT_MODEL_TYPE, ANALYTICS_SIMULATION_COUNT, 42),
+      fetchLatestForecast(),
     ])
-      .then(([groups, teams, metadata, simulation, chaos]) => {
+      .then(([groups, teams, metadata, snapshot]) => {
         if (isActive) {
           setData({
             groups,
             teams,
             metadata,
-            simulation,
+            simulation: snapshot.summary,
             chaosByGroupId: new Map(
-              chaos.groups.map((group) => [group.group_id, group]),
+              snapshot.group_chaos.groups.map((group) => [
+                group.group_id,
+                group,
+              ]),
             ),
           });
         }

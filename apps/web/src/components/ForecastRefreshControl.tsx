@@ -24,18 +24,18 @@ export function ForecastRefreshControl({
           aria-hidden="true"
           className={isRefreshing ? "animate-spin" : ""}
         />
-        {isRefreshing ? "Rerunning simulation" : "Rerun simulation"}
+        {isRefreshing ? "Refreshing view" : "Refresh view"}
       </button>
       <span
         aria-live="polite"
         className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-zinc-500"
       >
         {lastRunAt
-          ? `Using loaded match data · ran ${lastRunAt.toLocaleTimeString([], {
+          ? `Using published forecast · loaded ${lastRunAt.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
             })}`
-          : "Uses loaded match data · does not sync results"}
+          : "Uses published forecast · no simulation on page load"}
       </span>
     </div>
   );

@@ -18,6 +18,7 @@ from app.models.schemas import (
     ProbabilityMoverResponse,
     ProbabilityMoversResponse,
     SimulateRequest,
+    SimulationSummaryResponse,
     ThirdPlaceSlotDistributionResponse,
     ThirdPlaceTeamResponse,
     ThirdPlaceTrackerResponse,
@@ -170,6 +171,15 @@ def calculate_group_chaos(
         ),
         data_mode,
     )
+    return calculate_group_chaos_from_summary(summary, data_mode, model_type)
+
+
+def calculate_group_chaos_from_summary(
+    summary: SimulationSummaryResponse,
+    data_mode: str,
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
+) -> GroupChaosResponse:
+    """Compute group chaos from an existing tournament simulation summary."""
     config = load_tournament(data_mode)
     teams_by_group: dict[str, list] = {}
     for team in summary.teams:
@@ -216,7 +226,7 @@ def calculate_group_chaos(
     return GroupChaosResponse(
         model_type=model_type,
         data_mode=data_mode,
-        n_simulations=n_simulations,
+        n_simulations=summary.metadata.n_simulations,
         groups=groups,
     )
 

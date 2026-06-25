@@ -12,6 +12,7 @@ from app.models.schemas import (
     CurrentTournamentScoringResponse,
     DataMetadataResponse,
     DataQualityResponse,
+    ForecastSnapshotResponse,
     GroupChaosResponse,
     HeadToHeadResponse,
     HealthResponse,
@@ -44,6 +45,7 @@ from app.services.current_tournament_scoring import (
 from app.services.data_loader import load_metadata, load_tournament
 from app.services.data_quality_service import calculate_data_quality
 from app.services.head_to_head_service import calculate_head_to_head
+from app.services.forecast_snapshot_service import load_forecast_snapshot
 from app.services.matchday_service import calculate_matchday
 from app.services.model_metadata import list_model_metadata
 from app.services.probability_movers_service import calculate_probability_movers
@@ -94,6 +96,15 @@ def fixtures() -> list[Match]:
 def metadata() -> DataMetadataResponse:
     """Return active tournament data metadata."""
     return DataMetadataResponse.model_validate(load_metadata(get_data_mode()))
+
+
+@router.get("/forecast/latest", response_model=ForecastSnapshotResponse)
+def latest_forecast() -> ForecastSnapshotResponse:
+    """Return precomputed forecast artifacts without rerunning simulations."""
+    try:
+        return load_forecast_snapshot()
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
 
 
 @router.post("/admin/sync/results", response_model=SyncResponse)

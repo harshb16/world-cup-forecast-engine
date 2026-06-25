@@ -12,17 +12,15 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { HelpText } from "@/components/ui/HelpText";
 import { SectionCard } from "@/components/ui/SectionCard";
 import {
-  DEFAULT_MODEL_TYPE,
   fetchGroups,
+  fetchLatestForecast,
   fetchMetadata,
   fetchTeams,
   Group,
-  simulateTournament,
   SimulationSummary,
   Team,
   DataMetadata,
 } from "@/lib/api";
-import { SIMULATION_COUNT } from "@/lib/config";
 
 type TeamIndexData = {
   groups: Group[];
@@ -44,15 +42,16 @@ export function TeamsDashboard() {
       fetchGroups(),
       fetchTeams(),
       fetchMetadata(),
-      simulateTournament({
-        n_simulations: SIMULATION_COUNT,
-        model_type: DEFAULT_MODEL_TYPE,
-        seed: 42,
-      }),
+      fetchLatestForecast(),
     ])
-      .then(([groups, teams, metadata, simulation]) => {
+      .then(([groups, teams, metadata, snapshot]) => {
         if (isActive) {
-          setData({ groups, teams, metadata, simulation });
+          setData({
+            groups,
+            teams,
+            metadata,
+            simulation: snapshot.summary,
+          });
         }
       })
       .catch((caughtError: unknown) => {

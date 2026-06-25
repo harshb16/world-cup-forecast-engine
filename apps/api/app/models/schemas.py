@@ -356,6 +356,15 @@ class GroupChaosResponse(BaseModel):
     groups: list[GroupChaosScoreResponse]
 
 
+class ForecastSnapshotResponse(BaseModel):
+    """Published forecast artifacts derived from one simulation run."""
+
+    generated_at: str
+    summary: SimulationSummaryResponse
+    group_chaos: GroupChaosResponse
+    upsets: UpsetRadarResponse
+
+
 class ModelComparisonDeltaResponse(BaseModel):
     """Champion probability deltas versus a baseline model."""
 

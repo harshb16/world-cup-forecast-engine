@@ -14,13 +14,21 @@ The launcher opens `http://127.0.0.1:3000`, enables hot reload, and uses a
 small simulation profile so pages load quickly while testing. Press `Ctrl+C`
 to stop both servers.
 
-Override the fast profile when needed:
+Override interactive scenario simulation counts when needed:
 
 ```bash
-NEXT_PUBLIC_WCO_SIMULATIONS=100 \
-NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS=50 \
+NEXT_PUBLIC_WCO_SIMULATIONS=5000 \
+NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS=1000 \
 ./scripts/dev.sh
 ```
+
+Tournament forecasts enforce at least 1,000 simulations. Smaller samples make
+the favorites table unstable and can contradict the deterministic bracket.
+
+Dashboard, groups, and team probability pages read
+`data/processed/forecast_snapshot.json`. Normal page loads do not run Monte
+Carlo simulations. Result sync rebuilds this shared 5,000-run snapshot once
+after new scores are published.
 
 Set `WCO_NO_OPEN=1` to prevent the browser from opening automatically.
 

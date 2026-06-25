@@ -31,11 +31,9 @@ done
 
 export WORLD_CUP_DATA_MODE="${WORLD_CUP_DATA_MODE:-processed}"
 export NEXT_PUBLIC_API_BASE_URL="$API_URL"
-export NEXT_PUBLIC_WCO_FAST_MODE="${NEXT_PUBLIC_WCO_FAST_MODE:-1}"
-export NEXT_PUBLIC_WCO_SIMULATIONS="${NEXT_PUBLIC_WCO_SIMULATIONS:-20}"
-export NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS="${NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS:-10}"
-export NEXT_PUBLIC_WCO_TEAM_PATH_SIMULATIONS="${NEXT_PUBLIC_WCO_TEAM_PATH_SIMULATIONS:-10}"
-export NEXT_PUBLIC_WCO_REFRESH_MINUTES="${NEXT_PUBLIC_WCO_REFRESH_MINUTES:-5}"
+export NEXT_PUBLIC_WCO_SIMULATIONS="${NEXT_PUBLIC_WCO_SIMULATIONS:-1000}"
+export NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS="${NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS:-500}"
+export NEXT_PUBLIC_WCO_TEAM_PATH_SIMULATIONS="${NEXT_PUBLIC_WCO_TEAM_PATH_SIMULATIONS:-500}"
 
 cleanup() {
   trap - EXIT INT TERM
@@ -53,7 +51,7 @@ echo "Starting API..."
 ) &
 API_PID=$!
 
-echo "Starting web app in fast-test mode..."
+echo "Starting web app..."
 (
   cd "$WEB_DIR"
   exec bun run dev --hostname 127.0.0.1 --port 3000
@@ -80,7 +78,7 @@ fi
 
 echo
 echo "World Cup Oracle ready: $WEB_URL"
-echo "Fast profile: ${NEXT_PUBLIC_WCO_SIMULATIONS} tournament / ${NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS} analytics simulations"
+echo "Forecast profile: ${NEXT_PUBLIC_WCO_SIMULATIONS} tournament / ${NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS} analytics simulations"
 echo "Press Ctrl+C to stop both servers."
 
 if [[ "${WCO_NO_OPEN:-0}" != "1" ]] && command -v open >/dev/null 2>&1; then

@@ -218,6 +218,7 @@ def test_successful_sync_publishes_consistent_snapshot(
             return_value=("FIFA API fallback", [provider_match]),
         ),
         patch("app.services.results_sync_service._append_probability_snapshot"),
+        patch("app.services.results_sync_service._refresh_forecast_snapshot"),
     ):
         response = results_sync_service.sync_results()
 

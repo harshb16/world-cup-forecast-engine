@@ -13,20 +13,18 @@ import { HelpText } from "@/components/ui/HelpText";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { StatCard } from "@/components/ui/StatCard";
 import {
-  DEFAULT_MODEL_TYPE,
   fetchGroups,
+  fetchLatestForecast,
   fetchMetadata,
   fetchTeams,
   fetchTeamPath,
   Group,
-  simulateTournament,
   SimulationSummary,
   Team,
   DataMetadata,
   TeamPath,
   TeamPathStage,
 } from "@/lib/api";
-import { SIMULATION_COUNT } from "@/lib/config";
 import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
 
 type TeamDetailData = {
@@ -51,15 +49,17 @@ export function TeamDetailDashboard() {
       fetchTeams(),
       fetchMetadata(),
       fetchTeamPath(teamId),
-      simulateTournament({
-        n_simulations: SIMULATION_COUNT,
-        model_type: DEFAULT_MODEL_TYPE,
-        seed: 42,
-      }),
+      fetchLatestForecast(),
     ])
-      .then(([groups, teams, metadata, path, simulation]) => {
+      .then(([groups, teams, metadata, path, snapshot]) => {
         if (isActive) {
-          setData({ groups, teams, metadata, path, simulation });
+          setData({
+            groups,
+            teams,
+            metadata,
+            path,
+            simulation: snapshot.summary,
+          });
         }
       })
       .catch((caughtError: unknown) => {

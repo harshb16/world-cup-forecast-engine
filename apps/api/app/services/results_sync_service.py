@@ -17,7 +17,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from app.models.schemas import SyncResponse
+from app.models.schemas import ForecastSnapshotResponse, SyncResponse
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 PROCESSED_DIR = REPO_ROOT / "data" / "processed"
@@ -156,7 +156,11 @@ def sync_results() -> SyncResponse:
                 raise ResultsSyncError("; ".join(errors))
             _publish_files(staged_dir)
 
-        _append_probability_snapshot(timestamp)
+        forecast = _refresh_forecast_snapshot()
+        _append_probability_snapshot(
+            timestamp,
+            forecast.summary.champion_probabilities,
+        )
         return SyncResponse(
             success=True,
             last_updated=timestamp,
@@ -463,33 +467,31 @@ def _publish_files(staged_dir: Path) -> None:
         raise
 
 
-def _append_probability_snapshot(timestamp: str) -> None:
+def _append_probability_snapshot(
+    timestamp: str,
+    champion_probabilities: dict[str, float],
+) -> None:
     try:
-        from app.core.config import DEFAULT_MODEL_TYPE
-        from app.models.schemas import SimulateRequest
         from app.services.data_sync_service import _current_matchday
-        from app.services.simulation_service import run_simulation
-
-        summary = run_simulation(
-            SimulateRequest(
-                n_simulations=1000,
-                model_type=DEFAULT_MODEL_TYPE,
-                seed=42,
-            ),
-            "processed",
-        )
         history_path = PROCESSED_DIR / "probability_history.json"
         history = _read_json(history_path) if history_path.exists() else []
         history.append(
             {
                 "timestamp": timestamp,
                 "matchday": _current_matchday(),
-                "champion_probabilities": summary.champion_probabilities,
+                "champion_probabilities": champion_probabilities,
             }
         )
         _write_json(history_path, history)
     except Exception:
         return
+
+
+def _refresh_forecast_snapshot() -> ForecastSnapshotResponse:
+    """Rebuild shared forecast after a successful result publication."""
+    from app.services.forecast_snapshot_service import publish_forecast_snapshot
+
+    return publish_forecast_snapshot("processed")
 
 
 def _current_last_updated() -> str:

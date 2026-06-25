@@ -25,9 +25,10 @@ def test_latest_forecast_reads_published_snapshot_without_simulating() -> None:
     assert len(payload["summary"]["teams"]) == 48
     assert len(payload["group_chaos"]["groups"]) == 12
     assert payload["upsets"]["fixtures"]
+    assert payload["featured_final"]["stage"] == "Final"
 
 
-def test_snapshot_title_contenders_include_favorite_finalists() -> None:
+def test_snapshot_featured_final_matches_favorite_bracket_trace() -> None:
     snapshot = client.get("/forecast/latest").json()
     bracket = client.post(
         "/bracket/simulate",
@@ -37,6 +38,22 @@ def test_snapshot_title_contenders_include_favorite_finalists() -> None:
             "seed": 42,
         },
     ).json()
+    featured = snapshot["featured_final"]
+    bracket_final = bracket["rounds"]["Final"][0]
+
+    assert {featured["team_a"]["team_id"], featured["team_b"]["team_id"]} == {
+        bracket_final["team_a"]["team_id"],
+        bracket_final["team_b"]["team_id"],
+    }
+    assert featured["winner_team_id"] == bracket_final["winner_team_id"]
+    assert featured["winner_team_id"] in {
+        featured["team_a"]["team_id"],
+        featured["team_b"]["team_id"],
+    }
+
+
+def test_snapshot_title_contenders_include_featured_finalists() -> None:
+    snapshot = client.get("/forecast/latest").json()
     top_eight = {
         team["team_id"]
         for team in sorted(
@@ -45,9 +62,9 @@ def test_snapshot_title_contenders_include_favorite_finalists() -> None:
             reverse=True,
         )[:8]
     }
-    final = bracket["rounds"]["Final"][0]
+    featured = snapshot["featured_final"]
 
-    assert {final["team_a"]["team_id"], final["team_b"]["team_id"]}.issubset(
+    assert {featured["team_a"]["team_id"], featured["team_b"]["team_id"]}.issubset(
         top_eight
     )
 

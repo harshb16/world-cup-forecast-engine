@@ -309,6 +309,7 @@ export type ForecastSnapshot = {
   summary: SimulationSummary;
   group_chaos: GroupChaosReport;
   upsets: UpsetRadar;
+  featured_final: BracketMatch;
 };
 
 export type ModelComparisonDelta = {

@@ -1,5 +1,45 @@
 {
-  "generated_at": "2026-06-25T11:29:13+00:00",
+  "featured_final": {
+    "confidence_label": "coin flip",
+    "confirmed": false,
+    "drivers": [
+      "rating blend"
+    ],
+    "id": "KO-F-01",
+    "match_number": 1,
+    "probabilities": {
+      "draw": 0.23127272727272735,
+      "team_a_advance": 0.47239707196412284,
+      "team_a_win": 0.36314451277532933,
+      "team_b_advance": 0.5276029280358772,
+      "team_b_win": 0.4055827599519434
+    },
+    "result": {
+      "team_a_goals": 1,
+      "team_b_goals": 2
+    },
+    "source_match_ids": [
+      "KO-SF-01",
+      "KO-SF-02"
+    ],
+    "stage": "Final",
+    "team_a": {
+      "group_id": "H",
+      "rating": 2192.0,
+      "team_id": "SPAIN",
+      "team_name": "Spain"
+    },
+    "team_a_expected_goals": null,
+    "team_b": {
+      "group_id": "J",
+      "rating": 2184.0,
+      "team_id": "ARGENTINA",
+      "team_name": "Argentina"
+    },
+    "team_b_expected_goals": null,
+    "winner_team_id": "ARGENTINA"
+  },
+  "generated_at": "2026-06-25T14:23:16+00:00",
   "group_chaos": {
     "data_mode": "processed",
     "groups": [

@@ -128,13 +128,13 @@ export function MethodologyExperience() {
     };
   }, []);
 
-  const productionModel = useMemo(
+  const baselineModel = useMemo(
     () => data?.models.find((model) => model.id === DEFAULT_MODEL_TYPE) ?? null,
     [data],
   );
 
   if (error) return <ErrorState message={error} />;
-  if (!data || !productionModel) {
+  if (!data || !baselineModel) {
     return <LoadingState label="Loading methodology" />;
   }
 
@@ -151,7 +151,7 @@ export function MethodologyExperience() {
         />
         <div className="relative max-w-4xl">
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--turf)]">
-            Public methodology · model {productionModel.id}
+            Public methodology · baseline {baselineModel.id}
           </p>
           <h1 className="mt-4 text-4xl font-semibold leading-[1.05] tracking-[-0.035em] text-white sm:text-6xl">
             Every percentage should have a paper trail.
@@ -184,9 +184,9 @@ export function MethodologyExperience() {
         className="grid overflow-hidden rounded-xl border border-white/10 bg-[#0b1118] sm:grid-cols-2 xl:grid-cols-4"
       >
         <StatusCell
-          label="Production model"
+          label="Active baseline"
           value={formatModelLabel(DEFAULT_MODEL_TYPE)}
-          detail="Open-data rating baseline"
+          detail="Not promoted to production without holdout validation"
         />
         <StatusCell
           label="Tournament data"
@@ -243,7 +243,7 @@ export function MethodologyExperience() {
                 key={section.id}
                 section={section}
                 data={data}
-                productionModel={productionModel}
+                baselineModel={baselineModel}
               />
             ))}
           </div>
@@ -277,11 +277,11 @@ export function MethodologyExperience() {
 function MethodSection({
   section,
   data,
-  productionModel,
+  baselineModel,
 }: {
   section: PipelineSection;
   data: MethodologyData;
-  productionModel: ModelMetadata;
+  baselineModel: ModelMetadata;
 }) {
   const Icon = section.icon;
 
@@ -308,7 +308,7 @@ function MethodSection({
           <SectionEvidence
             id={section.id}
             data={data}
-            productionModel={productionModel}
+            baselineModel={baselineModel}
           />
         </div>
       </div>
@@ -319,11 +319,11 @@ function MethodSection({
 function SectionEvidence({
   id,
   data,
-  productionModel,
+  baselineModel,
 }: {
   id: string;
   data: MethodologyData;
-  productionModel: ModelMetadata;
+  baselineModel: ModelMetadata;
 }) {
   if (id === "data") {
     const sources = data.metadata.sources
@@ -441,8 +441,8 @@ function SectionEvidence({
   return (
     <div className="mt-6 grid gap-4 lg:grid-cols-2">
       <LimitList
-        title={`${productionModel.name} limits`}
-        items={productionModel.limitations}
+        title={`${baselineModel.name} limits`}
+        items={baselineModel.limitations}
       />
       <LimitList
         title="Tournament and data limits"

@@ -363,6 +363,7 @@ class ForecastSnapshotResponse(BaseModel):
     summary: SimulationSummaryResponse
     group_chaos: GroupChaosResponse
     upsets: UpsetRadarResponse
+    featured_final: BracketMatchResponse
 
 
 class ModelComparisonDeltaResponse(BaseModel):

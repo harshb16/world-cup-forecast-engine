@@ -119,13 +119,13 @@ export function HomeDashboard() {
 
   return (
     <div className="flex flex-col gap-8 pb-12">
-      <section className="relative overflow-hidden rounded-xl border border-border bg-card shadow-xl">
+      <section className="surface-hero relative overflow-hidden rounded-xl border border-border/80">
         <div
-          className="pointer-events-none absolute inset-y-0 right-0 w-1/2 opacity-30"
+          className="pointer-events-none absolute inset-y-0 right-0 w-1/2 opacity-40"
           aria-hidden="true"
           style={{
             background:
-              "repeating-linear-gradient(115deg,transparent 0 26px,color-mix(in oklch,var(--chart-3) 15%,transparent) 26px 27px)",
+              "repeating-linear-gradient(115deg,transparent 0 24px,color-mix(in oklch,var(--chart-2) 18%,transparent) 24px 25px)",
           }}
         />
         <div className="relative grid xl:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.95fr)]">
@@ -245,7 +245,7 @@ export function HomeDashboard() {
       ) : null}
 
       <Tabs defaultValue="overview">
-        <TabsList>
+        <TabsList className="h-10 w-full justify-start bg-secondary/80 p-1 sm:w-auto">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="movers">Movers & risk</TabsTrigger>
           <TabsTrigger value="tables">Tables</TabsTrigger>

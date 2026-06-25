@@ -22,14 +22,14 @@ export function ScenarioOverridesList({
           <p className="text-xs font-semibold uppercase text-primary">
             Scenario slate
           </p>
-          <h2 className="mt-1 text-lg font-semibold text-white">
+          <h2 className="mt-1 text-lg font-semibold text-foreground">
             Selected overrides
           </h2>
         </div>
         <button
           type="button"
           onClick={onClear}
-          className="rounded-md border border-border px-3 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-white/[0.06]"
+          className="rounded-md border border-border px-3 py-2 text-xs font-semibold text-muted-foreground transition hover:bg-accent/60"
         >
           Clear
         </button>
@@ -53,9 +53,9 @@ export function ScenarioOverridesList({
             return (
               <div
                 key={override.match_id}
-                className="flex flex-col gap-3 rounded-md border border-border bg-white/[0.04] p-3 text-sm sm:flex-row sm:items-center sm:justify-between"
+                className="flex flex-col gap-3 rounded-md border border-border bg-accent/50 p-3 text-sm sm:flex-row sm:items-center sm:justify-between"
               >
-                <span className="font-semibold text-zinc-100">
+                <span className="font-semibold text-foreground">
                   {teamA}{" "}
                   <span className="text-primary">
                     {override.team_a_goals} - {override.team_b_goals}

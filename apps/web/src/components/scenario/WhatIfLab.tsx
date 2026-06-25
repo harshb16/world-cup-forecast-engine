@@ -165,12 +165,12 @@ export function WhatIfLab() {
         {scenarioSteps.map((step, index) => (
           <div
             key={step}
-            className="rounded-lg border border-border bg-white/[0.05] p-4"
+            className="rounded-lg border border-border bg-accent/50 p-4"
           >
             <span className="flex size-7 items-center justify-center rounded-md bg-primary/10 text-sm font-semibold text-primary">
               {index + 1}
             </span>
-            <p className="mt-3 text-sm font-semibold text-white">{step}</p>
+            <p className="mt-3 text-sm font-semibold text-foreground">{step}</p>
           </div>
         ))}
       </section>
@@ -202,10 +202,10 @@ export function WhatIfLab() {
             <p className="text-xs font-semibold uppercase text-primary">
               Step 3
             </p>
-            <h2 className="mt-1 text-lg font-semibold text-white">
+            <h2 className="mt-1 text-lg font-semibold text-foreground">
               Run the scenario
             </h2>
-            <p className="mt-1 text-sm text-zinc-400">
+            <p className="mt-1 text-sm text-muted-foreground">
               The backend compares this scenario against the same seeded
               baseline simulation. Scenario state is stored in the URL for
               sharing.
@@ -215,7 +215,7 @@ export function WhatIfLab() {
             <button
               type="button"
               onClick={copyScenarioLink}
-              className="h-12 rounded-md border border-border bg-white/[0.05] px-4 text-sm font-semibold text-zinc-100 transition hover:bg-white/[0.08]"
+              className="h-12 rounded-md border border-border bg-accent/50 px-4 text-sm font-semibold text-foreground transition hover:bg-accent/80"
             >
               {copied ? "Link copied" : "Copy scenario link"}
             </button>
@@ -223,7 +223,7 @@ export function WhatIfLab() {
               type="button"
               onClick={runScenario}
               disabled={isRunning}
-              className="h-12 rounded-md bg-primary px-6 text-sm font-semibold text-zinc-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400"
+              className="h-12 rounded-md bg-primary px-6 text-sm font-semibold text-zinc-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-muted-foreground"
             >
               {isRunning ? "Running scenario" : "Run scenario"}
             </button>
@@ -302,14 +302,14 @@ function DeltaSummary({
 }) {
   return (
     <SectionCard>
-      <h2 className="text-base font-semibold text-white">{title}</h2>
+      <h2 className="text-base font-semibold text-foreground">{title}</h2>
       <div className="mt-4 space-y-3">
         {rows.slice(0, 5).map((row) => (
           <div
             key={row.team_id}
             className="flex items-center justify-between gap-4 rounded-md border border-border bg-white/[0.035] p-3"
           >
-            <span className="font-semibold text-zinc-100">{row.team_name}</span>
+            <span className="font-semibold text-foreground">{row.team_name}</span>
             <DeltaBadge value={row.champion_probability_delta} />
           </div>
         ))}

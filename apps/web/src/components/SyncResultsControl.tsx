@@ -80,7 +80,7 @@ export function SyncResultsControl({
       {message ? (
         <span
           role="status"
-          className="max-w-lg font-mono text-[0.65rem] uppercase tracking-[0.08em] text-zinc-400"
+          className="max-w-lg font-mono text-[0.65rem] uppercase tracking-[0.08em] text-muted-foreground"
         >
           {message}
         </span>

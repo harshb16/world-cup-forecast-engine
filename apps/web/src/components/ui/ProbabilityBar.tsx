@@ -28,6 +28,7 @@ export function ProbabilityBar({
       ) : null}
       <div className="h-2 overflow-hidden rounded-full bg-muted">
         <div
+          data-fill
           className={cn(
             "h-full rounded-full bg-primary transition-[width] duration-300",
             interactive && "hover:shadow-[0_0_12px_color-mix(in_oklch,var(--primary)_40%,transparent)]",

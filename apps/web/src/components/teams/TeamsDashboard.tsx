@@ -122,7 +122,7 @@ export function TeamsDashboard() {
               className={`min-w-fit rounded-md border px-3 py-2 text-xs font-semibold transition ${
                 selectedGroupId === "all"
                   ? "border-primary/40 bg-primary/10 text-primary"
-                  : "border-border text-zinc-400 hover:bg-white/[0.06]"
+                  : "border-border text-muted-foreground hover:bg-accent/60"
               }`}
             >
               All groups
@@ -135,7 +135,7 @@ export function TeamsDashboard() {
                 className={`min-w-fit rounded-md border px-3 py-2 text-xs font-semibold transition ${
                   selectedGroupId === group.id
                     ? "border-primary/40 bg-primary/10 text-primary"
-                    : "border-border text-zinc-400 hover:bg-white/[0.06]"
+                    : "border-border text-muted-foreground hover:bg-accent/60"
                 }`}
               >
                 {group.id}
@@ -165,7 +165,7 @@ export function TeamsDashboard() {
               <p className="text-xs font-semibold uppercase text-primary">
                 {group.id}
               </p>
-              <h2 className="text-lg font-semibold text-white">{group.name}</h2>
+              <h2 className="text-lg font-semibold text-foreground">{group.name}</h2>
             </div>
             <div className="grid gap-4 xl:grid-cols-2">
               {teams.map((team) => {
@@ -184,7 +184,7 @@ export function TeamsDashboard() {
                         <TeamProbabilitySummary probability={probability} compact />
                       </div>
                     ) : (
-                      <p className="mt-3 text-sm text-zinc-500">
+                      <p className="mt-3 text-sm text-muted-foreground">
                         Simulation probabilities unavailable.
                       </p>
                     )}

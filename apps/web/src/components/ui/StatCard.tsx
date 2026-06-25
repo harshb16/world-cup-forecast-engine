@@ -15,11 +15,11 @@ export function StatCard({
     default: "text-foreground",
     green: "text-primary",
     amber: "text-signal-amber",
-    red: "text-destructive-foreground",
+    red: "text-signal-red",
   }[tone];
 
   return (
-    <div className="rounded-lg border border-border bg-card/80 p-4">
+    <div className="surface-panel p-4">
       <p className="font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground">
         {label}
       </p>

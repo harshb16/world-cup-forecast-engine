@@ -15,10 +15,10 @@ export function ModelComparisonPanel({
       <p className="text-xs font-semibold uppercase text-primary">
         Model comparison
       </p>
-      <h2 className="mt-1 text-lg font-semibold text-white">
+      <h2 className="mt-1 text-lg font-semibold text-foreground">
         Where {formatModelLabel(comparison.baseline_model)} diverges
       </h2>
-      <p className="mt-1 text-sm text-zinc-400">
+      <p className="mt-1 text-sm text-muted-foreground">
         Champion probability deltas versus the baseline model across{" "}
         {formatNumber(comparison.n_simulations)} seeded simulations.
       </p>
@@ -30,10 +30,10 @@ export function ModelComparisonPanel({
             className="rounded-md border border-border bg-muted/40 p-4"
           >
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <h3 className="font-semibold text-white">
+              <h3 className="font-semibold text-foreground">
                 {formatModelLabel(delta.model_type)}
               </h3>
-              <span className="text-xs text-zinc-500">
+              <span className="text-xs text-muted-foreground">
                 vs {formatModelLabel(delta.baseline_model)}
               </span>
             </div>
@@ -62,16 +62,16 @@ export function ModelComparisonPanel({
             </div>
 
             <div className="mt-4">
-              <p className="text-xs font-semibold uppercase text-zinc-500">
+              <p className="text-xs font-semibold uppercase text-muted-foreground">
                 Top-four champion deltas
               </p>
               <div className="mt-2 space-y-2">
                 {comparison.top_four_team_ids.map((teamId) => (
                   <div
                     key={`${delta.model_type}-${teamId}`}
-                    className="flex items-center justify-between gap-4 rounded-md bg-white/[0.04] px-3 py-2"
+                    className="flex items-center justify-between gap-4 rounded-md bg-accent/50 px-3 py-2"
                   >
-                    <span className="font-medium text-zinc-100">
+                    <span className="font-medium text-foreground">
                       {teamNames[teamId] ?? teamId}
                     </span>
                     <DeltaBadge
@@ -100,15 +100,15 @@ function DeltaCard({
   teamNames: Record<string, string>;
 }) {
   return (
-    <div className="rounded-md bg-white/[0.04] px-3 py-3">
-      <p className="text-xs uppercase text-zinc-500">{title}</p>
+    <div className="rounded-md bg-accent/50 px-3 py-3">
+      <p className="text-xs uppercase text-muted-foreground">{title}</p>
       <div className="mt-2 flex items-center justify-between gap-3">
-        <span className="font-semibold text-zinc-100">
+        <span className="font-semibold text-foreground">
           {teamNames[teamId] ?? teamId}
         </span>
         <DeltaBadge value={value} />
       </div>
-      <p className="mt-1 text-xs text-zinc-500">
+      <p className="mt-1 text-xs text-muted-foreground">
         Champion delta {formatPercent(value)}
       </p>
     </div>

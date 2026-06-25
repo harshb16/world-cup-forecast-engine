@@ -159,15 +159,15 @@ export default function ModelsPage() {
                     <p className="text-xs font-semibold uppercase text-primary">
                       {model.id}
                     </p>
-                    <h2 className="mt-1 text-lg font-semibold text-white">
+                    <h2 className="mt-1 text-lg font-semibold text-foreground">
                       {model.name}
                     </h2>
                   </div>
                   <div className="flex flex-wrap justify-end gap-2">
-                    <span className="rounded-md border border-border bg-white/[0.06] px-2.5 py-1 text-xs font-semibold text-zinc-300">
+                    <span className="rounded-md border border-border bg-accent/60 px-2.5 py-1 text-xs font-semibold text-muted-foreground">
                       {model.is_ml ? "ML" : "Statistical"}
                     </span>
-                    <span className="rounded-md border border-border bg-white/[0.06] px-2.5 py-1 text-xs font-semibold capitalize text-zinc-300">
+                    <span className="rounded-md border border-border bg-accent/60 px-2.5 py-1 text-xs font-semibold capitalize text-muted-foreground">
                       {model.maturity}
                     </span>
                   </div>
@@ -192,22 +192,22 @@ export default function ModelsPage() {
                 <p className="text-xs font-semibold uppercase text-primary">
                   Current tournament scoring
                 </p>
-                <h2 className="mt-1 text-lg font-semibold text-white">
+                <h2 className="mt-1 text-lg font-semibold text-foreground">
                   Scores against completed fixtures
                 </h2>
-                <p className="mt-1 text-sm text-zinc-400">
+                <p className="mt-1 text-sm text-muted-foreground">
                   A current-tournament check only. This is not historical
                   out-of-sample backtesting.
                 </p>
               </div>
-              <label className="flex flex-col gap-1 text-xs text-zinc-400">
+              <label className="flex flex-col gap-1 text-xs text-muted-foreground">
                 Model
                 <select
                   value={scoringModel}
                   onChange={(event) =>
                     setScoringModel(event.target.value as ModelType)
                   }
-                  className="rounded-md border border-border bg-muted/40 px-3 py-2 text-sm text-white"
+                  className="rounded-md border border-border bg-muted/40 px-3 py-2 text-sm text-foreground"
                 >
                   {SCORING_MODELS.map((model) => (
                     <option key={model} value={model}>
@@ -259,7 +259,7 @@ export default function ModelsPage() {
                 <div className="mt-6">
                   <CalibrationChart bins={scoring.calibration_bins} />
                 </div>
-                <ul className="mt-5 space-y-1 text-sm text-zinc-400">
+                <ul className="mt-5 space-y-1 text-sm text-muted-foreground">
                   {scoring.limitations.map((limitation) => (
                     <li key={limitation}>• {limitation}</li>
                   ))}
@@ -273,10 +273,10 @@ export default function ModelsPage() {
               <p className="text-xs font-semibold uppercase text-primary">
                 Model comparison
               </p>
-              <h2 className="mt-1 text-lg font-semibold text-white">
+              <h2 className="mt-1 text-lg font-semibold text-foreground">
                 Compare champion probabilities across models
               </h2>
-              <p className="mt-1 text-sm text-zinc-400">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Runs four simulations on demand — load only when you want to
                 inspect model divergence.
               </p>
@@ -323,11 +323,11 @@ function SummaryCard({
   return (
     <div className="rounded-lg border border-border bg-white/[0.055] p-4">
       <Icon size={18} className="text-primary" aria-hidden="true" />
-      <p className="mt-4 text-xs font-medium uppercase text-zinc-400">
+      <p className="mt-4 text-xs font-medium uppercase text-muted-foreground">
         {label}
       </p>
-      <p className="mt-2 text-xl font-semibold text-white">{value}</p>
-      <p className="mt-1 text-sm leading-5 text-zinc-400">{detail}</p>
+      <p className="mt-2 text-xl font-semibold text-foreground">{value}</p>
+      <p className="mt-1 text-sm leading-5 text-muted-foreground">{detail}</p>
     </div>
   );
 }
@@ -335,10 +335,10 @@ function SummaryCard({
 function ModelList({ title, items }: { title: string; items: string[] }) {
   return (
     <div className="mt-5">
-      <h3 className="text-xs font-semibold uppercase text-zinc-500">{title}</h3>
+      <h3 className="text-xs font-semibold uppercase text-muted-foreground">{title}</h3>
       <ul className="mt-2 space-y-2">
         {items.map((item) => (
-          <li key={item} className="text-sm leading-6 text-zinc-300">
+          <li key={item} className="text-sm leading-6 text-muted-foreground">
             {item}
           </li>
         ))}

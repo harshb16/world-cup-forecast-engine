@@ -96,14 +96,14 @@ function ProbBar({
 }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="w-5 shrink-0 text-right text-xs text-zinc-400">{label}</span>
-      <div className="relative h-2 flex-1 overflow-hidden rounded-full bg-white/10">
+      <span className="w-5 shrink-0 text-right text-xs text-muted-foreground">{label}</span>
+      <div className="relative h-2 flex-1 overflow-hidden rounded-full bg-muted/50">
         <div
           className={`absolute left-0 top-0 h-full rounded-full ${color}`}
           style={{ width: `${value * 100}%` }}
         />
       </div>
-      <span className="w-10 shrink-0 text-right font-mono text-xs text-zinc-300">
+      <span className="w-10 shrink-0 text-right font-mono text-xs text-muted-foreground">
         {formatPercent(value)}
       </span>
     </div>
@@ -125,7 +125,7 @@ function FixtureCard({ fixture }: { fixture: MatchdayFixture }) {
       <div className="mb-3 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           {fixture.group_id && (
-            <span className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-xs text-zinc-400">
+            <span className="rounded bg-muted/50 px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
               Group {fixture.group_id}
             </span>
           )}
@@ -137,7 +137,7 @@ function FixtureCard({ fixture }: { fixture: MatchdayFixture }) {
         </div>
         <div className="flex items-center gap-2">
           <StatusBadge status={fixture.status} />
-          <span className="text-xs text-zinc-500">{formatKickoff(fixture.kickoff_utc)}</span>
+          <span className="text-xs text-muted-foreground">{formatKickoff(fixture.kickoff_utc)}</span>
         </div>
       </div>
 
@@ -152,9 +152,9 @@ function FixtureCard({ fixture }: { fixture: MatchdayFixture }) {
               {fixture.team_a_goals} – {fixture.team_b_goals}
             </span>
           ) : (
-            <span className="font-mono text-sm text-zinc-500">
+            <span className="font-mono text-sm text-muted-foreground">
               {fixture.projected_team_a_goals} – {fixture.projected_team_b_goals}
-              <span className="ml-1 text-xs text-zinc-600">xG</span>
+              <span className="ml-1 text-xs text-muted-foreground">xG</span>
             </span>
           )}
         </div>
@@ -179,17 +179,17 @@ function FixturesSection({ fixtures }: { fixtures: MatchdayFixture[] }) {
   if (fixtures.length === 0) {
     return (
       <section>
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-zinc-400">
+        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Fixtures
         </h2>
-        <p className="text-sm text-zinc-500">No upcoming fixtures found for today.</p>
+        <p className="text-sm text-muted-foreground">No upcoming fixtures found for today.</p>
       </section>
     );
   }
 
   return (
     <section>
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-zinc-400">
+      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
         Fixtures
       </h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -214,7 +214,7 @@ function GroupStandingTable({ group }: { group: MatchdayGroup }) {
       </div>
       <table className="w-full text-xs">
         <thead>
-          <tr className="border-b border-white/5 text-zinc-500">
+          <tr className="border-b border-white/5 text-muted-foreground">
             <th className="py-1.5 pl-4 text-left font-medium">#</th>
             <th className="py-1.5 text-left font-medium">Team</th>
             <th className="py-1.5 text-center font-medium">P</th>
@@ -230,10 +230,10 @@ function GroupStandingTable({ group }: { group: MatchdayGroup }) {
             <tr
               key={row.team_id}
               className={`border-b border-white/5 last:border-0 ${
-                idx < 2 ? "text-foreground" : "text-zinc-400"
+                idx < 2 ? "text-foreground" : "text-muted-foreground"
               }`}
             >
-              <td className="py-1.5 pl-4 font-mono text-zinc-500">{row.position}</td>
+              <td className="py-1.5 pl-4 font-mono text-muted-foreground">{row.position}</td>
               <td className="py-1.5 font-medium">{row.team_name}</td>
               <td className="py-1.5 text-center font-mono">{row.played}</td>
               <td className="py-1.5 text-center font-mono">{row.wins}</td>
@@ -257,7 +257,7 @@ function GroupStandingTable({ group }: { group: MatchdayGroup }) {
 function GroupStandingsSection({ groups }: { groups: MatchdayGroup[] }) {
   return (
     <section>
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-zinc-400">
+      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
         Group Standings
       </h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

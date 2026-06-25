@@ -20,13 +20,13 @@ export function TeamProbabilitySummary({
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="rounded-md border border-border bg-white/[0.035] p-3">
-          <span className="text-xs font-medium text-zinc-500">Champion</span>
+          <span className="text-xs font-medium text-muted-foreground">Champion</span>
           <div className="mt-2">
             <ProbabilityBar value={probability.champion} label="Win title" />
           </div>
         </div>
         <div className="rounded-md border border-border bg-white/[0.035] p-3">
-          <span className="text-xs font-medium text-zinc-500">
+          <span className="text-xs font-medium text-muted-foreground">
             Group qualification
           </span>
           <div className="mt-2">
@@ -49,8 +49,8 @@ export function TeamProbabilitySummary({
               />
             ))}
             <div className="flex items-center justify-between gap-4">
-              <span className="text-zinc-400">Average points</span>
-              <span className="font-semibold text-zinc-100">
+              <span className="text-muted-foreground">Average points</span>
+              <span className="font-semibold text-foreground">
                 {probability.average_points.toFixed(2)}
               </span>
             </div>

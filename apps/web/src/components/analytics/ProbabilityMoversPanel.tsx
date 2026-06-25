@@ -17,10 +17,10 @@ export function ProbabilityMoversPanel({ movers }: ProbabilityMoversPanelProps) 
         <p className="text-xs font-semibold uppercase text-primary">
           What changed
         </p>
-        <h2 className="mt-1 text-lg font-semibold text-white">
+        <h2 className="mt-1 text-lg font-semibold text-foreground">
           Probability movers
         </h2>
-        <p className="mt-3 text-sm text-zinc-400">
+        <p className="mt-3 text-sm text-muted-foreground">
           Sync at least twice to compare champion probability shifts between
           snapshots.
         </p>
@@ -35,12 +35,12 @@ export function ProbabilityMoversPanel({ movers }: ProbabilityMoversPanelProps) 
           <p className="text-xs font-semibold uppercase text-primary">
             What changed
           </p>
-          <h2 className="mt-1 text-lg font-semibold text-white">
+          <h2 className="mt-1 text-lg font-semibold text-foreground">
             Champion probability movers
           </h2>
         </div>
         {movers.previous_timestamp && movers.current_timestamp ? (
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-muted-foreground">
             {movers.previous_timestamp.slice(0, 10)} →{" "}
             {movers.current_timestamp.slice(0, 10)}
           </p>
@@ -87,11 +87,11 @@ function MoverColumn({
     <div className="rounded-lg border border-border bg-black/15 p-4">
       <div className="flex items-center gap-2">
         <Icon size={16} className={toneClass} aria-hidden="true" />
-        <h3 className="text-sm font-semibold text-white">{title}</h3>
+        <h3 className="text-sm font-semibold text-foreground">{title}</h3>
       </div>
       <ul className="mt-4 space-y-3">
         {items.length === 0 ? (
-          <li className="text-sm text-zinc-500">No movers in this bucket.</li>
+          <li className="text-sm text-muted-foreground">No movers in this bucket.</li>
         ) : (
           items.map((item) => (
             <li
@@ -99,10 +99,10 @@ function MoverColumn({
               className="flex items-center justify-between gap-3"
             >
               <div>
-                <p className="text-sm font-semibold text-zinc-100">
+                <p className="text-sm font-semibold text-foreground">
                   {item.team_name}
                 </p>
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-muted-foreground">
                   {formatPercent(item.previous_probability)} →{" "}
                   {formatPercent(item.current_probability)}
                 </p>

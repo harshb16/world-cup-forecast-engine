@@ -157,14 +157,14 @@ export function BracketExperience() {
               <p className="text-xs font-semibold uppercase text-emerald-200">
                 Simulation trace
               </p>
-              <h2 className="mt-2 max-w-3xl text-3xl font-semibold text-white sm:text-4xl">
+              <h2 className="mt-2 max-w-3xl text-3xl font-semibold text-foreground sm:text-4xl">
                 {championRevealed && trace
                   ? `${trace.champion_team_name} wins this path.`
                   : simulationMode === "favorite"
                     ? "Most likely bracket locked. Start revealing."
                     : "Random bracket locked. Start revealing."}
               </h2>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-400">
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
                 Favorite mode chooses the higher advance probability at every
                 unresolved match. Random mode samples one seeded tournament
                 trace.
@@ -211,7 +211,7 @@ export function BracketExperience() {
                   className={`rounded-md border px-3 py-2 text-sm font-semibold transition ${
                     simulationMode === mode
                       ? "border-sky-300/50 bg-sky-300 text-zinc-950"
-                      : "border-border bg-white/[0.05] text-zinc-300 hover:bg-white/[0.08]"
+                      : "border-border bg-accent/50 text-muted-foreground hover:bg-accent/80"
                   }`}
                 >
                   {mode === "favorite" ? "Most likely" : "Random"}
@@ -250,7 +250,7 @@ export function BracketExperience() {
                 type="button"
                 onClick={revealAll}
                 disabled={!trace}
-                className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-primary/80 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400"
+                className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-primary/80 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-muted-foreground"
               >
                 Reveal all
               </button>
@@ -349,20 +349,20 @@ function BracketWall({
         <button
           type="button"
           onClick={() => onRevealHalf("left")}
-          className="rounded-md border border-border bg-white/[0.05] px-3 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-white/[0.08]"
+          className="rounded-md border border-border bg-accent/50 px-3 py-2 text-xs font-semibold text-muted-foreground transition hover:bg-accent/80"
         >
           Reveal left half
         </button>
         <button
           type="button"
           onClick={() => onRevealHalf("right")}
-          className="rounded-md border border-border bg-white/[0.05] px-3 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-white/[0.08]"
+          className="rounded-md border border-border bg-accent/50 px-3 py-2 text-xs font-semibold text-muted-foreground transition hover:bg-accent/80"
         >
           Reveal right half
         </button>
       </div>
 
-      <div className="mb-4 flex rounded-md border border-border bg-white/[0.03] p-1 lg:hidden">
+      <div className="mb-4 flex rounded-md border border-border bg-accent/40 p-1 lg:hidden">
         {(["left", "final", "right"] as const).map((view) => (
           <button
             key={view}
@@ -371,7 +371,7 @@ function BracketWall({
             className={`flex-1 rounded px-3 py-2 text-xs font-semibold capitalize transition ${
               mobileView === view
                 ? "bg-primary text-zinc-950"
-                : "text-zinc-400 hover:bg-white/[0.06]"
+                : "text-muted-foreground hover:bg-accent/60"
             }`}
           >
             {view === "final" ? "Final" : `${view} half`}
@@ -545,15 +545,15 @@ function BracketRoundColumn({
     <div className="min-w-0 space-y-3">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase text-zinc-500">
+          <p className="text-xs font-semibold uppercase text-muted-foreground">
             {matches.length} matches
           </p>
-          <h2 className="text-sm font-semibold text-white">{round}</h2>
+          <h2 className="text-sm font-semibold text-foreground">{round}</h2>
         </div>
         <button
           type="button"
           onClick={() => onRevealRound(round)}
-          className="rounded-md border border-border bg-white/[0.05] px-2 py-1.5 text-[0.68rem] font-semibold text-zinc-300 transition hover:bg-white/[0.08]"
+          className="rounded-md border border-border bg-accent/50 px-2 py-1.5 text-[0.68rem] font-semibold text-muted-foreground transition hover:bg-accent/80"
         >
           Reveal
         </button>
@@ -615,7 +615,7 @@ function BracketMatchCard({
           : revealed
           ? "border-primary/35 bg-primary/[0.08]"
           : eligible
-            ? "border-dashed border-white/20 bg-white/[0.04] hover:border-primary/30"
+            ? "border-dashed border-white/20 bg-accent/50 hover:border-primary/30"
             : "border-dashed border-white/8 bg-white/[0.02] opacity-60"
       }`}
     >
@@ -625,26 +625,26 @@ function BracketMatchCard({
         className="w-full text-left"
       >
       <div className="mb-3 flex items-center justify-between gap-3">
-        <span className="text-[0.68rem] font-semibold uppercase text-zinc-500">
+        <span className="text-[0.68rem] font-semibold uppercase text-muted-foreground">
           {match.id}
         </span>
-        <span className="text-right text-[0.68rem] font-semibold text-zinc-500">
+        <span className="text-right text-[0.68rem] font-semibold text-muted-foreground">
           {match.confirmed ? (
             <span className="rounded border border-emerald-400/30 bg-emerald-400/10 px-1.5 py-0.5 text-emerald-200">
               Confirmed
             </span>
           ) : (
-            <span className="rounded border border-border bg-white/[0.05] px-1.5 py-0.5 text-zinc-400">
+            <span className="rounded border border-border bg-accent/50 px-1.5 py-0.5 text-muted-foreground">
               Forecast
             </span>
           )}
         </span>
       </div>
       <div className="mb-3 flex items-center justify-between gap-3">
-        <span className="text-[0.68rem] font-semibold uppercase text-zinc-500">
+        <span className="text-[0.68rem] font-semibold uppercase text-muted-foreground">
           Advance odds
         </span>
-        <span className="text-right text-[0.68rem] font-semibold text-zinc-500">
+        <span className="text-right text-[0.68rem] font-semibold text-muted-foreground">
           {showOdds
             ? `${formatPercent(match.probabilities.team_a_advance, 0)} / ${formatPercent(match.probabilities.team_b_advance, 0)}`
             : "Path locked"}
@@ -652,7 +652,7 @@ function BracketMatchCard({
       </div>
 
       {showOdds ? (
-        <div className="mb-2 flex items-center justify-between gap-2 text-[0.68rem] text-zinc-500">
+        <div className="mb-2 flex items-center justify-between gap-2 text-[0.68rem] text-muted-foreground">
           <span className="capitalize text-amber-200/80">
             {match.confidence_label ?? "projection"}
           </span>
@@ -680,7 +680,7 @@ function BracketMatchCard({
         placeholder={teamBSide.placeholder}
       />
 
-      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10">
+      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted/50">
         <div
           className={`h-full ${showOdds ? "bg-primary" : "bg-zinc-700"}`}
           style={{
@@ -696,7 +696,7 @@ function BracketMatchCard({
         type="button"
         onClick={onReveal}
         disabled={!eligible || revealed}
-        className="mt-3 w-full rounded-md border border-border bg-white/[0.06] px-2.5 py-2 text-xs font-semibold text-zinc-100 transition hover:bg-white/[0.1] disabled:cursor-not-allowed disabled:text-zinc-500 xl:text-sm"
+        className="mt-3 w-full rounded-md border border-border bg-accent/60 px-2.5 py-2 text-xs font-semibold text-foreground transition hover:bg-white/[0.1] disabled:cursor-not-allowed disabled:text-muted-foreground xl:text-sm"
       >
         {revealed ? "Revealed" : eligible ? "Reveal match" : "Locked"}
       </button>
@@ -731,15 +731,15 @@ function TeamLine({
             winner && revealed
               ? "text-zinc-950"
               : placeholder
-                ? "text-zinc-500"
-                : "text-zinc-100"
+                ? "text-muted-foreground"
+                : "text-foreground"
           }`}
         >
           {name}
         </p>
         <p
           className={`text-[0.68rem] ${
-            winner && revealed ? "text-zinc-800" : "text-zinc-500"
+            winner && revealed ? "text-zinc-800" : "text-muted-foreground"
           }`}
         >
           {group ? `Group ${group}` : "Awaiting reveal"}
@@ -857,10 +857,10 @@ function TraceStat({
   return (
     <div className="rounded-lg border border-border bg-muted/40 p-3">
       <Icon size={16} className="text-emerald-200" aria-hidden="true" />
-      <p className="mt-2 text-xs font-semibold uppercase text-zinc-500">
+      <p className="mt-2 text-xs font-semibold uppercase text-muted-foreground">
         {label}
       </p>
-      <p className="mt-1 text-lg font-semibold text-white">{value}</p>
+      <p className="mt-1 text-lg font-semibold text-foreground">{value}</p>
     </div>
   );
 }
@@ -878,7 +878,7 @@ function ActionButton({
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-2 rounded-md border border-border bg-white/[0.05] px-3 py-2 text-sm font-semibold text-zinc-300 transition hover:bg-white/[0.08]"
+      className="inline-flex items-center gap-2 rounded-md border border-border bg-accent/50 px-3 py-2 text-sm font-semibold text-muted-foreground transition hover:bg-accent/80"
     >
       <Icon size={16} aria-hidden="true" />
       {label}
@@ -937,14 +937,14 @@ function MatchDetailDrawer({
             <p className="text-xs font-semibold uppercase text-[var(--var-blue)]">
               {match.stage} · {match.id}
             </p>
-            <h2 className="mt-1 text-xl font-semibold text-white">
+            <h2 className="mt-1 text-xl font-semibold text-foreground">
               {match.team_a.team_name} vs {match.team_b.team_name}
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md border border-border p-2 text-zinc-300 hover:bg-white/[0.06]"
+            className="rounded-md border border-border p-2 text-muted-foreground hover:bg-accent/60"
             aria-label="Close match details"
           >
             <X size={16} />
@@ -972,10 +972,10 @@ function MatchDetailDrawer({
 
         {match.drivers.length > 0 ? (
           <div className="mt-5">
-            <h3 className="text-xs font-semibold uppercase text-zinc-500">
+            <h3 className="text-xs font-semibold uppercase text-muted-foreground">
               Model drivers
             </h3>
-            <ul className="mt-2 space-y-2 text-sm leading-6 text-zinc-300">
+            <ul className="mt-2 space-y-2 text-sm leading-6 text-muted-foreground">
               {match.drivers.map((driver) => (
                 <li key={driver}>• {driver}</li>
               ))}
@@ -983,7 +983,7 @@ function MatchDetailDrawer({
           </div>
         ) : null}
 
-        <div className="mt-5 rounded-md border border-border bg-muted/40 p-3 text-sm text-zinc-300">
+        <div className="mt-5 rounded-md border border-border bg-muted/40 p-3 text-sm text-muted-foreground">
           Ratings: {match.team_a.team_name} {formatNumber(match.team_a.rating)} ·{" "}
           {match.team_b.team_name} {formatNumber(match.team_b.rating)}
         </div>
@@ -994,9 +994,9 @@ function MatchDetailDrawer({
 
 function DetailMetric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md bg-white/[0.04] px-3 py-3">
-      <p className="text-xs uppercase text-zinc-500">{label}</p>
-      <p className="mt-1 font-semibold text-white">{value}</p>
+    <div className="rounded-md bg-accent/50 px-3 py-3">
+      <p className="text-xs uppercase text-muted-foreground">{label}</p>
+      <p className="mt-1 font-semibold text-foreground">{value}</p>
     </div>
   );
 }

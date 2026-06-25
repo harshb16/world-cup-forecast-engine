@@ -1,5 +1,13 @@
 import { ProbabilityBar } from "@/components/dashboard/ProbabilityBar";
 import { SectionCard } from "@/components/ui/SectionCard";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { TeamProbability } from "@/lib/api";
 
 export function StageProbabilityTable({ teams }: { teams: TeamProbability[] }) {
@@ -11,40 +19,43 @@ export function StageProbabilityTable({ teams }: { teams: TeamProbability[] }) {
     .slice(0, 12);
 
   return (
-    <SectionCard>
-      <h2 className="text-base font-semibold text-white">Stage probabilities</h2>
-      <p className="mt-1 text-sm text-zinc-400">
-        How often top teams reach each checkpoint in the bracket.
-      </p>
-      <div className="mt-4 overflow-x-auto">
-        <table className="w-full text-left text-sm">
-          <thead className="text-xs uppercase text-zinc-500">
-            <tr>
-              <th className="py-2 font-semibold">Team</th>
-              <th className="py-2 font-semibold">Qualify</th>
-              <th className="py-2 font-semibold">Semi-final</th>
-              <th className="py-2 font-semibold">Final</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/10">
-            {rows.map((team) => (
-              <tr key={team.team_id}>
-                <td className="py-3 font-medium text-zinc-100">
-                  {team.team_name}
-                </td>
-                <td className="py-3">
-                  <ProbabilityBar value={team.group_qualification_probability} />
-                </td>
-                <td className="py-3">
-                  <ProbabilityBar value={team.semi_final} tone="amber" />
-                </td>
-                <td className="py-3">
-                  <ProbabilityBar value={team.final} tone="rose" />
-                </td>
-              </tr>
+    <SectionCard
+      title="Stage probabilities"
+      description="How often top teams reach each checkpoint in the bracket."
+    >
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead>Team</TableHead>
+              <TableHead>Qualify</TableHead>
+              <TableHead>Semi-final</TableHead>
+              <TableHead>Final</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((team, index) => (
+              <TableRow
+                key={team.team_id}
+                className={index % 2 === 1 ? "bg-muted/25" : undefined}
+              >
+                <TableCell className="font-medium">{team.team_name}</TableCell>
+                <TableCell className="min-w-[8rem]">
+                  <ProbabilityBar
+                    value={team.group_qualification_probability}
+                    showLabel={false}
+                  />
+                </TableCell>
+                <TableCell className="min-w-[8rem]">
+                  <ProbabilityBar value={team.semi_final} tone="amber" showLabel={false} />
+                </TableCell>
+                <TableCell className="min-w-[8rem]">
+                  <ProbabilityBar value={team.final} tone="rose" showLabel={false} />
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </SectionCard>
   );

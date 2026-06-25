@@ -30,7 +30,7 @@ export function CalibrationChart({ bins }: CalibrationChartProps) {
 
   if (data.length === 0) {
     return (
-      <p className="text-sm text-zinc-400">
+      <p className="text-sm text-muted-foreground">
         Not enough completed fixtures to plot calibration yet.
       </p>
     );

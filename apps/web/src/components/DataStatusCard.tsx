@@ -9,8 +9,8 @@ export function DataStatusCard({ metadata }: { metadata: DataMetadata }) {
         label="Version"
         value={metadata.data_version ?? "Unknown"}
       />
-      <span className="text-zinc-400">
-        <span className="mr-1 text-xs uppercase text-zinc-500">Data</span>
+      <span className="text-muted-foreground">
+        <span className="mr-1 text-xs uppercase text-muted-foreground">Data</span>
         <DataFreshness timestamp={metadata.last_updated} />
       </span>
       <StatusChip
@@ -27,9 +27,9 @@ export function DataStatusCard({ metadata }: { metadata: DataMetadata }) {
 
 function StatusChip({ label, value }: { label: string; value: string }) {
   return (
-    <span className="text-zinc-400">
-      <span className="mr-1 text-xs uppercase text-zinc-500">{label}</span>
-      <span className="font-semibold text-zinc-100">{value}</span>
+    <span className="text-muted-foreground">
+      <span className="mr-1 text-xs uppercase text-muted-foreground">{label}</span>
+      <span className="font-semibold text-foreground">{value}</span>
     </span>
   );
 }

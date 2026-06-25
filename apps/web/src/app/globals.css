@@ -154,12 +154,31 @@ body {
 
 body::before {
   background-image:
-    linear-gradient(color-mix(in oklch, var(--border) 35%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in oklch, var(--border) 25%, transparent) 1px, transparent 1px);
-  background-size: 72px 72px;
+    linear-gradient(color-mix(in oklch, var(--border) 40%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklch, var(--border) 28%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
   content: "";
   inset: 0;
-  mask-image: linear-gradient(to bottom, black, transparent 72%);
+  mask-image: linear-gradient(to bottom, black, transparent 80%);
+  pointer-events: none;
+  position: fixed;
+  z-index: -2;
+}
+
+body::after {
+  background:
+    radial-gradient(
+      ellipse 90% 55% at 50% -15%,
+      color-mix(in oklch, var(--primary) 14%, transparent),
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 50% 40% at 100% 0%,
+      color-mix(in oklch, var(--chart-2) 8%, transparent),
+      transparent 55%
+    );
+  content: "";
+  inset: 0;
   pointer-events: none;
   position: fixed;
   z-index: -1;
@@ -193,39 +212,40 @@ a {
 }
 
 .dark {
-  --background: oklch(0.1591 0 0);
-  --foreground: oklch(0.8717 0.0093 258.3382);
-  --card: oklch(0.1913 0 0);
-  --card-foreground: oklch(0.8717 0.0093 258.3382);
-  --popover: oklch(0.1913 0 0);
-  --popover-foreground: oklch(0.8717 0.0093 258.3382);
-  --primary: oklch(0.4479 0.1083 151.3277);
-  --primary-foreground: oklch(0.9624 0.0434 156.7426);
-  --secondary: oklch(0.2178 0 0);
-  --secondary-foreground: oklch(0.7137 0.0192 261.3246);
-  --muted: oklch(0.1913 0 0);
-  --muted-foreground: oklch(0.5510 0.0234 264.3637);
-  --accent: oklch(0.2178 0 0);
-  --accent-foreground: oklch(0.9670 0.0029 264.5419);
-  --destructive: oklch(0.2575 0.0886 26.0418);
-  --border: oklch(0.2393 0 0);
-  --input: oklch(0.2393 0 0);
-  --ring: oklch(0.4479 0.1083 151.3277);
-  --chart-1: oklch(0.4479 0.1083 151.3277);
-  --chart-2: oklch(0.2795 0.0368 260.0310);
-  --chart-3: oklch(0.3780 0.0730 168.9398);
-  --chart-4: oklch(0.3717 0.0392 257.2870);
-  --chart-5: oklch(0.2077 0.0398 265.7549);
-  --sidebar: oklch(0.1591 0 0);
-  --sidebar-foreground: oklch(0.7137 0.0192 261.3246);
-  --sidebar-primary: oklch(0.4479 0.1083 151.3277);
-  --sidebar-primary-foreground: oklch(0.9624 0.0434 156.7426);
-  --sidebar-accent: oklch(0.2178 0 0);
-  --sidebar-accent-foreground: oklch(0.9670 0.0029 264.5419);
-  --sidebar-border: oklch(0.2393 0 0);
-  --sidebar-ring: oklch(0.4479 0.1083 151.3277);
-  --destructive-foreground: oklch(0.8845 0.0593 18.3341);
-  --radius: 0.5rem;
+  /* Floodlit midnight — deep cobalt pitch, warm text, vivid tournament green */
+  --background: oklch(0.145 0.038 255);
+  --foreground: oklch(0.94 0.018 92);
+  --card: oklch(0.19 0.042 255);
+  --card-foreground: oklch(0.94 0.018 92);
+  --popover: oklch(0.2 0.044 255);
+  --popover-foreground: oklch(0.94 0.018 92);
+  --primary: oklch(0.79 0.168 156);
+  --primary-foreground: oklch(0.17 0.055 156);
+  --secondary: oklch(0.24 0.042 255);
+  --secondary-foreground: oklch(0.84 0.02 92);
+  --muted: oklch(0.23 0.038 255);
+  --muted-foreground: oklch(0.68 0.03 255);
+  --accent: oklch(0.27 0.05 255);
+  --accent-foreground: oklch(0.94 0.018 92);
+  --destructive: oklch(0.6 0.2 28);
+  --border: oklch(0.33 0.048 255);
+  --input: oklch(0.28 0.042 255);
+  --ring: oklch(0.79 0.168 156);
+  --chart-1: oklch(0.79 0.168 156);
+  --chart-2: oklch(0.72 0.13 240);
+  --chart-3: oklch(0.78 0.145 72);
+  --chart-4: oklch(0.66 0.19 28);
+  --chart-5: oklch(0.58 0.07 255);
+  --sidebar: oklch(0.145 0.038 255);
+  --sidebar-foreground: oklch(0.84 0.02 92);
+  --sidebar-primary: oklch(0.79 0.168 156);
+  --sidebar-primary-foreground: oklch(0.17 0.055 156);
+  --sidebar-accent: oklch(0.24 0.042 255);
+  --sidebar-accent-foreground: oklch(0.94 0.018 92);
+  --sidebar-border: oklch(0.33 0.048 255);
+  --sidebar-ring: oklch(0.79 0.168 156);
+  --destructive-foreground: oklch(0.96 0.02 92);
+  --radius: 0.625rem;
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Merriweather', serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -246,16 +266,16 @@ a {
   --shadow-xl: 0px 10px 20px 0px hsl(0 0% 0% / 0.60), 0px 8px 10px -1px hsl(0 0% 0% / 0.60);
   --shadow-2xl: 0px 10px 20px 0px hsl(0 0% 0% / 1.50);
 
-  /* Football broadcast aliases → tweakcn semantic tokens */
+  /* Football broadcast aliases → semantic tokens */
   --pitch: var(--background);
   --dugout: var(--secondary);
   --panel: var(--card);
   --floodlight: var(--foreground);
   --turf: var(--primary);
-  --line: color-mix(in oklch, var(--border) 60%, transparent);
-  --signal-blue: var(--chart-3);
-  --signal-amber: var(--chart-4);
-  --signal-red: var(--destructive);
+  --line: color-mix(in oklch, var(--border) 70%, transparent);
+  --signal-blue: oklch(0.72 0.13 240);
+  --signal-amber: oklch(0.78 0.145 72);
+  --signal-red: oklch(0.66 0.19 28);
   --var-blue: var(--signal-blue);
   --score-amber: var(--signal-amber);
   --risk-red: var(--signal-red);
@@ -284,6 +304,23 @@ a {
     @apply font-mono text-xs font-semibold uppercase tracking-widest text-primary;
   }
   .text-data-lg {
-    @apply font-mono text-4xl font-semibold tabular-nums sm:text-5xl;
+    @apply font-mono text-4xl font-semibold tabular-nums text-primary sm:text-5xl;
+  }
+  .surface-panel {
+    @apply rounded-lg border border-border/80 bg-card/90 shadow-md backdrop-blur-sm;
+    box-shadow:
+      0 1px 0 color-mix(in oklch, var(--foreground) 6%, transparent) inset,
+      0 12px 40px color-mix(in oklch, var(--background) 55%, transparent);
+  }
+  .surface-hero {
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in oklch, var(--card) 92%, var(--primary) 8%),
+        color-mix(in oklch, var(--card) 96%, var(--chart-2) 4%)
+      );
+    box-shadow:
+      0 1px 0 color-mix(in oklch, var(--foreground) 5%, transparent) inset,
+      0 24px 64px color-mix(in oklch, var(--background) 50%, transparent);
   }
 }

@@ -17,17 +17,7 @@ import { LoadingState } from "@/components/LoadingState";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { fetchProbabilityHistory, fetchTeams, ProbabilityHistory, Team } from "@/lib/api";
 import { formatPercent } from "@/lib/format";
-
-const LINE_COLORS = [
-  "#34d399",
-  "#60a5fa",
-  "#f472b6",
-  "#fbbf24",
-  "#a78bfa",
-  "#fb7185",
-  "#22d3ee",
-  "#f97316",
-];
+import { CHART_LINE_COLORS } from "@/lib/chart-colors";
 
 export function ProbabilityTimeline() {
   const [history, setHistory] = useState<ProbabilityHistory | null>(null);
@@ -100,10 +90,10 @@ export function ProbabilityTimeline() {
         <p className="text-xs font-semibold uppercase text-primary">
           Timeline
         </p>
-        <h2 className="mt-1 text-lg font-semibold text-white">
+        <h2 className="mt-1 text-lg font-semibold text-foreground">
           Champion probability history
         </h2>
-        <p className="mt-3 text-sm text-zinc-400">
+        <p className="mt-3 text-sm text-muted-foreground">
           Run sync to capture the first probability snapshot.
         </p>
       </SectionCard>
@@ -115,10 +105,10 @@ export function ProbabilityTimeline() {
       <p className="text-xs font-semibold uppercase text-primary">
         Timeline
       </p>
-      <h2 className="mt-1 text-lg font-semibold text-white">
+      <h2 className="mt-1 text-lg font-semibold text-foreground">
         Champion probability history
       </h2>
-      <p className="mt-1 text-sm text-zinc-400">
+      <p className="mt-1 text-sm text-muted-foreground">
         Top eight teams by latest champion probability.
       </p>
 
@@ -152,7 +142,7 @@ export function ProbabilityTimeline() {
                 key={teamId}
                 type="monotone"
                 dataKey={teamId}
-                stroke={LINE_COLORS[index % LINE_COLORS.length]}
+                stroke={CHART_LINE_COLORS[index % CHART_LINE_COLORS.length]}
                 strokeWidth={2}
                 dot={{ r: 3 }}
               />

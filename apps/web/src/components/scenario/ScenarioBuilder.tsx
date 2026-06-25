@@ -33,17 +33,17 @@ export function ScenarioBuilder({
         <p className="text-xs font-semibold uppercase text-primary">
           Step 1 and 2
         </p>
-        <h2 className="mt-1 text-lg font-semibold text-white">
+        <h2 className="mt-1 text-lg font-semibold text-foreground">
           Pick a match and set the score
         </h2>
       </div>
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_8rem_8rem_auto]">
-        <label className="text-sm font-medium text-zinc-300">
+        <label className="text-sm font-medium text-muted-foreground">
           Match
           <select
             value={matchId}
             onChange={(event) => setMatchId(event.target.value)}
-            className="mt-2 h-11 w-full rounded-md border border-border bg-card px-3 text-sm text-white outline-none focus:border-primary/50"
+            className="mt-2 h-11 w-full rounded-md border border-border bg-card px-3 text-sm text-foreground outline-none focus:border-primary/50"
           >
             {fixtures.map((fixture) => {
               return (
@@ -93,7 +93,7 @@ export function ScenarioBuilder({
         </Button>
       </div>
       {selectedLabel ? (
-        <p className="mt-3 text-xs text-zinc-500">Selected: {selectedLabel}</p>
+        <p className="mt-3 text-xs text-muted-foreground">Selected: {selectedLabel}</p>
       ) : null}
     </SectionCard>
   );

@@ -12,25 +12,20 @@ export function SectionCard({
   description?: string;
 }) {
   return (
-    <section
-      className={cn(
-        "relative overflow-hidden rounded-lg border border-border bg-card/85 p-5 shadow-lg",
-        className,
-      )}
-    >
+    <section className={cn("surface-panel relative overflow-hidden p-5", className)}>
       <div
-        className="absolute inset-y-0 left-0 w-1 bg-primary"
+        className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-primary via-primary/80 to-chart-2/60"
         aria-hidden="true"
       />
       {title ? (
-        <header className="mb-4">
+        <header className="mb-4 pl-1">
           <h2 className="text-base font-semibold text-foreground">{title}</h2>
           {description ? (
             <p className="mt-1 text-sm text-muted-foreground">{description}</p>
           ) : null}
         </header>
       ) : null}
-      {children}
+      <div className={title ? "pl-1" : undefined}>{children}</div>
     </section>
   );
 }

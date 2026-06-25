@@ -153,10 +153,10 @@ export function MethodologyExperience() {
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary">
             Public methodology · baseline {baselineModel.id}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold leading-[1.05] tracking-[-0.035em] text-white sm:text-6xl">
+          <h1 className="mt-4 text-4xl font-semibold leading-[1.05] tracking-[-0.035em] text-foreground sm:text-6xl">
             Every percentage should have a paper trail.
           </h1>
-          <p className="mt-5 max-w-3xl text-base leading-7 text-zinc-300 sm:text-lg">
+          <p className="mt-5 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg">
             World Cup Oracle converts open match history into team ratings,
             match probabilities, and thousands of complete tournament paths.
             This page shows what happens at each step—and where confidence
@@ -171,7 +171,7 @@ export function MethodologyExperience() {
             </Link>
             <Link
               href="/models"
-              className="inline-flex items-center gap-2 rounded-md border border-border bg-white/[0.05] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/[0.09]"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-accent/50 px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-white/[0.09]"
             >
               Inspect models
             </Link>
@@ -199,13 +199,13 @@ export function MethodologyExperience() {
           detail="Fixed in every simulation"
         />
         <div className="border-border p-5 sm:border-l">
-          <p className="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-zinc-500">
+          <p className="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-muted-foreground">
             Data freshness
           </p>
           <p className="mt-2 text-lg">
             <DataFreshness timestamp={data.metadata.last_updated} compact />
           </p>
-          <p className="mt-1 truncate text-xs text-zinc-500">
+          <p className="mt-1 truncate text-xs text-muted-foreground">
             {data.metadata.data_version ?? "Version unavailable"}
           </p>
         </div>
@@ -221,7 +221,7 @@ export function MethodologyExperience() {
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-zinc-400 transition hover:bg-white/[0.05] hover:text-white"
+                className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground transition hover:bg-accent/50 hover:text-foreground"
               >
                 <span className="font-mono text-xs text-primary">
                   {section.number}
@@ -258,10 +258,10 @@ export function MethodologyExperience() {
             aria-hidden="true"
           />
           <div>
-            <h2 className="text-xl font-semibold text-white">
+            <h2 className="text-xl font-semibold text-foreground">
               What a probability means here
             </h2>
-            <p className="mt-2 max-w-4xl text-sm leading-6 text-zinc-300">
+            <p className="mt-2 max-w-4xl text-sm leading-6 text-muted-foreground">
               A 20% title chance means the team won about one in five simulated
               tournaments under this model, these inputs, and the current known
               results. It does not mean the outcome is certain, official, or
@@ -296,13 +296,13 @@ function MethodSection({
           <span className="sr-only">Step {section.number}</span>
         </div>
         <div className="min-w-0">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             {section.number} · {section.eyebrow}
           </p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-white sm:text-3xl">
+          <h2 className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-foreground sm:text-3xl">
             {section.title}
           </h2>
-          <p className="mt-3 max-w-4xl text-sm leading-7 text-zinc-300">
+          <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground">
             {section.summary}
           </p>
           <SectionEvidence
@@ -337,10 +337,10 @@ function SectionEvidence({
             href={source.url}
             target="_blank"
             rel="noreferrer"
-            className="rounded-lg border border-border bg-muted/40 p-4 transition hover:border-[var(--var-blue)]/40 hover:bg-white/[0.04]"
+            className="rounded-lg border border-border bg-muted/40 p-4 transition hover:border-[var(--var-blue)]/40 hover:bg-accent/60"
           >
-            <p className="font-semibold text-white">{source.name}</p>
-            <p className="mt-1 text-xs leading-5 text-zinc-400">
+            <p className="font-semibold text-foreground">{source.name}</p>
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">
               {source.usage}
             </p>
           </a>
@@ -362,12 +362,12 @@ function SectionEvidence({
 
   if (id === "matches") {
     return (
-      <div className="mt-6 rounded-lg border border-border bg-black/25 p-4 font-mono text-xs leading-6 text-zinc-300 sm:text-sm">
+      <div className="mt-6 rounded-lg border border-border bg-black/25 p-4 font-mono text-xs leading-6 text-muted-foreground sm:text-sm">
         <p>
           expected(A) = 1 / (1 + 10
           <sup>−(rating A − rating B) / 400</sup>)
         </p>
-        <p className="mt-2 text-zinc-500">
+        <p className="mt-2 text-muted-foreground">
           Decisive probability is split using this expectation after reserving
           the modelled draw share.
         </p>
@@ -388,7 +388,7 @@ function SectionEvidence({
         ].map((item, index) => (
           <li
             key={item}
-            className="flex gap-3 rounded-lg border border-border bg-muted/40 p-4 text-sm leading-6 text-zinc-300"
+            className="flex gap-3 rounded-lg border border-border bg-muted/40 p-4 text-sm leading-6 text-muted-foreground"
           >
             <span className="font-mono text-xs text-signal-blue">
               {String(index + 1).padStart(2, "0")}
@@ -429,7 +429,7 @@ function SectionEvidence({
             }
           />
         </div>
-        <p className="mt-3 text-xs leading-5 text-zinc-500">
+        <p className="mt-3 text-xs leading-5 text-muted-foreground">
           Sample: {formatNumber(data.scoring.sample_size)} completed fixtures.
           Lower Brier score and log loss are better. This sample is descriptive,
           not a historical holdout.
@@ -463,11 +463,11 @@ function StatusCell({
 }) {
   return (
     <div className="border-b border-border p-5 sm:border-b-0 sm:border-l first:sm:border-l-0">
-      <p className="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-zinc-500">
+      <p className="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-muted-foreground">
         {label}
       </p>
-      <p className="mt-2 text-xl font-semibold text-white">{value}</p>
-      <p className="mt-1 text-xs text-zinc-500">{detail}</p>
+      <p className="mt-2 text-xl font-semibold text-foreground">{value}</p>
+      <p className="mt-1 text-xs text-muted-foreground">{detail}</p>
     </div>
   );
 }
@@ -475,10 +475,10 @@ function StatusCell({
 function Evidence({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-lg border border-border bg-muted/40 p-4">
-      <p className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-zinc-500">
+      <p className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-muted-foreground">
         {label}
       </p>
-      <p className="mt-2 text-lg font-semibold text-white">{value}</p>
+      <p className="mt-2 text-lg font-semibold text-foreground">{value}</p>
     </div>
   );
 }
@@ -489,7 +489,7 @@ function LimitList({ title, items }: { title: string; items: string[] }) {
       <h3 className="text-sm font-semibold text-signal-amber">
         {title}
       </h3>
-      <ul className="mt-3 space-y-2 text-sm leading-6 text-zinc-300">
+      <ul className="mt-3 space-y-2 text-sm leading-6 text-muted-foreground">
         {items.map((item) => (
           <li key={item} className="flex gap-2">
             <span aria-hidden="true">—</span>

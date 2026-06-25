@@ -7,9 +7,9 @@ export function EmptyState({
 }) {
   return (
     <div className="rounded-lg border border-dashed border-border bg-white/[0.035] p-6 text-center">
-      <p className="font-semibold text-white">{title}</p>
+      <p className="font-semibold text-foreground">{title}</p>
       {description ? (
-        <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-zinc-400">
+        <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
           {description}
         </p>
       ) : null}

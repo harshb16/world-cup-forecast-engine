@@ -93,8 +93,8 @@ function NavLink({
         "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition",
         compact ? "w-full" : "whitespace-nowrap",
         active
-          ? "bg-primary text-primary-foreground"
-          : "text-muted-foreground hover:bg-accent hover:text-foreground",
+          ? "bg-primary text-primary-foreground shadow-[0_0_20px_color-mix(in_oklch,var(--primary)_35%,transparent)]"
+          : "text-muted-foreground hover:bg-accent/80 hover:text-foreground",
       )}
     >
       <Icon aria-hidden="true" />
@@ -152,7 +152,8 @@ export function AppHeader() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/80 shadow-[0_8px_32px_color-mix(in_oklch,var(--background)_55%,transparent)] backdrop-blur-md supports-[backdrop-filter]:bg-background/70">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/45 to-transparent" />
       <div className="mx-auto flex h-14 max-w-[100vw] items-center gap-3 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex shrink-0 items-center gap-2.5">
           <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">

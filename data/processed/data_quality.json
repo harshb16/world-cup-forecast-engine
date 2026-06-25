@@ -1,11 +1,11 @@
 {
   "data_mode": "processed",
-  "last_refresh": "2026-06-18T18:08:30.739485+00:00",
+  "last_refresh": "2026-06-25T10:45:30Z",
   "source_coverage": {
     "teams": 48,
     "groups": 12,
     "group_fixtures": 72,
-    "completed_results": 25,
+    "completed_results": 54,
     "ratings": 48,
     "squad_features": 48
   },

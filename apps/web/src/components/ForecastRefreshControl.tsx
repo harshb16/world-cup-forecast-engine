@@ -2,8 +2,6 @@
 
 import { RefreshCw } from "lucide-react";
 
-import { FORECAST_REFRESH_INTERVAL_MS } from "@/lib/config";
-
 export function ForecastRefreshControl({
   isRefreshing,
   lastRunAt,
@@ -13,8 +11,6 @@ export function ForecastRefreshControl({
   lastRunAt: Date | null;
   onRefresh: () => Promise<void>;
 }) {
-  const minutes = Math.round(FORECAST_REFRESH_INTERVAL_MS / 60_000);
-
   return (
     <div className="flex flex-wrap items-center gap-2">
       <button
@@ -28,18 +24,18 @@ export function ForecastRefreshControl({
           aria-hidden="true"
           className={isRefreshing ? "animate-spin" : ""}
         />
-        {isRefreshing ? "Refreshing forecast" : "Refresh forecast"}
+        {isRefreshing ? "Rerunning simulation" : "Rerun simulation"}
       </button>
       <span
         aria-live="polite"
         className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-zinc-500"
       >
         {lastRunAt
-          ? `Auto ${minutes}m · ran ${lastRunAt.toLocaleTimeString([], {
+          ? `Using loaded match data · ran ${lastRunAt.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
             })}`
-          : `Auto ${minutes}m`}
+          : "Uses loaded match data · does not sync results"}
       </span>
     </div>
   );

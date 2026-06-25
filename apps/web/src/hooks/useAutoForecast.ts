@@ -2,12 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { FORECAST_REFRESH_INTERVAL_MS } from "@/lib/config";
-
-type AutoForecastOptions = {
-  intervalMs?: number;
-};
-
 type AutoForecastState<T> = {
   data: T | null;
   error: string | null;
@@ -19,11 +13,9 @@ type AutoForecastState<T> = {
 
 export function useAutoForecast<T>(
   loader: () => Promise<T>,
-  { intervalMs = FORECAST_REFRESH_INTERVAL_MS }: AutoForecastOptions = {},
 ): AutoForecastState<T> {
   const loaderRef = useRef(loader);
   const requestIdRef = useRef(0);
-  const lastRunRef = useRef<Date | null>(null);
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -41,7 +33,6 @@ export function useAutoForecast<T>(
       const completedAt = new Date();
       setData(nextData);
       setLastRunAt(completedAt);
-      lastRunRef.current = completedAt;
     } catch (caught: unknown) {
       if (requestId !== requestIdRef.current) return;
       setError(
@@ -69,28 +60,6 @@ export function useAutoForecast<T>(
       requestIdRef.current += 1;
     };
   }, [loader, run]);
-
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      if (document.visibilityState === "visible") void run();
-    }, intervalMs);
-
-    function refreshAfterReturning() {
-      const lastRun = lastRunRef.current;
-      if (
-        document.visibilityState === "visible" &&
-        (!lastRun || Date.now() - lastRun.getTime() >= intervalMs)
-      ) {
-        void run();
-      }
-    }
-
-    document.addEventListener("visibilitychange", refreshAfterReturning);
-    return () => {
-      window.clearInterval(interval);
-      document.removeEventListener("visibilitychange", refreshAfterReturning);
-    };
-  }, [intervalMs, run]);
 
   return {
     data,

@@ -1,10 +1,10 @@
 {
   "bracket_status": "group-stage real data; knockout simulation uses FIFA World Cup 2026 round-of-32 slots with deterministic third-place assignment",
   "data_mode": "processed",
-  "data_version": "2026-worldcup-processed-2026-06-13",
+  "data_version": "2026-worldcup-processed-2026-06-25",
   "is_real_data": true,
-  "last_updated": "2026-06-18T18:08:30.739485+00:00",
-  "rating_source": "FIFA ranking rank-derived model rating",
+  "last_updated": "2026-06-25T10:45:30Z",
+  "rating_source": "Open international results Elo baseline; FIFA ranking retained as fallback metadata",
   "ratings_are_official": false,
   "sources": [
     {

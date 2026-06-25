@@ -21,7 +21,7 @@
     "city": null,
     "group_id": "A",
     "id": "A2",
-    "kickoff": "2026-06-11",
+    "kickoff": "2026-06-12",
     "kickoff_utc": "2026-06-12T02:00:00Z",
     "result": {
       "played": true,
@@ -39,15 +39,19 @@
     "city": null,
     "group_id": "A",
     "id": "A3",
-    "kickoff": "2026-06-18",
+    "kickoff": "2026-06-19",
     "kickoff_utc": "2026-06-19T01:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "MEXICO",
     "team_b_id": "KOR",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "MEXICO"
   },
   {
     "city": null,
@@ -71,29 +75,37 @@
     "city": null,
     "group_id": "A",
     "id": "A5",
-    "kickoff": "2026-06-24",
+    "kickoff": "2026-06-25",
     "kickoff_utc": "2026-06-25T01:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 3
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "CZECHIA",
     "team_b_id": "MEXICO",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "MEXICO"
   },
   {
     "city": null,
     "group_id": "A",
     "id": "A6",
-    "kickoff": "2026-06-24",
+    "kickoff": "2026-06-25",
     "kickoff_utc": "2026-06-25T01:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "RSA",
     "team_b_id": "KOR",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "RSA"
   },
   {
     "city": null,
@@ -101,13 +113,17 @@
     "id": "B1",
     "kickoff": "2026-06-18",
     "kickoff_utc": "2026-06-18T22:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 6,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "CANADA",
     "team_b_id": "QATAR",
     "venue": "Toronto Stadium",
-    "winner_team_id": null
+    "winner_team_id": "CANADA"
   },
   {
     "city": null,
@@ -115,13 +131,17 @@
     "id": "B2",
     "kickoff": "2026-06-18",
     "kickoff_utc": "2026-06-18T19:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 4
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "BIH",
     "team_b_id": "SWITZERLAND",
     "venue": "San Francisco Bay Area Stadium",
-    "winner_team_id": null
+    "winner_team_id": "SWITZERLAND"
   },
   {
     "city": null,
@@ -165,13 +185,17 @@
     "id": "B5",
     "kickoff": "2026-06-24",
     "kickoff_utc": "2026-06-24T19:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 2,
+      "team_b_goals": 1
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "SWITZERLAND",
     "team_b_id": "CANADA",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "SWITZERLAND"
   },
   {
     "city": null,
@@ -179,13 +203,17 @@
     "id": "B6",
     "kickoff": "2026-06-24",
     "kickoff_utc": "2026-06-24T19:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 3
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "QATAR",
     "team_b_id": "BIH",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "BIH"
   },
   {
     "city": null,
@@ -209,7 +237,7 @@
     "city": null,
     "group_id": "C",
     "id": "C2",
-    "kickoff": "2026-06-13",
+    "kickoff": "2026-06-14",
     "kickoff_utc": "2026-06-14T01:00:00Z",
     "result": {
       "played": true,
@@ -227,15 +255,19 @@
     "city": null,
     "group_id": "C",
     "id": "C3",
-    "kickoff": "2026-06-19",
+    "kickoff": "2026-06-20",
     "kickoff_utc": "2026-06-20T00:30:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 3,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "BRAZIL",
     "team_b_id": "HAITI",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "BRAZIL"
   },
   {
     "city": null,
@@ -243,13 +275,17 @@
     "id": "C4",
     "kickoff": "2026-06-19",
     "kickoff_utc": "2026-06-19T22:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 1
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "SCOTLAND",
     "team_b_id": "MOROCCO",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "MOROCCO"
   },
   {
     "city": null,
@@ -257,13 +293,17 @@
     "id": "C5",
     "kickoff": "2026-06-24",
     "kickoff_utc": "2026-06-24T22:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 3
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "SCOTLAND",
     "team_b_id": "BRAZIL",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "BRAZIL"
   },
   {
     "city": null,
@@ -271,19 +311,23 @@
     "id": "C6",
     "kickoff": "2026-06-24",
     "kickoff_utc": "2026-06-24T22:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 4,
+      "team_b_goals": 2
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "MOROCCO",
     "team_b_id": "HAITI",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "MOROCCO"
   },
   {
     "city": null,
     "group_id": "D",
     "id": "D1",
-    "kickoff": "2026-06-12",
+    "kickoff": "2026-06-13",
     "kickoff_utc": "2026-06-13T01:00:00Z",
     "result": {
       "played": true,
@@ -321,33 +365,41 @@
     "id": "D3",
     "kickoff": "2026-06-19",
     "kickoff_utc": "2026-06-19T19:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 2,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "USA",
     "team_b_id": "AUSTRALIA",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "USA"
   },
   {
     "city": null,
     "group_id": "D",
     "id": "D4",
-    "kickoff": "2026-06-19",
+    "kickoff": "2026-06-20",
     "kickoff_utc": "2026-06-20T03:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 1
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "TURKIYE",
     "team_b_id": "PARAGUAY",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "PARAGUAY"
   },
   {
     "city": null,
     "group_id": "D",
     "id": "D5",
-    "kickoff": "2026-06-25",
+    "kickoff": "2026-06-26",
     "kickoff_utc": "2026-06-26T02:00:00Z",
     "result": null,
     "stage": "group",
@@ -361,7 +413,7 @@
     "city": null,
     "group_id": "D",
     "id": "D6",
-    "kickoff": "2026-06-25",
+    "kickoff": "2026-06-26",
     "kickoff_utc": "2026-06-26T02:00:00Z",
     "result": null,
     "stage": "group",
@@ -413,23 +465,31 @@
     "id": "E3",
     "kickoff": "2026-06-20",
     "kickoff_utc": "2026-06-20T20:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 2,
+      "team_b_goals": 1
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "GERMANY",
     "team_b_id": "CIV",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "GERMANY"
   },
   {
     "city": null,
     "group_id": "E",
     "id": "E4",
-    "kickoff": "2026-06-20",
+    "kickoff": "2026-06-21",
     "kickoff_utc": "2026-06-21T00:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "ECUADOR",
     "team_b_id": "CURACAO",
     "venue": null,
@@ -485,7 +545,7 @@
     "city": null,
     "group_id": "F",
     "id": "F2",
-    "kickoff": "2026-06-14",
+    "kickoff": "2026-06-15",
     "kickoff_utc": "2026-06-15T02:00:00Z",
     "result": {
       "played": true,
@@ -505,27 +565,35 @@
     "id": "F3",
     "kickoff": "2026-06-20",
     "kickoff_utc": "2026-06-20T17:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 5,
+      "team_b_goals": 1
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "NETHERLANDS",
     "team_b_id": "SWEDEN",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "NETHERLANDS"
   },
   {
     "city": null,
     "group_id": "F",
     "id": "F4",
-    "kickoff": "2026-06-20",
+    "kickoff": "2026-06-21",
     "kickoff_utc": "2026-06-21T04:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 4
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "TUNISIA",
     "team_b_id": "JAPAN",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "JAPAN"
   },
   {
     "city": null,
@@ -577,7 +645,7 @@
     "city": null,
     "group_id": "G",
     "id": "G2",
-    "kickoff": "2026-06-15",
+    "kickoff": "2026-06-16",
     "kickoff_utc": "2026-06-16T01:00:00Z",
     "result": {
       "played": true,
@@ -597,9 +665,13 @@
     "id": "G3",
     "kickoff": "2026-06-21",
     "kickoff_utc": "2026-06-21T19:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "BELGIUM",
     "team_b_id": "IRN",
     "venue": null,
@@ -609,21 +681,25 @@
     "city": null,
     "group_id": "G",
     "id": "G4",
-    "kickoff": "2026-06-21",
+    "kickoff": "2026-06-22",
     "kickoff_utc": "2026-06-22T01:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 3
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "NEW_ZEALAND",
     "team_b_id": "EGYPT",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "EGYPT"
   },
   {
     "city": null,
     "group_id": "G",
     "id": "G5",
-    "kickoff": "2026-06-26",
+    "kickoff": "2026-06-27",
     "kickoff_utc": "2026-06-27T03:00:00Z",
     "result": null,
     "stage": "group",
@@ -637,7 +713,7 @@
     "city": null,
     "group_id": "G",
     "id": "G6",
-    "kickoff": "2026-06-26",
+    "kickoff": "2026-06-27",
     "kickoff_utc": "2026-06-27T03:00:00Z",
     "result": null,
     "stage": "group",
@@ -689,13 +765,17 @@
     "id": "H3",
     "kickoff": "2026-06-21",
     "kickoff_utc": "2026-06-21T16:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 4,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "SPAIN",
     "team_b_id": "SAUDI_ARABIA",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "SPAIN"
   },
   {
     "city": null,
@@ -703,9 +783,13 @@
     "id": "H4",
     "kickoff": "2026-06-21",
     "kickoff_utc": "2026-06-21T22:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 2,
+      "team_b_goals": 2
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "URUGUAY",
     "team_b_id": "CPV",
     "venue": null,
@@ -715,7 +799,7 @@
     "city": null,
     "group_id": "H",
     "id": "H5",
-    "kickoff": "2026-06-26",
+    "kickoff": "2026-06-27",
     "kickoff_utc": "2026-06-27T00:00:00Z",
     "result": null,
     "stage": "group",
@@ -729,7 +813,7 @@
     "city": null,
     "group_id": "H",
     "id": "H6",
-    "kickoff": "2026-06-26",
+    "kickoff": "2026-06-27",
     "kickoff_utc": "2026-06-27T00:00:00Z",
     "result": null,
     "stage": "group",
@@ -781,27 +865,35 @@
     "id": "I3",
     "kickoff": "2026-06-22",
     "kickoff_utc": "2026-06-22T21:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 3,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "FRANCE",
     "team_b_id": "IRAQ",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "FRANCE"
   },
   {
     "city": null,
     "group_id": "I",
     "id": "I4",
-    "kickoff": "2026-06-22",
+    "kickoff": "2026-06-23",
     "kickoff_utc": "2026-06-23T00:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 3,
+      "team_b_goals": 2
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "NORWAY",
     "team_b_id": "SENEGAL",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "NORWAY"
   },
   {
     "city": null,
@@ -835,7 +927,7 @@
     "city": null,
     "group_id": "J",
     "id": "J1",
-    "kickoff": "2026-06-16",
+    "kickoff": "2026-06-17",
     "kickoff_utc": "2026-06-17T01:00:00Z",
     "result": {
       "played": true,
@@ -853,7 +945,7 @@
     "city": null,
     "group_id": "J",
     "id": "J2",
-    "kickoff": "2026-06-16",
+    "kickoff": "2026-06-17",
     "kickoff_utc": "2026-06-17T04:00:00Z",
     "result": {
       "played": true,
@@ -873,33 +965,41 @@
     "id": "J3",
     "kickoff": "2026-06-22",
     "kickoff_utc": "2026-06-22T17:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 2,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "ARGENTINA",
     "team_b_id": "AUSTRIA",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "ARGENTINA"
   },
   {
     "city": null,
     "group_id": "J",
     "id": "J4",
-    "kickoff": "2026-06-22",
+    "kickoff": "2026-06-23",
     "kickoff_utc": "2026-06-23T03:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 2
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "JORDAN",
     "team_b_id": "ALGERIA",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "ALGERIA"
   },
   {
     "city": null,
     "group_id": "J",
     "id": "J5",
-    "kickoff": "2026-06-27",
+    "kickoff": "2026-06-28",
     "kickoff_utc": "2026-06-28T02:00:00Z",
     "result": null,
     "stage": "group",
@@ -913,7 +1013,7 @@
     "city": null,
     "group_id": "J",
     "id": "J6",
-    "kickoff": "2026-06-27",
+    "kickoff": "2026-06-28",
     "kickoff_utc": "2026-06-28T02:00:00Z",
     "result": null,
     "stage": "group",
@@ -945,7 +1045,7 @@
     "city": null,
     "group_id": "K",
     "id": "K2",
-    "kickoff": "2026-06-17",
+    "kickoff": "2026-06-18",
     "kickoff_utc": "2026-06-18T02:00:00Z",
     "result": {
       "played": true,
@@ -965,27 +1065,35 @@
     "id": "K3",
     "kickoff": "2026-06-23",
     "kickoff_utc": "2026-06-23T17:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 5,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "PORTUGAL",
     "team_b_id": "UZBEKISTAN",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "PORTUGAL"
   },
   {
     "city": null,
     "group_id": "K",
     "id": "K4",
-    "kickoff": "2026-06-23",
+    "kickoff": "2026-06-24",
     "kickoff_utc": "2026-06-24T02:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "COLOMBIA",
     "team_b_id": "COD",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "COLOMBIA"
   },
   {
     "city": null,
@@ -1057,9 +1165,13 @@
     "id": "L3",
     "kickoff": "2026-06-23",
     "kickoff_utc": "2026-06-23T20:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 0
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "ENGLAND",
     "team_b_id": "GHANA",
     "venue": null,
@@ -1071,13 +1183,17 @@
     "id": "L4",
     "kickoff": "2026-06-23",
     "kickoff_utc": "2026-06-23T23:00:00Z",
-    "result": null,
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 1
+    },
     "stage": "group",
-    "status": "scheduled",
+    "status": "finished",
     "team_a_id": "PANAMA",
     "team_b_id": "CROATIA",
     "venue": null,
-    "winner_team_id": null
+    "winner_team_id": "CROATIA"
   },
   {
     "city": null,

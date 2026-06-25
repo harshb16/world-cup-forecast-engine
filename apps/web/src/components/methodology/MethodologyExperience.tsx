@@ -140,7 +140,7 @@ export function MethodologyExperience() {
 
   return (
     <div className="space-y-10 pb-16">
-      <header className="relative overflow-hidden rounded-xl border border-white/10 bg-[#0a1118] px-6 py-8 sm:px-9 sm:py-10">
+      <header className="relative overflow-hidden rounded-xl border border-border bg-[#0a1118] px-6 py-8 sm:px-9 sm:py-10">
         <div
           className="pointer-events-none absolute inset-y-0 right-0 w-2/5 opacity-40"
           aria-hidden="true"
@@ -150,7 +150,7 @@ export function MethodologyExperience() {
           }}
         />
         <div className="relative max-w-4xl">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--turf)]">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary">
             Public methodology · baseline {baselineModel.id}
           </p>
           <h1 className="mt-4 text-4xl font-semibold leading-[1.05] tracking-[-0.035em] text-white sm:text-6xl">
@@ -165,13 +165,13 @@ export function MethodologyExperience() {
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 rounded-md bg-[var(--turf)] px-4 py-2.5 text-sm font-semibold text-zinc-950 transition hover:brightness-110"
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-zinc-950 transition hover:brightness-110"
             >
               Open forecast <ArrowRight size={16} aria-hidden="true" />
             </Link>
             <Link
               href="/models"
-              className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/[0.05] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/[0.09]"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-white/[0.05] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/[0.09]"
             >
               Inspect models
             </Link>
@@ -181,7 +181,7 @@ export function MethodologyExperience() {
 
       <section
         aria-label="Current methodology status"
-        className="grid overflow-hidden rounded-xl border border-white/10 bg-[#0b1118] sm:grid-cols-2 xl:grid-cols-4"
+        className="grid overflow-hidden rounded-xl border border-border bg-[#0b1118] sm:grid-cols-2 xl:grid-cols-4"
       >
         <StatusCell
           label="Active baseline"
@@ -198,7 +198,7 @@ export function MethodologyExperience() {
           value={formatNumber(data.metadata.completed_result_count)}
           detail="Fixed in every simulation"
         />
-        <div className="border-white/10 p-5 sm:border-l">
+        <div className="border-border p-5 sm:border-l">
           <p className="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-zinc-500">
             Data freshness
           </p>
@@ -215,7 +215,7 @@ export function MethodologyExperience() {
         <aside className="hidden xl:block">
           <nav
             aria-label="Methodology sections"
-            className="sticky top-6 rounded-xl border border-white/10 bg-[#0b1118] p-3"
+            className="sticky top-6 rounded-xl border border-border bg-[#0b1118] p-3"
           >
             {pipeline.map((section) => (
               <a
@@ -223,7 +223,7 @@ export function MethodologyExperience() {
                 href={`#${section.id}`}
                 className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-zinc-400 transition hover:bg-white/[0.05] hover:text-white"
               >
-                <span className="font-mono text-xs text-[var(--turf)]">
+                <span className="font-mono text-xs text-primary">
                   {section.number}
                 </span>
                 {section.eyebrow}
@@ -250,11 +250,11 @@ export function MethodologyExperience() {
         </main>
       </div>
 
-      <section className="rounded-xl border border-[var(--turf)]/25 bg-[var(--turf)]/[0.06] p-6 sm:p-8">
+      <section className="rounded-xl border border-primary/25 bg-primary/[0.06] p-6 sm:p-8">
         <div className="flex items-start gap-4">
           <ShieldCheck
             size={26}
-            className="mt-1 shrink-0 text-[var(--turf)]"
+            className="mt-1 shrink-0 text-primary"
             aria-hidden="true"
           />
           <div>
@@ -288,10 +288,10 @@ function MethodSection({
   return (
     <section
       id={section.id}
-      className="scroll-mt-6 rounded-xl border border-white/10 bg-[#0b1118] p-5 sm:p-7"
+      className="scroll-mt-6 rounded-xl border border-border bg-[#0b1118] p-5 sm:p-7"
     >
       <div className="grid gap-5 sm:grid-cols-[4.5rem_minmax(0,1fr)]">
-        <div className="relative z-10 flex size-12 items-center justify-center rounded-full border border-white/15 bg-[#101722] font-mono text-xs font-semibold text-[var(--turf)] sm:size-[4.5rem]">
+        <div className="relative z-10 flex size-12 items-center justify-center rounded-full border border-border bg-card font-mono text-xs font-semibold text-primary sm:size-[4.5rem]">
           <Icon size={22} aria-hidden="true" />
           <span className="sr-only">Step {section.number}</span>
         </div>
@@ -337,7 +337,7 @@ function SectionEvidence({
             href={source.url}
             target="_blank"
             rel="noreferrer"
-            className="rounded-lg border border-white/10 bg-black/20 p-4 transition hover:border-[var(--var-blue)]/40 hover:bg-white/[0.04]"
+            className="rounded-lg border border-border bg-muted/40 p-4 transition hover:border-[var(--var-blue)]/40 hover:bg-white/[0.04]"
           >
             <p className="font-semibold text-white">{source.name}</p>
             <p className="mt-1 text-xs leading-5 text-zinc-400">
@@ -362,7 +362,7 @@ function SectionEvidence({
 
   if (id === "matches") {
     return (
-      <div className="mt-6 rounded-lg border border-white/10 bg-black/25 p-4 font-mono text-xs leading-6 text-zinc-300 sm:text-sm">
+      <div className="mt-6 rounded-lg border border-border bg-black/25 p-4 font-mono text-xs leading-6 text-zinc-300 sm:text-sm">
         <p>
           expected(A) = 1 / (1 + 10
           <sup>−(rating A − rating B) / 400</sup>)
@@ -388,9 +388,9 @@ function SectionEvidence({
         ].map((item, index) => (
           <li
             key={item}
-            className="flex gap-3 rounded-lg border border-white/10 bg-black/20 p-4 text-sm leading-6 text-zinc-300"
+            className="flex gap-3 rounded-lg border border-border bg-muted/40 p-4 text-sm leading-6 text-zinc-300"
           >
-            <span className="font-mono text-xs text-[var(--var-blue)]">
+            <span className="font-mono text-xs text-signal-blue">
               {String(index + 1).padStart(2, "0")}
             </span>
             {item}
@@ -462,7 +462,7 @@ function StatusCell({
   detail: string;
 }) {
   return (
-    <div className="border-b border-white/10 p-5 sm:border-b-0 sm:border-l first:sm:border-l-0">
+    <div className="border-b border-border p-5 sm:border-b-0 sm:border-l first:sm:border-l-0">
       <p className="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-zinc-500">
         {label}
       </p>
@@ -474,7 +474,7 @@ function StatusCell({
 
 function Evidence({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-black/20 p-4">
+    <div className="rounded-lg border border-border bg-muted/40 p-4">
       <p className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-zinc-500">
         {label}
       </p>
@@ -486,7 +486,7 @@ function Evidence({ label, value }: { label: string; value: string }) {
 function LimitList({ title, items }: { title: string; items: string[] }) {
   return (
     <div className="rounded-lg border border-[var(--score-amber)]/20 bg-[var(--score-amber)]/[0.05] p-4">
-      <h3 className="text-sm font-semibold text-[var(--score-amber)]">
+      <h3 className="text-sm font-semibold text-signal-amber">
         {title}
       </h3>
       <ul className="mt-3 space-y-2 text-sm leading-6 text-zinc-300">

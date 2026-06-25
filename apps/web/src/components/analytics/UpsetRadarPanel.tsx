@@ -7,7 +7,7 @@ export function UpsetRadarPanel({ fixtures }: { fixtures: UpsetFixture[] }) {
     <SectionCard>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase text-[var(--score-amber)]">
+          <p className="text-xs font-semibold uppercase text-signal-amber">
             Upset radar
           </p>
           <h2 className="mt-1 text-lg font-semibold text-white">
@@ -24,7 +24,7 @@ export function UpsetRadarPanel({ fixtures }: { fixtures: UpsetFixture[] }) {
         {fixtures.map((fixture) => (
           <article
             key={`${fixture.match_id}-${fixture.stage}`}
-            className="rounded-md border border-white/10 bg-black/20 p-4"
+            className="rounded-md border border-border bg-muted/40 p-4"
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
@@ -69,10 +69,10 @@ export function UpsetRadarPanel({ fixtures }: { fixtures: UpsetFixture[] }) {
 function RiskBadge({ label }: { label: string }) {
   const tone =
     label === "High"
-      ? "border-[var(--risk-red)]/40 bg-[var(--risk-red)]/10 text-[var(--risk-red)]"
+      ? "border-[var(--risk-red)]/40 bg-[var(--risk-red)]/10 text-destructive"
       : label === "Elevated"
-        ? "border-[var(--score-amber)]/40 bg-[var(--score-amber)]/10 text-[var(--score-amber)]"
-        : "border-[var(--var-blue)]/40 bg-[var(--var-blue)]/10 text-[var(--var-blue)]";
+        ? "border-[var(--score-amber)]/40 bg-[var(--score-amber)]/10 text-signal-amber"
+        : "border-[var(--var-blue)]/40 bg-[var(--var-blue)]/10 text-signal-blue";
 
   return (
     <span

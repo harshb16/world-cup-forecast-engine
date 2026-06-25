@@ -14,7 +14,7 @@ export function ProbabilityMoversPanel({ movers }: ProbabilityMoversPanelProps) 
   if (movers.risers.length === 0 && movers.fallers.length === 0) {
     return (
       <SectionCard>
-        <p className="text-xs font-semibold uppercase text-[var(--turf)]">
+        <p className="text-xs font-semibold uppercase text-primary">
           What changed
         </p>
         <h2 className="mt-1 text-lg font-semibold text-white">
@@ -32,7 +32,7 @@ export function ProbabilityMoversPanel({ movers }: ProbabilityMoversPanelProps) 
     <SectionCard>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase text-[var(--turf)]">
+          <p className="text-xs font-semibold uppercase text-primary">
             What changed
           </p>
           <h2 className="mt-1 text-lg font-semibold text-white">
@@ -77,14 +77,14 @@ function MoverColumn({
   items: ProbabilityMovers["risers"];
 }) {
   const toneClass =
-    tone === "green" ? "text-emerald-300" : "text-[var(--risk-red)]";
+    tone === "green" ? "text-primary" : "text-destructive";
   const badgeClass =
     tone === "green"
-      ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-200"
+      ? "border-emerald-400/30 bg-emerald-400/10 text-primary"
       : "border-red-400/30 bg-red-400/10 text-red-200";
 
   return (
-    <div className="rounded-lg border border-white/10 bg-black/15 p-4">
+    <div className="rounded-lg border border-border bg-black/15 p-4">
       <div className="flex items-center gap-2">
         <Icon size={16} className={toneClass} aria-hidden="true" />
         <h3 className="text-sm font-semibold text-white">{title}</h3>

@@ -25,7 +25,7 @@ export function GroupChaosScore({ teams }: { teams: TeamProbability[] }) {
   const label = score > 0.86 ? "High" : score > 0.72 ? "Medium" : "Low";
 
   return (
-    <div className="rounded-md border border-white/10 bg-white/[0.04] p-3">
+    <div className="rounded-md border border-border bg-white/[0.04] p-3">
       <div className="flex items-center justify-between gap-4">
         <span className="text-xs font-semibold uppercase text-zinc-500">
           Group Chaos Score

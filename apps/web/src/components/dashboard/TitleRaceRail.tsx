@@ -13,7 +13,7 @@ export function TitleRaceRail({ teams }: { teams: TeamProbability[] }) {
     <section aria-labelledby="title-race-heading" className="min-w-0">
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--turf)]">
+          <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-primary">
             Title probability board
           </p>
           <h2
@@ -47,7 +47,7 @@ export function TitleRaceRail({ teams }: { teams: TeamProbability[] }) {
               <span className="h-1.5 overflow-hidden rounded-full bg-white/[0.07]">
                 <span
                   className={`block h-full rounded-full ${
-                    index === 0 ? "bg-[var(--turf)]" : "bg-[var(--var-blue)]"
+                    index === 0 ? "bg-primary" : "bg-[var(--var-blue)]"
                   }`}
                   style={{
                     width: `${Math.max((team.champion / leader) * 100, 3)}%`,

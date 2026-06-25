@@ -97,7 +97,7 @@ export function ProbabilityTimeline() {
   if (chartData.rows.length === 0) {
     return (
       <SectionCard>
-        <p className="text-xs font-semibold uppercase text-[var(--turf)]">
+        <p className="text-xs font-semibold uppercase text-primary">
           Timeline
         </p>
         <h2 className="mt-1 text-lg font-semibold text-white">
@@ -112,7 +112,7 @@ export function ProbabilityTimeline() {
 
   return (
     <SectionCard>
-      <p className="text-xs font-semibold uppercase text-[var(--turf)]">
+      <p className="text-xs font-semibold uppercase text-primary">
         Timeline
       </p>
       <h2 className="mt-1 text-lg font-semibold text-white">

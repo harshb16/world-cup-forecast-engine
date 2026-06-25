@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { AppShell } from "@/components/AppShell";
+import { Badge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/PageHeader";
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
@@ -29,7 +29,7 @@ export default function MatchdayPage() {
   }, []);
 
   return (
-    <AppShell>
+    <>
       <PageHeader
         eyebrow={data?.matchday_label ?? "Matchday"}
         title={data ? `${data.matchday_label} — ${formatDate(data.date)}` : "Today's Matches"}
@@ -43,7 +43,7 @@ export default function MatchdayPage() {
           <GroupStandingsSection groups={data.groups} />
         </div>
       )}
-    </AppShell>
+    </>
   );
 }
 
@@ -75,25 +75,14 @@ function formatKickoff(kickoffUtc: string | null): string {
 
 function StatusBadge({ status }: { status: string }) {
   const lower = status.toLowerCase();
-  let bg = "bg-zinc-700/50 text-zinc-300";
-  let label = status;
 
   if (lower === "finished") {
-    bg = "bg-emerald-900/40 text-emerald-300";
-    label = "Finished";
-  } else if (lower === "live" || lower === "in_progress") {
-    bg = "bg-red-900/40 text-red-300";
-    label = "Live";
-  } else {
-    bg = "bg-blue-900/30 text-blue-300";
-    label = "Upcoming";
+    return <Badge variant="secondary">Finished</Badge>;
   }
-
-  return (
-    <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${bg}`}>
-      {label}
-    </span>
-  );
+  if (lower === "live" || lower === "in_progress") {
+    return <Badge variant="destructive">Live</Badge>;
+  }
+  return <Badge variant="outline">Upcoming</Badge>;
 }
 
 function ProbBar({
@@ -126,10 +115,10 @@ function FixtureCard({ fixture }: { fixture: MatchdayFixture }) {
 
   return (
     <div
-      className={`rounded-xl border bg-[#0c1118] p-4 transition ${
+      className={`rounded-xl border bg-secondary p-4 transition ${
         fixture.what_still_matters
           ? "border-amber-500/30"
-          : "border-white/10"
+          : "border-border"
       }`}
     >
       {/* Header row */}
@@ -155,11 +144,11 @@ function FixtureCard({ fixture }: { fixture: MatchdayFixture }) {
       {/* Teams + score */}
       <div className="mb-4 flex items-center justify-between gap-4">
         <div className="flex-1">
-          <p className="truncate text-sm font-semibold text-[#f4f7f5]">{fixture.team_a_name}</p>
+          <p className="truncate text-sm font-semibold text-foreground">{fixture.team_a_name}</p>
         </div>
         <div className="shrink-0 text-center">
           {isFinished ? (
-            <span className="font-mono text-xl font-bold text-[#f4f7f5]">
+            <span className="font-mono text-xl font-bold text-foreground">
               {fixture.team_a_goals} – {fixture.team_b_goals}
             </span>
           ) : (
@@ -170,14 +159,14 @@ function FixtureCard({ fixture }: { fixture: MatchdayFixture }) {
           )}
         </div>
         <div className="flex-1 text-right">
-          <p className="truncate text-sm font-semibold text-[#f4f7f5]">{fixture.team_b_name}</p>
+          <p className="truncate text-sm font-semibold text-foreground">{fixture.team_b_name}</p>
         </div>
       </div>
 
       {/* Probability bars */}
       {!isFinished && (
         <div className="space-y-1.5">
-          <ProbBar label="W" value={fixture.team_a_win_probability} color="bg-[var(--turf)]" />
+          <ProbBar label="W" value={fixture.team_a_win_probability} color="bg-primary" />
           <ProbBar label="D" value={fixture.draw_probability} color="bg-zinc-500" />
           <ProbBar label="W" value={fixture.team_b_win_probability} color="bg-blue-500" />
         </div>
@@ -214,11 +203,11 @@ function FixturesSection({ fixtures }: { fixtures: MatchdayFixture[] }) {
 
 function GroupStandingTable({ group }: { group: MatchdayGroup }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-[#0c1118] overflow-hidden">
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
-        <h3 className="text-sm font-semibold text-[#f4f7f5]">{group.group_name}</h3>
+    <div className="rounded-xl border border-border bg-secondary overflow-hidden">
+      <div className="flex items-center justify-between border-b border-border px-4 py-2">
+        <h3 className="text-sm font-semibold text-foreground">{group.group_name}</h3>
         {group.is_complete && (
-          <span className="rounded-full bg-emerald-900/40 px-2 py-0.5 text-xs font-semibold text-emerald-300">
+          <span className="rounded-full bg-emerald-900/40 px-2 py-0.5 text-xs font-semibold text-primary">
             Complete
           </span>
         )}
@@ -241,7 +230,7 @@ function GroupStandingTable({ group }: { group: MatchdayGroup }) {
             <tr
               key={row.team_id}
               className={`border-b border-white/5 last:border-0 ${
-                idx < 2 ? "text-[#f4f7f5]" : "text-zinc-400"
+                idx < 2 ? "text-foreground" : "text-zinc-400"
               }`}
             >
               <td className="py-1.5 pl-4 font-mono text-zinc-500">{row.position}</td>
@@ -254,7 +243,7 @@ function GroupStandingTable({ group }: { group: MatchdayGroup }) {
                 {row.goal_difference > 0 ? "+" : ""}
                 {row.goal_difference}
               </td>
-              <td className="py-1.5 pr-4 text-center font-mono font-bold text-[var(--turf)]">
+              <td className="py-1.5 pr-4 text-center font-mono font-bold text-primary">
                 {row.points}
               </td>
             </tr>

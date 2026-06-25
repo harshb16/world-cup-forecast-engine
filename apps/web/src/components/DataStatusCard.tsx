@@ -4,7 +4,7 @@ import { DataFreshness } from "@/components/DataFreshness";
 
 export function DataStatusCard({ metadata }: { metadata: DataMetadata }) {
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg border border-white/10 bg-[#101722]/85 px-4 py-3 text-sm">
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-lg border border-border bg-card/85 px-4 py-3 text-sm">
       <StatusChip
         label="Version"
         value={metadata.data_version ?? "Unknown"}

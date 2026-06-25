@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 export function StatCard({
   label,
   value,
@@ -10,19 +12,23 @@ export function StatCard({
   tone?: "default" | "green" | "amber" | "red";
 }) {
   const toneClass = {
-    default: "text-[#f4f7f5]",
-    green: "text-[#39ff88]",
-    amber: "text-[#f6c85f]",
-    red: "text-rose-200",
+    default: "text-foreground",
+    green: "text-primary",
+    amber: "text-signal-amber",
+    red: "text-destructive-foreground",
   }[tone];
 
   return (
-    <div className="rounded-lg border border-white/10 bg-[#101722]/80 p-4">
-      <p className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-[#93a19a]">
+    <div className="rounded-lg border border-border bg-card/80 p-4">
+      <p className="font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground">
         {label}
       </p>
-      <p className={`mt-2 text-2xl font-semibold ${toneClass}`}>{value}</p>
-      {detail ? <p className="mt-1 text-sm text-[#93a19a]">{detail}</p> : null}
+      <p className={cn("mt-2 text-2xl font-semibold tabular-nums", toneClass)}>
+        {value}
+      </p>
+      {detail ? (
+        <p className="mt-1 text-sm text-muted-foreground">{detail}</p>
+      ) : null}
     </div>
   );
 }

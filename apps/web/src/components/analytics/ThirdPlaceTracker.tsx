@@ -8,7 +8,7 @@ import { THIRD_PLACE_QUALIFIER_COUNT, GROUP_WINNERS_AND_RUNNERS_UP } from "@/lib
 export function ThirdPlaceTrackerPanel({ tracker }: { tracker: ThirdPlaceTracker }) {
   return (
     <SectionCard>
-      <p className="text-xs font-semibold uppercase text-[var(--turf)]">
+      <p className="text-xs font-semibold uppercase text-primary">
         Third place
       </p>
       <h2 className="mt-1 text-lg font-semibold text-white">
@@ -40,7 +40,7 @@ export function ThirdPlaceTrackerPanel({ tracker }: { tracker: ThirdPlaceTracker
               return (
                 <tr
                   key={team.team_id}
-                  className={`border-t border-white/10 ${
+                  className={`border-t border-border ${
                     likelyQualifier ? "bg-emerald-400/5" : inBubble ? "bg-amber-400/5" : ""
                   }`}
                 >
@@ -50,7 +50,7 @@ export function ThirdPlaceTrackerPanel({ tracker }: { tracker: ThirdPlaceTracker
                   <td className="py-3 pr-4 font-semibold text-zinc-100">
                     {team.team_name}
                     {likelyQualifier ? (
-                      <span className="ml-2 rounded border border-emerald-400/30 bg-emerald-400/10 px-1.5 py-0.5 text-[0.65rem] uppercase text-emerald-200">
+                      <span className="ml-2 rounded border border-emerald-400/30 bg-emerald-400/10 px-1.5 py-0.5 text-[0.65rem] uppercase text-primary">
                         Likely
                       </span>
                     ) : null}
@@ -60,7 +60,7 @@ export function ThirdPlaceTrackerPanel({ tracker }: { tracker: ThirdPlaceTracker
                       </span>
                     ) : null}
                   </td>
-                  <td className="py-3 pr-4 text-emerald-200">
+                  <td className="py-3 pr-4 text-primary">
                     {formatPercent(team.qualification_probability)}
                   </td>
                   <td className="py-3 pr-4 text-zinc-300">

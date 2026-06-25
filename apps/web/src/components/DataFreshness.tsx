@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { getDataFreshness } from "@/lib/freshness";
 
 const levelStyles = {
-  current: "text-[var(--turf)]",
-  delayed: "text-[var(--score-amber)]",
-  stale: "text-[var(--risk-red)]",
+  current: "text-primary",
+  delayed: "text-signal-amber",
+  stale: "text-destructive",
   unknown: "text-zinc-400",
 } as const;
 

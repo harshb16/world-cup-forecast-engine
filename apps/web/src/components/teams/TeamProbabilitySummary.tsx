@@ -19,13 +19,13 @@ export function TeamProbabilitySummary({
   return (
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-2">
-        <div className="rounded-md border border-white/10 bg-white/[0.035] p-3">
+        <div className="rounded-md border border-border bg-white/[0.035] p-3">
           <span className="text-xs font-medium text-zinc-500">Champion</span>
           <div className="mt-2">
             <ProbabilityBar value={probability.champion} label="Win title" />
           </div>
         </div>
-        <div className="rounded-md border border-white/10 bg-white/[0.035] p-3">
+        <div className="rounded-md border border-border bg-white/[0.035] p-3">
           <span className="text-xs font-medium text-zinc-500">
             Group qualification
           </span>
@@ -39,7 +39,7 @@ export function TeamProbabilitySummary({
       </div>
 
       {!compact ? (
-        <div className="rounded-md border border-white/10 bg-white/[0.035] p-3">
+        <div className="rounded-md border border-border bg-white/[0.035] p-3">
           <div className="space-y-3 text-sm">
             {stageRows.map((row) => (
               <ProbabilityBar

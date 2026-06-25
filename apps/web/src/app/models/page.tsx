@@ -6,7 +6,6 @@ import { BarChart3, BrainCircuit, Loader2, Target, type LucideIcon } from "lucid
 import { CalibrationChart } from "@/components/analytics/CalibrationChart";
 import { DataQualityDesk } from "@/components/analytics/DataQualityDesk";
 import { ModelComparisonPanel } from "@/components/analytics/ModelComparisonPanel";
-import { AppShell } from "@/components/AppShell";
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
 import { PageHeader } from "@/components/PageHeader";
@@ -117,7 +116,7 @@ export default function ModelsPage() {
   }
 
   return (
-    <AppShell>
+    <>
       <PageHeader
         eyebrow="Models"
         title="Model trust desk"
@@ -157,7 +156,7 @@ export default function ModelsPage() {
               <SectionCard key={model.id}>
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-xs font-semibold uppercase text-emerald-200">
+                    <p className="text-xs font-semibold uppercase text-primary">
                       {model.id}
                     </p>
                     <h2 className="mt-1 text-lg font-semibold text-white">
@@ -165,10 +164,10 @@ export default function ModelsPage() {
                     </h2>
                   </div>
                   <div className="flex flex-wrap justify-end gap-2">
-                    <span className="rounded-md border border-white/10 bg-white/[0.06] px-2.5 py-1 text-xs font-semibold text-zinc-300">
+                    <span className="rounded-md border border-border bg-white/[0.06] px-2.5 py-1 text-xs font-semibold text-zinc-300">
                       {model.is_ml ? "ML" : "Statistical"}
                     </span>
-                    <span className="rounded-md border border-white/10 bg-white/[0.06] px-2.5 py-1 text-xs font-semibold capitalize text-zinc-300">
+                    <span className="rounded-md border border-border bg-white/[0.06] px-2.5 py-1 text-xs font-semibold capitalize text-zinc-300">
                       {model.maturity}
                     </span>
                   </div>
@@ -190,7 +189,7 @@ export default function ModelsPage() {
           <SectionCard>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase text-[var(--turf)]">
+                <p className="text-xs font-semibold uppercase text-primary">
                   Current tournament scoring
                 </p>
                 <h2 className="mt-1 text-lg font-semibold text-white">
@@ -208,7 +207,7 @@ export default function ModelsPage() {
                   onChange={(event) =>
                     setScoringModel(event.target.value as ModelType)
                   }
-                  className="rounded-md border border-white/10 bg-black/20 px-3 py-2 text-sm text-white"
+                  className="rounded-md border border-border bg-muted/40 px-3 py-2 text-sm text-white"
                 >
                   {SCORING_MODELS.map((model) => (
                     <option key={model} value={model}>
@@ -271,7 +270,7 @@ export default function ModelsPage() {
 
           {!comparison ? (
             <SectionCard>
-              <p className="text-xs font-semibold uppercase text-[var(--turf)]">
+              <p className="text-xs font-semibold uppercase text-primary">
                 Model comparison
               </p>
               <h2 className="mt-1 text-lg font-semibold text-white">
@@ -286,7 +285,7 @@ export default function ModelsPage() {
                   type="button"
                   onClick={loadComparison}
                   disabled={loadingComparison}
-                  className="inline-flex items-center gap-2 rounded-md bg-[var(--turf)] px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {loadingComparison ? (
                     <Loader2 size={16} className="animate-spin" aria-hidden="true" />
@@ -306,7 +305,7 @@ export default function ModelsPage() {
           )}
         </div>
       ) : null}
-    </AppShell>
+    </>
   );
 }
 
@@ -322,8 +321,8 @@ function SummaryCard({
   detail: string;
 }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.055] p-4">
-      <Icon size={18} className="text-emerald-200" aria-hidden="true" />
+    <div className="rounded-lg border border-border bg-white/[0.055] p-4">
+      <Icon size={18} className="text-primary" aria-hidden="true" />
       <p className="mt-4 text-xs font-medium uppercase text-zinc-400">
         {label}
       </p>

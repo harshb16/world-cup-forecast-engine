@@ -1,13 +1,16 @@
 import { formatPercent } from "@/lib/format";
+import { cn } from "@/lib/utils";
 
 export function ProbabilityBar({
   value,
   label,
   showLabel = true,
+  interactive = false,
 }: {
   value: number;
   label?: string;
   showLabel?: boolean;
+  interactive?: boolean;
 }) {
   const safeValue = Math.max(0, Math.min(1, value));
 
@@ -15,15 +18,20 @@ export function ProbabilityBar({
     <div className="min-w-0">
       {showLabel ? (
         <div className="mb-1 flex items-center justify-between gap-3 text-xs">
-          <span className="truncate text-zinc-400">{label ?? "Probability"}</span>
-          <span className="font-semibold text-zinc-100">
+          <span className="truncate text-muted-foreground">
+            {label ?? "Probability"}
+          </span>
+          <span className="font-semibold tabular-nums text-foreground">
             {formatPercent(safeValue)}
           </span>
         </div>
       ) : null}
-      <div className="h-2 overflow-hidden rounded-full bg-white/10">
+      <div className="h-2 overflow-hidden rounded-full bg-muted">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-emerald-300 to-cyan-300"
+          className={cn(
+            "h-full rounded-full bg-primary transition-[width] duration-300",
+            interactive && "hover:shadow-[0_0_12px_color-mix(in_oklch,var(--primary)_40%,transparent)]",
+          )}
           style={{ width: `${safeValue * 100}%` }}
         />
       </div>

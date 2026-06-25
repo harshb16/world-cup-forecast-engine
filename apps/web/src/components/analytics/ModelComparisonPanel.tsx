@@ -12,7 +12,7 @@ export function ModelComparisonPanel({
 }) {
   return (
     <SectionCard>
-      <p className="text-xs font-semibold uppercase text-[var(--turf)]">
+      <p className="text-xs font-semibold uppercase text-primary">
         Model comparison
       </p>
       <h2 className="mt-1 text-lg font-semibold text-white">
@@ -27,7 +27,7 @@ export function ModelComparisonPanel({
         {comparison.model_deltas.map((delta) => (
           <div
             key={delta.model_type}
-            className="rounded-md border border-white/10 bg-black/20 p-4"
+            className="rounded-md border border-border bg-muted/40 p-4"
           >
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h3 className="font-semibold text-white">

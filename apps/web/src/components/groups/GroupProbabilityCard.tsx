@@ -35,14 +35,14 @@ export function GroupProbabilityCard({
     <SectionCard>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase text-emerald-200">
+          <p className="text-xs font-semibold uppercase text-primary">
             {group.id}
           </p>
           <h2 className="mt-1 text-xl font-semibold text-white">{group.name}</h2>
         </div>
         {likelyWinner ? (
-          <div className="rounded-md border border-emerald-300/20 bg-emerald-300/10 px-3 py-2 text-sm text-emerald-100">
-            <span className="block text-xs text-emerald-100/70">
+          <div className="rounded-md border border-primary/20 bg-primary/10 px-3 py-2 text-sm text-primary">
+            <span className="block text-xs text-primary/70">
               Most likely winner
             </span>
             <span className="font-semibold">
@@ -60,7 +60,7 @@ export function GroupProbabilityCard({
         {chaos?.key_swing_match_label ? (
           <p className="mt-3 text-sm text-zinc-400">
             Key swing match:{" "}
-            <span className="font-semibold text-[var(--score-amber)]">
+            <span className="font-semibold text-signal-amber">
               {chaos.key_swing_match_label}
             </span>
           </p>
@@ -76,7 +76,7 @@ export function GroupProbabilityCard({
         {groupTeams.map(({ team, probability }, index) => (
           <div
             key={team.id}
-            className="rounded-md border border-white/10 bg-black/10 p-4"
+            className="rounded-md border border-border bg-black/10 p-4"
           >
             <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr] lg:items-center">
               <div className="min-w-0">

@@ -8,7 +8,7 @@ export function DataQualityDesk({ report }: { report: DataQualityReport }) {
 
   return (
     <SectionCard>
-      <p className="text-xs font-semibold uppercase text-[var(--var-blue)]">
+      <p className="text-xs font-semibold uppercase text-signal-blue">
         Data quality desk
       </p>
       <h2 className="mt-1 text-lg font-semibold text-white">
@@ -23,7 +23,7 @@ export function DataQualityDesk({ report }: { report: DataQualityReport }) {
         {Object.entries(report.source_coverage).map(([key, value]) => (
           <div
             key={key}
-            className="rounded-md border border-white/10 bg-black/20 px-3 py-3"
+            className="rounded-md border border-border bg-muted/40 px-3 py-3"
           >
             <p className="text-xs uppercase text-zinc-500">
               {key.replaceAll("_", " ")}
@@ -37,7 +37,7 @@ export function DataQualityDesk({ report }: { report: DataQualityReport }) {
 
       {report.warnings.length > 0 ? (
         <div className="mt-5 rounded-md border border-[var(--score-amber)]/30 bg-[var(--score-amber)]/10 p-4">
-          <h3 className="text-sm font-semibold text-[var(--score-amber)]">
+          <h3 className="text-sm font-semibold text-signal-amber">
             Coverage warnings
           </h3>
           <ul className="mt-2 space-y-1 text-sm text-zinc-200">
@@ -62,7 +62,7 @@ export function DataQualityDesk({ report }: { report: DataQualityReport }) {
             </thead>
             <tbody>
               {warningTeams.slice(0, 8).map((team) => (
-                <tr key={team.team_id} className="border-t border-white/10">
+                <tr key={team.team_id} className="border-t border-border">
                   <td className="px-3 py-2 font-semibold text-zinc-100">
                     {team.team_name}
                   </td>

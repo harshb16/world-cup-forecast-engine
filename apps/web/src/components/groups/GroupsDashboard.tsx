@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { ThirdPlaceTrackerPanel } from "@/components/analytics/ThirdPlaceTracker";
 import { ErrorState } from "@/components/ErrorState";
@@ -8,6 +8,7 @@ import { LoadingState } from "@/components/LoadingState";
 import { DataStatusCard } from "@/components/DataStatusCard";
 import { GroupProbabilityCard } from "@/components/groups/GroupProbabilityCard";
 import { HelpText } from "@/components/ui/HelpText";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePublishedForecast } from "@/hooks/usePublishedForecast";
 import { THIRD_PLACE_QUALIFIER_COUNT } from "@/lib/tournament";
 import {
@@ -61,6 +62,14 @@ export function GroupsDashboard() {
     );
   }, [data]);
 
+  const [activeGroup, setActiveGroup] = useState<string>("A");
+
+  useEffect(() => {
+    if (data?.groups[0] && !data.groups.some((g) => g.id === activeGroup)) {
+      setActiveGroup(data.groups[0].id);
+    }
+  }, [data, activeGroup]);
+
   if (error && !data) {
     return <ErrorState message={error} />;
   }
@@ -69,25 +78,43 @@ export function GroupsDashboard() {
     return <LoadingState label="Loading group probabilities" />;
   }
 
+  const selectedGroup =
+    data.groups.find((group) => group.id === activeGroup) ?? data.groups[0];
+
   return (
-    <div className="space-y-5">
+    <div className="flex flex-col gap-6">
       <HelpText>
         Qualification probability combines finishing top two with the chance of
         advancing as one of the best {THIRD_PLACE_QUALIFIER_COUNT} third-place
         teams.
       </HelpText>
       <DataStatusCard metadata={data.metadata} />
-      <div className="grid gap-5 xl:grid-cols-2">
+
+      <Tabs
+        value={activeGroup}
+        onValueChange={(value) => value && setActiveGroup(value)}
+      >
+        <TabsList className="flex h-auto flex-wrap gap-1">
+          {data.groups.map((group) => (
+            <TabsTrigger key={group.id} value={group.id} className="px-3">
+              {group.id}
+            </TabsTrigger>
+          ))}
+        </TabsList>
         {data.groups.map((group) => (
-          <GroupProbabilityCard
-            key={group.id}
-            group={group}
-            teams={data.teams}
-            probabilitiesByTeamId={probabilitiesByTeamId}
-            chaos={data.chaosByGroupId.get(group.id)}
-          />
+          <TabsContent key={group.id} value={group.id} className="pt-4">
+            {group.id === selectedGroup.id ? (
+              <GroupProbabilityCard
+                group={group}
+                teams={data.teams}
+                probabilitiesByTeamId={probabilitiesByTeamId}
+                chaos={data.chaosByGroupId.get(group.id)}
+              />
+            ) : null}
+          </TabsContent>
         ))}
-      </div>
+      </Tabs>
+
       <ThirdPlaceTrackerPanel tracker={data.thirdPlace} />
     </div>
   );

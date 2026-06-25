@@ -2,6 +2,8 @@
 
 import { Search } from "lucide-react";
 
+import { Input } from "@/components/ui/input";
+
 export function TeamSearch({
   value,
   onChange,
@@ -10,18 +12,17 @@ export function TeamSearch({
   onChange: (value: string) => void;
 }) {
   return (
-    <label className="relative block">
+    <div className="relative">
       <Search
-        size={17}
         aria-hidden="true"
-        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+        className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
       />
-      <input
+      <Input
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder="Search teams"
-        className="h-11 w-full rounded-md border border-white/10 bg-[#101624] pl-10 pr-3 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-emerald-300/50"
+        className="h-11 pl-10"
       />
-    </label>
+    </div>
   );
 }

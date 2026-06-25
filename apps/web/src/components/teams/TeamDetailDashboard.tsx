@@ -106,15 +106,15 @@ export function TeamDetailDashboard() {
     <div className="space-y-5">
       <Link
         href="/teams"
-        className="inline-flex text-sm font-semibold text-emerald-200 transition hover:text-emerald-100"
+        className="inline-flex text-sm font-semibold text-primary transition hover:text-primary"
       >
         Back to teams
       </Link>
 
-      <section className="rounded-lg border border-white/10 bg-gradient-to-br from-white/[0.12] to-white/[0.04] p-6">
+      <section className="rounded-lg border border-border bg-gradient-to-br from-white/[0.12] to-white/[0.04] p-6">
         <div className="grid gap-6 xl:grid-cols-[1fr_1.2fr] xl:items-end">
           <div>
-            <p className="text-xs font-semibold uppercase text-emerald-200">
+            <p className="text-xs font-semibold uppercase text-primary">
               Team dashboard
             </p>
             <h2 className="mt-2 text-4xl font-semibold text-white">
@@ -167,7 +167,7 @@ export function TeamDetailDashboard() {
       <TeamPathExplorer path={data.path} />
 
       <SectionCard>
-        <p className="text-xs font-semibold uppercase text-emerald-200">
+        <p className="text-xs font-semibold uppercase text-primary">
           Likely road to final
         </p>
         <h2 className="mt-1 text-lg font-semibold text-white">
@@ -179,7 +179,7 @@ export function TeamDetailDashboard() {
             .map((stage) => (
               <li
                 key={stage.stage}
-                className="flex items-center justify-between gap-3 rounded-md border border-white/10 bg-black/15 px-3 py-2"
+                className="flex items-center justify-between gap-3 rounded-md border border-border bg-black/15 px-3 py-2"
               >
                 <span className="text-sm font-semibold text-zinc-300">
                   {stage.stage}
@@ -211,7 +211,7 @@ function TeamPathExplorer({ path }: { path: TeamPath }) {
     <SectionCard>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase text-emerald-200">
+          <p className="text-xs font-semibold uppercase text-primary">
             Path explorer
           </p>
           <h2 className="mt-1 text-lg font-semibold text-white">
@@ -237,7 +237,7 @@ function PathStageCard({ stage }: { stage: TeamPathStage }) {
   const topOpponent = stage.opponents[0];
 
   return (
-    <div className="rounded-lg border border-white/10 bg-black/15 p-3">
+    <div className="rounded-lg border border-border bg-black/15 p-3">
       <p className="text-xs font-semibold uppercase text-zinc-500">
         {stage.stage}
       </p>
@@ -260,7 +260,7 @@ function PathStageCard({ stage }: { stage: TeamPathStage }) {
               </div>
               <div className="mt-1 h-1 overflow-hidden rounded-full bg-white/10">
                 <div
-                  className="h-full bg-emerald-300"
+                  className="h-full bg-primary"
                   style={{
                     width: `${Math.round(opponent.probability * 100)}%`,
                   }}

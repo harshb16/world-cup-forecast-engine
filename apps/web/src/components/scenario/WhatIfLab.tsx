@@ -165,9 +165,9 @@ export function WhatIfLab() {
         {scenarioSteps.map((step, index) => (
           <div
             key={step}
-            className="rounded-lg border border-white/10 bg-white/[0.05] p-4"
+            className="rounded-lg border border-border bg-white/[0.05] p-4"
           >
-            <span className="flex size-7 items-center justify-center rounded-md bg-[var(--turf)]/10 text-sm font-semibold text-[var(--turf)]">
+            <span className="flex size-7 items-center justify-center rounded-md bg-primary/10 text-sm font-semibold text-primary">
               {index + 1}
             </span>
             <p className="mt-3 text-sm font-semibold text-white">{step}</p>
@@ -199,7 +199,7 @@ export function WhatIfLab() {
       <SectionCard>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase text-[var(--turf)]">
+            <p className="text-xs font-semibold uppercase text-primary">
               Step 3
             </p>
             <h2 className="mt-1 text-lg font-semibold text-white">
@@ -215,7 +215,7 @@ export function WhatIfLab() {
             <button
               type="button"
               onClick={copyScenarioLink}
-              className="h-12 rounded-md border border-white/10 bg-white/[0.05] px-4 text-sm font-semibold text-zinc-100 transition hover:bg-white/[0.08]"
+              className="h-12 rounded-md border border-border bg-white/[0.05] px-4 text-sm font-semibold text-zinc-100 transition hover:bg-white/[0.08]"
             >
               {copied ? "Link copied" : "Copy scenario link"}
             </button>
@@ -223,13 +223,13 @@ export function WhatIfLab() {
               type="button"
               onClick={runScenario}
               disabled={isRunning}
-              className="h-12 rounded-md bg-[var(--turf)] px-6 text-sm font-semibold text-zinc-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400"
+              className="h-12 rounded-md bg-primary px-6 text-sm font-semibold text-zinc-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400"
             >
               {isRunning ? "Running scenario" : "Run scenario"}
             </button>
           </div>
         </div>
-        {error ? <p className="mt-3 text-sm text-[var(--risk-red)]">{error}</p> : null}
+        {error ? <p className="mt-3 text-sm text-destructive">{error}</p> : null}
       </SectionCard>
 
       {result ? (
@@ -307,7 +307,7 @@ function DeltaSummary({
         {rows.slice(0, 5).map((row) => (
           <div
             key={row.team_id}
-            className="flex items-center justify-between gap-4 rounded-md border border-white/10 bg-white/[0.035] p-3"
+            className="flex items-center justify-between gap-4 rounded-md border border-border bg-white/[0.035] p-3"
           >
             <span className="font-semibold text-zinc-100">{row.team_name}</span>
             <DeltaBadge value={row.champion_probability_delta} />

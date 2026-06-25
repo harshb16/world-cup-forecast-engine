@@ -103,12 +103,37 @@ def publish_forecast_snapshot(
     data_mode: str = "processed",
 ) -> ForecastSnapshotResponse:
     """Build then atomically publish a forecast snapshot."""
-    snapshot = build_forecast_snapshot(data_mode)
-    publish_forecast_snapshot_record(
-        snapshot_id=snapshot.snapshot_id,
-        payload=snapshot.model_dump(mode="json"),
+    from app.services.simulation_bank_service import (
+        build_simulation_bank,
+        champion_probabilities_from_bank,
     )
-    return snapshot
+
+    snapshot = build_forecast_snapshot(data_mode)
+    metadata = snapshot.summary.metadata
+    bank_path, bank_meta = build_simulation_bank(
+        data_mode=data_mode,
+        model_type=metadata.model_type,
+        data_version=metadata.data_version,
+    )
+    bank_simulations = int(bank_meta["n_simulations"])
+    champion_probabilities = champion_probabilities_from_bank(bank_path)
+    generated_at = snapshot.generated_at
+    snapshot_id = build_snapshot_id(
+        data_version=metadata.data_version,
+        generated_at=generated_at,
+        model_type=metadata.model_type,
+        n_simulations=bank_simulations,
+    )
+    payload = snapshot.model_dump(mode="json")
+    payload["snapshot_id"] = snapshot_id
+    payload["summary"]["champion_probabilities"] = champion_probabilities
+    payload["summary"]["metadata"]["n_simulations"] = bank_simulations
+    publish_forecast_snapshot_record(
+        snapshot_id=snapshot_id,
+        payload=payload,
+        bank_path=bank_path,
+    )
+    return ForecastSnapshotResponse.model_validate(payload)
 
 
 def load_forecast_snapshot() -> ForecastSnapshotResponse:

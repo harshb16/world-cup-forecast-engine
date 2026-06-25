@@ -4,14 +4,14 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.models.schemas import BracketSimulateRequest
+from app.models.schemas import BracketSimulateRequest, SimulateRequest
 from app.services.data_loader import load_tournament
 from app.services.bracket_service import (
     _MostLikelyMatchModel,
     _project_favorite_group_stage,
     run_bracket_simulation,
 )
-from app.services.simulation_service import create_match_model
+from app.services.simulation_service import create_match_model, run_simulation
 
 
 client = TestClient(app)
@@ -90,6 +90,47 @@ def test_favorite_bracket_projection_ignores_seed() -> None:
 
     assert first.rounds == second.rounds
     assert first.champion_team_id == second.champion_team_id
+
+
+def test_favorite_bracket_uses_the_selected_models_ratings() -> None:
+    config = load_tournament("processed")
+    base_model = create_match_model("calibrated_elo", "processed")
+    favorite_model = _MostLikelyMatchModel(base_model)
+
+    for team in config.teams:
+        assert favorite_model.rating_for(team) == pytest.approx(
+            base_model.rating_for(team)
+        )
+
+
+def test_favorite_finalists_are_dashboard_title_contenders() -> None:
+    forecast = run_simulation(
+        SimulateRequest(
+            n_simulations=1000,
+            model_type="calibrated_elo",
+            seed=42,
+        ),
+        "processed",
+    )
+    bracket = run_bracket_simulation(
+        BracketSimulateRequest(
+            model_type="calibrated_elo",
+            simulation_mode="favorite",
+            seed=42,
+        ),
+        "processed",
+    )
+    top_contenders = {
+        team.team_id
+        for team in sorted(
+            forecast.teams,
+            key=lambda team: team.champion,
+            reverse=True,
+        )[:8]
+    }
+    final = bracket.rounds["Final"][0]
+
+    assert {final.team_a.team_id, final.team_b.team_id}.issubset(top_contenders)
 
 
 def test_favorite_bracket_projects_groups_from_favorite_path() -> None:

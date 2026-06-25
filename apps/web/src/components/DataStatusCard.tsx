@@ -17,6 +17,10 @@ export function DataStatusCard({ metadata }: { metadata: DataMetadata }) {
         label="Results"
         value={formatNumber(metadata.completed_result_count)}
       />
+      <StatusChip
+        label="Source"
+        value={metadata.result_source ?? "Published snapshot"}
+      />
     </div>
   );
 }

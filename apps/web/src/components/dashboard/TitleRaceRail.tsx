@@ -14,7 +14,7 @@ export function TitleRaceRail({ teams }: { teams: TeamProbability[] }) {
       <div className="flex items-end justify-between gap-4">
         <div>
           <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--turf)]">
-            Live title board
+            Title probability board
           </p>
           <h2
             id="title-race-heading"

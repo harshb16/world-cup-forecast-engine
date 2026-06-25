@@ -16,6 +16,7 @@ import { ErrorState } from "@/components/ErrorState";
 import { ForecastRefreshControl } from "@/components/ForecastRefreshControl";
 import { LoadingState } from "@/components/LoadingState";
 import { PageHeader } from "@/components/PageHeader";
+import { SyncResultsControl } from "@/components/SyncResultsControl";
 import {
   BracketMatch,
   BracketSimulation,
@@ -237,6 +238,7 @@ export default function BracketPage() {
                 lastRunAt={lastRunAt}
                 onRefresh={refresh}
               />
+              <SyncResultsControl onSynced={refresh} />
               <ActionButton
                 icon={Download}
                 label="Export JSON"

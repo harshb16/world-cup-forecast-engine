@@ -19,7 +19,6 @@ Override the fast profile when needed:
 ```bash
 NEXT_PUBLIC_WCO_SIMULATIONS=100 \
 NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS=50 \
-NEXT_PUBLIC_WCO_REFRESH_MINUTES=5 \
 ./scripts/dev.sh
 ```
 
@@ -39,27 +38,25 @@ Use sample data only for tests/dev fallback:
 WORLD_CUP_DATA_MODE=sample
 ```
 
-Runtime does not fetch internet. App reads checked-in JSON from
-`data/processed`.
-
-Dashboard and bracket automatically refetch API data and rerun simulations
-every five minutes while visible. `NEXT_PUBLIC_WCO_REFRESH_MINUTES` changes
-that browser refresh interval. This does not run operator ingest scripts.
+The app reads published JSON snapshots from `data/processed`. Forecast controls
+rerun simulations against that snapshot; they do not silently fetch results.
 
 ## Refresh Data
 
-Data refresh is an operator-only CLI workflow. The public API does not expose a
-sync endpoint.
+Configure the backend result sync:
 
 ```bash
-python scripts/ingest/fetch_worldcup_fifa.py
-python scripts/ingest/fetch_fifa_rankings.py
-python scripts/ingest/fetch_elo_ratings.py
-python scripts/ingest/validate_processed_data.py
+WCO_ADMIN_SYNC_KEY=choose-a-long-random-secret
+FOOTBALL_DATA_API_TOKEN=your-football-data-token
 ```
 
-If a source blocks automation, save normalized raw files under `data/raw/` and
-rerun the relevant script with `--raw-file`.
+The dashboard's **Sync match results** button calls the protected
+`POST /admin/sync/results` endpoint. It tries football-data.org first and falls
+back to FIFA's public match feed. Incoming files are staged and validated
+before publication; contradictory published scores abort the refresh.
+
+Ranking and model-training refreshes remain separate CLI workflows. A result
+sync never retrains or silently changes the selected forecasting model.
 
 ## Run Backend
 

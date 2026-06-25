@@ -5,6 +5,7 @@
   "is_real_data": true,
   "last_updated": "2026-06-25T10:45:30Z",
   "rating_source": "Open international results Elo baseline; FIFA ranking retained as fallback metadata",
+  "result_source": "FIFA API fallback",
   "ratings_are_official": false,
   "sources": [
     {

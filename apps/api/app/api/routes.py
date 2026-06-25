@@ -298,7 +298,7 @@ def current_tournament_scoring(
 
 @router.post("/simulate", response_model=SimulationSummaryResponse)
 def simulate(request: SimulateRequest) -> SimulationSummaryResponse:
-    """Run a Monte Carlo simulation against sample tournament data."""
+    """Run a capped diagnostic simulation. Published UI forecasts use snapshot banks."""
     return run_simulation(request, get_data_mode())
 
 

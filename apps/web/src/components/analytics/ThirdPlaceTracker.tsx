@@ -1,49 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-import { ErrorState } from "@/components/ErrorState";
-import { LoadingState } from "@/components/LoadingState";
 import { SectionCard } from "@/components/ui/SectionCard";
-import { fetchThirdPlaceTracker, ThirdPlaceTracker as ThirdPlaceData } from "@/lib/api";
+import { ThirdPlaceTracker } from "@/lib/api";
 import { formatPercent } from "@/lib/format";
 import { THIRD_PLACE_QUALIFIER_COUNT, GROUP_WINNERS_AND_RUNNERS_UP } from "@/lib/tournament";
-import { ANALYTICS_SIMULATION_COUNT } from "@/lib/config";
 
-export function ThirdPlaceTrackerPanel() {
-  const [data, setData] = useState<ThirdPlaceData | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let isActive = true;
-    fetchThirdPlaceTracker(undefined, ANALYTICS_SIMULATION_COUNT, 42)
-      .then((tracker) => {
-        if (isActive) {
-          setData(tracker);
-        }
-      })
-      .catch((caughtError: unknown) => {
-        if (isActive) {
-          setError(
-            caughtError instanceof Error
-              ? caughtError.message
-              : "Third-place tracker failed",
-          );
-        }
-      });
-    return () => {
-      isActive = false;
-    };
-  }, []);
-
-  if (error) {
-    return <ErrorState message={error} />;
-  }
-
-  if (!data) {
-    return <LoadingState label="Loading third-place bubble" />;
-  }
-
+export function ThirdPlaceTrackerPanel({ tracker }: { tracker: ThirdPlaceTracker }) {
   return (
     <SectionCard>
       <p className="text-xs font-semibold uppercase text-[var(--turf)]">
@@ -70,7 +32,7 @@ export function ThirdPlaceTrackerPanel() {
             </tr>
           </thead>
           <tbody>
-            {data.teams.map((team, index) => {
+            {tracker.teams.map((team, index) => {
               const inBubble =
                 index >= THIRD_PLACE_QUALIFIER_COUNT - 3 &&
                 index <= THIRD_PLACE_QUALIFIER_COUNT + 2;

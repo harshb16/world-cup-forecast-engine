@@ -13,6 +13,7 @@ from app.models.schemas import (
     DataMetadataResponse,
     DataQualityResponse,
     ForecastSnapshotResponse,
+    ForecastStatusResponse,
     GroupChaosResponse,
     HeadToHeadResponse,
     HealthResponse,
@@ -45,7 +46,10 @@ from app.services.current_tournament_scoring import (
 from app.services.data_loader import load_metadata, load_tournament
 from app.services.data_quality_service import calculate_data_quality
 from app.services.head_to_head_service import calculate_head_to_head
-from app.services.forecast_snapshot_service import load_forecast_snapshot
+from app.services.forecast_snapshot_service import (
+    load_forecast_snapshot,
+    load_forecast_status,
+)
 from app.services.matchday_service import calculate_matchday
 from app.services.model_metadata import list_model_metadata
 from app.services.probability_movers_service import calculate_probability_movers
@@ -103,6 +107,15 @@ def latest_forecast() -> ForecastSnapshotResponse:
     """Return precomputed forecast artifacts without rerunning simulations."""
     try:
         return load_forecast_snapshot()
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+
+@router.get("/forecast/status", response_model=ForecastStatusResponse)
+def forecast_status() -> ForecastStatusResponse:
+    """Return lightweight forecast freshness metadata for polling clients."""
+    try:
+        return load_forecast_status()
     except FileNotFoundError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 

@@ -39,7 +39,7 @@
     "team_b_expected_goals": null,
     "winner_team_id": "ARGENTINA"
   },
-  "generated_at": "2026-06-25T14:23:16+00:00",
+  "generated_at": "2026-06-25T14:29:58+00:00",
   "group_chaos": {
     "data_mode": "processed",
     "groups": [
@@ -527,6 +527,7 @@
     "model_type": "calibrated_elo",
     "n_simulations": 5000
   },
+  "snapshot_id": "2026-worldcup-processed-2026-06-25:2026-06-25T14:29:58+00:00:calibrated_elo:5000",
   "summary": {
     "average_points_by_team": {
       "ALGERIA": 4.5898,
@@ -1701,6 +1702,643 @@
       "USA": 1.0,
       "UZBEKISTAN": 0.0
     }
+  },
+  "third_place": {
+    "data_mode": "processed",
+    "model_type": "calibrated_elo",
+    "n_simulations": 5000,
+    "teams": [
+      {
+        "current_points": 4,
+        "group_id": "B",
+        "qualification_probability": 1.0,
+        "simulated_average_points": 4.0,
+        "slot_distribution": [
+          {
+            "probability": 0.6202,
+            "slot_label": "R32-09"
+          },
+          {
+            "probability": 0.3798,
+            "slot_label": "R32-02"
+          }
+        ],
+        "team_id": "BIH",
+        "team_name": "Bosnia and Herzegovina"
+      },
+      {
+        "current_points": 3,
+        "group_id": "A",
+        "qualification_probability": 0.9486,
+        "simulated_average_points": 3.0,
+        "slot_distribution": [
+          {
+            "probability": 0.5418511490617752,
+            "slot_label": "R32-10"
+          },
+          {
+            "probability": 0.45814885093822477,
+            "slot_label": "R32-02"
+          }
+        ],
+        "team_id": "KOR",
+        "team_name": "Korea Republic"
+      },
+      {
+        "current_points": 3,
+        "group_id": "F",
+        "qualification_probability": 0.785,
+        "simulated_average_points": 3.1982630272952854,
+        "slot_distribution": [
+          {
+            "probability": 0.36942675159235666,
+            "slot_label": "R32-07"
+          },
+          {
+            "probability": 0.3645859872611465,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.2135031847133758,
+            "slot_label": "R32-05"
+          },
+          {
+            "probability": 0.04152866242038217,
+            "slot_label": "R32-02"
+          },
+          {
+            "probability": 0.010955414012738853,
+            "slot_label": "R32-09"
+          }
+        ],
+        "team_id": "SWEDEN",
+        "team_name": "Sweden"
+      },
+      {
+        "current_points": 4,
+        "group_id": "L",
+        "qualification_probability": 0.5876,
+        "simulated_average_points": 4.0,
+        "slot_distribution": [
+          {
+            "probability": 1.0,
+            "slot_label": "R32-15"
+          }
+        ],
+        "team_id": "GHANA",
+        "team_name": "Ghana"
+      },
+      {
+        "current_points": 0,
+        "group_id": "I",
+        "qualification_probability": 0.5158,
+        "simulated_average_points": 2.4974980247563865,
+        "slot_distribution": [
+          {
+            "probability": 0.42690965490500193,
+            "slot_label": "R32-08"
+          },
+          {
+            "probability": 0.21519968980224893,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.20434276851492827,
+            "slot_label": "R32-10"
+          },
+          {
+            "probability": 0.10003877471888328,
+            "slot_label": "R32-09"
+          },
+          {
+            "probability": 0.032958511050794885,
+            "slot_label": "R32-07"
+          },
+          {
+            "probability": 0.02055060100814269,
+            "slot_label": "R32-15"
+          }
+        ],
+        "team_id": "SENEGAL",
+        "team_name": "Senegal"
+      },
+      {
+        "current_points": 3,
+        "group_id": "D",
+        "qualification_probability": 0.414,
+        "simulated_average_points": 3.244450317124736,
+        "slot_distribution": [
+          {
+            "probability": 0.755072463768116,
+            "slot_label": "R32-05"
+          },
+          {
+            "probability": 0.22801932367149758,
+            "slot_label": "R32-02"
+          },
+          {
+            "probability": 0.016908212560386472,
+            "slot_label": "R32-15"
+          }
+        ],
+        "team_id": "PARAGUAY",
+        "team_name": "Paraguay"
+      },
+      {
+        "current_points": 3,
+        "group_id": "J",
+        "qualification_probability": 0.4068,
+        "simulated_average_points": 3.0,
+        "slot_distribution": [
+          {
+            "probability": 0.40117994100294985,
+            "slot_label": "R32-10"
+          },
+          {
+            "probability": 0.3839724680432645,
+            "slot_label": "R32-09"
+          },
+          {
+            "probability": 0.13126843657817108,
+            "slot_label": "R32-08"
+          },
+          {
+            "probability": 0.07128810226155359,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.012291052114060964,
+            "slot_label": "R32-15"
+          }
+        ],
+        "team_id": "AUSTRIA",
+        "team_name": "Austria"
+      },
+      {
+        "current_points": 3,
+        "group_id": "J",
+        "qualification_probability": 0.3776,
+        "simulated_average_points": 3.417216117216117,
+        "slot_distribution": [
+          {
+            "probability": 0.4253177966101695,
+            "slot_label": "R32-09"
+          },
+          {
+            "probability": 0.3893008474576271,
+            "slot_label": "R32-10"
+          },
+          {
+            "probability": 0.12870762711864406,
+            "slot_label": "R32-08"
+          },
+          {
+            "probability": 0.05190677966101695,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.004766949152542373,
+            "slot_label": "R32-15"
+          }
+        ],
+        "team_id": "ALGERIA",
+        "team_name": "Algeria"
+      },
+      {
+        "current_points": 3,
+        "group_id": "L",
+        "qualification_probability": 0.3738,
+        "simulated_average_points": 3.45101842870999,
+        "slot_distribution": [
+          {
+            "probability": 1.0,
+            "slot_label": "R32-15"
+          }
+        ],
+        "team_id": "CROATIA",
+        "team_name": "Croatia"
+      },
+      {
+        "current_points": 3,
+        "group_id": "C",
+        "qualification_probability": 0.3578,
+        "simulated_average_points": 3.0,
+        "slot_distribution": [
+          {
+            "probability": 0.8462828395751817,
+            "slot_label": "R32-07"
+          },
+          {
+            "probability": 0.14086081609837897,
+            "slot_label": "R32-05"
+          },
+          {
+            "probability": 0.012856344326439352,
+            "slot_label": "R32-02"
+          }
+        ],
+        "team_id": "SCOTLAND",
+        "team_name": "Scotland"
+      },
+      {
+        "current_points": 1,
+        "group_id": "K",
+        "qualification_probability": 0.34,
+        "simulated_average_points": 3.143532590341101,
+        "slot_distribution": [
+          {
+            "probability": 1.0,
+            "slot_label": "R32-08"
+          }
+        ],
+        "team_id": "COD",
+        "team_name": "Congo DR"
+      },
+      {
+        "current_points": 4,
+        "group_id": "G",
+        "qualification_probability": 0.278,
+        "simulated_average_points": 4.0,
+        "slot_distribution": [
+          {
+            "probability": 0.7014388489208633,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.29856115107913667,
+            "slot_label": "R32-05"
+          }
+        ],
+        "team_id": "EGYPT",
+        "team_name": "Egypt"
+      },
+      {
+        "current_points": 1,
+        "group_id": "E",
+        "qualification_probability": 0.265,
+        "simulated_average_points": 2.318278995189738,
+        "slot_distribution": [
+          {
+            "probability": 0.6316981132075472,
+            "slot_label": "R32-07"
+          },
+          {
+            "probability": 0.26264150943396225,
+            "slot_label": "R32-08"
+          },
+          {
+            "probability": 0.057358490566037736,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.027924528301886794,
+            "slot_label": "R32-10"
+          },
+          {
+            "probability": 0.020377358490566037,
+            "slot_label": "R32-15"
+          }
+        ],
+        "team_id": "ECUADOR",
+        "team_name": "Ecuador"
+      },
+      {
+        "current_points": 3,
+        "group_id": "D",
+        "qualification_probability": 0.1974,
+        "simulated_average_points": 3.0,
+        "slot_distribution": [
+          {
+            "probability": 0.7467071935157041,
+            "slot_label": "R32-05"
+          },
+          {
+            "probability": 0.232016210739615,
+            "slot_label": "R32-02"
+          },
+          {
+            "probability": 0.02127659574468085,
+            "slot_label": "R32-15"
+          }
+        ],
+        "team_id": "AUSTRALIA",
+        "team_name": "Australia"
+      },
+      {
+        "current_points": 2,
+        "group_id": "G",
+        "qualification_probability": 0.1912,
+        "simulated_average_points": 2.4054398640034,
+        "slot_distribution": [
+          {
+            "probability": 0.6589958158995816,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.3410041841004184,
+            "slot_label": "R32-05"
+          }
+        ],
+        "team_id": "IRN",
+        "team_name": "IR Iran"
+      },
+      {
+        "current_points": 4,
+        "group_id": "F",
+        "qualification_probability": 0.1862,
+        "simulated_average_points": 4.0,
+        "slot_distribution": [
+          {
+            "probability": 0.3963480128893663,
+            "slot_label": "R32-07"
+          },
+          {
+            "probability": 0.3523093447905478,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.200859291084855,
+            "slot_label": "R32-05"
+          },
+          {
+            "probability": 0.0397422126745435,
+            "slot_label": "R32-02"
+          },
+          {
+            "probability": 0.010741138560687433,
+            "slot_label": "R32-09"
+          }
+        ],
+        "team_id": "JAPAN",
+        "team_name": "Japan"
+      },
+      {
+        "current_points": 2,
+        "group_id": "H",
+        "qualification_probability": 0.1328,
+        "simulated_average_points": 2.1865947174098266,
+        "slot_distribution": [
+          {
+            "probability": 0.5301204819277109,
+            "slot_label": "R32-08"
+          },
+          {
+            "probability": 0.1897590361445783,
+            "slot_label": "R32-05"
+          },
+          {
+            "probability": 0.15813253012048192,
+            "slot_label": "R32-10"
+          },
+          {
+            "probability": 0.12198795180722892,
+            "slot_label": "R32-07"
+          }
+        ],
+        "team_id": "URUGUAY",
+        "team_name": "Uruguay"
+      },
+      {
+        "current_points": 1,
+        "group_id": "G",
+        "qualification_probability": 0.107,
+        "simulated_average_points": 3.6850393700787403,
+        "slot_distribution": [
+          {
+            "probability": 0.6467289719626168,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.3532710280373832,
+            "slot_label": "R32-05"
+          }
+        ],
+        "team_id": "NEW_ZEALAND",
+        "team_name": "New Zealand"
+      },
+      {
+        "current_points": 3,
+        "group_id": "E",
+        "qualification_probability": 0.0998,
+        "simulated_average_points": 3.0,
+        "slot_distribution": [
+          {
+            "probability": 0.6092184368737475,
+            "slot_label": "R32-07"
+          },
+          {
+            "probability": 0.3106212424849699,
+            "slot_label": "R32-08"
+          },
+          {
+            "probability": 0.04408817635270541,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.03006012024048096,
+            "slot_label": "R32-15"
+          },
+          {
+            "probability": 0.006012024048096192,
+            "slot_label": "R32-10"
+          }
+        ],
+        "team_id": "CIV",
+        "team_name": "Côte d’Ivoire"
+      },
+      {
+        "current_points": 2,
+        "group_id": "G",
+        "qualification_probability": 0.099,
+        "simulated_average_points": 2.7942122186495175,
+        "slot_distribution": [
+          {
+            "probability": 0.692929292929293,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.30707070707070705,
+            "slot_label": "R32-05"
+          }
+        ],
+        "team_id": "BELGIUM",
+        "team_name": "Belgium"
+      },
+      {
+        "current_points": 2,
+        "group_id": "H",
+        "qualification_probability": 0.0848,
+        "simulated_average_points": 2.5870165745856353,
+        "slot_distribution": [
+          {
+            "probability": 0.5400943396226415,
+            "slot_label": "R32-08"
+          },
+          {
+            "probability": 0.16037735849056603,
+            "slot_label": "R32-10"
+          },
+          {
+            "probability": 0.15566037735849056,
+            "slot_label": "R32-05"
+          },
+          {
+            "probability": 0.14386792452830188,
+            "slot_label": "R32-07"
+          }
+        ],
+        "team_id": "CPV",
+        "team_name": "Cabo Verde"
+      },
+      {
+        "current_points": 4,
+        "group_id": "H",
+        "qualification_probability": 0.0798,
+        "simulated_average_points": 4.0,
+        "slot_distribution": [
+          {
+            "probability": 0.48872180451127817,
+            "slot_label": "R32-08"
+          },
+          {
+            "probability": 0.20050125313283207,
+            "slot_label": "R32-05"
+          },
+          {
+            "probability": 0.18295739348370926,
+            "slot_label": "R32-10"
+          },
+          {
+            "probability": 0.12781954887218044,
+            "slot_label": "R32-07"
+          }
+        ],
+        "team_id": "SPAIN",
+        "team_name": "Spain"
+      },
+      {
+        "current_points": 1,
+        "group_id": "H",
+        "qualification_probability": 0.0712,
+        "simulated_average_points": 4.0,
+        "slot_distribution": [
+          {
+            "probability": 0.550561797752809,
+            "slot_label": "R32-08"
+          },
+          {
+            "probability": 0.17696629213483145,
+            "slot_label": "R32-05"
+          },
+          {
+            "probability": 0.15730337078651685,
+            "slot_label": "R32-10"
+          },
+          {
+            "probability": 0.1151685393258427,
+            "slot_label": "R32-07"
+          }
+        ],
+        "team_id": "SAUDI_ARABIA",
+        "team_name": "Saudi Arabia"
+      },
+      {
+        "current_points": 1,
+        "group_id": "E",
+        "qualification_probability": 0.0578,
+        "simulated_average_points": 2.887864823348694,
+        "slot_distribution": [
+          {
+            "probability": 0.6089965397923875,
+            "slot_label": "R32-07"
+          },
+          {
+            "probability": 0.2698961937716263,
+            "slot_label": "R32-08"
+          },
+          {
+            "probability": 0.058823529411764705,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.03460207612456748,
+            "slot_label": "R32-10"
+          },
+          {
+            "probability": 0.02768166089965398,
+            "slot_label": "R32-15"
+          }
+        ],
+        "team_id": "CURACAO",
+        "team_name": "Curaçao"
+      },
+      {
+        "current_points": 0,
+        "group_id": "I",
+        "qualification_probability": 0.0274,
+        "simulated_average_points": 3.0,
+        "slot_distribution": [
+          {
+            "probability": 0.708029197080292,
+            "slot_label": "R32-08"
+          },
+          {
+            "probability": 0.1386861313868613,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.12408759124087591,
+            "slot_label": "R32-07"
+          },
+          {
+            "probability": 0.029197080291970802,
+            "slot_label": "R32-09"
+          }
+        ],
+        "team_id": "IRAQ",
+        "team_name": "Iraq"
+      },
+      {
+        "current_points": 4,
+        "group_id": "F",
+        "qualification_probability": 0.0078,
+        "simulated_average_points": 4.0,
+        "slot_distribution": [
+          {
+            "probability": 0.38461538461538464,
+            "slot_label": "R32-13"
+          },
+          {
+            "probability": 0.358974358974359,
+            "slot_label": "R32-07"
+          },
+          {
+            "probability": 0.15384615384615385,
+            "slot_label": "R32-05"
+          },
+          {
+            "probability": 0.10256410256410256,
+            "slot_label": "R32-02"
+          }
+        ],
+        "team_id": "NETHERLANDS",
+        "team_name": "Netherlands"
+      },
+      {
+        "current_points": 0,
+        "group_id": "K",
+        "qualification_probability": 0.0078,
+        "simulated_average_points": 3.0,
+        "slot_distribution": [
+          {
+            "probability": 1.0,
+            "slot_label": "R32-08"
+          }
+        ],
+        "team_id": "UZBEKISTAN",
+        "team_name": "Uzbekistan"
+      }
+    ]
   },
   "upsets": {
     "data_mode": "processed",

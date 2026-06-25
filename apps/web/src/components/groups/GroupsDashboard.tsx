@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 
 import { ThirdPlaceTrackerPanel } from "@/components/analytics/ThirdPlaceTracker";
 import { ErrorState } from "@/components/ErrorState";
@@ -8,6 +8,7 @@ import { LoadingState } from "@/components/LoadingState";
 import { DataStatusCard } from "@/components/DataStatusCard";
 import { GroupProbabilityCard } from "@/components/groups/GroupProbabilityCard";
 import { HelpText } from "@/components/ui/HelpText";
+import { usePublishedForecast } from "@/hooks/usePublishedForecast";
 import { THIRD_PLACE_QUALIFIER_COUNT } from "@/lib/tournament";
 import {
   fetchGroups,
@@ -19,6 +20,7 @@ import {
   SimulationSummary,
   Team,
   DataMetadata,
+  ThirdPlaceTracker,
 } from "@/lib/api";
 
 type GroupData = {
@@ -27,51 +29,31 @@ type GroupData = {
   simulation: SimulationSummary;
   metadata: DataMetadata;
   chaosByGroupId: Map<string, GroupChaosScore>;
+  thirdPlace: ThirdPlaceTracker;
 };
 
 export function GroupsDashboard() {
-  const [data, setData] = useState<GroupData | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let isActive = true;
-
-    Promise.all([
+  const loadGroups = useCallback(async (): Promise<GroupData> => {
+    const [groups, teams, metadata, snapshot] = await Promise.all([
       fetchGroups(),
       fetchTeams(),
       fetchMetadata(),
       fetchLatestForecast(),
-    ])
-      .then(([groups, teams, metadata, snapshot]) => {
-        if (isActive) {
-          setData({
-            groups,
-            teams,
-            metadata,
-            simulation: snapshot.summary,
-            chaosByGroupId: new Map(
-              snapshot.group_chaos.groups.map((group) => [
-                group.group_id,
-                group,
-              ]),
-            ),
-          });
-        }
-      })
-      .catch((caughtError: unknown) => {
-        if (isActive) {
-          setError(
-            caughtError instanceof Error
-              ? caughtError.message
-              : "Group data request failed",
-          );
-        }
-      });
+    ]);
 
-    return () => {
-      isActive = false;
+    return {
+      groups,
+      teams,
+      metadata,
+      simulation: snapshot.summary,
+      chaosByGroupId: new Map(
+        snapshot.group_chaos.groups.map((group) => [group.group_id, group]),
+      ),
+      thirdPlace: snapshot.third_place,
     };
   }, []);
+
+  const { data, error } = usePublishedForecast(loadGroups);
 
   const probabilitiesByTeamId = useMemo(() => {
     return new Map(
@@ -79,7 +61,7 @@ export function GroupsDashboard() {
     );
   }, [data]);
 
-  if (error) {
+  if (error && !data) {
     return <ErrorState message={error} />;
   }
 
@@ -106,7 +88,7 @@ export function GroupsDashboard() {
           />
         ))}
       </div>
-      <ThirdPlaceTrackerPanel />
+      <ThirdPlaceTrackerPanel tracker={data.thirdPlace} />
     </div>
   );
 }

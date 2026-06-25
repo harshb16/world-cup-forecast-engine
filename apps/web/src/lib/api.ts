@@ -304,11 +304,23 @@ export type GroupChaosReport = {
   groups: GroupChaosScore[];
 };
 
+export type ForecastStatus = {
+  snapshot_id: string;
+  data_version: string | null;
+  forecast_generated_at: string;
+  data_updated_at: string | null;
+  completed_result_count: number | null;
+  model_type: ModelType;
+  n_simulations: number;
+};
+
 export type ForecastSnapshot = {
+  snapshot_id: string;
   generated_at: string;
   summary: SimulationSummary;
   group_chaos: GroupChaosReport;
   upsets: UpsetRadar;
+  third_place: ThirdPlaceTracker;
   featured_final: BracketMatch;
 };
 
@@ -430,6 +442,10 @@ export async function fetchMetadata(): Promise<DataMetadata> {
 
 export async function fetchLatestForecast(): Promise<ForecastSnapshot> {
   return fetchJson<ForecastSnapshot>("/forecast/latest");
+}
+
+export async function fetchForecastStatus(): Promise<ForecastStatus> {
+  return fetchJson<ForecastStatus>("/forecast/status");
 }
 
 export async function syncMatchResults(

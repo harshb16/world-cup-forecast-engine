@@ -77,9 +77,11 @@ export function HomeDashboard() {
   const featuredFinal = data?.featuredFinal ?? null;
 
   const featuredFinalWinner =
-    featuredFinal?.winner_team_id === featuredFinal?.team_a.team_id
-      ? featuredFinal.team_a
-      : featuredFinal?.team_b;
+    featuredFinal === null
+      ? null
+      : featuredFinal.winner_team_id === featuredFinal.team_a.team_id
+        ? featuredFinal.team_a
+        : featuredFinal.team_b;
 
   const insights = useMemo(() => {
     if (!summary || !groupChaos) {

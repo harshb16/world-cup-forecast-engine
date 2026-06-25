@@ -28,7 +28,8 @@ from app.models.schemas import (
     ScenarioSimulateRequest,
     SimulateRequest,
     SimulationSummaryResponse,
-    SyncResponse,
+    SyncJobDetailResponse,
+    SyncJobStartResponse,
     ThirdPlaceTrackerResponse,
     TeamPathRequest,
     TeamPathResponse,
@@ -56,7 +57,12 @@ from app.services.probability_movers_service import calculate_probability_movers
 from app.services.results_sync_service import (
     admin_key_is_valid,
     admin_sync_is_configured,
-    sync_results,
+)
+from app.services.sync_job_service import (
+    SyncJobAlreadyRunningError,
+    SyncJobCooldownError,
+    get_sync_job,
+    start_sync_job,
 )
 from app.services.simulation_service import (
     run_scenario_compare,
@@ -120,11 +126,15 @@ def forecast_status() -> ForecastStatusResponse:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
 
-@router.post("/admin/sync/results", response_model=SyncResponse)
+@router.post(
+    "/admin/sync/results",
+    response_model=SyncJobStartResponse,
+    status_code=202,
+)
 def sync_match_results(
     admin_key: str | None = Header(default=None, alias="X-WCO-Admin-Key"),
-) -> SyncResponse:
-    """Refresh match results for an authenticated operator."""
+) -> SyncJobStartResponse:
+    """Queue an authenticated background result-sync job."""
     if not admin_sync_is_configured():
         raise HTTPException(
             status_code=503,
@@ -132,10 +142,31 @@ def sync_match_results(
         )
     if not admin_key_is_valid(admin_key):
         raise HTTPException(status_code=401, detail="Invalid admin sync key.")
-    response = sync_results()
-    if not response.success:
-        raise HTTPException(status_code=502, detail=response.model_dump())
-    return response
+    try:
+        return start_sync_job()
+    except SyncJobAlreadyRunningError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except SyncJobCooldownError as exc:
+        raise HTTPException(status_code=429, detail=str(exc)) from exc
+
+
+@router.get("/admin/sync/{job_id}", response_model=SyncJobDetailResponse)
+def sync_job_status(
+    job_id: str,
+    admin_key: str | None = Header(default=None, alias="X-WCO-Admin-Key"),
+) -> SyncJobDetailResponse:
+    """Return progress and outcome for one async result-sync job."""
+    if not admin_sync_is_configured():
+        raise HTTPException(
+            status_code=503,
+            detail="Admin result sync is not configured.",
+        )
+    if not admin_key_is_valid(admin_key):
+        raise HTTPException(status_code=401, detail="Invalid admin sync key.")
+    try:
+        return get_sync_job(job_id)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail="Sync job not found.") from exc
 
 
 @router.get("/models", response_model=list[ModelMetadataResponse])

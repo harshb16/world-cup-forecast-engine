@@ -12,12 +12,12 @@ import threading
 import unicodedata
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from app.models.schemas import ForecastSnapshotResponse, SyncResponse
+from app.models.schemas import ForecastSnapshotResponse, SyncJobStage, SyncResponse
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 PROCESSED_DIR = REPO_ROOT / "data" / "processed"
@@ -118,8 +118,16 @@ def admin_sync_is_configured() -> bool:
     return bool(os.getenv("WCO_ADMIN_SYNC_KEY"))
 
 
-def sync_results() -> SyncResponse:
+StageReporter = Callable[[SyncJobStage, str | None], None]
+
+
+def sync_results(on_stage: StageReporter | None = None) -> SyncResponse:
     """Fetch, validate, and publish a complete result snapshot."""
+
+    def report(stage: SyncJobStage, message: str | None = None) -> None:
+        if on_stage is not None:
+            on_stage(stage, message)
+
     if not _SYNC_LOCK.acquire(blocking=False):
         return SyncResponse(
             success=False,
@@ -128,10 +136,12 @@ def sync_results() -> SyncResponse:
         )
 
     try:
+        report("fetch", "Fetching provider feeds")
         fixtures = _read_json(PROCESSED_DIR / "fixtures.json")
         existing_results = _read_json(PROCESSED_DIR / "results.json")
         teams = _read_json(PROCESSED_DIR / "teams.json")
         provider, provider_matches = _fetch_provider_matches()
+        report("normalize", f"Normalizing {provider} payload")
         updated_fixtures, results, changed_count = _merge_provider_matches(
             fixtures,
             teams,
@@ -139,6 +149,7 @@ def sync_results() -> SyncResponse:
             provider,
             provider_matches,
         )
+        report("compare", "Provider scores compared against published results")
         timestamp = datetime.now(tz=UTC).replace(microsecond=0).isoformat()
 
         with tempfile.TemporaryDirectory(
@@ -151,16 +162,20 @@ def sync_results() -> SyncResponse:
             _write_json(staged_dir / "results.json", results)
             _stage_metadata(staged_dir, timestamp, provider)
             _stage_data_quality(staged_dir, timestamp, len(results))
+            report("validate", "Validating tournament invariants")
             errors = _validate_staged_data(staged_dir)
             if errors:
                 raise ResultsSyncError("; ".join(errors))
+            report("publish", "Publishing validated data snapshot")
             _publish_files(staged_dir)
 
+        report("forecast", "Generating forecast snapshot")
         forecast = _refresh_forecast_snapshot()
         _append_probability_snapshot(
             timestamp,
             forecast.summary.champion_probabilities,
         )
+        report("done", "Sync completed")
         return SyncResponse(
             success=True,
             last_updated=timestamp,
@@ -168,6 +183,13 @@ def sync_results() -> SyncResponse:
             completed_result_count=len(results),
             changed_fixture_count=changed_count,
             errors=[],
+        )
+    except ResultsConflictError as exc:
+        report("compare", str(exc))
+        return SyncResponse(
+            success=False,
+            last_updated=_current_last_updated(),
+            errors=[str(exc)],
         )
     except (ResultsSyncError, HTTPError, URLError, TimeoutError, OSError, ValueError) as exc:
         return SyncResponse(

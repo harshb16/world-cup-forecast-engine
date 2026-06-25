@@ -97,6 +97,34 @@ export type ResultsSyncResponse = {
   errors: string[];
 };
 
+export type SyncJobStart = {
+  job_id: string;
+  status: "queued" | "running" | "succeeded" | "failed" | "rejected";
+};
+
+export type SyncJobDetail = {
+  job_id: string;
+  status: SyncJobStart["status"];
+  stage:
+    | "queued"
+    | "fetch"
+    | "normalize"
+    | "compare"
+    | "validate"
+    | "forecast"
+    | "publish"
+    | "done";
+  created_at: string;
+  started_at: string | null;
+  finished_at: string | null;
+  provider: string | null;
+  completed_result_count: number | null;
+  changed_fixture_count: number | null;
+  conflicts: string[];
+  errors: string[];
+  result: ResultsSyncResponse | null;
+};
+
 export type ModelMetadata = {
   id: ModelType;
   name: string;
@@ -448,9 +476,7 @@ export async function fetchForecastStatus(): Promise<ForecastStatus> {
   return fetchJson<ForecastStatus>("/forecast/status");
 }
 
-export async function syncMatchResults(
-  adminKey: string,
-): Promise<ResultsSyncResponse> {
+export async function startSyncJob(adminKey: string): Promise<SyncJobStart> {
   const response = await fetch(`${API_BASE_URL}/admin/sync/results`, {
     method: "POST",
     headers: {
@@ -468,6 +494,57 @@ export async function syncMatchResults(
   }
 
   return response.json();
+}
+
+export async function fetchSyncJob(
+  jobId: string,
+  adminKey: string,
+): Promise<SyncJobDetail> {
+  const response = await fetch(`${API_BASE_URL}/admin/sync/${jobId}`, {
+    headers: {
+      "X-WCO-Admin-Key": adminKey,
+    },
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    const payload = await response.json().catch(() => null);
+    const detail =
+      typeof payload?.detail === "string"
+        ? payload.detail
+        : payload?.detail?.errors?.join(" ");
+    throw new Error(detail || `Sync job lookup failed with status ${response.status}`);
+  }
+
+  return response.json();
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+}
+
+export async function syncMatchResults(
+  adminKey: string,
+  onProgress?: (job: SyncJobDetail) => void,
+): Promise<ResultsSyncResponse> {
+  const started = await startSyncJob(adminKey);
+
+  while (true) {
+    const job = await fetchSyncJob(started.job_id, adminKey);
+    onProgress?.(job);
+
+    if (job.status === "succeeded" && job.result) {
+      return job.result;
+    }
+
+    if (job.status === "failed" || job.status === "rejected") {
+      throw new Error(job.errors.join(" ") || "Result sync failed.");
+    }
+
+    await sleep(1_000);
+  }
 }
 
 export async function fetchModelMetadata(): Promise<ModelMetadata[]> {

@@ -24,10 +24,12 @@ from app.models.schemas import (
     ProbabilityHistoryResponse,
     ProbabilityMoversResponse,
     ProbabilitySnapshotResponse,
+    RollbackResponse,
     ScenarioCompareResponse,
     ScenarioSimulateRequest,
     SimulateRequest,
     SimulationSummaryResponse,
+    SnapshotRecordResponse,
     SyncJobDetailResponse,
     SyncJobStartResponse,
     ThirdPlaceTrackerResponse,
@@ -44,7 +46,7 @@ from app.services.bracket_service import run_bracket_simulation
 from app.services.current_tournament_scoring import (
     calculate_current_tournament_scores,
 )
-from app.services.data_loader import load_metadata, load_tournament
+from app.services.data_loader import get_processed_data_dir, load_metadata, load_tournament
 from app.services.data_quality_service import calculate_data_quality
 from app.services.head_to_head_service import calculate_head_to_head
 from app.services.forecast_snapshot_service import (
@@ -57,6 +59,12 @@ from app.services.probability_movers_service import calculate_probability_movers
 from app.services.results_sync_service import (
     admin_key_is_valid,
     admin_sync_is_configured,
+)
+from app.services.runtime_store import (
+    list_data_snapshots,
+    list_forecast_snapshots,
+    rollback_data_snapshot,
+    rollback_forecast_snapshot,
 )
 from app.services.sync_job_service import (
     SyncJobAlreadyRunningError,
@@ -167,6 +175,100 @@ def sync_job_status(
         return get_sync_job(job_id)
     except KeyError as exc:
         raise HTTPException(status_code=404, detail="Sync job not found.") from exc
+
+
+@router.get("/admin/snapshots/data", response_model=list[SnapshotRecordResponse])
+def list_data_snapshot_records(
+    admin_key: str | None = Header(default=None, alias="X-WCO-Admin-Key"),
+    limit: int = Query(default=10, ge=1, le=50),
+) -> list[SnapshotRecordResponse]:
+    """List recent tournament data snapshots."""
+    if not admin_sync_is_configured():
+        raise HTTPException(
+            status_code=503,
+            detail="Admin result sync is not configured.",
+        )
+    if not admin_key_is_valid(admin_key):
+        raise HTTPException(status_code=401, detail="Invalid admin sync key.")
+    return [
+        SnapshotRecordResponse(
+            id=row["id"],
+            created_at=row["created_at"],
+            is_active=bool(row["is_active"]),
+        )
+        for row in list_data_snapshots(limit=limit)
+    ]
+
+
+@router.get("/admin/snapshots/forecast", response_model=list[SnapshotRecordResponse])
+def list_forecast_snapshot_records(
+    admin_key: str | None = Header(default=None, alias="X-WCO-Admin-Key"),
+    limit: int = Query(default=10, ge=1, le=50),
+) -> list[SnapshotRecordResponse]:
+    """List recent forecast snapshots."""
+    if not admin_sync_is_configured():
+        raise HTTPException(
+            status_code=503,
+            detail="Admin result sync is not configured.",
+        )
+    if not admin_key_is_valid(admin_key):
+        raise HTTPException(status_code=401, detail="Invalid admin sync key.")
+    return [
+        SnapshotRecordResponse(
+            id=row["id"],
+            created_at=row["created_at"],
+            is_active=bool(row["is_active"]),
+            snapshot_id=row.get("snapshot_id"),
+            bank_path=row.get("bank_path"),
+        )
+        for row in list_forecast_snapshots(limit=limit)
+    ]
+
+
+@router.post("/admin/rollback/data/{snapshot_id}", response_model=RollbackResponse)
+def rollback_data_snapshot_record(
+    snapshot_id: str,
+    admin_key: str | None = Header(default=None, alias="X-WCO-Admin-Key"),
+) -> RollbackResponse:
+    """Activate a previously published tournament data snapshot."""
+    if not admin_sync_is_configured():
+        raise HTTPException(
+            status_code=503,
+            detail="Admin result sync is not configured.",
+        )
+    if not admin_key_is_valid(admin_key):
+        raise HTTPException(status_code=401, detail="Invalid admin sync key.")
+    try:
+        rollback_data_snapshot(snapshot_id)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail="Data snapshot not found.") from exc
+    return RollbackResponse(success=True, active_id=snapshot_id)
+
+
+@router.post(
+    "/admin/rollback/forecast/{record_id}",
+    response_model=RollbackResponse,
+)
+def rollback_forecast_snapshot_record(
+    record_id: str,
+    admin_key: str | None = Header(default=None, alias="X-WCO-Admin-Key"),
+) -> RollbackResponse:
+    """Activate a previously published forecast snapshot."""
+    if not admin_sync_is_configured():
+        raise HTTPException(
+            status_code=503,
+            detail="Admin result sync is not configured.",
+        )
+    if not admin_key_is_valid(admin_key):
+        raise HTTPException(status_code=401, detail="Invalid admin sync key.")
+    try:
+        rollback_forecast_snapshot(record_id)
+    except KeyError as exc:
+        raise HTTPException(
+            status_code=404,
+            detail="Forecast snapshot not found.",
+        ) from exc
+    return RollbackResponse(success=True, active_id=record_id)
 
 
 @router.get("/models", response_model=list[ModelMetadataResponse])
@@ -285,9 +387,7 @@ def model_comparison(
 
 @router.get("/analytics/probability-history", response_model=ProbabilityHistoryResponse)
 def probability_history() -> ProbabilityHistoryResponse:
-    import app.services.data_sync_service as data_sync_service
-
-    history_path = data_sync_service.PROCESSED_DIR / "probability_history.json"
+    history_path = get_processed_data_dir() / "probability_history.json"
     if not history_path.exists():
         return ProbabilityHistoryResponse(snapshots=[])
     raw: list[dict] = json.loads(history_path.read_text(encoding="utf-8"))

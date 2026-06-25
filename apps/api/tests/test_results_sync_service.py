@@ -8,6 +8,25 @@ from unittest.mock import patch
 import pytest
 
 from app.services import results_sync_service
+from app.services.runtime_store import (
+    BOOTSTRAP_PROCESSED_DIR,
+    get_active_data_directory,
+    publish_data_snapshot,
+    reset_runtime_store_for_tests,
+)
+
+
+@pytest.fixture
+def runtime_processed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    runtime_root = tmp_path / "runtime"
+    monkeypatch.setenv("WCO_RUNTIME_DATA_DIR", str(runtime_root))
+    reset_runtime_store_for_tests()
+    staged = tmp_path / "bootstrap"
+    shutil.copytree(BOOTSTRAP_PROCESSED_DIR, staged)
+    publish_data_snapshot(staged)
+    active = get_active_data_directory()
+    assert active is not None
+    return active
 
 
 def test_football_data_result_is_oriented_to_fixture_order() -> None:
@@ -99,16 +118,13 @@ def test_provider_score_conflict_is_rejected() -> None:
 
 
 def test_failed_validation_does_not_publish_partial_files(
-    tmp_path: Path,
-    monkeypatch,
-) -> None:  # type: ignore[no-untyped-def]
-    processed_dir = tmp_path / "processed"
-    shutil.copytree(results_sync_service.PROCESSED_DIR, processed_dir)
-    monkeypatch.setattr(results_sync_service, "PROCESSED_DIR", processed_dir)
+    runtime_processed: Path,
+) -> None:
     originals = {
-        filename: (processed_dir / filename).read_bytes()
+        filename: (runtime_processed / filename).read_bytes()
         for filename in results_sync_service.SYNC_FILES
     }
+    active_before = runtime_processed
 
     with (
         patch(
@@ -137,20 +153,17 @@ def test_failed_validation_does_not_publish_partial_files(
 
     assert response.success is False
     assert "fixture validation failed" in response.errors[0]
+    assert get_active_data_directory() == active_before
     assert {
-        filename: (processed_dir / filename).read_bytes()
+        filename: (runtime_processed / filename).read_bytes()
         for filename in results_sync_service.SYNC_FILES
     } == originals
 
 
 def test_successful_sync_publishes_consistent_snapshot(
-    tmp_path: Path,
-    monkeypatch,
-) -> None:  # type: ignore[no-untyped-def]
-    processed_dir = tmp_path / "processed"
-    shutil.copytree(results_sync_service.PROCESSED_DIR, processed_dir)
-    monkeypatch.setattr(results_sync_service, "PROCESSED_DIR", processed_dir)
-    fixtures = json.loads((processed_dir / "fixtures.json").read_text())
+    runtime_processed: Path,
+) -> None:
+    fixtures = json.loads((runtime_processed / "fixtures.json").read_text())
     known = fixtures[0]
     provider_match = {
         "Home": {"Abbreviation": "MEX"},
@@ -171,9 +184,11 @@ def test_successful_sync_publishes_consistent_snapshot(
     ):
         response = results_sync_service.sync_results()
 
-    metadata = json.loads((processed_dir / "metadata.json").read_text())
-    quality = json.loads((processed_dir / "data_quality.json").read_text())
-    results = json.loads((processed_dir / "results.json").read_text())
+    active_dir = get_active_data_directory()
+    assert active_dir is not None
+    metadata = json.loads((active_dir / "metadata.json").read_text())
+    quality = json.loads((active_dir / "data_quality.json").read_text())
+    results = json.loads((active_dir / "results.json").read_text())
     assert response.success is True
     assert metadata["last_updated"] == quality["last_refresh"]
     assert metadata["result_source"] == "FIFA API fallback"

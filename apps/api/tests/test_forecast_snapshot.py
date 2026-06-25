@@ -91,8 +91,13 @@ def test_missing_snapshot_does_not_trigger_page_load_simulation(
 ) -> None:  # type: ignore[no-untyped-def]
     monkeypatch.setattr(
         forecast_snapshot_service,
-        "SNAPSHOT_PATH",
+        "BOOTSTRAP_SNAPSHOT_PATH",
         tmp_path / "missing.json",
+    )
+    monkeypatch.setattr(
+        forecast_snapshot_service,
+        "get_active_forecast_payload_path",
+        lambda: None,
     )
 
     with patch(

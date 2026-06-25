@@ -455,6 +455,23 @@ class SyncJobDetailResponse(BaseModel):
     result: SyncResponse | None = None
 
 
+class SnapshotRecordResponse(BaseModel):
+    """One stored data or forecast snapshot record."""
+
+    id: str
+    created_at: str
+    is_active: bool
+    snapshot_id: str | None = None
+    bank_path: str | None = None
+
+
+class RollbackResponse(BaseModel):
+    """Outcome of activating a prior snapshot."""
+
+    success: bool
+    active_id: str
+
+
 class ProbabilitySnapshotResponse(BaseModel):
     """One probability snapshot recorded after a sync."""
 

@@ -26,7 +26,7 @@ def test_append_probability_snapshot_creates_file(tmp_path: Path) -> None:
 
     champion_probs = {"ARGENTINA": 0.22, "FRANCE": 0.18}
 
-    with patch.object(dss, "PROCESSED_DIR", tmp_path):
+    with patch("app.services.data_sync_service.get_processed_data_dir", return_value=tmp_path):
         with patch(
             "app.services.simulation_service.run_simulation",
             return_value=_mock_simulation_result(champion_probs),
@@ -57,7 +57,7 @@ def test_append_probability_snapshot_grows_array(tmp_path: Path) -> None:
 
     champion_probs = {"ARGENTINA": 0.25, "FRANCE": 0.15}
 
-    with patch.object(dss, "PROCESSED_DIR", tmp_path):
+    with patch("app.services.data_sync_service.get_processed_data_dir", return_value=tmp_path):
         with patch(
             "app.services.simulation_service.run_simulation",
             return_value=_mock_simulation_result(champion_probs),
@@ -81,7 +81,7 @@ def test_append_probability_snapshot_silences_errors(tmp_path: Path) -> None:
     """_append_probability_snapshot does not raise if simulation fails."""
     import app.services.data_sync_service as dss
 
-    with patch.object(dss, "PROCESSED_DIR", tmp_path):
+    with patch("app.services.data_sync_service.get_processed_data_dir", return_value=tmp_path):
         with patch(
             "app.services.simulation_service.run_simulation",
             side_effect=RuntimeError("boom"),
@@ -96,7 +96,7 @@ def test_probability_history_endpoint_empty(tmp_path: Path) -> None:
     """GET /analytics/probability-history returns empty list when no history file exists."""
     import app.services.data_sync_service as dss
 
-    with patch.object(dss, "PROCESSED_DIR", tmp_path):
+    with patch("app.api.routes.get_processed_data_dir", return_value=tmp_path):
         response = client.get("/analytics/probability-history")
 
     assert response.status_code == 200
@@ -106,8 +106,6 @@ def test_probability_history_endpoint_empty(tmp_path: Path) -> None:
 
 def test_probability_history_endpoint_returns_data(tmp_path: Path) -> None:
     """GET /analytics/probability-history returns stored snapshots."""
-    import app.services.data_sync_service as dss
-    import app.api.routes as routes_module
 
     history: list[dict] = [
         {
@@ -122,10 +120,7 @@ def test_probability_history_endpoint_returns_data(tmp_path: Path) -> None:
     history_path = tmp_path / "probability_history.json"
     history_path.write_text(json.dumps(history))
 
-    with patch.object(dss, "PROCESSED_DIR", tmp_path):
-        # Force routes module to see the same module instance
-        import sys
-        sys.modules["app.services.data_sync_service"] = dss
+    with patch("app.api.routes.get_processed_data_dir", return_value=tmp_path):
         response = client.get("/analytics/probability-history")
 
     assert response.status_code == 200

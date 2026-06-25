@@ -5,7 +5,7 @@ from typing import Any
 
 from app.models.schemas import DataQualityResponse, TeamDataQualityResponse
 from app.services.data_loader import (
-    PROCESSED_DATA_DIR,
+    get_processed_data_dir,
     load_metadata,
     load_squad_features,
     load_tournament,
@@ -18,7 +18,7 @@ def calculate_data_quality(data_mode: str) -> DataQualityResponse:
     tournament = load_tournament(data_mode)
     squad_features = load_squad_features(data_mode)
 
-    ratings_path = PROCESSED_DATA_DIR / "ratings.json"
+    ratings_path = get_processed_data_dir() / "ratings.json"
     rated_team_ids: set[str] = set()
     if data_mode == "processed" and ratings_path.exists():
         import json

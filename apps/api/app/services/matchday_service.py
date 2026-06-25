@@ -16,7 +16,7 @@ from app.models.schemas import (
     ModelType,
 )
 from app.services.data_loader import (
-    PROCESSED_DATA_DIR,
+    get_processed_data_dir,
     SAMPLE_DATA_DIR,
     load_tournament,
 )
@@ -111,7 +111,7 @@ def _kickoff_date(
 
 def _load_raw_fixture_index(data_mode: str) -> dict[str, dict[str, Any]]:
     path = (
-        PROCESSED_DATA_DIR / "fixtures.json"
+        get_processed_data_dir() / "fixtures.json"
         if data_mode == "processed"
         else SAMPLE_DATA_DIR / "sample_fixtures.json"
     )

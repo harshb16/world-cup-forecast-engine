@@ -19,8 +19,14 @@ from urllib.request import Request, urlopen
 
 from app.models.schemas import ForecastSnapshotResponse, SyncJobStage, SyncResponse
 
+from app.services.runtime_store import (
+    get_runtime_root,
+    publish_data_snapshot,
+    resolve_processed_data_directory,
+)
+
 REPO_ROOT = Path(__file__).resolve().parents[4]
-PROCESSED_DIR = REPO_ROOT / "data" / "processed"
+BOOTSTRAP_PROCESSED_DIR = REPO_ROOT / "data" / "processed"
 FIFA_API_URL = (
     "https://api.fifa.com/api/v3/calendar/matches?count=500&idSeason=285023"
 )
@@ -42,6 +48,10 @@ TEAM_ALIASES = {
     "united states": "USA",
     "usa": "USA",
 }
+
+def _active_processed_dir() -> Path:
+    return resolve_processed_data_directory()
+
 
 FIFA_ABBREVIATIONS = {
     "MEX": "MEXICO",
@@ -137,9 +147,9 @@ def sync_results(on_stage: StageReporter | None = None) -> SyncResponse:
 
     try:
         report("fetch", "Fetching provider feeds")
-        fixtures = _read_json(PROCESSED_DIR / "fixtures.json")
-        existing_results = _read_json(PROCESSED_DIR / "results.json")
-        teams = _read_json(PROCESSED_DIR / "teams.json")
+        fixtures = _read_json(_active_processed_dir() / "fixtures.json")
+        existing_results = _read_json(_active_processed_dir() / "results.json")
+        teams = _read_json(_active_processed_dir() / "teams.json")
         provider, provider_matches = _fetch_provider_matches()
         report("normalize", f"Normalizing {provider} payload")
         updated_fixtures, results, changed_count = _merge_provider_matches(
@@ -154,10 +164,10 @@ def sync_results(on_stage: StageReporter | None = None) -> SyncResponse:
 
         with tempfile.TemporaryDirectory(
             prefix=".results-sync-",
-            dir=PROCESSED_DIR.parent,
+            dir=get_runtime_root(),
         ) as temporary_directory:
             staged_dir = Path(temporary_directory) / "processed"
-            shutil.copytree(PROCESSED_DIR, staged_dir)
+            shutil.copytree(_active_processed_dir(), staged_dir)
             _write_json(staged_dir / "fixtures.json", updated_fixtures)
             _write_json(staged_dir / "results.json", results)
             _stage_metadata(staged_dir, timestamp, provider)
@@ -475,18 +485,8 @@ def _validate_staged_data(staged_dir: Path) -> list[str]:
     return validate_processed_data(staged_dir)
 
 
-def _publish_files(staged_dir: Path) -> None:
-    originals = {
-        filename: (PROCESSED_DIR / filename).read_bytes()
-        for filename in SYNC_FILES
-    }
-    try:
-        for filename in SYNC_FILES:
-            os.replace(staged_dir / filename, PROCESSED_DIR / filename)
-    except OSError:
-        for filename, content in originals.items():
-            (PROCESSED_DIR / filename).write_bytes(content)
-        raise
+def _publish_files(staged_dir: Path) -> str:
+    return publish_data_snapshot(staged_dir)
 
 
 def _append_probability_snapshot(
@@ -495,7 +495,7 @@ def _append_probability_snapshot(
 ) -> None:
     try:
         from app.services.data_sync_service import _current_matchday
-        history_path = PROCESSED_DIR / "probability_history.json"
+        history_path = _active_processed_dir() / "probability_history.json"
         history = _read_json(history_path) if history_path.exists() else []
         history.append(
             {
@@ -517,7 +517,7 @@ def _refresh_forecast_snapshot() -> ForecastSnapshotResponse:
 
 
 def _current_last_updated() -> str:
-    metadata_path = PROCESSED_DIR / "metadata.json"
+    metadata_path = _active_processed_dir() / "metadata.json"
     if not metadata_path.exists():
         return datetime.now(tz=UTC).replace(microsecond=0).isoformat()
     return str(_read_json(metadata_path).get("last_updated") or "")

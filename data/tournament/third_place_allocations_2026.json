@@ -1,0 +1,6441 @@
+{
+  "format": "world_cup_2026",
+  "row_count": 495,
+  "rows": [
+    {
+      "qualified_groups": "ABCDEFGH",
+      "assignments": {
+        "1K": "D",
+        "1L": "E",
+        "1B": "F",
+        "1D": "B",
+        "1G": "A",
+        "1A": "H",
+        "1E": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFGI",
+      "assignments": {
+        "1L": "E",
+        "1G": "A",
+        "1K": "D",
+        "1A": "C",
+        "1B": "F",
+        "1D": "I",
+        "1I": "G",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFGJ",
+      "assignments": {
+        "1L": "E",
+        "1A": "C",
+        "1G": "A",
+        "1K": "D",
+        "1B": "F",
+        "1D": "J",
+        "1I": "G",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFGK",
+      "assignments": {
+        "1G": "A",
+        "1K": "D",
+        "1L": "K",
+        "1A": "C",
+        "1B": "E",
+        "1D": "B",
+        "1I": "G",
+        "1E": "F"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFGL",
+      "assignments": {
+        "1L": "E",
+        "1G": "A",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1K": "L",
+        "1I": "G",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFHI",
+      "assignments": {
+        "1B": "E",
+        "1K": "D",
+        "1L": "H",
+        "1D": "B",
+        "1G": "A",
+        "1I": "C",
+        "1A": "I",
+        "1E": "F"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFHJ",
+      "assignments": {
+        "1B": "E",
+        "1K": "D",
+        "1L": "H",
+        "1A": "C",
+        "1D": "B",
+        "1G": "J",
+        "1I": "F",
+        "1E": "A"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFHK",
+      "assignments": {
+        "1B": "E",
+        "1K": "D",
+        "1D": "B",
+        "1G": "A",
+        "1L": "K",
+        "1A": "C",
+        "1I": "H",
+        "1E": "F"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFHL",
+      "assignments": {
+        "1B": "E",
+        "1L": "H",
+        "1D": "B",
+        "1G": "A",
+        "1K": "L",
+        "1A": "C",
+        "1I": "D",
+        "1E": "F"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFIJ",
+      "assignments": {
+        "1I": "C",
+        "1L": "E",
+        "1A": "F",
+        "1B": "I",
+        "1G": "A",
+        "1K": "D",
+        "1D": "J",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFIK",
+      "assignments": {
+        "1B": "E",
+        "1G": "A",
+        "1I": "C",
+        "1K": "D",
+        "1L": "K",
+        "1A": "F",
+        "1D": "I",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFIL",
+      "assignments": {
+        "1L": "E",
+        "1B": "F",
+        "1G": "A",
+        "1I": "C",
+        "1A": "I",
+        "1D": "B",
+        "1K": "L",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFJK",
+      "assignments": {
+        "1A": "C",
+        "1B": "E",
+        "1G": "A",
+        "1I": "D",
+        "1K": "J",
+        "1L": "K",
+        "1D": "B",
+        "1E": "F"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFJL",
+      "assignments": {
+        "1L": "E",
+        "1A": "C",
+        "1B": "F",
+        "1G": "A",
+        "1I": "D",
+        "1D": "J",
+        "1K": "L",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEFKL",
+      "assignments": {
+        "1B": "E",
+        "1G": "A",
+        "1L": "K",
+        "1A": "C",
+        "1D": "B",
+        "1I": "D",
+        "1K": "L",
+        "1E": "F"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEGHI",
+      "assignments": {
+        "1B": "E",
+        "1D": "B",
+        "1K": "D",
+        "1L": "H",
+        "1A": "C",
+        "1E": "A",
+        "1G": "I",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEGHJ",
+      "assignments": {
+        "1A": "C",
+        "1B": "E",
+        "1D": "B",
+        "1K": "D",
+        "1L": "H",
+        "1E": "A",
+        "1G": "J",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEGHK",
+      "assignments": {
+        "1B": "E",
+        "1D": "B",
+        "1K": "D",
+        "1A": "C",
+        "1G": "H",
+        "1L": "K",
+        "1E": "A",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEGHL",
+      "assignments": {
+        "1B": "E",
+        "1D": "B",
+        "1L": "H",
+        "1A": "C",
+        "1G": "A",
+        "1K": "L",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEGIJ",
+      "assignments": {
+        "1A": "C",
+        "1I": "D",
+        "1L": "E",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1G": "I",
+        "1K": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEGIK",
+      "assignments": {
+        "1A": "C",
+        "1B": "E",
+        "1D": "B",
+        "1G": "A",
+        "1I": "G",
+        "1K": "I",
+        "1L": "K",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEGIL",
+      "assignments": {
+        "1L": "E",
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1G": "I",
+        "1I": "D",
+        "1E": "A",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEGJK",
+      "assignments": {
+        "1A": "C",
+        "1B": "E",
+        "1D": "B",
+        "1G": "A",
+        "1I": "G",
+        "1K": "J",
+        "1L": "K",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEGJL",
+      "assignments": {
+        "1A": "C",
+        "1L": "E",
+        "1B": "G",
+        "1D": "B",
+        "1G": "J",
+        "1I": "D",
+        "1E": "A",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEGKL",
+      "assignments": {
+        "1A": "C",
+        "1B": "E",
+        "1D": "B",
+        "1G": "A",
+        "1L": "K",
+        "1I": "G",
+        "1K": "L",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEHIJ",
+      "assignments": {
+        "1B": "E",
+        "1I": "C",
+        "1A": "H",
+        "1D": "B",
+        "1E": "A",
+        "1K": "D",
+        "1L": "I",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEHIK",
+      "assignments": {
+        "1B": "E",
+        "1D": "B",
+        "1I": "C",
+        "1K": "D",
+        "1A": "H",
+        "1E": "A",
+        "1G": "I",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEHIL",
+      "assignments": {
+        "1B": "E",
+        "1D": "B",
+        "1I": "C",
+        "1L": "H",
+        "1A": "I",
+        "1E": "D",
+        "1G": "A",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEHJK",
+      "assignments": {
+        "1B": "E",
+        "1A": "C",
+        "1D": "B",
+        "1I": "D",
+        "1K": "J",
+        "1E": "A",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEHJL",
+      "assignments": {
+        "1B": "E",
+        "1A": "C",
+        "1D": "B",
+        "1I": "D",
+        "1L": "H",
+        "1E": "A",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEHKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "B",
+        "1A": "C",
+        "1G": "A",
+        "1I": "H",
+        "1K": "L",
+        "1L": "K",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEIJK",
+      "assignments": {
+        "1I": "C",
+        "1A": "E",
+        "1B": "I",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1K": "D",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEIJL",
+      "assignments": {
+        "1I": "C",
+        "1A": "E",
+        "1B": "I",
+        "1L": "J",
+        "1D": "B",
+        "1E": "D",
+        "1G": "A",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEIKL",
+      "assignments": {
+        "1B": "E",
+        "1I": "C",
+        "1A": "I",
+        "1D": "B",
+        "1G": "A",
+        "1L": "K",
+        "1E": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABCDEJKL",
+      "assignments": {
+        "1A": "C",
+        "1B": "E",
+        "1I": "D",
+        "1D": "B",
+        "1G": "J",
+        "1L": "K",
+        "1E": "A",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFGHI",
+      "assignments": {
+        "1K": "D",
+        "1L": "H",
+        "1B": "F",
+        "1D": "B",
+        "1G": "A",
+        "1A": "I",
+        "1E": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFGHJ",
+      "assignments": {
+        "1K": "D",
+        "1L": "H",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1G": "J",
+        "1E": "A",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFGHK",
+      "assignments": {
+        "1K": "D",
+        "1B": "F",
+        "1D": "B",
+        "1G": "A",
+        "1L": "K",
+        "1A": "H",
+        "1E": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFGHL",
+      "assignments": {
+        "1L": "H",
+        "1B": "F",
+        "1D": "B",
+        "1G": "A",
+        "1K": "L",
+        "1A": "C",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFGIJ",
+      "assignments": {
+        "1L": "I",
+        "1A": "C",
+        "1G": "A",
+        "1K": "D",
+        "1B": "F",
+        "1D": "J",
+        "1I": "G",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFGIK",
+      "assignments": {
+        "1G": "A",
+        "1K": "D",
+        "1L": "K",
+        "1A": "C",
+        "1B": "F",
+        "1D": "I",
+        "1I": "G",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFGIL",
+      "assignments": {
+        "1L": "I",
+        "1G": "A",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1K": "L",
+        "1I": "G",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFGJK",
+      "assignments": {
+        "1A": "C",
+        "1G": "A",
+        "1K": "D",
+        "1L": "K",
+        "1B": "F",
+        "1D": "J",
+        "1I": "G",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFGJL",
+      "assignments": {
+        "1L": "J",
+        "1A": "C",
+        "1G": "A",
+        "1B": "F",
+        "1D": "B",
+        "1K": "L",
+        "1I": "G",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFGKL",
+      "assignments": {
+        "1G": "A",
+        "1L": "K",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1K": "L",
+        "1I": "G",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFHIJ",
+      "assignments": {
+        "1B": "F",
+        "1K": "D",
+        "1L": "H",
+        "1A": "I",
+        "1D": "B",
+        "1G": "J",
+        "1I": "C",
+        "1E": "A"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFHIK",
+      "assignments": {
+        "1B": "F",
+        "1K": "D",
+        "1D": "B",
+        "1G": "A",
+        "1L": "K",
+        "1A": "I",
+        "1I": "H",
+        "1E": "C"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFHIL",
+      "assignments": {
+        "1B": "F",
+        "1L": "H",
+        "1D": "B",
+        "1G": "A",
+        "1K": "L",
+        "1A": "I",
+        "1I": "C",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFHJK",
+      "assignments": {
+        "1B": "F",
+        "1K": "D",
+        "1A": "C",
+        "1D": "B",
+        "1G": "J",
+        "1L": "K",
+        "1I": "H",
+        "1E": "A"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFHJL",
+      "assignments": {
+        "1B": "F",
+        "1L": "H",
+        "1A": "C",
+        "1D": "B",
+        "1G": "J",
+        "1K": "L",
+        "1I": "D",
+        "1E": "A"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFHKL",
+      "assignments": {
+        "1B": "F",
+        "1D": "B",
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1A": "C",
+        "1I": "H",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFIJK",
+      "assignments": {
+        "1A": "C",
+        "1B": "F",
+        "1G": "A",
+        "1I": "D",
+        "1K": "I",
+        "1L": "K",
+        "1D": "J",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFIJL",
+      "assignments": {
+        "1L": "I",
+        "1A": "C",
+        "1B": "F",
+        "1G": "A",
+        "1I": "D",
+        "1D": "J",
+        "1K": "L",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFIKL",
+      "assignments": {
+        "1B": "F",
+        "1G": "A",
+        "1L": "K",
+        "1A": "C",
+        "1D": "I",
+        "1I": "D",
+        "1K": "L",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCDFJKL",
+      "assignments": {
+        "1A": "C",
+        "1B": "F",
+        "1G": "A",
+        "1L": "K",
+        "1D": "J",
+        "1I": "D",
+        "1K": "L",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCDGHIJ",
+      "assignments": {
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1K": "D",
+        "1L": "I",
+        "1E": "A",
+        "1G": "J",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ABCDGHIK",
+      "assignments": {
+        "1B": "G",
+        "1D": "B",
+        "1K": "D",
+        "1A": "C",
+        "1G": "I",
+        "1L": "K",
+        "1E": "A",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ABCDGHIL",
+      "assignments": {
+        "1B": "G",
+        "1D": "B",
+        "1L": "H",
+        "1A": "C",
+        "1G": "I",
+        "1K": "L",
+        "1E": "A",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDGHJK",
+      "assignments": {
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1K": "D",
+        "1G": "J",
+        "1L": "K",
+        "1E": "A",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ABCDGHJL",
+      "assignments": {
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1L": "H",
+        "1G": "J",
+        "1K": "L",
+        "1E": "A",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDGHKL",
+      "assignments": {
+        "1B": "G",
+        "1D": "B",
+        "1A": "C",
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1E": "D",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ABCDGIJK",
+      "assignments": {
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1G": "I",
+        "1I": "D",
+        "1K": "J",
+        "1L": "K",
+        "1E": "A"
+      }
+    },
+    {
+      "qualified_groups": "ABCDGIJL",
+      "assignments": {
+        "1A": "C",
+        "1L": "I",
+        "1B": "G",
+        "1D": "B",
+        "1G": "J",
+        "1I": "D",
+        "1E": "A",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABCDGIKL",
+      "assignments": {
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1G": "I",
+        "1L": "K",
+        "1I": "D",
+        "1K": "L",
+        "1E": "A"
+      }
+    },
+    {
+      "qualified_groups": "ABCDGJKL",
+      "assignments": {
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1G": "J",
+        "1L": "K",
+        "1I": "D",
+        "1K": "L",
+        "1E": "A"
+      }
+    },
+    {
+      "qualified_groups": "ABCDHIJK",
+      "assignments": {
+        "1B": "I",
+        "1A": "C",
+        "1D": "B",
+        "1I": "D",
+        "1K": "J",
+        "1E": "A",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCDHIJL",
+      "assignments": {
+        "1B": "I",
+        "1A": "C",
+        "1D": "B",
+        "1I": "D",
+        "1L": "H",
+        "1E": "A",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABCDHIKL",
+      "assignments": {
+        "1B": "I",
+        "1D": "B",
+        "1A": "C",
+        "1G": "A",
+        "1I": "H",
+        "1K": "L",
+        "1L": "K",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDHJKL",
+      "assignments": {
+        "1B": "J",
+        "1A": "C",
+        "1D": "B",
+        "1G": "A",
+        "1I": "H",
+        "1K": "L",
+        "1L": "K",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABCDIJKL",
+      "assignments": {
+        "1A": "C",
+        "1B": "I",
+        "1I": "D",
+        "1D": "B",
+        "1G": "J",
+        "1L": "K",
+        "1E": "A",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFGHI",
+      "assignments": {
+        "1K": "E",
+        "1L": "H",
+        "1B": "F",
+        "1D": "B",
+        "1E": "A",
+        "1G": "I",
+        "1I": "G",
+        "1A": "C"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFGHJ",
+      "assignments": {
+        "1K": "E",
+        "1L": "H",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFGHK",
+      "assignments": {
+        "1K": "E",
+        "1B": "F",
+        "1D": "B",
+        "1G": "A",
+        "1L": "K",
+        "1A": "H",
+        "1E": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFGHL",
+      "assignments": {
+        "1K": "L",
+        "1L": "E",
+        "1B": "F",
+        "1D": "B",
+        "1G": "A",
+        "1A": "H",
+        "1E": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFGIJ",
+      "assignments": {
+        "1I": "C",
+        "1K": "E",
+        "1L": "I",
+        "1A": "F",
+        "1E": "A",
+        "1G": "J",
+        "1B": "G",
+        "1D": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFGIK",
+      "assignments": {
+        "1K": "E",
+        "1G": "A",
+        "1I": "C",
+        "1L": "K",
+        "1A": "F",
+        "1B": "G",
+        "1D": "I",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFGIL",
+      "assignments": {
+        "1L": "E",
+        "1G": "A",
+        "1I": "C",
+        "1K": "L",
+        "1A": "F",
+        "1B": "G",
+        "1D": "I",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFGJK",
+      "assignments": {
+        "1K": "E",
+        "1A": "C",
+        "1G": "A",
+        "1I": "F",
+        "1L": "K",
+        "1B": "G",
+        "1D": "J",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFGJL",
+      "assignments": {
+        "1L": "E",
+        "1A": "C",
+        "1G": "A",
+        "1I": "F",
+        "1K": "L",
+        "1B": "G",
+        "1D": "J",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFGKL",
+      "assignments": {
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1A": "C",
+        "1B": "E",
+        "1D": "B",
+        "1I": "G",
+        "1E": "F"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFHIJ",
+      "assignments": {
+        "1I": "C",
+        "1K": "E",
+        "1B": "F",
+        "1E": "A",
+        "1L": "H",
+        "1A": "I",
+        "1D": "B",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFHIK",
+      "assignments": {
+        "1K": "E",
+        "1B": "F",
+        "1I": "C",
+        "1D": "B",
+        "1E": "A",
+        "1G": "H",
+        "1L": "K",
+        "1A": "I"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFHIL",
+      "assignments": {
+        "1B": "E",
+        "1I": "C",
+        "1K": "L",
+        "1L": "H",
+        "1D": "B",
+        "1E": "A",
+        "1G": "I",
+        "1A": "F"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFHJK",
+      "assignments": {
+        "1K": "E",
+        "1B": "F",
+        "1I": "C",
+        "1A": "H",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFHJL",
+      "assignments": {
+        "1B": "E",
+        "1I": "C",
+        "1K": "L",
+        "1L": "H",
+        "1A": "F",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFHKL",
+      "assignments": {
+        "1B": "E",
+        "1K": "L",
+        "1D": "B",
+        "1G": "A",
+        "1I": "C",
+        "1L": "K",
+        "1A": "H",
+        "1E": "F"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFIJK",
+      "assignments": {
+        "1I": "C",
+        "1K": "E",
+        "1A": "F",
+        "1B": "I",
+        "1E": "A",
+        "1G": "J",
+        "1L": "K",
+        "1D": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFIJL",
+      "assignments": {
+        "1I": "C",
+        "1L": "E",
+        "1A": "F",
+        "1B": "I",
+        "1E": "A",
+        "1G": "J",
+        "1K": "L",
+        "1D": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFIKL",
+      "assignments": {
+        "1I": "C",
+        "1B": "E",
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1A": "F",
+        "1D": "I",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCEFJKL",
+      "assignments": {
+        "1I": "C",
+        "1A": "E",
+        "1B": "F",
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1D": "J",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCEGHIJ",
+      "assignments": {
+        "1E": "A",
+        "1I": "C",
+        "1K": "E",
+        "1A": "H",
+        "1B": "G",
+        "1D": "B",
+        "1L": "I",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABCEGHIK",
+      "assignments": {
+        "1K": "E",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1I": "C",
+        "1A": "H",
+        "1G": "I",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCEGHIL",
+      "assignments": {
+        "1B": "E",
+        "1D": "B",
+        "1E": "A",
+        "1I": "G",
+        "1K": "L",
+        "1L": "H",
+        "1A": "C",
+        "1G": "I"
+      }
+    },
+    {
+      "qualified_groups": "ABCEGHJK",
+      "assignments": {
+        "1K": "E",
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1I": "H",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCEGHJL",
+      "assignments": {
+        "1A": "C",
+        "1B": "E",
+        "1D": "B",
+        "1E": "A",
+        "1I": "G",
+        "1K": "L",
+        "1L": "H",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABCEGHKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "B",
+        "1K": "L",
+        "1A": "C",
+        "1E": "A",
+        "1G": "H",
+        "1I": "G",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCEGIJK",
+      "assignments": {
+        "1I": "C",
+        "1A": "E",
+        "1E": "A",
+        "1K": "I",
+        "1B": "G",
+        "1D": "B",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCEGIJL",
+      "assignments": {
+        "1I": "C",
+        "1A": "E",
+        "1E": "A",
+        "1L": "I",
+        "1B": "G",
+        "1D": "B",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABCEGIKL",
+      "assignments": {
+        "1I": "C",
+        "1A": "E",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1G": "I",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCEGJKL",
+      "assignments": {
+        "1A": "C",
+        "1I": "G",
+        "1B": "E",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCEHIJK",
+      "assignments": {
+        "1I": "C",
+        "1B": "E",
+        "1E": "A",
+        "1K": "I",
+        "1A": "H",
+        "1D": "B",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCEHIJL",
+      "assignments": {
+        "1I": "C",
+        "1B": "E",
+        "1E": "A",
+        "1A": "H",
+        "1D": "B",
+        "1K": "L",
+        "1L": "I",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABCEHIKL",
+      "assignments": {
+        "1B": "E",
+        "1I": "C",
+        "1D": "B",
+        "1E": "A",
+        "1K": "L",
+        "1A": "H",
+        "1G": "I",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCEHJKL",
+      "assignments": {
+        "1B": "E",
+        "1I": "C",
+        "1A": "H",
+        "1D": "B",
+        "1E": "A",
+        "1K": "L",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCEIJKL",
+      "assignments": {
+        "1I": "C",
+        "1A": "E",
+        "1B": "I",
+        "1E": "A",
+        "1D": "B",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCFGHIJ",
+      "assignments": {
+        "1K": "I",
+        "1L": "H",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCFGHIK",
+      "assignments": {
+        "1K": "I",
+        "1B": "F",
+        "1D": "B",
+        "1G": "A",
+        "1L": "K",
+        "1A": "H",
+        "1E": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCFGHIL",
+      "assignments": {
+        "1K": "L",
+        "1L": "H",
+        "1B": "F",
+        "1D": "B",
+        "1G": "A",
+        "1A": "I",
+        "1E": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCFGHJK",
+      "assignments": {
+        "1K": "J",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1G": "H",
+        "1L": "K",
+        "1E": "A",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCFGHJL",
+      "assignments": {
+        "1K": "L",
+        "1L": "H",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1G": "J",
+        "1E": "A",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCFGHKL",
+      "assignments": {
+        "1K": "L",
+        "1B": "F",
+        "1D": "B",
+        "1G": "A",
+        "1L": "K",
+        "1A": "H",
+        "1E": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABCFGIJK",
+      "assignments": {
+        "1K": "I",
+        "1A": "C",
+        "1G": "A",
+        "1I": "F",
+        "1L": "K",
+        "1B": "G",
+        "1D": "J",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCFGIJL",
+      "assignments": {
+        "1L": "I",
+        "1A": "C",
+        "1G": "A",
+        "1I": "F",
+        "1K": "L",
+        "1B": "G",
+        "1D": "J",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCFGIKL",
+      "assignments": {
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1A": "C",
+        "1B": "F",
+        "1D": "I",
+        "1I": "G",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCFGJKL",
+      "assignments": {
+        "1A": "C",
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1B": "F",
+        "1D": "J",
+        "1I": "G",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCFHIJK",
+      "assignments": {
+        "1K": "I",
+        "1B": "F",
+        "1I": "C",
+        "1A": "H",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCFHIJL",
+      "assignments": {
+        "1B": "F",
+        "1I": "C",
+        "1K": "L",
+        "1L": "H",
+        "1A": "I",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABCFHIKL",
+      "assignments": {
+        "1B": "F",
+        "1K": "L",
+        "1D": "B",
+        "1G": "A",
+        "1I": "H",
+        "1L": "K",
+        "1A": "I",
+        "1E": "C"
+      }
+    },
+    {
+      "qualified_groups": "ABCFHJKL",
+      "assignments": {
+        "1B": "F",
+        "1K": "L",
+        "1A": "C",
+        "1D": "B",
+        "1G": "J",
+        "1I": "H",
+        "1L": "K",
+        "1E": "A"
+      }
+    },
+    {
+      "qualified_groups": "ABCFIJKL",
+      "assignments": {
+        "1I": "C",
+        "1A": "F",
+        "1B": "I",
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1D": "J",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABCGHIJK",
+      "assignments": {
+        "1K": "I",
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1I": "H",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCGHIJL",
+      "assignments": {
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1I": "H",
+        "1K": "L",
+        "1L": "I",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABCGHIKL",
+      "assignments": {
+        "1B": "G",
+        "1D": "B",
+        "1K": "L",
+        "1A": "C",
+        "1E": "A",
+        "1G": "I",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCGHJKL",
+      "assignments": {
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1K": "L",
+        "1E": "A",
+        "1G": "J",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCGIJKL",
+      "assignments": {
+        "1A": "C",
+        "1I": "G",
+        "1B": "I",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABCHIJKL",
+      "assignments": {
+        "1B": "I",
+        "1I": "C",
+        "1A": "H",
+        "1D": "B",
+        "1E": "A",
+        "1K": "L",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFGHI",
+      "assignments": {
+        "1K": "D",
+        "1L": "E",
+        "1A": "F",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1G": "I",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFGHJ",
+      "assignments": {
+        "1A": "E",
+        "1K": "D",
+        "1L": "H",
+        "1B": "F",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFGHK",
+      "assignments": {
+        "1K": "D",
+        "1A": "E",
+        "1B": "F",
+        "1D": "B",
+        "1G": "H",
+        "1L": "K",
+        "1E": "A",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFGHL",
+      "assignments": {
+        "1L": "E",
+        "1A": "F",
+        "1B": "G",
+        "1D": "B",
+        "1G": "A",
+        "1K": "L",
+        "1E": "D",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFGIJ",
+      "assignments": {
+        "1A": "E",
+        "1I": "D",
+        "1L": "I",
+        "1E": "B",
+        "1G": "A",
+        "1K": "J",
+        "1B": "G",
+        "1D": "F"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFGIK",
+      "assignments": {
+        "1A": "E",
+        "1G": "A",
+        "1I": "D",
+        "1K": "I",
+        "1L": "K",
+        "1B": "G",
+        "1D": "B",
+        "1E": "F"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFGIL",
+      "assignments": {
+        "1L": "E",
+        "1A": "F",
+        "1G": "A",
+        "1I": "D",
+        "1B": "G",
+        "1D": "I",
+        "1E": "B",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFGJK",
+      "assignments": {
+        "1A": "E",
+        "1G": "A",
+        "1I": "D",
+        "1K": "J",
+        "1L": "K",
+        "1B": "G",
+        "1D": "B",
+        "1E": "F"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFGJL",
+      "assignments": {
+        "1A": "E",
+        "1L": "J",
+        "1G": "A",
+        "1I": "D",
+        "1B": "G",
+        "1D": "B",
+        "1E": "F",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFGKL",
+      "assignments": {
+        "1A": "E",
+        "1G": "A",
+        "1L": "K",
+        "1B": "F",
+        "1D": "B",
+        "1I": "G",
+        "1K": "L",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFHIJ",
+      "assignments": {
+        "1I": "D",
+        "1A": "E",
+        "1B": "F",
+        "1E": "A",
+        "1K": "I",
+        "1L": "H",
+        "1D": "B",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFHIK",
+      "assignments": {
+        "1B": "E",
+        "1I": "D",
+        "1K": "I",
+        "1A": "F",
+        "1D": "B",
+        "1E": "A",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFHIL",
+      "assignments": {
+        "1B": "E",
+        "1I": "D",
+        "1L": "H",
+        "1A": "F",
+        "1D": "B",
+        "1E": "A",
+        "1G": "I",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFHJK",
+      "assignments": {
+        "1A": "E",
+        "1B": "F",
+        "1I": "D",
+        "1K": "J",
+        "1D": "B",
+        "1E": "A",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFHJL",
+      "assignments": {
+        "1A": "E",
+        "1B": "F",
+        "1I": "D",
+        "1L": "H",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFHKL",
+      "assignments": {
+        "1B": "E",
+        "1A": "F",
+        "1D": "B",
+        "1G": "A",
+        "1I": "H",
+        "1K": "L",
+        "1L": "K",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFIJK",
+      "assignments": {
+        "1I": "D",
+        "1A": "E",
+        "1B": "F",
+        "1E": "A",
+        "1G": "I",
+        "1K": "J",
+        "1L": "K",
+        "1D": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFIJL",
+      "assignments": {
+        "1I": "D",
+        "1A": "E",
+        "1L": "I",
+        "1B": "F",
+        "1E": "A",
+        "1G": "J",
+        "1D": "B",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFIKL",
+      "assignments": {
+        "1I": "D",
+        "1A": "E",
+        "1B": "F",
+        "1G": "A",
+        "1L": "K",
+        "1D": "I",
+        "1E": "B",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEFJKL",
+      "assignments": {
+        "1A": "E",
+        "1I": "D",
+        "1B": "F",
+        "1G": "A",
+        "1L": "K",
+        "1D": "J",
+        "1E": "B",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEGHIJ",
+      "assignments": {
+        "1A": "E",
+        "1E": "A",
+        "1I": "D",
+        "1B": "G",
+        "1D": "B",
+        "1K": "I",
+        "1L": "H",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABDEGHIK",
+      "assignments": {
+        "1A": "E",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1I": "D",
+        "1K": "I",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDEGHIL",
+      "assignments": {
+        "1A": "E",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1I": "D",
+        "1L": "H",
+        "1G": "I",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEGHJK",
+      "assignments": {
+        "1A": "E",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1I": "D",
+        "1K": "J",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDEGHJL",
+      "assignments": {
+        "1A": "E",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1I": "D",
+        "1L": "H",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEGHKL",
+      "assignments": {
+        "1A": "E",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1G": "H",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDEGIJK",
+      "assignments": {
+        "1A": "E",
+        "1I": "D",
+        "1E": "A",
+        "1B": "G",
+        "1D": "B",
+        "1G": "I",
+        "1K": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDEGIJL",
+      "assignments": {
+        "1A": "E",
+        "1I": "D",
+        "1E": "A",
+        "1L": "I",
+        "1B": "G",
+        "1D": "B",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEGIKL",
+      "assignments": {
+        "1A": "E",
+        "1I": "D",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1G": "I",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEGJKL",
+      "assignments": {
+        "1A": "E",
+        "1I": "D",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEHIJK",
+      "assignments": {
+        "1I": "D",
+        "1A": "E",
+        "1B": "I",
+        "1E": "A",
+        "1D": "B",
+        "1K": "J",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDEHIJL",
+      "assignments": {
+        "1I": "D",
+        "1A": "E",
+        "1B": "I",
+        "1E": "A",
+        "1D": "B",
+        "1L": "H",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDEHIKL",
+      "assignments": {
+        "1B": "E",
+        "1I": "D",
+        "1A": "H",
+        "1D": "B",
+        "1E": "A",
+        "1G": "I",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDEHJKL",
+      "assignments": {
+        "1A": "E",
+        "1B": "J",
+        "1I": "D",
+        "1D": "B",
+        "1E": "A",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDEIJKL",
+      "assignments": {
+        "1I": "D",
+        "1A": "E",
+        "1B": "I",
+        "1E": "A",
+        "1D": "B",
+        "1G": "J",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDFGHIJ",
+      "assignments": {
+        "1A": "F",
+        "1K": "D",
+        "1L": "H",
+        "1B": "I",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ABDFGHIK",
+      "assignments": {
+        "1K": "D",
+        "1A": "F",
+        "1B": "G",
+        "1D": "B",
+        "1G": "I",
+        "1L": "K",
+        "1E": "A",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ABDFGHIL",
+      "assignments": {
+        "1L": "H",
+        "1A": "F",
+        "1B": "G",
+        "1D": "B",
+        "1G": "I",
+        "1K": "L",
+        "1E": "A",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABDFGHJK",
+      "assignments": {
+        "1A": "F",
+        "1K": "D",
+        "1B": "G",
+        "1D": "B",
+        "1G": "J",
+        "1L": "K",
+        "1E": "A",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ABDFGHJL",
+      "assignments": {
+        "1A": "F",
+        "1L": "H",
+        "1B": "G",
+        "1D": "B",
+        "1G": "J",
+        "1K": "L",
+        "1E": "A",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABDFGHKL",
+      "assignments": {
+        "1A": "F",
+        "1B": "G",
+        "1D": "B",
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1E": "D",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ABDFGIJK",
+      "assignments": {
+        "1A": "F",
+        "1G": "A",
+        "1I": "D",
+        "1K": "I",
+        "1L": "K",
+        "1B": "G",
+        "1D": "J",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABDFGIJL",
+      "assignments": {
+        "1A": "F",
+        "1L": "I",
+        "1G": "A",
+        "1I": "D",
+        "1B": "G",
+        "1D": "J",
+        "1E": "B",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDFGIKL",
+      "assignments": {
+        "1A": "F",
+        "1G": "A",
+        "1L": "K",
+        "1B": "G",
+        "1D": "I",
+        "1I": "D",
+        "1K": "L",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABDFGJKL",
+      "assignments": {
+        "1A": "F",
+        "1G": "A",
+        "1L": "K",
+        "1B": "G",
+        "1D": "J",
+        "1I": "D",
+        "1K": "L",
+        "1E": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABDFHIJK",
+      "assignments": {
+        "1A": "F",
+        "1B": "I",
+        "1I": "D",
+        "1K": "J",
+        "1D": "B",
+        "1E": "A",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDFHIJL",
+      "assignments": {
+        "1A": "F",
+        "1B": "I",
+        "1I": "D",
+        "1L": "H",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDFHIKL",
+      "assignments": {
+        "1B": "F",
+        "1A": "H",
+        "1D": "B",
+        "1G": "I",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K",
+        "1E": "A"
+      }
+    },
+    {
+      "qualified_groups": "ABDFHJKL",
+      "assignments": {
+        "1A": "F",
+        "1B": "J",
+        "1D": "B",
+        "1G": "A",
+        "1I": "H",
+        "1K": "L",
+        "1L": "K",
+        "1E": "D"
+      }
+    },
+    {
+      "qualified_groups": "ABDFIJKL",
+      "assignments": {
+        "1A": "F",
+        "1I": "D",
+        "1B": "I",
+        "1G": "A",
+        "1L": "K",
+        "1D": "J",
+        "1E": "B",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDGHIJK",
+      "assignments": {
+        "1A": "H",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1I": "D",
+        "1K": "I",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDGHIJL",
+      "assignments": {
+        "1A": "H",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1I": "D",
+        "1L": "I",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDGHIKL",
+      "assignments": {
+        "1A": "H",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1G": "I",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDGHJKL",
+      "assignments": {
+        "1A": "H",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABDGIJKL",
+      "assignments": {
+        "1A": "I",
+        "1I": "D",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ABDHIJKL",
+      "assignments": {
+        "1A": "H",
+        "1B": "I",
+        "1I": "D",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABEFGHIJ",
+      "assignments": {
+        "1E": "A",
+        "1I": "F",
+        "1K": "E",
+        "1A": "H",
+        "1L": "I",
+        "1B": "G",
+        "1D": "B",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABEFGHIK",
+      "assignments": {
+        "1K": "E",
+        "1E": "A",
+        "1I": "F",
+        "1A": "H",
+        "1B": "G",
+        "1D": "B",
+        "1G": "I",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABEFGHIL",
+      "assignments": {
+        "1E": "A",
+        "1I": "F",
+        "1K": "L",
+        "1L": "E",
+        "1A": "H",
+        "1B": "G",
+        "1D": "B",
+        "1G": "I"
+      }
+    },
+    {
+      "qualified_groups": "ABEFGHJK",
+      "assignments": {
+        "1K": "E",
+        "1A": "F",
+        "1E": "A",
+        "1I": "G",
+        "1B": "J",
+        "1D": "B",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABEFGHJL",
+      "assignments": {
+        "1A": "E",
+        "1E": "A",
+        "1I": "F",
+        "1K": "L",
+        "1L": "H",
+        "1B": "G",
+        "1D": "B",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABEFGHKL",
+      "assignments": {
+        "1K": "L",
+        "1A": "E",
+        "1B": "F",
+        "1D": "B",
+        "1E": "A",
+        "1G": "H",
+        "1I": "G",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABEFGIJK",
+      "assignments": {
+        "1I": "F",
+        "1A": "E",
+        "1E": "A",
+        "1K": "I",
+        "1G": "J",
+        "1L": "K",
+        "1B": "G",
+        "1D": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABEFGIJL",
+      "assignments": {
+        "1I": "F",
+        "1A": "E",
+        "1E": "A",
+        "1L": "I",
+        "1G": "J",
+        "1K": "L",
+        "1B": "G",
+        "1D": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABEFGIKL",
+      "assignments": {
+        "1I": "F",
+        "1A": "E",
+        "1E": "A",
+        "1G": "I",
+        "1K": "L",
+        "1L": "K",
+        "1B": "G",
+        "1D": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABEFGJKL",
+      "assignments": {
+        "1A": "E",
+        "1I": "F",
+        "1E": "A",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K",
+        "1B": "G",
+        "1D": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABEFHIJK",
+      "assignments": {
+        "1I": "F",
+        "1E": "A",
+        "1K": "E",
+        "1A": "H",
+        "1B": "I",
+        "1D": "B",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABEFHIJL",
+      "assignments": {
+        "1I": "F",
+        "1E": "A",
+        "1A": "E",
+        "1B": "I",
+        "1K": "L",
+        "1L": "H",
+        "1D": "B",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABEFHIKL",
+      "assignments": {
+        "1I": "F",
+        "1B": "E",
+        "1E": "A",
+        "1K": "L",
+        "1A": "H",
+        "1D": "B",
+        "1G": "I",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABEFHJKL",
+      "assignments": {
+        "1I": "F",
+        "1A": "E",
+        "1B": "J",
+        "1E": "A",
+        "1K": "L",
+        "1D": "B",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABEFIJKL",
+      "assignments": {
+        "1I": "F",
+        "1A": "E",
+        "1E": "A",
+        "1B": "I",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K",
+        "1D": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABEGHIJK",
+      "assignments": {
+        "1E": "A",
+        "1I": "G",
+        "1A": "E",
+        "1K": "I",
+        "1B": "J",
+        "1D": "B",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABEGHIJL",
+      "assignments": {
+        "1E": "A",
+        "1I": "G",
+        "1A": "E",
+        "1B": "I",
+        "1D": "B",
+        "1K": "L",
+        "1L": "H",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABEGHIKL",
+      "assignments": {
+        "1E": "A",
+        "1I": "G",
+        "1A": "E",
+        "1B": "I",
+        "1D": "B",
+        "1K": "L",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABEGHJKL",
+      "assignments": {
+        "1A": "E",
+        "1E": "A",
+        "1I": "G",
+        "1B": "J",
+        "1D": "B",
+        "1K": "L",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABEGIJKL",
+      "assignments": {
+        "1I": "G",
+        "1A": "E",
+        "1E": "A",
+        "1B": "I",
+        "1D": "B",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABEHIJKL",
+      "assignments": {
+        "1I": "H",
+        "1E": "A",
+        "1A": "E",
+        "1B": "I",
+        "1D": "B",
+        "1K": "L",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABFGHIJK",
+      "assignments": {
+        "1K": "I",
+        "1A": "F",
+        "1E": "A",
+        "1I": "G",
+        "1B": "J",
+        "1D": "B",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABFGHIJL",
+      "assignments": {
+        "1A": "F",
+        "1E": "A",
+        "1I": "G",
+        "1K": "L",
+        "1L": "H",
+        "1B": "I",
+        "1D": "B",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ABFGHIKL",
+      "assignments": {
+        "1K": "L",
+        "1A": "F",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1G": "I",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABFGHJKL",
+      "assignments": {
+        "1A": "F",
+        "1K": "L",
+        "1B": "G",
+        "1D": "B",
+        "1E": "A",
+        "1G": "J",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABFGIJKL",
+      "assignments": {
+        "1A": "F",
+        "1I": "G",
+        "1E": "A",
+        "1G": "I",
+        "1K": "L",
+        "1L": "K",
+        "1B": "J",
+        "1D": "B"
+      }
+    },
+    {
+      "qualified_groups": "ABFHIJKL",
+      "assignments": {
+        "1I": "F",
+        "1A": "H",
+        "1B": "I",
+        "1E": "A",
+        "1K": "L",
+        "1D": "B",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ABGHIJKL",
+      "assignments": {
+        "1A": "H",
+        "1E": "A",
+        "1I": "G",
+        "1B": "I",
+        "1D": "B",
+        "1K": "L",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFGHI",
+      "assignments": {
+        "1D": "E",
+        "1K": "D",
+        "1L": "H",
+        "1B": "F",
+        "1E": "A",
+        "1G": "I",
+        "1A": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFGHJ",
+      "assignments": {
+        "1D": "E",
+        "1K": "D",
+        "1L": "H",
+        "1A": "C",
+        "1B": "F",
+        "1E": "A",
+        "1G": "J",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFGHK",
+      "assignments": {
+        "1D": "E",
+        "1K": "D",
+        "1B": "F",
+        "1G": "A",
+        "1L": "K",
+        "1A": "H",
+        "1E": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFGHL",
+      "assignments": {
+        "1D": "E",
+        "1L": "H",
+        "1B": "F",
+        "1G": "A",
+        "1K": "L",
+        "1A": "C",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFGIJ",
+      "assignments": {
+        "1L": "E",
+        "1A": "C",
+        "1D": "F",
+        "1E": "A",
+        "1G": "I",
+        "1I": "D",
+        "1K": "J",
+        "1B": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFGIK",
+      "assignments": {
+        "1D": "E",
+        "1G": "A",
+        "1K": "D",
+        "1L": "K",
+        "1A": "C",
+        "1B": "I",
+        "1E": "F",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFGIL",
+      "assignments": {
+        "1L": "E",
+        "1D": "F",
+        "1G": "A",
+        "1A": "C",
+        "1B": "I",
+        "1E": "D",
+        "1I": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFGJK",
+      "assignments": {
+        "1A": "C",
+        "1D": "E",
+        "1G": "A",
+        "1K": "D",
+        "1L": "K",
+        "1B": "J",
+        "1E": "F",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFGJL",
+      "assignments": {
+        "1L": "E",
+        "1A": "C",
+        "1D": "F",
+        "1G": "A",
+        "1B": "J",
+        "1E": "D",
+        "1I": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFGKL",
+      "assignments": {
+        "1D": "E",
+        "1G": "A",
+        "1L": "K",
+        "1A": "C",
+        "1B": "F",
+        "1K": "L",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFHIJ",
+      "assignments": {
+        "1B": "E",
+        "1D": "F",
+        "1E": "A",
+        "1I": "C",
+        "1K": "D",
+        "1L": "H",
+        "1A": "I",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFHIK",
+      "assignments": {
+        "1B": "E",
+        "1D": "F",
+        "1K": "D",
+        "1E": "A",
+        "1G": "H",
+        "1I": "C",
+        "1L": "K",
+        "1A": "I"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFHIL",
+      "assignments": {
+        "1B": "E",
+        "1D": "F",
+        "1L": "H",
+        "1E": "A",
+        "1G": "I",
+        "1I": "D",
+        "1K": "L",
+        "1A": "C"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFHJK",
+      "assignments": {
+        "1B": "E",
+        "1D": "F",
+        "1K": "D",
+        "1A": "C",
+        "1E": "A",
+        "1G": "J",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFHJL",
+      "assignments": {
+        "1B": "E",
+        "1D": "F",
+        "1L": "H",
+        "1A": "C",
+        "1E": "A",
+        "1G": "J",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFHKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "F",
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1A": "C",
+        "1E": "D",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFIJK",
+      "assignments": {
+        "1I": "C",
+        "1A": "E",
+        "1B": "F",
+        "1D": "I",
+        "1E": "A",
+        "1G": "J",
+        "1K": "D",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFIJL",
+      "assignments": {
+        "1I": "C",
+        "1L": "E",
+        "1A": "F",
+        "1B": "I",
+        "1D": "J",
+        "1E": "D",
+        "1G": "A",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFIKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "F",
+        "1G": "A",
+        "1I": "C",
+        "1L": "K",
+        "1A": "I",
+        "1E": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDEFJKL",
+      "assignments": {
+        "1A": "C",
+        "1B": "E",
+        "1D": "F",
+        "1G": "J",
+        "1I": "D",
+        "1L": "K",
+        "1E": "A",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDEGHIJ",
+      "assignments": {
+        "1D": "E",
+        "1E": "A",
+        "1A": "C",
+        "1B": "G",
+        "1I": "D",
+        "1K": "I",
+        "1L": "H",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ACDEGHIK",
+      "assignments": {
+        "1D": "E",
+        "1B": "G",
+        "1E": "A",
+        "1K": "D",
+        "1A": "C",
+        "1G": "I",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACDEGHIL",
+      "assignments": {
+        "1D": "E",
+        "1B": "G",
+        "1E": "A",
+        "1L": "H",
+        "1A": "C",
+        "1G": "I",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDEGHJK",
+      "assignments": {
+        "1D": "E",
+        "1A": "C",
+        "1B": "G",
+        "1E": "A",
+        "1K": "D",
+        "1G": "J",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACDEGHJL",
+      "assignments": {
+        "1D": "E",
+        "1A": "C",
+        "1B": "G",
+        "1E": "A",
+        "1L": "H",
+        "1G": "J",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDEGHKL",
+      "assignments": {
+        "1D": "E",
+        "1B": "G",
+        "1A": "C",
+        "1E": "A",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "ACDEGIJK",
+      "assignments": {
+        "1A": "C",
+        "1D": "E",
+        "1E": "A",
+        "1I": "D",
+        "1B": "G",
+        "1G": "I",
+        "1K": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACDEGIJL",
+      "assignments": {
+        "1A": "C",
+        "1D": "E",
+        "1E": "A",
+        "1I": "D",
+        "1L": "I",
+        "1B": "G",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDEGIKL",
+      "assignments": {
+        "1D": "E",
+        "1A": "C",
+        "1B": "G",
+        "1E": "A",
+        "1G": "I",
+        "1I": "D",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDEGJKL",
+      "assignments": {
+        "1A": "C",
+        "1D": "E",
+        "1B": "G",
+        "1E": "A",
+        "1G": "J",
+        "1I": "D",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDEHIJK",
+      "assignments": {
+        "1B": "E",
+        "1D": "I",
+        "1E": "A",
+        "1I": "C",
+        "1A": "H",
+        "1K": "D",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACDEHIJL",
+      "assignments": {
+        "1B": "E",
+        "1D": "I",
+        "1E": "A",
+        "1I": "D",
+        "1A": "C",
+        "1L": "H",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDEHIKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "I",
+        "1E": "A",
+        "1I": "D",
+        "1A": "C",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACDEHJKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "J",
+        "1A": "C",
+        "1E": "A",
+        "1I": "D",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACDEIJKL",
+      "assignments": {
+        "1I": "C",
+        "1A": "E",
+        "1B": "I",
+        "1D": "J",
+        "1E": "D",
+        "1G": "A",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDFGHIJ",
+      "assignments": {
+        "1D": "F",
+        "1K": "D",
+        "1L": "H",
+        "1A": "C",
+        "1B": "I",
+        "1E": "A",
+        "1G": "J",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACDFGHIK",
+      "assignments": {
+        "1D": "F",
+        "1K": "D",
+        "1B": "G",
+        "1G": "A",
+        "1L": "K",
+        "1A": "I",
+        "1E": "C",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ACDFGHIL",
+      "assignments": {
+        "1D": "F",
+        "1L": "H",
+        "1B": "G",
+        "1G": "A",
+        "1K": "L",
+        "1A": "I",
+        "1E": "C",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "ACDFGHJK",
+      "assignments": {
+        "1D": "F",
+        "1K": "D",
+        "1A": "C",
+        "1B": "G",
+        "1G": "J",
+        "1L": "K",
+        "1E": "A",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ACDFGHJL",
+      "assignments": {
+        "1D": "F",
+        "1L": "H",
+        "1A": "C",
+        "1B": "G",
+        "1G": "J",
+        "1K": "L",
+        "1E": "A",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "ACDFGHKL",
+      "assignments": {
+        "1D": "F",
+        "1B": "G",
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1A": "C",
+        "1E": "D",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ACDFGIJK",
+      "assignments": {
+        "1A": "C",
+        "1D": "F",
+        "1G": "A",
+        "1K": "I",
+        "1L": "K",
+        "1B": "J",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACDFGIJL",
+      "assignments": {
+        "1L": "I",
+        "1A": "C",
+        "1D": "F",
+        "1G": "A",
+        "1B": "J",
+        "1E": "D",
+        "1I": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDFGIKL",
+      "assignments": {
+        "1D": "F",
+        "1G": "A",
+        "1L": "K",
+        "1A": "C",
+        "1B": "I",
+        "1K": "L",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACDFGJKL",
+      "assignments": {
+        "1A": "C",
+        "1D": "F",
+        "1G": "A",
+        "1L": "K",
+        "1B": "J",
+        "1K": "L",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACDFHIJK",
+      "assignments": {
+        "1B": "F",
+        "1D": "I",
+        "1K": "D",
+        "1A": "C",
+        "1E": "A",
+        "1G": "J",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACDFHIJL",
+      "assignments": {
+        "1B": "F",
+        "1D": "I",
+        "1L": "H",
+        "1A": "C",
+        "1E": "A",
+        "1G": "J",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDFHIKL",
+      "assignments": {
+        "1B": "F",
+        "1D": "I",
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1A": "C",
+        "1E": "D",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ACDFHJKL",
+      "assignments": {
+        "1B": "F",
+        "1D": "J",
+        "1A": "C",
+        "1G": "A",
+        "1K": "L",
+        "1L": "K",
+        "1E": "D",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ACDFIJKL",
+      "assignments": {
+        "1A": "C",
+        "1B": "F",
+        "1D": "I",
+        "1G": "J",
+        "1I": "D",
+        "1L": "K",
+        "1E": "A",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDGHIJK",
+      "assignments": {
+        "1D": "I",
+        "1A": "C",
+        "1B": "G",
+        "1E": "A",
+        "1K": "D",
+        "1G": "J",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACDGHIJL",
+      "assignments": {
+        "1D": "I",
+        "1A": "C",
+        "1B": "G",
+        "1E": "A",
+        "1L": "H",
+        "1G": "J",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDGHIKL",
+      "assignments": {
+        "1D": "I",
+        "1B": "G",
+        "1A": "C",
+        "1E": "A",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "ACDGHJKL",
+      "assignments": {
+        "1D": "J",
+        "1A": "C",
+        "1B": "G",
+        "1E": "A",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "ACDGIJKL",
+      "assignments": {
+        "1A": "C",
+        "1D": "I",
+        "1B": "G",
+        "1E": "A",
+        "1G": "J",
+        "1I": "D",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ACDHIJKL",
+      "assignments": {
+        "1B": "I",
+        "1D": "J",
+        "1A": "C",
+        "1E": "A",
+        "1I": "D",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACEFGHIJ",
+      "assignments": {
+        "1E": "A",
+        "1K": "E",
+        "1D": "F",
+        "1I": "C",
+        "1L": "H",
+        "1A": "I",
+        "1B": "G",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ACEFGHIK",
+      "assignments": {
+        "1K": "E",
+        "1D": "F",
+        "1E": "A",
+        "1B": "G",
+        "1G": "H",
+        "1I": "C",
+        "1L": "K",
+        "1A": "I"
+      }
+    },
+    {
+      "qualified_groups": "ACEFGHIL",
+      "assignments": {
+        "1D": "E",
+        "1E": "A",
+        "1K": "L",
+        "1L": "H",
+        "1B": "F",
+        "1G": "I",
+        "1I": "G",
+        "1A": "C"
+      }
+    },
+    {
+      "qualified_groups": "ACEFGHJK",
+      "assignments": {
+        "1K": "E",
+        "1D": "F",
+        "1E": "A",
+        "1A": "C",
+        "1B": "G",
+        "1G": "J",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACEFGHJL",
+      "assignments": {
+        "1D": "E",
+        "1E": "A",
+        "1K": "L",
+        "1L": "H",
+        "1A": "C",
+        "1B": "F",
+        "1G": "J",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACEFGHKL",
+      "assignments": {
+        "1D": "E",
+        "1K": "L",
+        "1B": "F",
+        "1E": "A",
+        "1G": "H",
+        "1L": "K",
+        "1A": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACEFGIJK",
+      "assignments": {
+        "1E": "A",
+        "1I": "C",
+        "1K": "E",
+        "1A": "F",
+        "1D": "I",
+        "1G": "J",
+        "1L": "K",
+        "1B": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACEFGIJL",
+      "assignments": {
+        "1E": "A",
+        "1I": "C",
+        "1L": "E",
+        "1A": "F",
+        "1D": "I",
+        "1G": "J",
+        "1K": "L",
+        "1B": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACEFGIKL",
+      "assignments": {
+        "1D": "E",
+        "1E": "A",
+        "1G": "I",
+        "1I": "C",
+        "1K": "L",
+        "1L": "K",
+        "1A": "F",
+        "1B": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACEFGJKL",
+      "assignments": {
+        "1A": "C",
+        "1D": "E",
+        "1E": "A",
+        "1G": "J",
+        "1I": "F",
+        "1K": "L",
+        "1L": "K",
+        "1B": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACEFHIJK",
+      "assignments": {
+        "1E": "A",
+        "1I": "C",
+        "1K": "E",
+        "1B": "F",
+        "1D": "I",
+        "1A": "H",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACEFHIJL",
+      "assignments": {
+        "1E": "A",
+        "1I": "C",
+        "1B": "E",
+        "1D": "F",
+        "1K": "L",
+        "1L": "H",
+        "1A": "I",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ACEFHIKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "F",
+        "1E": "A",
+        "1I": "C",
+        "1K": "L",
+        "1G": "H",
+        "1L": "K",
+        "1A": "I"
+      }
+    },
+    {
+      "qualified_groups": "ACEFHJKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "F",
+        "1E": "A",
+        "1I": "C",
+        "1K": "L",
+        "1A": "H",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACEFIJKL",
+      "assignments": {
+        "1I": "C",
+        "1E": "A",
+        "1A": "E",
+        "1B": "F",
+        "1D": "I",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACEGHIJK",
+      "assignments": {
+        "1E": "A",
+        "1D": "E",
+        "1I": "C",
+        "1K": "I",
+        "1A": "H",
+        "1B": "G",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACEGHIJL",
+      "assignments": {
+        "1E": "A",
+        "1D": "E",
+        "1I": "C",
+        "1A": "H",
+        "1B": "G",
+        "1K": "L",
+        "1L": "I",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ACEGHIKL",
+      "assignments": {
+        "1D": "E",
+        "1E": "A",
+        "1B": "G",
+        "1I": "C",
+        "1K": "L",
+        "1A": "H",
+        "1G": "I",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACEGHJKL",
+      "assignments": {
+        "1D": "E",
+        "1E": "A",
+        "1A": "C",
+        "1B": "G",
+        "1I": "H",
+        "1K": "L",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACEGIJKL",
+      "assignments": {
+        "1E": "A",
+        "1I": "C",
+        "1A": "E",
+        "1D": "I",
+        "1B": "G",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACEHIJKL",
+      "assignments": {
+        "1E": "A",
+        "1I": "C",
+        "1B": "E",
+        "1D": "I",
+        "1A": "H",
+        "1K": "L",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACFGHIJK",
+      "assignments": {
+        "1K": "I",
+        "1D": "F",
+        "1E": "A",
+        "1A": "C",
+        "1B": "G",
+        "1G": "J",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACFGHIJL",
+      "assignments": {
+        "1D": "F",
+        "1E": "A",
+        "1K": "L",
+        "1L": "H",
+        "1A": "C",
+        "1B": "I",
+        "1G": "J",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "ACFGHIKL",
+      "assignments": {
+        "1D": "F",
+        "1K": "L",
+        "1B": "G",
+        "1E": "A",
+        "1G": "H",
+        "1L": "K",
+        "1A": "I",
+        "1I": "C"
+      }
+    },
+    {
+      "qualified_groups": "ACFGHJKL",
+      "assignments": {
+        "1D": "F",
+        "1K": "L",
+        "1A": "C",
+        "1B": "G",
+        "1E": "A",
+        "1G": "J",
+        "1L": "K",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "ACFGIJKL",
+      "assignments": {
+        "1A": "C",
+        "1D": "F",
+        "1E": "A",
+        "1G": "I",
+        "1I": "G",
+        "1K": "L",
+        "1L": "K",
+        "1B": "J"
+      }
+    },
+    {
+      "qualified_groups": "ACFHIJKL",
+      "assignments": {
+        "1B": "F",
+        "1D": "I",
+        "1E": "A",
+        "1I": "C",
+        "1K": "L",
+        "1A": "H",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ACGHIJKL",
+      "assignments": {
+        "1D": "I",
+        "1E": "A",
+        "1A": "C",
+        "1B": "G",
+        "1I": "H",
+        "1K": "L",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ADEFGHIJ",
+      "assignments": {
+        "1E": "A",
+        "1A": "E",
+        "1D": "F",
+        "1I": "D",
+        "1K": "I",
+        "1L": "H",
+        "1B": "G",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "ADEFGHIK",
+      "assignments": {
+        "1D": "E",
+        "1E": "A",
+        "1K": "D",
+        "1A": "F",
+        "1B": "G",
+        "1G": "I",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ADEFGHIL",
+      "assignments": {
+        "1D": "E",
+        "1E": "A",
+        "1L": "H",
+        "1A": "F",
+        "1B": "G",
+        "1G": "I",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ADEFGHJK",
+      "assignments": {
+        "1A": "E",
+        "1D": "F",
+        "1E": "A",
+        "1K": "D",
+        "1B": "G",
+        "1G": "J",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ADEFGHJL",
+      "assignments": {
+        "1A": "E",
+        "1D": "F",
+        "1E": "A",
+        "1L": "H",
+        "1B": "G",
+        "1G": "J",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ADEFGHKL",
+      "assignments": {
+        "1D": "E",
+        "1A": "F",
+        "1B": "G",
+        "1E": "A",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "ADEFGIJK",
+      "assignments": {
+        "1A": "E",
+        "1E": "A",
+        "1I": "D",
+        "1D": "F",
+        "1G": "I",
+        "1K": "J",
+        "1L": "K",
+        "1B": "G"
+      }
+    },
+    {
+      "qualified_groups": "ADEFGIJL",
+      "assignments": {
+        "1A": "E",
+        "1E": "A",
+        "1I": "D",
+        "1L": "I",
+        "1D": "F",
+        "1G": "J",
+        "1B": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ADEFGIKL",
+      "assignments": {
+        "1A": "E",
+        "1D": "F",
+        "1E": "A",
+        "1G": "I",
+        "1I": "D",
+        "1L": "K",
+        "1B": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ADEFGJKL",
+      "assignments": {
+        "1A": "E",
+        "1D": "F",
+        "1E": "A",
+        "1G": "J",
+        "1I": "D",
+        "1L": "K",
+        "1B": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ADEFHIJK",
+      "assignments": {
+        "1E": "A",
+        "1I": "D",
+        "1A": "E",
+        "1B": "F",
+        "1D": "I",
+        "1K": "J",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ADEFHIJL",
+      "assignments": {
+        "1E": "A",
+        "1I": "D",
+        "1A": "E",
+        "1B": "F",
+        "1D": "I",
+        "1L": "H",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ADEFHIKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "F",
+        "1E": "A",
+        "1I": "D",
+        "1A": "H",
+        "1G": "I",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ADEFHJKL",
+      "assignments": {
+        "1A": "E",
+        "1B": "F",
+        "1D": "J",
+        "1E": "A",
+        "1I": "D",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ADEFIJKL",
+      "assignments": {
+        "1I": "D",
+        "1A": "E",
+        "1E": "A",
+        "1B": "F",
+        "1D": "I",
+        "1G": "J",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ADEGHIJK",
+      "assignments": {
+        "1E": "A",
+        "1A": "E",
+        "1D": "I",
+        "1I": "D",
+        "1B": "G",
+        "1K": "J",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ADEGHIJL",
+      "assignments": {
+        "1E": "A",
+        "1A": "E",
+        "1D": "I",
+        "1I": "D",
+        "1B": "G",
+        "1L": "H",
+        "1G": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ADEGHIKL",
+      "assignments": {
+        "1D": "E",
+        "1E": "A",
+        "1A": "H",
+        "1B": "G",
+        "1I": "D",
+        "1G": "I",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ADEGHJKL",
+      "assignments": {
+        "1A": "E",
+        "1D": "J",
+        "1E": "A",
+        "1B": "G",
+        "1I": "D",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ADEGIJKL",
+      "assignments": {
+        "1A": "E",
+        "1E": "A",
+        "1I": "D",
+        "1D": "I",
+        "1B": "G",
+        "1G": "J",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ADEHIJKL",
+      "assignments": {
+        "1E": "A",
+        "1I": "D",
+        "1A": "E",
+        "1B": "I",
+        "1D": "J",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ADFGHIJK",
+      "assignments": {
+        "1A": "F",
+        "1D": "I",
+        "1E": "A",
+        "1K": "D",
+        "1B": "G",
+        "1G": "J",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ADFGHIJL",
+      "assignments": {
+        "1A": "F",
+        "1D": "I",
+        "1E": "A",
+        "1L": "H",
+        "1B": "G",
+        "1G": "J",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ADFGHIKL",
+      "assignments": {
+        "1D": "F",
+        "1A": "H",
+        "1B": "G",
+        "1E": "A",
+        "1G": "I",
+        "1K": "L",
+        "1L": "K",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "ADFGHJKL",
+      "assignments": {
+        "1A": "F",
+        "1D": "J",
+        "1B": "G",
+        "1E": "A",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "ADFGIJKL",
+      "assignments": {
+        "1A": "F",
+        "1D": "I",
+        "1E": "A",
+        "1G": "J",
+        "1I": "D",
+        "1L": "K",
+        "1B": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "ADFHIJKL",
+      "assignments": {
+        "1A": "F",
+        "1B": "I",
+        "1D": "J",
+        "1E": "A",
+        "1I": "D",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "ADGHIJKL",
+      "assignments": {
+        "1A": "H",
+        "1D": "I",
+        "1E": "A",
+        "1B": "G",
+        "1I": "D",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "AEFGHIJK",
+      "assignments": {
+        "1E": "A",
+        "1I": "F",
+        "1K": "E",
+        "1A": "H",
+        "1D": "I",
+        "1B": "G",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "AEFGHIJL",
+      "assignments": {
+        "1E": "A",
+        "1I": "F",
+        "1A": "E",
+        "1D": "I",
+        "1K": "L",
+        "1L": "H",
+        "1B": "G",
+        "1G": "J"
+      }
+    },
+    {
+      "qualified_groups": "AEFGHIKL",
+      "assignments": {
+        "1E": "A",
+        "1D": "E",
+        "1I": "F",
+        "1K": "L",
+        "1A": "H",
+        "1B": "G",
+        "1G": "I",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "AEFGHJKL",
+      "assignments": {
+        "1E": "A",
+        "1A": "E",
+        "1D": "F",
+        "1I": "G",
+        "1K": "L",
+        "1B": "J",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "AEFGIJKL",
+      "assignments": {
+        "1E": "A",
+        "1I": "F",
+        "1A": "E",
+        "1D": "I",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K",
+        "1B": "G"
+      }
+    },
+    {
+      "qualified_groups": "AEFHIJKL",
+      "assignments": {
+        "1E": "A",
+        "1I": "F",
+        "1A": "E",
+        "1B": "I",
+        "1D": "J",
+        "1K": "L",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "AEGHIJKL",
+      "assignments": {
+        "1E": "A",
+        "1I": "G",
+        "1A": "E",
+        "1D": "I",
+        "1B": "J",
+        "1K": "L",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "AFGHIJKL",
+      "assignments": {
+        "1E": "A",
+        "1A": "F",
+        "1D": "I",
+        "1I": "G",
+        "1K": "L",
+        "1B": "J",
+        "1G": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFGHI",
+      "assignments": {
+        "1G": "E",
+        "1K": "D",
+        "1L": "H",
+        "1B": "F",
+        "1D": "B",
+        "1E": "C",
+        "1A": "I",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFGHJ",
+      "assignments": {
+        "1G": "E",
+        "1K": "D",
+        "1L": "H",
+        "1A": "C",
+        "1B": "F",
+        "1D": "J",
+        "1E": "B",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFGHK",
+      "assignments": {
+        "1G": "E",
+        "1K": "D",
+        "1B": "F",
+        "1D": "B",
+        "1L": "K",
+        "1A": "H",
+        "1E": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFGHL",
+      "assignments": {
+        "1G": "E",
+        "1L": "H",
+        "1B": "F",
+        "1D": "B",
+        "1K": "L",
+        "1A": "C",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFGIJ",
+      "assignments": {
+        "1G": "E",
+        "1L": "I",
+        "1A": "C",
+        "1E": "B",
+        "1I": "D",
+        "1K": "J",
+        "1B": "G",
+        "1D": "F"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFGIK",
+      "assignments": {
+        "1G": "E",
+        "1K": "D",
+        "1L": "K",
+        "1A": "C",
+        "1B": "F",
+        "1D": "I",
+        "1E": "B",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFGIL",
+      "assignments": {
+        "1G": "E",
+        "1L": "I",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1E": "D",
+        "1I": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFGJK",
+      "assignments": {
+        "1G": "E",
+        "1A": "C",
+        "1K": "D",
+        "1L": "K",
+        "1B": "F",
+        "1D": "J",
+        "1E": "B",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFGJL",
+      "assignments": {
+        "1G": "E",
+        "1L": "J",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1E": "D",
+        "1I": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFGKL",
+      "assignments": {
+        "1G": "E",
+        "1L": "K",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1K": "L",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFHIJ",
+      "assignments": {
+        "1B": "E",
+        "1E": "B",
+        "1G": "H",
+        "1I": "C",
+        "1K": "D",
+        "1L": "I",
+        "1A": "F",
+        "1D": "J"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFHIK",
+      "assignments": {
+        "1B": "E",
+        "1G": "H",
+        "1K": "D",
+        "1D": "B",
+        "1E": "C",
+        "1I": "F",
+        "1L": "K",
+        "1A": "I"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFHIL",
+      "assignments": {
+        "1B": "E",
+        "1G": "H",
+        "1L": "I",
+        "1D": "B",
+        "1E": "C",
+        "1I": "D",
+        "1K": "L",
+        "1A": "F"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFHJK",
+      "assignments": {
+        "1B": "E",
+        "1G": "H",
+        "1K": "D",
+        "1A": "C",
+        "1D": "J",
+        "1E": "B",
+        "1I": "F",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFHJL",
+      "assignments": {
+        "1B": "E",
+        "1G": "H",
+        "1L": "J",
+        "1A": "C",
+        "1D": "B",
+        "1E": "D",
+        "1I": "F",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFHKL",
+      "assignments": {
+        "1B": "E",
+        "1G": "H",
+        "1D": "B",
+        "1K": "L",
+        "1L": "K",
+        "1A": "C",
+        "1E": "D",
+        "1I": "F"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFIJK",
+      "assignments": {
+        "1G": "E",
+        "1I": "C",
+        "1A": "F",
+        "1B": "I",
+        "1E": "B",
+        "1K": "D",
+        "1L": "K",
+        "1D": "J"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFIJL",
+      "assignments": {
+        "1G": "E",
+        "1I": "C",
+        "1L": "I",
+        "1A": "F",
+        "1B": "J",
+        "1E": "D",
+        "1D": "B",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFIKL",
+      "assignments": {
+        "1G": "E",
+        "1B": "F",
+        "1I": "C",
+        "1L": "K",
+        "1A": "I",
+        "1D": "B",
+        "1E": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDEFJKL",
+      "assignments": {
+        "1G": "E",
+        "1A": "C",
+        "1B": "F",
+        "1I": "D",
+        "1L": "K",
+        "1D": "J",
+        "1E": "B",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDEGHIJ",
+      "assignments": {
+        "1E": "B",
+        "1A": "C",
+        "1B": "E",
+        "1D": "I",
+        "1G": "H",
+        "1I": "G",
+        "1K": "D",
+        "1L": "J"
+      }
+    },
+    {
+      "qualified_groups": "BCDEGHIK",
+      "assignments": {
+        "1B": "E",
+        "1D": "B",
+        "1E": "C",
+        "1G": "H",
+        "1K": "D",
+        "1A": "I",
+        "1I": "G",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCDEGHIL",
+      "assignments": {
+        "1B": "E",
+        "1D": "B",
+        "1E": "D",
+        "1G": "H",
+        "1L": "I",
+        "1A": "C",
+        "1I": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDEGHJK",
+      "assignments": {
+        "1A": "C",
+        "1B": "E",
+        "1D": "B",
+        "1E": "D",
+        "1G": "H",
+        "1K": "J",
+        "1I": "G",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCDEGHJL",
+      "assignments": {
+        "1A": "C",
+        "1B": "E",
+        "1D": "B",
+        "1E": "D",
+        "1G": "H",
+        "1L": "J",
+        "1I": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDEGHKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "B",
+        "1G": "H",
+        "1A": "C",
+        "1E": "D",
+        "1K": "L",
+        "1L": "K",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDEGIJK",
+      "assignments": {
+        "1A": "C",
+        "1E": "B",
+        "1G": "E",
+        "1I": "D",
+        "1B": "G",
+        "1D": "I",
+        "1K": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCDEGIJL",
+      "assignments": {
+        "1A": "C",
+        "1E": "B",
+        "1G": "E",
+        "1I": "D",
+        "1L": "I",
+        "1B": "G",
+        "1D": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDEGIKL",
+      "assignments": {
+        "1G": "E",
+        "1A": "C",
+        "1B": "G",
+        "1D": "I",
+        "1E": "B",
+        "1I": "D",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDEGJKL",
+      "assignments": {
+        "1A": "C",
+        "1G": "E",
+        "1B": "G",
+        "1D": "J",
+        "1E": "B",
+        "1I": "D",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDEHIJK",
+      "assignments": {
+        "1B": "E",
+        "1E": "B",
+        "1I": "C",
+        "1A": "H",
+        "1D": "I",
+        "1G": "J",
+        "1K": "D",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCDEHIJL",
+      "assignments": {
+        "1B": "E",
+        "1E": "B",
+        "1I": "D",
+        "1A": "C",
+        "1D": "I",
+        "1G": "H",
+        "1L": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDEHIKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "B",
+        "1E": "C",
+        "1G": "H",
+        "1I": "D",
+        "1A": "I",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCDEHJKL",
+      "assignments": {
+        "1B": "E",
+        "1A": "C",
+        "1D": "B",
+        "1E": "D",
+        "1G": "J",
+        "1I": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCDEIJKL",
+      "assignments": {
+        "1I": "C",
+        "1A": "E",
+        "1B": "I",
+        "1E": "D",
+        "1G": "J",
+        "1D": "B",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDFGHIJ",
+      "assignments": {
+        "1G": "H",
+        "1K": "D",
+        "1L": "I",
+        "1A": "C",
+        "1B": "F",
+        "1D": "J",
+        "1E": "B",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDFGHIK",
+      "assignments": {
+        "1G": "H",
+        "1K": "D",
+        "1B": "F",
+        "1D": "B",
+        "1L": "K",
+        "1A": "I",
+        "1E": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDFGHIL",
+      "assignments": {
+        "1G": "H",
+        "1L": "I",
+        "1B": "F",
+        "1D": "B",
+        "1K": "L",
+        "1A": "C",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDFGHJK",
+      "assignments": {
+        "1G": "H",
+        "1K": "D",
+        "1A": "C",
+        "1B": "F",
+        "1D": "J",
+        "1L": "K",
+        "1E": "B",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDFGHJL",
+      "assignments": {
+        "1G": "H",
+        "1L": "J",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1K": "L",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDFGHKL",
+      "assignments": {
+        "1G": "H",
+        "1B": "F",
+        "1D": "B",
+        "1K": "L",
+        "1L": "K",
+        "1A": "C",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDFGIJK",
+      "assignments": {
+        "1G": "I",
+        "1A": "C",
+        "1K": "D",
+        "1L": "K",
+        "1B": "F",
+        "1D": "J",
+        "1E": "B",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDFGIJL",
+      "assignments": {
+        "1G": "I",
+        "1L": "J",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1E": "D",
+        "1I": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDFGIKL",
+      "assignments": {
+        "1G": "I",
+        "1L": "K",
+        "1A": "C",
+        "1B": "F",
+        "1D": "B",
+        "1K": "L",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDFGJKL",
+      "assignments": {
+        "1G": "J",
+        "1A": "C",
+        "1L": "K",
+        "1B": "F",
+        "1D": "B",
+        "1K": "L",
+        "1E": "D",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCDFHIJK",
+      "assignments": {
+        "1B": "F",
+        "1G": "H",
+        "1K": "D",
+        "1A": "I",
+        "1D": "J",
+        "1E": "B",
+        "1I": "C",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCDFHIJL",
+      "assignments": {
+        "1B": "F",
+        "1G": "H",
+        "1L": "I",
+        "1A": "C",
+        "1D": "J",
+        "1E": "B",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDFHIKL",
+      "assignments": {
+        "1B": "F",
+        "1G": "H",
+        "1D": "B",
+        "1K": "L",
+        "1L": "K",
+        "1A": "I",
+        "1E": "C",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "BCDFHJKL",
+      "assignments": {
+        "1B": "F",
+        "1G": "H",
+        "1A": "C",
+        "1D": "J",
+        "1K": "L",
+        "1L": "K",
+        "1E": "B",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "BCDFIJKL",
+      "assignments": {
+        "1G": "I",
+        "1A": "C",
+        "1B": "F",
+        "1I": "D",
+        "1L": "K",
+        "1D": "J",
+        "1E": "B",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDGHIJK",
+      "assignments": {
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1E": "D",
+        "1G": "I",
+        "1K": "J",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCDGHIJL",
+      "assignments": {
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1E": "D",
+        "1G": "I",
+        "1L": "J",
+        "1I": "H",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDGHIKL",
+      "assignments": {
+        "1B": "G",
+        "1D": "B",
+        "1G": "H",
+        "1A": "I",
+        "1E": "C",
+        "1K": "L",
+        "1L": "K",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "BCDGHJKL",
+      "assignments": {
+        "1A": "C",
+        "1B": "G",
+        "1D": "B",
+        "1G": "J",
+        "1E": "D",
+        "1K": "L",
+        "1L": "K",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "BCDGIJKL",
+      "assignments": {
+        "1A": "C",
+        "1G": "I",
+        "1B": "G",
+        "1D": "J",
+        "1E": "B",
+        "1I": "D",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BCDHIJKL",
+      "assignments": {
+        "1B": "I",
+        "1A": "C",
+        "1D": "B",
+        "1E": "D",
+        "1G": "J",
+        "1I": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCEFGHIJ",
+      "assignments": {
+        "1E": "B",
+        "1K": "E",
+        "1G": "H",
+        "1I": "C",
+        "1L": "I",
+        "1A": "F",
+        "1B": "G",
+        "1D": "J"
+      }
+    },
+    {
+      "qualified_groups": "BCEFGHIK",
+      "assignments": {
+        "1K": "E",
+        "1E": "B",
+        "1G": "H",
+        "1B": "F",
+        "1D": "I",
+        "1I": "G",
+        "1L": "K",
+        "1A": "C"
+      }
+    },
+    {
+      "qualified_groups": "BCEFGHIL",
+      "assignments": {
+        "1E": "B",
+        "1G": "E",
+        "1K": "L",
+        "1L": "H",
+        "1B": "F",
+        "1D": "I",
+        "1I": "G",
+        "1A": "C"
+      }
+    },
+    {
+      "qualified_groups": "BCEFGHJK",
+      "assignments": {
+        "1K": "E",
+        "1E": "B",
+        "1G": "H",
+        "1A": "C",
+        "1B": "F",
+        "1D": "J",
+        "1I": "G",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCEFGHJL",
+      "assignments": {
+        "1E": "B",
+        "1G": "E",
+        "1K": "L",
+        "1L": "H",
+        "1A": "C",
+        "1B": "F",
+        "1D": "J",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCEFGHKL",
+      "assignments": {
+        "1G": "E",
+        "1K": "L",
+        "1B": "F",
+        "1D": "B",
+        "1E": "C",
+        "1L": "K",
+        "1A": "H",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCEFGIJK",
+      "assignments": {
+        "1E": "B",
+        "1G": "E",
+        "1I": "C",
+        "1K": "I",
+        "1A": "F",
+        "1L": "K",
+        "1B": "G",
+        "1D": "J"
+      }
+    },
+    {
+      "qualified_groups": "BCEFGIJL",
+      "assignments": {
+        "1E": "B",
+        "1G": "E",
+        "1I": "C",
+        "1L": "I",
+        "1A": "F",
+        "1K": "L",
+        "1B": "G",
+        "1D": "J"
+      }
+    },
+    {
+      "qualified_groups": "BCEFGIKL",
+      "assignments": {
+        "1G": "E",
+        "1E": "B",
+        "1I": "C",
+        "1K": "L",
+        "1L": "K",
+        "1A": "F",
+        "1B": "G",
+        "1D": "I"
+      }
+    },
+    {
+      "qualified_groups": "BCEFGJKL",
+      "assignments": {
+        "1G": "E",
+        "1A": "C",
+        "1E": "B",
+        "1I": "F",
+        "1K": "L",
+        "1L": "K",
+        "1B": "G",
+        "1D": "J"
+      }
+    },
+    {
+      "qualified_groups": "BCEFHIJK",
+      "assignments": {
+        "1E": "B",
+        "1I": "C",
+        "1K": "E",
+        "1B": "F",
+        "1G": "H",
+        "1A": "I",
+        "1D": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCEFHIJL",
+      "assignments": {
+        "1E": "B",
+        "1I": "C",
+        "1B": "E",
+        "1G": "H",
+        "1K": "L",
+        "1L": "I",
+        "1A": "F",
+        "1D": "J"
+      }
+    },
+    {
+      "qualified_groups": "BCEFHIKL",
+      "assignments": {
+        "1B": "E",
+        "1E": "B",
+        "1G": "H",
+        "1I": "C",
+        "1K": "L",
+        "1D": "F",
+        "1L": "K",
+        "1A": "I"
+      }
+    },
+    {
+      "qualified_groups": "BCEFHJKL",
+      "assignments": {
+        "1B": "E",
+        "1E": "B",
+        "1G": "H",
+        "1I": "C",
+        "1K": "L",
+        "1A": "F",
+        "1D": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCEFIJKL",
+      "assignments": {
+        "1I": "C",
+        "1E": "B",
+        "1G": "E",
+        "1A": "F",
+        "1B": "I",
+        "1K": "L",
+        "1L": "K",
+        "1D": "J"
+      }
+    },
+    {
+      "qualified_groups": "BCEGHIJK",
+      "assignments": {
+        "1E": "B",
+        "1I": "C",
+        "1K": "E",
+        "1A": "H",
+        "1B": "G",
+        "1D": "I",
+        "1G": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCEGHIJL",
+      "assignments": {
+        "1E": "B",
+        "1I": "C",
+        "1A": "E",
+        "1B": "G",
+        "1D": "I",
+        "1G": "H",
+        "1K": "L",
+        "1L": "J"
+      }
+    },
+    {
+      "qualified_groups": "BCEGHIKL",
+      "assignments": {
+        "1E": "B",
+        "1B": "E",
+        "1D": "I",
+        "1G": "H",
+        "1I": "G",
+        "1K": "L",
+        "1A": "C",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCEGHJKL",
+      "assignments": {
+        "1E": "B",
+        "1A": "C",
+        "1B": "E",
+        "1D": "J",
+        "1G": "H",
+        "1I": "G",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCEGIJKL",
+      "assignments": {
+        "1E": "B",
+        "1I": "C",
+        "1A": "E",
+        "1G": "I",
+        "1B": "G",
+        "1D": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCEHIJKL",
+      "assignments": {
+        "1E": "B",
+        "1I": "C",
+        "1B": "E",
+        "1A": "H",
+        "1D": "I",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCFGHIJK",
+      "assignments": {
+        "1K": "I",
+        "1E": "B",
+        "1G": "H",
+        "1A": "C",
+        "1B": "F",
+        "1D": "J",
+        "1I": "G",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCFGHIJL",
+      "assignments": {
+        "1E": "B",
+        "1G": "H",
+        "1K": "L",
+        "1L": "I",
+        "1A": "C",
+        "1B": "F",
+        "1D": "J",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCFGHIKL",
+      "assignments": {
+        "1G": "H",
+        "1K": "L",
+        "1B": "F",
+        "1D": "B",
+        "1E": "C",
+        "1L": "K",
+        "1A": "I",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCFGHJKL",
+      "assignments": {
+        "1G": "H",
+        "1K": "L",
+        "1A": "C",
+        "1B": "F",
+        "1D": "J",
+        "1E": "B",
+        "1L": "K",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "BCFGIJKL",
+      "assignments": {
+        "1G": "I",
+        "1A": "C",
+        "1E": "B",
+        "1I": "F",
+        "1K": "L",
+        "1L": "K",
+        "1B": "G",
+        "1D": "J"
+      }
+    },
+    {
+      "qualified_groups": "BCFHIJKL",
+      "assignments": {
+        "1B": "F",
+        "1E": "B",
+        "1G": "H",
+        "1I": "C",
+        "1K": "L",
+        "1A": "I",
+        "1D": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BCGHIJKL",
+      "assignments": {
+        "1E": "B",
+        "1A": "C",
+        "1B": "G",
+        "1D": "I",
+        "1G": "J",
+        "1I": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BDEFGHIJ",
+      "assignments": {
+        "1E": "B",
+        "1A": "E",
+        "1G": "H",
+        "1I": "D",
+        "1K": "I",
+        "1L": "J",
+        "1B": "G",
+        "1D": "F"
+      }
+    },
+    {
+      "qualified_groups": "BDEFGHIK",
+      "assignments": {
+        "1E": "B",
+        "1G": "E",
+        "1K": "D",
+        "1A": "F",
+        "1B": "G",
+        "1D": "I",
+        "1I": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BDEFGHIL",
+      "assignments": {
+        "1E": "B",
+        "1G": "E",
+        "1L": "H",
+        "1A": "F",
+        "1B": "G",
+        "1D": "I",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BDEFGHJK",
+      "assignments": {
+        "1A": "E",
+        "1E": "B",
+        "1G": "H",
+        "1K": "D",
+        "1B": "F",
+        "1D": "J",
+        "1I": "G",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BDEFGHJL",
+      "assignments": {
+        "1A": "E",
+        "1E": "B",
+        "1G": "H",
+        "1L": "J",
+        "1B": "G",
+        "1D": "F",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BDEFGHKL",
+      "assignments": {
+        "1G": "E",
+        "1A": "F",
+        "1B": "G",
+        "1D": "B",
+        "1E": "D",
+        "1K": "L",
+        "1L": "K",
+        "1I": "H"
+      }
+    },
+    {
+      "qualified_groups": "BDEFGIJK",
+      "assignments": {
+        "1A": "E",
+        "1E": "B",
+        "1G": "I",
+        "1I": "D",
+        "1K": "J",
+        "1L": "K",
+        "1B": "G",
+        "1D": "F"
+      }
+    },
+    {
+      "qualified_groups": "BDEFGIJL",
+      "assignments": {
+        "1A": "E",
+        "1E": "B",
+        "1G": "I",
+        "1I": "D",
+        "1L": "J",
+        "1B": "G",
+        "1D": "F",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BDEFGIKL",
+      "assignments": {
+        "1G": "E",
+        "1A": "F",
+        "1E": "B",
+        "1I": "D",
+        "1L": "K",
+        "1B": "G",
+        "1D": "I",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BDEFGJKL",
+      "assignments": {
+        "1A": "E",
+        "1G": "J",
+        "1E": "B",
+        "1I": "D",
+        "1L": "K",
+        "1B": "G",
+        "1D": "F",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BDEFHIJK",
+      "assignments": {
+        "1E": "B",
+        "1I": "D",
+        "1A": "E",
+        "1B": "F",
+        "1G": "H",
+        "1K": "I",
+        "1D": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BDEFHIJL",
+      "assignments": {
+        "1E": "B",
+        "1I": "D",
+        "1A": "E",
+        "1B": "F",
+        "1G": "H",
+        "1L": "I",
+        "1D": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BDEFHIKL",
+      "assignments": {
+        "1B": "E",
+        "1E": "B",
+        "1G": "H",
+        "1I": "D",
+        "1A": "F",
+        "1D": "I",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BDEFHJKL",
+      "assignments": {
+        "1A": "E",
+        "1B": "F",
+        "1E": "B",
+        "1G": "H",
+        "1I": "D",
+        "1D": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BDEFIJKL",
+      "assignments": {
+        "1I": "D",
+        "1A": "E",
+        "1E": "B",
+        "1G": "I",
+        "1B": "F",
+        "1L": "K",
+        "1D": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BDEGHIJK",
+      "assignments": {
+        "1E": "B",
+        "1A": "E",
+        "1I": "D",
+        "1B": "G",
+        "1D": "I",
+        "1G": "H",
+        "1K": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BDEGHIJL",
+      "assignments": {
+        "1E": "B",
+        "1A": "E",
+        "1I": "D",
+        "1B": "G",
+        "1D": "I",
+        "1G": "H",
+        "1L": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BDEGHIKL",
+      "assignments": {
+        "1E": "B",
+        "1A": "E",
+        "1B": "G",
+        "1D": "I",
+        "1G": "H",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BDEGHJKL",
+      "assignments": {
+        "1A": "E",
+        "1E": "B",
+        "1B": "G",
+        "1D": "J",
+        "1G": "H",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BDEGIJKL",
+      "assignments": {
+        "1A": "E",
+        "1E": "B",
+        "1I": "D",
+        "1G": "I",
+        "1B": "G",
+        "1D": "J",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BDEHIJKL",
+      "assignments": {
+        "1E": "B",
+        "1I": "D",
+        "1A": "E",
+        "1B": "I",
+        "1D": "J",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BDFGHIJK",
+      "assignments": {
+        "1A": "F",
+        "1E": "B",
+        "1G": "H",
+        "1K": "D",
+        "1B": "I",
+        "1D": "J",
+        "1I": "G",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BDFGHIJL",
+      "assignments": {
+        "1A": "F",
+        "1E": "B",
+        "1G": "H",
+        "1L": "I",
+        "1B": "G",
+        "1D": "J",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BDFGHIKL",
+      "assignments": {
+        "1G": "H",
+        "1A": "F",
+        "1B": "G",
+        "1D": "I",
+        "1E": "B",
+        "1K": "L",
+        "1L": "K",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "BDFGHJKL",
+      "assignments": {
+        "1A": "F",
+        "1G": "H",
+        "1B": "G",
+        "1D": "J",
+        "1E": "B",
+        "1K": "L",
+        "1L": "K",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "BDFGIJKL",
+      "assignments": {
+        "1A": "F",
+        "1G": "I",
+        "1E": "B",
+        "1I": "D",
+        "1L": "K",
+        "1B": "G",
+        "1D": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "BDFHIJKL",
+      "assignments": {
+        "1A": "F",
+        "1B": "I",
+        "1E": "B",
+        "1G": "H",
+        "1I": "D",
+        "1D": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BDGHIJKL",
+      "assignments": {
+        "1A": "H",
+        "1E": "B",
+        "1B": "G",
+        "1D": "I",
+        "1G": "J",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BEFGHIJK",
+      "assignments": {
+        "1E": "B",
+        "1I": "F",
+        "1K": "E",
+        "1A": "H",
+        "1G": "I",
+        "1B": "G",
+        "1D": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BEFGHIJL",
+      "assignments": {
+        "1E": "B",
+        "1I": "F",
+        "1A": "E",
+        "1G": "H",
+        "1K": "L",
+        "1L": "I",
+        "1B": "G",
+        "1D": "J"
+      }
+    },
+    {
+      "qualified_groups": "BEFGHIKL",
+      "assignments": {
+        "1E": "B",
+        "1G": "E",
+        "1I": "F",
+        "1K": "L",
+        "1A": "H",
+        "1B": "G",
+        "1D": "I",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BEFGHJKL",
+      "assignments": {
+        "1E": "B",
+        "1A": "E",
+        "1G": "H",
+        "1I": "F",
+        "1K": "L",
+        "1B": "G",
+        "1D": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BEFGIJKL",
+      "assignments": {
+        "1E": "B",
+        "1I": "F",
+        "1A": "E",
+        "1G": "I",
+        "1K": "L",
+        "1L": "K",
+        "1B": "G",
+        "1D": "J"
+      }
+    },
+    {
+      "qualified_groups": "BEFHIJKL",
+      "assignments": {
+        "1E": "B",
+        "1I": "F",
+        "1A": "E",
+        "1B": "I",
+        "1G": "H",
+        "1K": "L",
+        "1D": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BEGHIJKL",
+      "assignments": {
+        "1E": "B",
+        "1I": "G",
+        "1A": "E",
+        "1B": "I",
+        "1D": "J",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "BFGHIJKL",
+      "assignments": {
+        "1E": "B",
+        "1A": "F",
+        "1G": "H",
+        "1I": "G",
+        "1K": "L",
+        "1B": "I",
+        "1D": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CDEFGHIJ",
+      "assignments": {
+        "1E": "C",
+        "1D": "E",
+        "1G": "H",
+        "1K": "D",
+        "1L": "I",
+        "1A": "F",
+        "1B": "J",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "CDEFGHIK",
+      "assignments": {
+        "1D": "E",
+        "1E": "C",
+        "1G": "H",
+        "1K": "D",
+        "1B": "F",
+        "1L": "K",
+        "1A": "I",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "CDEFGHIL",
+      "assignments": {
+        "1D": "E",
+        "1E": "C",
+        "1G": "H",
+        "1L": "I",
+        "1B": "G",
+        "1K": "L",
+        "1A": "F",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "CDEFGHJK",
+      "assignments": {
+        "1D": "E",
+        "1E": "C",
+        "1G": "H",
+        "1K": "D",
+        "1A": "F",
+        "1B": "J",
+        "1L": "K",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "CDEFGHJL",
+      "assignments": {
+        "1D": "E",
+        "1E": "C",
+        "1G": "H",
+        "1L": "J",
+        "1A": "F",
+        "1B": "G",
+        "1K": "L",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "CDEFGHKL",
+      "assignments": {
+        "1D": "E",
+        "1G": "H",
+        "1B": "F",
+        "1E": "D",
+        "1K": "L",
+        "1L": "K",
+        "1A": "C",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "CDEFGIJK",
+      "assignments": {
+        "1E": "C",
+        "1G": "E",
+        "1A": "F",
+        "1D": "I",
+        "1I": "D",
+        "1K": "J",
+        "1L": "K",
+        "1B": "G"
+      }
+    },
+    {
+      "qualified_groups": "CDEFGIJL",
+      "assignments": {
+        "1E": "C",
+        "1G": "E",
+        "1L": "I",
+        "1A": "F",
+        "1D": "J",
+        "1I": "D",
+        "1B": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "CDEFGIKL",
+      "assignments": {
+        "1G": "E",
+        "1D": "F",
+        "1E": "C",
+        "1L": "K",
+        "1A": "I",
+        "1B": "G",
+        "1I": "D",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "CDEFGJKL",
+      "assignments": {
+        "1G": "E",
+        "1A": "C",
+        "1D": "F",
+        "1E": "D",
+        "1L": "K",
+        "1B": "J",
+        "1I": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "CDEFHIJK",
+      "assignments": {
+        "1E": "C",
+        "1B": "E",
+        "1D": "F",
+        "1G": "H",
+        "1I": "D",
+        "1K": "J",
+        "1A": "I",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CDEFHIJL",
+      "assignments": {
+        "1E": "C",
+        "1B": "E",
+        "1D": "F",
+        "1G": "H",
+        "1I": "D",
+        "1L": "J",
+        "1A": "I",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "CDEFHIKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "F",
+        "1E": "C",
+        "1G": "H",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K",
+        "1A": "I"
+      }
+    },
+    {
+      "qualified_groups": "CDEFHJKL",
+      "assignments": {
+        "1B": "E",
+        "1D": "F",
+        "1E": "C",
+        "1G": "J",
+        "1A": "H",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CDEFIJKL",
+      "assignments": {
+        "1E": "C",
+        "1G": "E",
+        "1I": "D",
+        "1A": "F",
+        "1B": "I",
+        "1D": "J",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "CDEGHIJK",
+      "assignments": {
+        "1E": "C",
+        "1D": "E",
+        "1A": "H",
+        "1B": "G",
+        "1G": "I",
+        "1I": "D",
+        "1K": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CDEGHIJL",
+      "assignments": {
+        "1E": "C",
+        "1D": "E",
+        "1A": "H",
+        "1B": "G",
+        "1G": "I",
+        "1I": "D",
+        "1L": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "CDEGHIKL",
+      "assignments": {
+        "1D": "E",
+        "1E": "C",
+        "1B": "G",
+        "1G": "H",
+        "1A": "I",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CDEGHJKL",
+      "assignments": {
+        "1D": "E",
+        "1E": "C",
+        "1A": "H",
+        "1B": "G",
+        "1G": "J",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CDEGIJKL",
+      "assignments": {
+        "1E": "C",
+        "1A": "E",
+        "1D": "I",
+        "1G": "J",
+        "1I": "D",
+        "1B": "G",
+        "1L": "K",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "CDEHIJKL",
+      "assignments": {
+        "1E": "C",
+        "1B": "E",
+        "1D": "I",
+        "1I": "D",
+        "1A": "H",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CDFGHIJK",
+      "assignments": {
+        "1D": "F",
+        "1E": "C",
+        "1G": "H",
+        "1K": "D",
+        "1A": "I",
+        "1B": "J",
+        "1L": "K",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "CDFGHIJL",
+      "assignments": {
+        "1D": "F",
+        "1E": "C",
+        "1G": "H",
+        "1L": "J",
+        "1A": "I",
+        "1B": "G",
+        "1K": "L",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "CDFGHIKL",
+      "assignments": {
+        "1D": "F",
+        "1G": "H",
+        "1B": "G",
+        "1E": "C",
+        "1K": "L",
+        "1L": "K",
+        "1A": "I",
+        "1I": "D"
+      }
+    },
+    {
+      "qualified_groups": "CDFGHJKL",
+      "assignments": {
+        "1D": "F",
+        "1G": "H",
+        "1A": "C",
+        "1B": "J",
+        "1E": "D",
+        "1K": "L",
+        "1L": "K",
+        "1I": "G"
+      }
+    },
+    {
+      "qualified_groups": "CDFGIJKL",
+      "assignments": {
+        "1G": "I",
+        "1A": "C",
+        "1D": "F",
+        "1E": "D",
+        "1L": "K",
+        "1B": "J",
+        "1I": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "CDFHIJKL",
+      "assignments": {
+        "1B": "F",
+        "1D": "I",
+        "1E": "C",
+        "1G": "J",
+        "1A": "H",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CDGHIJKL",
+      "assignments": {
+        "1D": "I",
+        "1E": "C",
+        "1A": "H",
+        "1B": "G",
+        "1G": "J",
+        "1I": "D",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CEFGHIJK",
+      "assignments": {
+        "1E": "C",
+        "1K": "E",
+        "1D": "F",
+        "1G": "H",
+        "1I": "G",
+        "1A": "I",
+        "1B": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CEFGHIJL",
+      "assignments": {
+        "1E": "C",
+        "1D": "E",
+        "1G": "H",
+        "1I": "F",
+        "1K": "L",
+        "1L": "J",
+        "1A": "I",
+        "1B": "G"
+      }
+    },
+    {
+      "qualified_groups": "CEFGHIKL",
+      "assignments": {
+        "1E": "C",
+        "1D": "E",
+        "1G": "H",
+        "1K": "L",
+        "1B": "F",
+        "1I": "G",
+        "1L": "K",
+        "1A": "I"
+      }
+    },
+    {
+      "qualified_groups": "CEFGHJKL",
+      "assignments": {
+        "1E": "C",
+        "1D": "E",
+        "1G": "H",
+        "1K": "L",
+        "1A": "F",
+        "1B": "J",
+        "1I": "G",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CEFGIJKL",
+      "assignments": {
+        "1E": "C",
+        "1G": "E",
+        "1I": "F",
+        "1A": "I",
+        "1D": "J",
+        "1K": "L",
+        "1L": "K",
+        "1B": "G"
+      }
+    },
+    {
+      "qualified_groups": "CEFHIJKL",
+      "assignments": {
+        "1E": "C",
+        "1I": "F",
+        "1B": "E",
+        "1D": "I",
+        "1G": "J",
+        "1K": "L",
+        "1A": "H",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CEGHIJKL",
+      "assignments": {
+        "1E": "C",
+        "1D": "E",
+        "1I": "G",
+        "1A": "H",
+        "1B": "I",
+        "1G": "J",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "CFGHIJKL",
+      "assignments": {
+        "1E": "C",
+        "1D": "F",
+        "1G": "H",
+        "1K": "L",
+        "1A": "I",
+        "1B": "J",
+        "1I": "G",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "DEFGHIJK",
+      "assignments": {
+        "1E": "D",
+        "1A": "E",
+        "1D": "F",
+        "1G": "H",
+        "1I": "G",
+        "1K": "I",
+        "1B": "J",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "DEFGHIJL",
+      "assignments": {
+        "1E": "D",
+        "1A": "E",
+        "1D": "F",
+        "1G": "H",
+        "1I": "G",
+        "1L": "I",
+        "1B": "J",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "DEFGHIKL",
+      "assignments": {
+        "1E": "D",
+        "1D": "E",
+        "1G": "H",
+        "1A": "F",
+        "1B": "I",
+        "1I": "G",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "DEFGHJKL",
+      "assignments": {
+        "1E": "D",
+        "1A": "E",
+        "1D": "F",
+        "1G": "H",
+        "1B": "J",
+        "1I": "G",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "DEFGIJKL",
+      "assignments": {
+        "1E": "D",
+        "1A": "E",
+        "1G": "I",
+        "1I": "F",
+        "1D": "J",
+        "1L": "K",
+        "1B": "G",
+        "1K": "L"
+      }
+    },
+    {
+      "qualified_groups": "DEFHIJKL",
+      "assignments": {
+        "1E": "D",
+        "1I": "F",
+        "1A": "E",
+        "1B": "I",
+        "1D": "J",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "DEGHIJKL",
+      "assignments": {
+        "1E": "D",
+        "1A": "E",
+        "1D": "I",
+        "1I": "G",
+        "1B": "J",
+        "1G": "H",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "DFGHIJKL",
+      "assignments": {
+        "1E": "D",
+        "1A": "F",
+        "1D": "I",
+        "1G": "H",
+        "1B": "J",
+        "1I": "G",
+        "1K": "L",
+        "1L": "K"
+      }
+    },
+    {
+      "qualified_groups": "EFGHIJKL",
+      "assignments": {
+        "1E": "F",
+        "1I": "G",
+        "1A": "E",
+        "1D": "I",
+        "1G": "H",
+        "1K": "L",
+        "1B": "J",
+        "1L": "K"
+      }
+    }
+  ]
+}

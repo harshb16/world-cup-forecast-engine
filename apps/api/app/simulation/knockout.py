@@ -39,16 +39,8 @@ ADVANCEMENT_PAIRINGS = {
 }
 
 GROUP_ORDER = tuple("ABCDEFGHIJKL")
-THIRD_PLACE_SLOT_ALLOWED_GROUPS = {
-    "1E": {"A", "B", "C", "D", "F"},
-    "1I": {"C", "D", "F", "G", "H"},
-    "1A": {"C", "E", "F", "H", "I"},
-    "1L": {"E", "H", "I", "J", "K"},
-    "1D": {"B", "E", "F", "I", "J"},
-    "1G": {"A", "E", "H", "I", "J"},
-    "1B": {"E", "F", "G", "I", "J"},
-    "1K": {"D", "E", "I", "J", "L"},
-}
+
+from app.simulation.third_place_allocation import assign_third_place_slots
 
 
 class WorldCup2026BracketBuilder:
@@ -81,7 +73,7 @@ class WorldCup2026BracketBuilder:
             qualified_team_ids[24:],
             teams_by_id,
         )
-        third_slot_assignments = _assign_third_place_slots(set(third_by_group))
+        third_slot_assignments = assign_third_place_slots(set(third_by_group))
 
         return [
             (runners_up["A"], runners_up["B"]),  # Match 73
@@ -203,50 +195,6 @@ def _third_place_qualifiers_by_group(
     if len(third_by_group) != 8:
         raise ValueError("round of 32 requires exactly eight third-place qualifiers")
     return third_by_group
-
-
-def _assign_third_place_slots(
-    qualified_third_groups: set[str],
-) -> dict[str, str]:
-    slot_ids = sorted(
-        THIRD_PLACE_SLOT_ALLOWED_GROUPS,
-        key=lambda slot_id: (
-            len(THIRD_PLACE_SLOT_ALLOWED_GROUPS[slot_id] & qualified_third_groups),
-            slot_id,
-        ),
-    )
-    assignments = _search_third_place_assignments(
-        slot_ids,
-        qualified_third_groups,
-        {},
-    )
-    if assignments is None:
-        groups = ", ".join(sorted(qualified_third_groups))
-        raise ValueError(f"unsupported third-place group combination: {groups}")
-    return assignments
-
-
-def _search_third_place_assignments(
-    remaining_slots: list[str],
-    remaining_groups: set[str],
-    assignments: dict[str, str],
-) -> dict[str, str] | None:
-    if not remaining_slots:
-        return assignments
-
-    slot_id = remaining_slots[0]
-    eligible_groups = sorted(
-        THIRD_PLACE_SLOT_ALLOWED_GROUPS[slot_id] & remaining_groups
-    )
-    for group_id in eligible_groups:
-        result = _search_third_place_assignments(
-            remaining_slots[1:],
-            remaining_groups - {group_id},
-            {**assignments, slot_id: group_id},
-        )
-        if result is not None:
-            return result
-    return None
 
 
 def _winner_from_result(

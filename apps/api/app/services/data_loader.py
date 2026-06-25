@@ -51,7 +51,19 @@ def load_sample_tournament() -> TournamentConfig:
 
 def load_processed_tournament() -> TournamentConfig:
     """Load checked-in processed World Cup 2026 data."""
-    teams = load_teams(PROCESSED_DATA_DIR / "teams.json")
+    ratings = {
+        item["team_id"]: item
+        for item in _load_json(PROCESSED_DATA_DIR / "ratings.json")
+    }
+    teams = [
+        Team.model_validate(
+            {
+                **item,
+                "fifa_ranking": ratings.get(item["id"], {}).get("fifa_rank"),
+            }
+        )
+        for item in _load_json(PROCESSED_DATA_DIR / "teams.json")
+    ]
     groups = load_groups(PROCESSED_DATA_DIR / "groups.json")
     matches = load_matches(PROCESSED_DATA_DIR / "fixtures.json")
 
@@ -164,7 +176,9 @@ def _processed_quality_metadata() -> dict[str, Any]:
             "The GBM uses a small real-result sample supplemented by synthetic Oracle v2 labels.",
             "Oracle v3 ensemble weights are fixed rather than re-fit after every matchday.",
             "Knockout bracket uses FIFA World Cup 2026 round-of-32 slots with deterministic third-place assignment.",
-            "Group and third-place ties currently use points, goal difference, goals scored, then team ID; full FIFA head-to-head and fair-play ordering is not implemented.",
+            "Group ties use the FIFA 2026 head-to-head sequence before overall goal difference and goals scored.",
+            "Fair-play conduct is supported when disciplinary deductions are present; current processed fixtures do not yet include card events.",
+            "FIFA ranking is used after conduct score when teams remain tied; team ID is the final deterministic simulation fallback.",
             "Small Monte Carlo probability gaps can be sampling noise.",
         ],
     }

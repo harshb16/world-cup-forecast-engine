@@ -68,7 +68,7 @@ def test_changed_scenario_can_produce_non_zero_deltas() -> None:
     response = client.post(
         "/scenario/compare",
         json=_payload(
-            [{"match_id": "A1", "team_a_goals": 6, "team_b_goals": 0}],
+            [{"match_id": "A1", "team_a_goals": 0, "team_b_goals": 6}],
             n_simulations=20,
         ),
     )

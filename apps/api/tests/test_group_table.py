@@ -124,6 +124,85 @@ def test_fallback_ordering_is_deterministic_by_team_id() -> None:
     assert [row.team_id for row in table] == ["T1", "T2", "T3", "T4"]
 
 
+def test_head_to_head_result_precedes_overall_goal_difference() -> None:
+    matches = [
+        Match(
+            id="M1",
+            stage="group",
+            group_id="A",
+            team_a_id="T1",
+            team_b_id="T2",
+            result=MatchResult(team_a_goals=1, team_b_goals=0),
+        ),
+        Match(
+            id="M2",
+            stage="group",
+            group_id="A",
+            team_a_id="T1",
+            team_b_id="T3",
+            result=MatchResult(team_a_goals=0, team_b_goals=3),
+        ),
+        Match(
+            id="M3",
+            stage="group",
+            group_id="A",
+            team_a_id="T2",
+            team_b_id="T4",
+            result=MatchResult(team_a_goals=5, team_b_goals=0),
+        ),
+        Match(
+            id="M4",
+            stage="group",
+            group_id="A",
+            team_a_id="T3",
+            team_b_id="T4",
+            result=MatchResult(team_a_goals=1, team_b_goals=0),
+        ),
+    ]
+
+    table = calculate_group_table(_group(), _teams_by_id(), matches)
+
+    assert [row.team_id for row in table] == ["T3", "T1", "T2", "T4"]
+
+
+def test_conduct_score_breaks_an_otherwise_complete_tie() -> None:
+    teams = _teams_by_id()
+    teams["T1"] = teams["T1"].model_copy(update={"fifa_ranking": 10})
+    teams["T2"] = teams["T2"].model_copy(update={"fifa_ranking": 1})
+    matches = [
+        Match(
+            id="M1",
+            stage="group",
+            group_id="A",
+            team_a_id="T1",
+            team_b_id="T2",
+            result=MatchResult(
+                team_a_goals=0,
+                team_b_goals=0,
+                team_a_conduct_score=-1,
+                team_b_conduct_score=-3,
+            ),
+        )
+    ]
+
+    table = calculate_group_table(_group(), teams, matches)
+
+    assert [row.team_id for row in table].index("T1") < [
+        row.team_id for row in table
+    ].index("T2")
+
+
+def test_fifa_ranking_breaks_tie_after_equal_conduct_score() -> None:
+    teams = {
+        team_id: team.model_copy(update={"fifa_ranking": ranking})
+        for (team_id, team), ranking in zip(_teams_by_id().items(), [4, 3, 2, 1])
+    }
+
+    table = calculate_group_table(_group(), teams, [])
+
+    assert [row.team_id for row in table] == ["T4", "T3", "T2", "T1"]
+
+
 def test_ignores_matches_without_result() -> None:
     matches = [
         Match(id="M1", stage="group", group_id="A", team_a_id="T1", team_b_id="T2"),

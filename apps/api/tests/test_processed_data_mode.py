@@ -78,3 +78,10 @@ def test_simulate_works_with_processed_default(monkeypatch) -> None:  # type: ig
 
 def test_explicit_sample_mode_still_loads() -> None:
     assert len(load_tournament("sample").teams) == 48
+
+
+def test_processed_teams_include_fifa_ranking_fallback() -> None:
+    teams = load_tournament("processed").teams
+
+    assert all(team.fifa_ranking is not None for team in teams)
+    assert len({team.fifa_ranking for team in teams}) == 48

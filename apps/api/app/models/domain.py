@@ -10,6 +10,7 @@ class Team(BaseModel):
     name: str = Field(min_length=1)
     group_id: str = Field(min_length=1)
     rating: float = Field(gt=0)
+    fifa_ranking: int | None = Field(default=None, ge=1)
 
 
 class MatchResult(BaseModel):
@@ -18,6 +19,8 @@ class MatchResult(BaseModel):
     team_a_goals: int = Field(ge=0)
     team_b_goals: int = Field(ge=0)
     played: bool = True
+    team_a_conduct_score: int = Field(default=0, le=0)
+    team_b_conduct_score: int = Field(default=0, le=0)
 
 
 class Match(BaseModel):
@@ -71,6 +74,8 @@ class GroupStandingRow(BaseModel):
     goals_against: int = Field(ge=0)
     goal_difference: int
     points: int = Field(ge=0)
+    conduct_score: int = Field(default=0, le=0)
+    fifa_ranking: int | None = Field(default=None, ge=1)
 
     @model_validator(mode="after")
     def totals_must_be_consistent(self) -> "GroupStandingRow":

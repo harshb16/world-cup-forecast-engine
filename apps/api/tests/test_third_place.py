@@ -8,7 +8,15 @@ from app.simulation.third_place import (
 )
 
 
-def _row(team_id: str, points: int, goal_difference: int, goals_for: int) -> GroupStandingRow:
+def _row(
+    team_id: str,
+    points: int,
+    goal_difference: int,
+    goals_for: int,
+    *,
+    conduct_score: int = 0,
+    fifa_ranking: int | None = None,
+) -> GroupStandingRow:
     wins = points // 3
     draws = points % 3
     played = wins + draws
@@ -27,6 +35,8 @@ def _row(team_id: str, points: int, goal_difference: int, goals_for: int) -> Gro
         goals_against=goals_against,
         goal_difference=goals_for - goals_against,
         points=points,
+        conduct_score=conduct_score,
+        fifa_ranking=fifa_ranking,
     )
 
 
@@ -103,3 +113,27 @@ def test_fallback_ordering_is_deterministic() -> None:
     )
 
     assert [row.team_id for row in ranked] == ["T01", "T02"]
+
+
+def test_third_place_ranking_uses_conduct_then_fifa_ranking() -> None:
+    ranked = rank_third_place_teams(
+        {
+            "A": [
+                _row("A1", 9, 4, 6),
+                _row("A2", 6, 2, 4),
+                _row("A3", 4, 1, 3, conduct_score=-2, fifa_ranking=1),
+            ],
+            "B": [
+                _row("B1", 9, 4, 6),
+                _row("B2", 6, 2, 4),
+                _row("B3", 4, 1, 3, conduct_score=-1, fifa_ranking=20),
+            ],
+            "C": [
+                _row("C1", 9, 4, 6),
+                _row("C2", 6, 2, 4),
+                _row("C3", 4, 1, 3, conduct_score=-2, fifa_ranking=2),
+            ],
+        }
+    )
+
+    assert [row.team_id for row in ranked] == ["B3", "A3", "C3"]

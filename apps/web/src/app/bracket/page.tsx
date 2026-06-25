@@ -21,10 +21,11 @@ import {
   BracketMatch,
   BracketSimulation,
   DEFAULT_MODEL_TYPE,
+  fetchLatestForecast,
   simulateBracket,
 } from "@/lib/api";
 import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
-import { useAutoForecast } from "@/hooks/useAutoForecast";
+import { usePublishedForecast } from "@/hooks/usePublishedForecast";
 
 const ROUND_ORDER = [
   "Round of 32",
@@ -44,15 +45,17 @@ export default function BracketPage() {
   );
   const [selectedMatch, setSelectedMatch] = useState<BracketMatch | null>(null);
 
-  const loadBracket = useCallback(
-    () =>
-      simulateBracket({
-        model_type: DEFAULT_MODEL_TYPE,
-        simulation_mode: simulationMode,
-        seed,
-      }),
-    [seed, simulationMode],
-  );
+  const loadBracket = useCallback(async () => {
+    if (simulationMode === "favorite") {
+      const snapshot = await fetchLatestForecast();
+      return snapshot.bracket;
+    }
+    return simulateBracket({
+      model_type: DEFAULT_MODEL_TYPE,
+      simulation_mode: "random",
+      seed,
+    });
+  }, [seed, simulationMode]);
   const {
     data: trace,
     error,
@@ -60,7 +63,7 @@ export default function BracketPage() {
     lastRunAt,
     clear,
     refresh,
-  } = useAutoForecast<BracketSimulation>(loadBracket);
+  } = usePublishedForecast(loadBracket);
 
   const finalMatch = trace?.rounds.Final?.[0] ?? null;
   const championRevealed =
@@ -258,7 +261,7 @@ export default function BracketPage() {
 
         {error ? <ErrorState message={error} /> : null}
         {!error && !trace ? (
-          <LoadingState label="Building bracket trace" />
+          <LoadingState label="Loading forecast bracket" />
         ) : null}
 
         {!error && trace ? (

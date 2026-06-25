@@ -18,11 +18,16 @@ from app.services.analytics_service import (
     calculate_upset_radar,
 )
 from app.services.bracket_service import run_bracket_simulation
+from app.services.data_loader import load_tournament
 from app.services.runtime_store import (
     get_active_forecast_payload_path,
     publish_forecast_snapshot_record,
 )
 from app.services.simulation_service import run_simulation
+from app.services.snapshot_outlook_service import (
+    build_champion_uncertainty,
+    build_upcoming_fixture_outlook,
+)
 from app.services.third_place_tracker_service import calculate_third_place_tracker
 
 BOOTSTRAP_SNAPSHOT_PATH = BOOTSTRAP_PROCESSED_DIR / "forecast_snapshot.json"
@@ -81,6 +86,16 @@ def build_forecast_snapshot(
         data_mode,
     )
     featured_final = bracket.rounds["Final"][0]
+    config = load_tournament(data_mode)
+    upcoming_fixtures = build_upcoming_fixture_outlook(
+        config,
+        data_mode=data_mode,
+        model_type=DEFAULT_MODEL_TYPE,
+    )
+    uncertainty = build_champion_uncertainty(
+        summary.champion_probabilities,
+        n_simulations=summary.metadata.n_simulations,
+    )
     generated_at = datetime.now(tz=UTC).replace(microsecond=0).isoformat()
     snapshot_id = build_snapshot_id(
         data_version=summary.metadata.data_version,
@@ -91,11 +106,15 @@ def build_forecast_snapshot(
     return ForecastSnapshotResponse(
         snapshot_id=snapshot_id,
         generated_at=generated_at,
+        model_version=summary.metadata.model_type,
         summary=summary,
         group_chaos=group_chaos,
         upsets=upsets,
         third_place=third_place,
+        bracket=bracket,
         featured_final=featured_final,
+        upcoming_fixtures=upcoming_fixtures,
+        uncertainty=uncertainty,
     )
 
 
@@ -124,10 +143,16 @@ def publish_forecast_snapshot(
         model_type=metadata.model_type,
         n_simulations=bank_simulations,
     )
+    uncertainty = build_champion_uncertainty(
+        champion_probabilities,
+        n_simulations=bank_simulations,
+    )
     payload = snapshot.model_dump(mode="json")
     payload["snapshot_id"] = snapshot_id
+    payload["model_version"] = metadata.model_type
     payload["summary"]["champion_probabilities"] = champion_probabilities
     payload["summary"]["metadata"]["n_simulations"] = bank_simulations
+    payload["uncertainty"] = uncertainty.model_dump(mode="json")
     publish_forecast_snapshot_record(
         snapshot_id=snapshot_id,
         payload=payload,
@@ -136,14 +161,17 @@ def publish_forecast_snapshot(
     return ForecastSnapshotResponse.model_validate(payload)
 
 
-def load_forecast_snapshot() -> ForecastSnapshotResponse:
-    """Load the published snapshot without running Monte Carlo work."""
-    snapshot_path = _resolve_snapshot_path()
-    if not snapshot_path.exists():
-        raise FileNotFoundError(
-            "Forecast snapshot is missing. Run result sync or publish it explicitly."
-        )
-    payload = json.loads(snapshot_path.read_text(encoding="utf-8"))
+def _candidate_snapshot_paths() -> list[Path]:
+    paths: list[Path] = []
+    active = get_active_forecast_payload_path()
+    if active is not None and active.exists():
+        paths.append(active)
+    if BOOTSTRAP_SNAPSHOT_PATH.exists() and BOOTSTRAP_SNAPSHOT_PATH not in paths:
+        paths.append(BOOTSTRAP_SNAPSHOT_PATH)
+    return paths
+
+
+def _enrich_snapshot_payload(payload: dict) -> dict:
     if "snapshot_id" not in payload:
         metadata = payload.get("summary", {}).get("metadata", {})
         payload["snapshot_id"] = build_snapshot_id(
@@ -152,7 +180,45 @@ def load_forecast_snapshot() -> ForecastSnapshotResponse:
             model_type=metadata.get("model_type", DEFAULT_MODEL_TYPE),
             n_simulations=metadata.get("n_simulations", SNAPSHOT_SIMULATIONS),
         )
-    return ForecastSnapshotResponse.model_validate(payload)
+    if "model_version" not in payload:
+        payload["model_version"] = payload.get("summary", {}).get("metadata", {}).get(
+            "model_type",
+            DEFAULT_MODEL_TYPE,
+        )
+    if "uncertainty" not in payload:
+        summary = payload.get("summary", {})
+        payload["uncertainty"] = build_champion_uncertainty(
+            summary.get("champion_probabilities", {}),
+            n_simulations=summary.get("metadata", {}).get(
+                "n_simulations",
+                SNAPSHOT_SIMULATIONS,
+            ),
+        ).model_dump(mode="json")
+    if "upcoming_fixtures" not in payload:
+        payload["upcoming_fixtures"] = []
+    return payload
+
+
+def load_forecast_snapshot() -> ForecastSnapshotResponse:
+    """Load the published snapshot without running Monte Carlo work."""
+    from pydantic import ValidationError
+
+    errors: list[Exception] = []
+    for snapshot_path in _candidate_snapshot_paths():
+        try:
+            payload = _enrich_snapshot_payload(
+                json.loads(snapshot_path.read_text(encoding="utf-8"))
+            )
+            return ForecastSnapshotResponse.model_validate(payload)
+        except ValidationError as exc:
+            errors.append(exc)
+            continue
+
+    if errors:
+        raise errors[-1]
+    raise FileNotFoundError(
+        "Forecast snapshot is missing. Run result sync or publish it explicitly."
+    )
 
 
 def load_forecast_status() -> ForecastStatusResponse:

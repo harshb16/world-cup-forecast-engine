@@ -60,7 +60,7 @@ export function ProbabilityTimeline() {
 
     const rows = history.snapshots.map((snapshot) => {
       const row: Record<string, string | number> = {
-        label: snapshot.timestamp.slice(0, 10),
+        label: snapshot.label,
       };
       for (const teamId of topTeams) {
         row[teamId] = snapshot.champion_probabilities[teamId] ?? 0;
@@ -91,10 +91,10 @@ export function ProbabilityTimeline() {
           Timeline
         </p>
         <h2 className="mt-1 text-lg font-semibold text-foreground">
-          Champion probability history
+          Champion probability by matchday
         </h2>
         <p className="mt-3 text-sm text-muted-foreground">
-          Run sync to capture the first probability snapshot.
+          Tournament milestones will appear here once group-stage fixtures are available.
         </p>
       </SectionCard>
     );
@@ -106,10 +106,10 @@ export function ProbabilityTimeline() {
         Timeline
       </p>
       <h2 className="mt-1 text-lg font-semibold text-foreground">
-        Champion probability history
+        Champion probability by matchday
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Top eight teams by latest champion probability.
+        Top eight teams by latest champion probability across group matchdays.
       </p>
 
       <div className="mt-5 h-80 w-full">

@@ -7,7 +7,7 @@ export default function TimelinePage() {
       <PageHeader
         eyebrow="Timeline"
         title="Probability movement"
-        description="Track how champion odds shifted after each sync snapshot."
+        description="Champion odds before and after each group matchday as results are played."
       />
       <ProbabilityTimeline />
     </>

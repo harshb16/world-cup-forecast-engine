@@ -3,6 +3,7 @@
 from pathlib import Path
 from unittest.mock import patch
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -21,8 +22,11 @@ def test_latest_forecast_reads_published_snapshot_without_simulating() -> None:
 
     assert response.status_code == 200
     payload = response.json()
+    n_simulations = payload["summary"]["metadata"]["n_simulations"]
     assert payload["snapshot_id"]
-    assert payload["summary"]["metadata"]["n_simulations"] == 5_000
+    assert n_simulations > 0
+    assert payload["summary"]["metadata"]["n_simulations"] == payload["uncertainty"]["n_simulations"]
+    assert payload["third_place"]["n_simulations"] > 0
     assert len(payload["summary"]["teams"]) == 48
     assert len(payload["group_chaos"]["groups"]) == 12
     assert payload["upsets"]["fixtures"]
@@ -42,8 +46,8 @@ def test_forecast_status_matches_latest_snapshot_pointer() -> None:
 
     assert status["snapshot_id"] == snapshot["snapshot_id"]
     assert status["forecast_generated_at"] == snapshot["generated_at"]
-    assert status["completed_result_count"] == 54
-    assert status["n_simulations"] == 5_000
+    assert status["completed_result_count"] == snapshot["summary"]["metadata"]["completed_result_count"]
+    assert status["n_simulations"] == snapshot["summary"]["metadata"]["n_simulations"]
 
 
 def test_snapshot_featured_final_matches_favorite_bracket_trace() -> None:
@@ -77,6 +81,29 @@ def test_snapshot_title_contenders_include_featured_finalists() -> None:
     assert {featured["team_a"]["team_id"], featured["team_b"]["team_id"]}.issubset(
         top_eight
     )
+
+
+def test_publish_forecast_snapshot_uses_single_bank(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("WCO_RUNTIME_DATA_DIR", str(tmp_path / "runtime"))
+    monkeypatch.setenv("WCO_SNAPSHOT_SIMULATIONS", "80")
+
+    with patch(
+        "app.services.simulation_service.run_simulation",
+        side_effect=AssertionError("publish must not run standalone MC"),
+    ):
+        snapshot = forecast_snapshot_service.publish_forecast_snapshot("processed")
+
+    n_simulations = snapshot.summary.metadata.n_simulations
+    assert n_simulations == 80
+    assert snapshot.uncertainty.n_simulations == n_simulations
+    assert snapshot.third_place.n_simulations == n_simulations
+    assert snapshot.snapshot_id.endswith(f":{n_simulations}")
+    from app.services.simulation_bank_service import champion_probabilities_match_summary
+
+    assert champion_probabilities_match_summary(snapshot.summary)
 
 
 def test_missing_snapshot_does_not_trigger_page_load_simulation(

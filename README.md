@@ -27,8 +27,10 @@ the favorites table unstable and can contradict the deterministic bracket.
 
 Dashboard, groups, and team probability pages read
 `data/processed/forecast_snapshot.json`. Normal page loads do not run Monte
-Carlo simulations. Result sync rebuilds this shared 5,000-run snapshot once
-after new scores are published.
+Carlo simulations. Result sync builds one simulation bank (100,000 paths when
+idle, 30,000 during active match windows) and derives all dashboard
+probabilities from that bank. Override bank size with
+`WCO_SNAPSHOT_SIMULATIONS` when testing locally.
 
 Set `WCO_NO_OPEN=1` to prevent the browser from opening automatically.
 

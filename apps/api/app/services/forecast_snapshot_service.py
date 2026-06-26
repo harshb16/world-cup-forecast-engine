@@ -11,27 +11,23 @@ from app.models.schemas import (
     BracketSimulateRequest,
     ForecastSnapshotResponse,
     ForecastStatusResponse,
-    SimulateRequest,
 )
 from app.services.analytics_service import (
     calculate_group_chaos_from_summary,
     calculate_upset_radar,
 )
 from app.services.bracket_service import run_bracket_simulation
-from app.services.data_loader import load_tournament
+from app.services.data_loader import load_metadata, load_tournament
 from app.services.runtime_store import (
     get_active_forecast_payload_path,
     publish_forecast_snapshot_record,
 )
-from app.services.simulation_service import run_simulation
 from app.services.snapshot_outlook_service import (
     build_champion_uncertainty,
     build_upcoming_fixture_outlook,
 )
-from app.services.third_place_tracker_service import calculate_third_place_tracker
 
 BOOTSTRAP_SNAPSHOT_PATH = BOOTSTRAP_PROCESSED_DIR / "forecast_snapshot.json"
-SNAPSHOT_SIMULATIONS = 5_000
 SNAPSHOT_SEED = 42
 
 
@@ -53,33 +49,37 @@ def _resolve_snapshot_path() -> Path:
     return BOOTSTRAP_SNAPSHOT_PATH
 
 
-def build_forecast_snapshot(
+def build_forecast_snapshot_from_bank(
+    bank_path: Path,
+    bank_meta: dict[str, object],
     data_mode: str = "processed",
 ) -> ForecastSnapshotResponse:
-    """Run one simulation bank and derive all dashboard forecast artifacts."""
-    summary = run_simulation(
-        SimulateRequest(
-            n_simulations=SNAPSHOT_SIMULATIONS,
-            model_type=DEFAULT_MODEL_TYPE,
-            seed=SNAPSHOT_SEED,
-        ),
-        data_mode,
+    """Derive all dashboard forecast artifacts from one simulation bank."""
+    from app.services.simulation_bank_service import (
+        simulation_summary_response_from_bank,
+        third_place_tracker_from_bank,
     )
+
+    model_type = str(bank_meta["model_version"])
+    n_simulations = int(bank_meta["n_simulations"])
+    master_seed = int(bank_meta["master_seed"])
+
+    summary = simulation_summary_response_from_bank(
+        bank_path,
+        data_mode=data_mode,
+        model_type=model_type,  # type: ignore[arg-type]
+        seed=master_seed,
+    )
+    third_place = third_place_tracker_from_bank(bank_path, data_mode, model_type)  # type: ignore[arg-type]
     group_chaos = calculate_group_chaos_from_summary(
         summary,
         data_mode,
-        DEFAULT_MODEL_TYPE,
+        model_type,  # type: ignore[arg-type]
     )
-    upsets = calculate_upset_radar(data_mode, DEFAULT_MODEL_TYPE, limit=6)
-    third_place = calculate_third_place_tracker(
-        data_mode,
-        DEFAULT_MODEL_TYPE,
-        n_simulations=SNAPSHOT_SIMULATIONS,
-        seed=SNAPSHOT_SEED,
-    )
+    upsets = calculate_upset_radar(data_mode, model_type, limit=6)  # type: ignore[arg-type]
     bracket = run_bracket_simulation(
         BracketSimulateRequest(
-            model_type=DEFAULT_MODEL_TYPE,
+            model_type=model_type,  # type: ignore[arg-type]
             simulation_mode="favorite",
             seed=SNAPSHOT_SEED,
         ),
@@ -90,18 +90,18 @@ def build_forecast_snapshot(
     upcoming_fixtures = build_upcoming_fixture_outlook(
         config,
         data_mode=data_mode,
-        model_type=DEFAULT_MODEL_TYPE,
+        model_type=model_type,  # type: ignore[arg-type]
     )
     uncertainty = build_champion_uncertainty(
         summary.champion_probabilities,
-        n_simulations=summary.metadata.n_simulations,
+        n_simulations=n_simulations,
     )
     generated_at = datetime.now(tz=UTC).replace(microsecond=0).isoformat()
     snapshot_id = build_snapshot_id(
         data_version=summary.metadata.data_version,
         generated_at=generated_at,
         model_type=summary.metadata.model_type,
-        n_simulations=summary.metadata.n_simulations,
+        n_simulations=n_simulations,
     )
     return ForecastSnapshotResponse(
         snapshot_id=snapshot_id,
@@ -122,43 +122,21 @@ def publish_forecast_snapshot(
     data_mode: str = "processed",
 ) -> ForecastSnapshotResponse:
     """Build then atomically publish a forecast snapshot."""
-    from app.services.simulation_bank_service import (
-        build_simulation_bank,
-        champion_probabilities_from_bank,
-    )
+    from app.services.simulation_bank_service import build_simulation_bank
 
-    snapshot = build_forecast_snapshot(data_mode)
-    metadata = snapshot.summary.metadata
+    metadata = load_metadata(data_mode)
     bank_path, bank_meta = build_simulation_bank(
         data_mode=data_mode,
-        model_type=metadata.model_type,
-        data_version=metadata.data_version,
+        model_type=DEFAULT_MODEL_TYPE,
+        data_version=metadata.get("data_version"),
     )
-    bank_simulations = int(bank_meta["n_simulations"])
-    champion_probabilities = champion_probabilities_from_bank(bank_path)
-    generated_at = snapshot.generated_at
-    snapshot_id = build_snapshot_id(
-        data_version=metadata.data_version,
-        generated_at=generated_at,
-        model_type=metadata.model_type,
-        n_simulations=bank_simulations,
-    )
-    uncertainty = build_champion_uncertainty(
-        champion_probabilities,
-        n_simulations=bank_simulations,
-    )
-    payload = snapshot.model_dump(mode="json")
-    payload["snapshot_id"] = snapshot_id
-    payload["model_version"] = metadata.model_type
-    payload["summary"]["champion_probabilities"] = champion_probabilities
-    payload["summary"]["metadata"]["n_simulations"] = bank_simulations
-    payload["uncertainty"] = uncertainty.model_dump(mode="json")
+    snapshot = build_forecast_snapshot_from_bank(bank_path, bank_meta, data_mode)
     publish_forecast_snapshot_record(
-        snapshot_id=snapshot_id,
-        payload=payload,
+        snapshot_id=snapshot.snapshot_id,
+        payload=snapshot.model_dump(mode="json"),
         bank_path=bank_path,
     )
-    return ForecastSnapshotResponse.model_validate(payload)
+    return snapshot
 
 
 def _candidate_snapshot_paths() -> list[Path]:
@@ -178,7 +156,7 @@ def _enrich_snapshot_payload(payload: dict) -> dict:
             data_version=metadata.get("data_version"),
             generated_at=payload.get("generated_at", ""),
             model_type=metadata.get("model_type", DEFAULT_MODEL_TYPE),
-            n_simulations=metadata.get("n_simulations", SNAPSHOT_SIMULATIONS),
+            n_simulations=int(metadata.get("n_simulations", 0)),
         )
     if "model_version" not in payload:
         payload["model_version"] = payload.get("summary", {}).get("metadata", {}).get(
@@ -189,10 +167,7 @@ def _enrich_snapshot_payload(payload: dict) -> dict:
         summary = payload.get("summary", {})
         payload["uncertainty"] = build_champion_uncertainty(
             summary.get("champion_probabilities", {}),
-            n_simulations=summary.get("metadata", {}).get(
-                "n_simulations",
-                SNAPSHOT_SIMULATIONS,
-            ),
+            n_simulations=int(summary.get("metadata", {}).get("n_simulations", 0)),
         ).model_dump(mode="json")
     if "upcoming_fixtures" not in payload:
         payload["upcoming_fixtures"] = []

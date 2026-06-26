@@ -59,6 +59,7 @@ const exploreNav: NavItem[] = [
   { href: "/groups", label: "Groups", icon: Table2 },
   { href: "/teams", label: "Teams", icon: Users },
   { href: "/timeline", label: "Timeline", icon: TrendingUp },
+  { href: "/data-status", label: "Data Status", icon: Database },
 ];
 
 const labNav: NavItem[] = [
@@ -67,7 +68,6 @@ const labNav: NavItem[] = [
 ];
 
 const systemNav: NavItem[] = [
-  { href: "/data-status", label: "Data Status", icon: Database },
   { href: "/methodology", label: "Methodology", icon: BookOpenText },
 ];
 

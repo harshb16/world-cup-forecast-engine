@@ -508,10 +508,12 @@ class RollbackResponse(BaseModel):
 
 
 class ProbabilitySnapshotResponse(BaseModel):
-    """One probability snapshot recorded after a sync."""
+    """One probability snapshot at a tournament milestone."""
 
-    timestamp: str
-    matchday: int = 1
+    label: str
+    milestone_id: str
+    matchday: int | None = None
+    timestamp: str | None = None
     champion_probabilities: dict[str, float]
 
 

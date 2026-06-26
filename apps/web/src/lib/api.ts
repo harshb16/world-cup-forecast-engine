@@ -712,7 +712,9 @@ export type ProbabilityMovers = {
 };
 
 export type ProbabilitySnapshot = {
-  timestamp: string;
+  label: string;
+  milestone_id: string;
+  timestamp: string | null;
   matchday: number | null;
   champion_probabilities: Record<string, number>;
 };

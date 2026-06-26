@@ -1,7 +1,5 @@
 """HTTP routes for the API."""
 
-import json
-
 from fastapi import APIRouter, Header, HTTPException, Query
 
 from app.core.config import DEFAULT_MODEL_TYPE, get_data_mode
@@ -25,7 +23,6 @@ from app.models.schemas import (
     ModelType,
     ProbabilityHistoryResponse,
     ProbabilityMoversResponse,
-    ProbabilitySnapshotResponse,
     RollbackResponse,
     ScenarioCompareResponse,
     ScenarioSimulateRequest,
@@ -59,6 +56,7 @@ from app.services.forecast_snapshot_service import (
 from app.services.matchday_service import calculate_matchday
 from app.services.model_metadata import list_model_metadata
 from app.services.probability_movers_service import calculate_probability_movers
+from app.services.probability_timeline_service import build_probability_timeline
 from app.services.results_sync_service import (
     admin_key_is_valid,
     admin_sync_is_configured,
@@ -402,13 +400,16 @@ def model_comparison(
 
 
 @router.get("/analytics/probability-history", response_model=ProbabilityHistoryResponse)
-def probability_history() -> ProbabilityHistoryResponse:
-    history_path = get_processed_data_dir() / "probability_history.json"
-    if not history_path.exists():
-        return ProbabilityHistoryResponse(snapshots=[])
-    raw: list[dict] = json.loads(history_path.read_text(encoding="utf-8"))
-    return ProbabilityHistoryResponse(
-        snapshots=[ProbabilitySnapshotResponse(**entry) for entry in raw]
+def probability_history(
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
+    n_simulations: int = Query(default=500, ge=1, le=1_000),
+    seed: int = 42,
+) -> ProbabilityHistoryResponse:
+    return build_probability_timeline(
+        get_data_mode(),
+        model_type=model_type,
+        n_simulations=n_simulations,
+        seed=seed,
     )
 
 

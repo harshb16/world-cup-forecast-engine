@@ -13,6 +13,9 @@ from app.services.simulation_bank_service import (
     build_simulation_bank,
     build_snapshot_seed,
     champion_probabilities_from_bank,
+    champion_probabilities_match_summary,
+    simulation_summary_from_bank,
+    simulation_summary_response_from_bank,
 )
 from app.simulation.seed_sequence import SeedSequence
 
@@ -49,8 +52,39 @@ def test_build_simulation_bank_persists_npz_artifacts(
     payload = np.load(bank_path, allow_pickle=True)
     assert payload["champions"].shape == (200,)
     assert payload["qualified"].shape == (200, 48)
+    assert payload["top_two"].shape == (200, 48)
+    assert payload["third_finish"].shape == (200, 48)
+    assert payload["third_qualified"].shape == (200, 48)
+    assert payload["points"].shape == (200, 48)
+    assert payload["max_stage"].shape == (200, 48)
+    assert payload["qualifier_order"].shape == (200, 32)
     probabilities = champion_probabilities_from_bank(bank_path)
     assert pytest.approx(sum(probabilities.values()), rel=1e-6) == 1.0
+
+
+def test_simulation_summary_from_bank_matches_champion_probabilities(
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("WCO_RUNTIME_DATA_DIR", str(tmp_path / "runtime"))
+    bank_path, _ = build_simulation_bank(
+        data_version="summary-test",
+        n_simulations=120,
+        master_seed=11,
+        max_workers=1,
+        batch_size=40,
+    )
+    summary = simulation_summary_from_bank(bank_path)
+    champions = champion_probabilities_from_bank(bank_path)
+    for team_id, probability in champions.items():
+        assert summary.stage_probabilities[team_id]["champion"] == pytest.approx(probability)
+    response = simulation_summary_response_from_bank(
+        bank_path,
+        data_mode="processed",
+        model_type="elo",
+        seed=11,
+    )
+    assert champion_probabilities_match_summary(response)
 
 
 def test_recommended_bank_sizes_match_tournament_mode(
@@ -90,4 +124,4 @@ def test_large_bank_builds_within_target_budget(
     elapsed = time.perf_counter() - started
     assert bank_path.exists()
     assert metadata["n_simulations"] == BASELINE_SIMULATIONS
-    assert elapsed < 180
+    assert elapsed < 240

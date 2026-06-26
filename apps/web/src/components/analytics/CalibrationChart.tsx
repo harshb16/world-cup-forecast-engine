@@ -11,7 +11,7 @@ import {
   YAxis,
 } from "recharts";
 
-import { CHART_TOOLTIP_STYLE } from "@/lib/chart-colors";
+import { CHART_LINE_COLORS, CHART_TOOLTIP_STYLE } from "@/lib/chart-colors";
 import { CalibrationBin } from "@/lib/api";
 import { formatPercent } from "@/lib/format";
 
@@ -82,7 +82,7 @@ export function CalibrationChart({ bins }: CalibrationChartProps) {
             type="monotone"
             dataKey="actual"
             name="Model"
-            stroke="#34d399"
+            stroke={CHART_LINE_COLORS[0]}
             strokeWidth={2}
             dot={{ r: 3 }}
           />

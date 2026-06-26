@@ -17,17 +17,25 @@ if ! command -v bun >/dev/null 2>&1; then
   exit 1
 fi
 
-if [[ ! -d "$WEB_DIR/node_modules" ]]; then
-  echo "Installing frontend dependencies..."
+if [[ ! -d "$WEB_DIR/node_modules" ]] || [[ "$WEB_DIR/bun.lock" -nt "$WEB_DIR/node_modules" ]]; then
+  echo "Syncing frontend dependencies..."
   (cd "$WEB_DIR" && bun install)
 fi
 
-for port in 3000 8000; do
-  if lsof -iTCP:"$port" -sTCP:LISTEN -t >/dev/null 2>&1; then
-    echo "Port $port is already in use. Stop that process and retry." >&2
-    exit 1
-  fi
-done
+# Stale Next dev on :3000 keeps old CSS after theme merges — replace it.
+if lsof -iTCP:3000 -sTCP:LISTEN -t >/dev/null 2>&1; then
+  echo "Stopping existing process on port 3000 (stale dev server)..."
+  lsof -iTCP:3000 -sTCP:LISTEN -t | xargs kill 2>/dev/null || true
+  sleep 1
+fi
+
+if lsof -iTCP:8000 -sTCP:LISTEN -t >/dev/null 2>&1; then
+  echo "Port 8000 is already in use. Stop that process and retry." >&2
+  exit 1
+fi
+
+# Bust Turbopack dev cache so globals.css token changes always apply.
+rm -rf "$WEB_DIR/.next/dev"
 
 export WORLD_CUP_DATA_MODE="${WORLD_CUP_DATA_MODE:-processed}"
 export NEXT_PUBLIC_API_BASE_URL="$API_URL"

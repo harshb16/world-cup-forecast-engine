@@ -80,11 +80,11 @@ function MoverColumn({
     tone === "green" ? "text-primary" : "text-destructive";
   const badgeClass =
     tone === "green"
-      ? "border-emerald-400/30 bg-emerald-400/10 text-primary"
-      : "border-red-400/30 bg-red-400/10 text-red-200";
+      ? "border-primary/30 bg-primary/10 text-primary"
+      : "border-signal-red/30 bg-signal-red/10 text-signal-red";
 
   return (
-    <div className="rounded-lg border border-border bg-black/15 p-4">
+    <div className="rounded-lg border border-border bg-muted/40 p-4">
       <div className="flex items-center gap-2">
         <Icon size={16} className={toneClass} aria-hidden="true" />
         <h3 className="text-sm font-semibold text-foreground">{title}</h3>

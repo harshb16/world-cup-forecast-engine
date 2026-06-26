@@ -132,7 +132,7 @@ export function HomeDashboard() {
           <div className="flex flex-col justify-between border-b border-border p-6 sm:p-7 xl:border-b-0 xl:border-r">
             <div>
               <div className="flex flex-wrap items-center gap-3">
-                <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-[0.68rem] font-semibold uppercase tracking-widest text-primary">
+                <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 font-mono text-[0.68rem] font-semibold uppercase tracking-widest text-primary/90">
                   Forecast snapshot
                 </span>
                 <DataFreshness
@@ -155,11 +155,11 @@ export function HomeDashboard() {
                 {insights.topChampion.team_name}
               </h2>
               <div className="mt-4 flex items-end gap-2">
-                <p className="text-data-lg text-primary">
+                <p className="text-data-lg">
                   <NumberTicker
                     value={championPercent}
                     decimalPlaces={1}
-                    className="text-primary"
+                    className="text-chart-3"
                   />
                   %
                 </p>
@@ -193,8 +193,8 @@ export function HomeDashboard() {
             <MotionBorderBeam
               size={80}
               duration={8}
-              colorFrom="var(--primary)"
-              colorTo="var(--chart-3)"
+              colorFrom="var(--chart-3)"
+              colorTo="var(--primary)"
               borderWidth={1}
             />
             <Signal

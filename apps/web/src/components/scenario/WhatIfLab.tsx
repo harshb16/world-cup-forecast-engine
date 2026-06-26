@@ -223,7 +223,7 @@ export function WhatIfLab() {
               type="button"
               onClick={runScenario}
               disabled={isRunning}
-              className="h-12 rounded-md bg-primary px-6 text-sm font-semibold text-zinc-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-muted-foreground"
+              className="h-12 rounded-md bg-primary px-6 text-sm font-semibold text-primary-foreground transition hover:brightness-110 disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"
             >
               {isRunning ? "Running scenario" : "Run scenario"}
             </button>

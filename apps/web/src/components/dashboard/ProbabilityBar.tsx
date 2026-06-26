@@ -3,11 +3,11 @@ import { cn } from "@/lib/utils";
 
 export function ProbabilityBar({
   value,
-  tone = "emerald",
+  tone = "default",
   showLabel = true,
 }: {
   value: number;
-  tone?: "emerald" | "amber" | "rose";
+  tone?: "default" | "amber" | "rose";
   showLabel?: boolean;
 }) {
   return (
@@ -27,7 +27,7 @@ export function ProbabilityBar({
 }
 
 const toneLabel = {
-  emerald: "Champion",
+  default: "Champion",
   amber: "Semi-final",
   rose: "Final",
 };

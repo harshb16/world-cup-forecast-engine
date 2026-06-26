@@ -207,7 +207,7 @@ function GroupStandingTable({ group }: { group: MatchdayGroup }) {
       <div className="flex items-center justify-between border-b border-border px-4 py-2">
         <h3 className="text-sm font-semibold text-foreground">{group.group_name}</h3>
         {group.is_complete && (
-          <span className="rounded-full bg-emerald-900/40 px-2 py-0.5 text-xs font-semibold text-primary">
+          <span className="rounded-full bg-primary/15 px-2 py-0.5 text-xs font-semibold text-primary">
             Complete
           </span>
         )}

@@ -17,7 +17,7 @@ import { LoadingState } from "@/components/LoadingState";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { fetchProbabilityHistory, fetchTeams, ProbabilityHistory, Team } from "@/lib/api";
 import { formatPercent } from "@/lib/format";
-import { CHART_LINE_COLORS } from "@/lib/chart-colors";
+import { CHART_LINE_COLORS, CHART_TOOLTIP_STYLE } from "@/lib/chart-colors";
 
 export function ProbabilityTimeline() {
   const [history, setHistory] = useState<ProbabilityHistory | null>(null);
@@ -124,11 +124,7 @@ export function ProbabilityTimeline() {
               domain={[0, "auto"]}
             />
             <Tooltip
-              contentStyle={{
-                background: "#0f1720",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "0.5rem",
-              }}
+              contentStyle={CHART_TOOLTIP_STYLE}
               formatter={(value, name) => {
                 const numeric = typeof value === "number" ? value : 0;
                 return [formatPercent(numeric), teamNames[String(name)] ?? String(name)];

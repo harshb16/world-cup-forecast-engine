@@ -285,7 +285,7 @@ export default function ModelsPage() {
                   type="button"
                   onClick={loadComparison}
                   disabled={loadingComparison}
-                  className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {loadingComparison ? (
                     <Loader2 size={16} className="animate-spin" aria-hidden="true" />

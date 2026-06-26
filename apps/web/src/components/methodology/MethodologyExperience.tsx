@@ -140,13 +140,13 @@ export function MethodologyExperience() {
 
   return (
     <div className="space-y-10 pb-16">
-      <header className="relative overflow-hidden rounded-xl border border-border bg-[#0a1118] px-6 py-8 sm:px-9 sm:py-10">
+      <header className="surface-hero relative overflow-hidden rounded-xl border border-border px-6 py-8 sm:px-9 sm:py-10">
         <div
           className="pointer-events-none absolute inset-y-0 right-0 w-2/5 opacity-40"
           aria-hidden="true"
           style={{
             background:
-              "repeating-linear-gradient(135deg, transparent 0 18px, rgba(47,209,124,.13) 18px 19px)",
+              "repeating-linear-gradient(135deg, transparent 0 18px, color-mix(in oklch, var(--primary) 18%, transparent) 18px 19px)",
           }}
         />
         <div className="relative max-w-4xl">
@@ -165,13 +165,13 @@ export function MethodologyExperience() {
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-zinc-950 transition hover:brightness-110"
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
             >
               Open forecast <ArrowRight size={16} aria-hidden="true" />
             </Link>
             <Link
               href="/models"
-              className="inline-flex items-center gap-2 rounded-md border border-border bg-accent/50 px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-white/[0.09]"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-accent/50 px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-accent"
             >
               Inspect models
             </Link>
@@ -181,7 +181,7 @@ export function MethodologyExperience() {
 
       <section
         aria-label="Current methodology status"
-        className="grid overflow-hidden rounded-xl border border-border bg-[#0b1118] sm:grid-cols-2 xl:grid-cols-4"
+        className="surface-panel grid overflow-hidden sm:grid-cols-2 xl:grid-cols-4"
       >
         <StatusCell
           label="Active baseline"
@@ -215,7 +215,7 @@ export function MethodologyExperience() {
         <aside className="hidden xl:block">
           <nav
             aria-label="Methodology sections"
-            className="sticky top-6 rounded-xl border border-border bg-[#0b1118] p-3"
+            className="surface-panel sticky top-6 p-3"
           >
             {pipeline.map((section) => (
               <a
@@ -288,7 +288,7 @@ function MethodSection({
   return (
     <section
       id={section.id}
-      className="scroll-mt-6 rounded-xl border border-border bg-[#0b1118] p-5 sm:p-7"
+      className="surface-panel scroll-mt-6 p-5 sm:p-7"
     >
       <div className="grid gap-5 sm:grid-cols-[4.5rem_minmax(0,1fr)]">
         <div className="relative z-10 flex size-12 items-center justify-center rounded-full border border-border bg-card font-mono text-xs font-semibold text-primary sm:size-[4.5rem]">

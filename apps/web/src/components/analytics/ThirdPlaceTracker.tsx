@@ -41,7 +41,7 @@ export function ThirdPlaceTrackerPanel({ tracker }: { tracker: ThirdPlaceTracker
                 <tr
                   key={team.team_id}
                   className={`border-t border-border ${
-                    likelyQualifier ? "bg-emerald-400/5" : inBubble ? "bg-amber-400/5" : ""
+                    likelyQualifier ? "bg-primary/5" : inBubble ? "bg-signal-amber/5" : ""
                   }`}
                 >
                   <td className="py-3 pr-4 font-mono text-muted-foreground">
@@ -50,12 +50,12 @@ export function ThirdPlaceTrackerPanel({ tracker }: { tracker: ThirdPlaceTracker
                   <td className="py-3 pr-4 font-semibold text-foreground">
                     {team.team_name}
                     {likelyQualifier ? (
-                      <span className="ml-2 rounded border border-emerald-400/30 bg-emerald-400/10 px-1.5 py-0.5 text-[0.65rem] uppercase text-primary">
+                      <span className="ml-2 rounded border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-[0.65rem] uppercase text-primary">
                         Likely
                       </span>
                     ) : null}
                     {inBubble && !likelyQualifier ? (
-                      <span className="ml-2 rounded border border-amber-400/30 bg-amber-400/10 px-1.5 py-0.5 text-[0.65rem] uppercase text-amber-200">
+                      <span className="ml-2 rounded border border-signal-amber/30 bg-signal-amber/10 px-1.5 py-0.5 text-[0.65rem] uppercase text-signal-amber">
                         Bubble
                       </span>
                     ) : null}

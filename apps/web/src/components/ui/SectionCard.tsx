@@ -14,7 +14,7 @@ export function SectionCard({
   return (
     <section className={cn("surface-panel relative overflow-hidden p-5", className)}>
       <div
-        className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-primary via-primary/80 to-chart-2/60"
+        className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-primary via-chart-2 to-chart-3/80"
         aria-hidden="true"
       />
       {title ? (

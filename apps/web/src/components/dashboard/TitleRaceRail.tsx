@@ -47,7 +47,7 @@ export function TitleRaceRail({ teams }: { teams: TeamProbability[] }) {
                 <span
                   className={cn(
                     "block h-full rounded-full",
-                    index === 0 ? "bg-primary" : "bg-chart-2",
+                    index === 0 ? "bg-chart-3" : "bg-primary/75",
                   )}
                   style={{
                     width: `${Math.max((team.champion / leader) * 100, 3)}%`,

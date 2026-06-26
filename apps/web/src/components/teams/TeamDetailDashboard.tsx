@@ -106,21 +106,21 @@ export function TeamDetailDashboard() {
     <div className="space-y-5">
       <Link
         href="/teams"
-        className="inline-flex text-sm font-semibold text-emerald-200 transition hover:text-emerald-100"
+        className="inline-flex text-sm font-semibold text-primary transition hover:text-primary"
       >
         Back to teams
       </Link>
 
-      <section className="rounded-lg border border-white/10 bg-gradient-to-br from-white/[0.12] to-white/[0.04] p-6">
+      <section className="rounded-lg border border-border bg-gradient-to-br from-white/[0.12] to-white/[0.04] p-6">
         <div className="grid gap-6 xl:grid-cols-[1fr_1.2fr] xl:items-end">
           <div>
-            <p className="text-xs font-semibold uppercase text-emerald-200">
+            <p className="text-xs font-semibold uppercase text-primary">
               Team dashboard
             </p>
-            <h2 className="mt-2 text-4xl font-semibold text-white">
+            <h2 className="mt-2 text-4xl font-semibold text-foreground">
               {team.name}
             </h2>
-            <p className="mt-3 text-sm text-zinc-400">
+            <p className="mt-3 text-sm text-muted-foreground">
               {group?.name ?? team.group_id} · Rating {formatNumber(team.rating)}
             </p>
           </div>
@@ -157,7 +157,7 @@ export function TeamDetailDashboard() {
             <TeamProbabilitySummary probability={probability} />
           </div>
         ) : (
-          <p className="mt-3 text-sm text-zinc-500">
+          <p className="mt-3 text-sm text-muted-foreground">
             Simulation probabilities unavailable.
           </p>
         )}
@@ -167,10 +167,10 @@ export function TeamDetailDashboard() {
       <TeamPathExplorer path={data.path} />
 
       <SectionCard>
-        <p className="text-xs font-semibold uppercase text-emerald-200">
+        <p className="text-xs font-semibold uppercase text-primary">
           Likely road to final
         </p>
-        <h2 className="mt-1 text-lg font-semibold text-white">
+        <h2 className="mt-1 text-lg font-semibold text-foreground">
           Most common opponents by round
         </h2>
         <ul className="mt-4 space-y-3">
@@ -179,15 +179,15 @@ export function TeamDetailDashboard() {
             .map((stage) => (
               <li
                 key={stage.stage}
-                className="flex items-center justify-between gap-3 rounded-md border border-white/10 bg-black/15 px-3 py-2"
+                className="flex items-center justify-between gap-3 rounded-md border border-border bg-black/15 px-3 py-2"
               >
-                <span className="text-sm font-semibold text-zinc-300">
+                <span className="text-sm font-semibold text-muted-foreground">
                   {stage.stage}
                 </span>
-                <span className="text-sm text-zinc-100">
+                <span className="text-sm text-foreground">
                   {stage.most_likely_opponent?.team_name ?? "—"}
                 </span>
-                <span className="text-xs text-zinc-500">
+                <span className="text-xs text-muted-foreground">
                   {formatPercent(stage.most_likely_opponent?.probability ?? 0)}
                 </span>
               </li>
@@ -211,14 +211,14 @@ function TeamPathExplorer({ path }: { path: TeamPath }) {
     <SectionCard>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase text-emerald-200">
+          <p className="text-xs font-semibold uppercase text-primary">
             Path explorer
           </p>
-          <h2 className="mt-1 text-lg font-semibold text-white">
+          <h2 className="mt-1 text-lg font-semibold text-foreground">
             Likely knockout road
           </h2>
         </div>
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-muted-foreground">
           {formatNumber(path.metadata.n_simulations)} simulations ·{" "}
           {formatModelLabel(path.metadata.model_type)}
         </p>
@@ -237,30 +237,30 @@ function PathStageCard({ stage }: { stage: TeamPathStage }) {
   const topOpponent = stage.opponents[0];
 
   return (
-    <div className="rounded-lg border border-white/10 bg-black/15 p-3">
-      <p className="text-xs font-semibold uppercase text-zinc-500">
+    <div className="rounded-lg border border-border bg-black/15 p-3">
+      <p className="text-xs font-semibold uppercase text-muted-foreground">
         {stage.stage}
       </p>
-      <p className="mt-2 text-2xl font-semibold text-white">
+      <p className="mt-2 text-2xl font-semibold text-foreground">
         {formatPercent(stage.reached_probability)}
       </p>
-      <p className="mt-1 text-xs text-zinc-500">Reach probability</p>
+      <p className="mt-1 text-xs text-muted-foreground">Reach probability</p>
 
       <div className="mt-4 space-y-2">
         {topOpponent ? (
           stage.opponents.slice(0, 3).map((opponent) => (
             <div key={opponent.team_id}>
               <div className="flex items-center justify-between gap-2 text-xs">
-                <span className="truncate font-semibold text-zinc-200">
+                <span className="truncate font-semibold text-foreground">
                   {opponent.team_name}
                 </span>
-                <span className="text-zinc-500">
+                <span className="text-muted-foreground">
                   {formatPercent(opponent.probability)}
                 </span>
               </div>
-              <div className="mt-1 h-1 overflow-hidden rounded-full bg-white/10">
+              <div className="mt-1 h-1 overflow-hidden rounded-full bg-muted/50">
                 <div
-                  className="h-full bg-emerald-300"
+                  className="h-full bg-primary"
                   style={{
                     width: `${Math.round(opponent.probability * 100)}%`,
                   }}
@@ -269,7 +269,7 @@ function PathStageCard({ stage }: { stage: TeamPathStage }) {
             </div>
           ))
         ) : (
-          <p className="text-sm text-zinc-500">No common opponent yet.</p>
+          <p className="text-sm text-muted-foreground">No common opponent yet.</p>
         )}
       </div>
     </div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { AppShell } from "@/components/AppShell";
+import { Badge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/PageHeader";
 import { ErrorState } from "@/components/ErrorState";
 import { LoadingState } from "@/components/LoadingState";
@@ -29,7 +29,7 @@ export default function MatchdayPage() {
   }, []);
 
   return (
-    <AppShell>
+    <>
       <PageHeader
         eyebrow={data?.matchday_label ?? "Matchday"}
         title={data ? `${data.matchday_label} — ${formatDate(data.date)}` : "Today's Matches"}
@@ -43,7 +43,7 @@ export default function MatchdayPage() {
           <GroupStandingsSection groups={data.groups} />
         </div>
       )}
-    </AppShell>
+    </>
   );
 }
 
@@ -75,25 +75,14 @@ function formatKickoff(kickoffUtc: string | null): string {
 
 function StatusBadge({ status }: { status: string }) {
   const lower = status.toLowerCase();
-  let bg = "bg-zinc-700/50 text-zinc-300";
-  let label = status;
 
   if (lower === "finished") {
-    bg = "bg-emerald-900/40 text-emerald-300";
-    label = "Finished";
-  } else if (lower === "live" || lower === "in_progress") {
-    bg = "bg-red-900/40 text-red-300";
-    label = "Live";
-  } else {
-    bg = "bg-blue-900/30 text-blue-300";
-    label = "Upcoming";
+    return <Badge variant="secondary">Finished</Badge>;
   }
-
-  return (
-    <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${bg}`}>
-      {label}
-    </span>
-  );
+  if (lower === "live" || lower === "in_progress") {
+    return <Badge variant="destructive">Live</Badge>;
+  }
+  return <Badge variant="outline">Upcoming</Badge>;
 }
 
 function ProbBar({
@@ -107,14 +96,14 @@ function ProbBar({
 }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="w-5 shrink-0 text-right text-xs text-zinc-400">{label}</span>
-      <div className="relative h-2 flex-1 overflow-hidden rounded-full bg-white/10">
+      <span className="w-5 shrink-0 text-right text-xs text-muted-foreground">{label}</span>
+      <div className="relative h-2 flex-1 overflow-hidden rounded-full bg-muted/50">
         <div
           className={`absolute left-0 top-0 h-full rounded-full ${color}`}
           style={{ width: `${value * 100}%` }}
         />
       </div>
-      <span className="w-10 shrink-0 text-right font-mono text-xs text-zinc-300">
+      <span className="w-10 shrink-0 text-right font-mono text-xs text-muted-foreground">
         {formatPercent(value)}
       </span>
     </div>
@@ -126,17 +115,17 @@ function FixtureCard({ fixture }: { fixture: MatchdayFixture }) {
 
   return (
     <div
-      className={`rounded-xl border bg-[#0c1118] p-4 transition ${
+      className={`rounded-xl border bg-secondary p-4 transition ${
         fixture.what_still_matters
           ? "border-amber-500/30"
-          : "border-white/10"
+          : "border-border"
       }`}
     >
       {/* Header row */}
       <div className="mb-3 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           {fixture.group_id && (
-            <span className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-xs text-zinc-400">
+            <span className="rounded bg-muted/50 px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
               Group {fixture.group_id}
             </span>
           )}
@@ -148,36 +137,36 @@ function FixtureCard({ fixture }: { fixture: MatchdayFixture }) {
         </div>
         <div className="flex items-center gap-2">
           <StatusBadge status={fixture.status} />
-          <span className="text-xs text-zinc-500">{formatKickoff(fixture.kickoff_utc)}</span>
+          <span className="text-xs text-muted-foreground">{formatKickoff(fixture.kickoff_utc)}</span>
         </div>
       </div>
 
       {/* Teams + score */}
       <div className="mb-4 flex items-center justify-between gap-4">
         <div className="flex-1">
-          <p className="truncate text-sm font-semibold text-[#f4f7f5]">{fixture.team_a_name}</p>
+          <p className="truncate text-sm font-semibold text-foreground">{fixture.team_a_name}</p>
         </div>
         <div className="shrink-0 text-center">
           {isFinished ? (
-            <span className="font-mono text-xl font-bold text-[#f4f7f5]">
+            <span className="font-mono text-xl font-bold text-foreground">
               {fixture.team_a_goals} – {fixture.team_b_goals}
             </span>
           ) : (
-            <span className="font-mono text-sm text-zinc-500">
+            <span className="font-mono text-sm text-muted-foreground">
               {fixture.projected_team_a_goals} – {fixture.projected_team_b_goals}
-              <span className="ml-1 text-xs text-zinc-600">xG</span>
+              <span className="ml-1 text-xs text-muted-foreground">xG</span>
             </span>
           )}
         </div>
         <div className="flex-1 text-right">
-          <p className="truncate text-sm font-semibold text-[#f4f7f5]">{fixture.team_b_name}</p>
+          <p className="truncate text-sm font-semibold text-foreground">{fixture.team_b_name}</p>
         </div>
       </div>
 
       {/* Probability bars */}
       {!isFinished && (
         <div className="space-y-1.5">
-          <ProbBar label="W" value={fixture.team_a_win_probability} color="bg-[var(--turf)]" />
+          <ProbBar label="W" value={fixture.team_a_win_probability} color="bg-primary" />
           <ProbBar label="D" value={fixture.draw_probability} color="bg-zinc-500" />
           <ProbBar label="W" value={fixture.team_b_win_probability} color="bg-blue-500" />
         </div>
@@ -190,17 +179,17 @@ function FixturesSection({ fixtures }: { fixtures: MatchdayFixture[] }) {
   if (fixtures.length === 0) {
     return (
       <section>
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-zinc-400">
+        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Fixtures
         </h2>
-        <p className="text-sm text-zinc-500">No upcoming fixtures found for today.</p>
+        <p className="text-sm text-muted-foreground">No upcoming fixtures found for today.</p>
       </section>
     );
   }
 
   return (
     <section>
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-zinc-400">
+      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
         Fixtures
       </h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -214,18 +203,18 @@ function FixturesSection({ fixtures }: { fixtures: MatchdayFixture[] }) {
 
 function GroupStandingTable({ group }: { group: MatchdayGroup }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-[#0c1118] overflow-hidden">
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
-        <h3 className="text-sm font-semibold text-[#f4f7f5]">{group.group_name}</h3>
+    <div className="rounded-xl border border-border bg-secondary overflow-hidden">
+      <div className="flex items-center justify-between border-b border-border px-4 py-2">
+        <h3 className="text-sm font-semibold text-foreground">{group.group_name}</h3>
         {group.is_complete && (
-          <span className="rounded-full bg-emerald-900/40 px-2 py-0.5 text-xs font-semibold text-emerald-300">
+          <span className="rounded-full bg-primary/15 px-2 py-0.5 text-xs font-semibold text-primary">
             Complete
           </span>
         )}
       </div>
       <table className="w-full text-xs">
         <thead>
-          <tr className="border-b border-white/5 text-zinc-500">
+          <tr className="border-b border-white/5 text-muted-foreground">
             <th className="py-1.5 pl-4 text-left font-medium">#</th>
             <th className="py-1.5 text-left font-medium">Team</th>
             <th className="py-1.5 text-center font-medium">P</th>
@@ -241,10 +230,10 @@ function GroupStandingTable({ group }: { group: MatchdayGroup }) {
             <tr
               key={row.team_id}
               className={`border-b border-white/5 last:border-0 ${
-                idx < 2 ? "text-[#f4f7f5]" : "text-zinc-400"
+                idx < 2 ? "text-foreground" : "text-muted-foreground"
               }`}
             >
-              <td className="py-1.5 pl-4 font-mono text-zinc-500">{row.position}</td>
+              <td className="py-1.5 pl-4 font-mono text-muted-foreground">{row.position}</td>
               <td className="py-1.5 font-medium">{row.team_name}</td>
               <td className="py-1.5 text-center font-mono">{row.played}</td>
               <td className="py-1.5 text-center font-mono">{row.wins}</td>
@@ -254,7 +243,7 @@ function GroupStandingTable({ group }: { group: MatchdayGroup }) {
                 {row.goal_difference > 0 ? "+" : ""}
                 {row.goal_difference}
               </td>
-              <td className="py-1.5 pr-4 text-center font-mono font-bold text-[var(--turf)]">
+              <td className="py-1.5 pr-4 text-center font-mono font-bold text-primary">
                 {row.points}
               </td>
             </tr>
@@ -268,7 +257,7 @@ function GroupStandingTable({ group }: { group: MatchdayGroup }) {
 function GroupStandingsSection({ groups }: { groups: MatchdayGroup[] }) {
   return (
     <section>
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-zinc-400">
+      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
         Group Standings
       </h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

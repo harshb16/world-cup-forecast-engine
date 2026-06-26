@@ -13,8 +13,8 @@ export function TeamName({
 }) {
   const content = (
     <>
-      <span className="block font-semibold text-white">{team.name}</span>
-      <span className="block text-xs text-zinc-500">
+      <span className="block font-semibold text-foreground">{team.name}</span>
+      <span className="block text-xs text-muted-foreground">
         {groupName ?? team.group_id} · Rating {team.rating.toFixed(0)}
       </span>
     </>

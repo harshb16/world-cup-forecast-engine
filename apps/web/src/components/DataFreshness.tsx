@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { getDataFreshness } from "@/lib/freshness";
 
 const levelStyles = {
-  current: "text-[var(--turf)]",
-  delayed: "text-[var(--score-amber)]",
-  stale: "text-[var(--risk-red)]",
-  unknown: "text-zinc-400",
+  current: "text-primary",
+  delayed: "text-signal-amber",
+  stale: "text-destructive",
+  unknown: "text-muted-foreground",
 } as const;
 
 const levelLabels = {
@@ -51,10 +51,10 @@ export function DataFreshness({
       <span className={`font-semibold ${levelStyles[freshness.level]}`}>
         {levelLabels[freshness.level]}
       </span>
-      <span className="ml-1 font-semibold text-zinc-100">
+      <span className="ml-1 font-semibold text-foreground">
         {freshness.relative}
       </span>
-      <span className="ml-2 text-xs text-zinc-500">({freshness.exact})</span>
+      <span className="ml-2 text-xs text-muted-foreground">({freshness.exact})</span>
     </span>
   );
 }

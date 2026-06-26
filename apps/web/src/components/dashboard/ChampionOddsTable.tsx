@@ -1,5 +1,13 @@
 import { ProbabilityBar } from "@/components/dashboard/ProbabilityBar";
 import { SectionCard } from "@/components/ui/SectionCard";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { formatPercent } from "@/lib/format";
 import { TeamProbability } from "@/lib/api";
 
@@ -7,40 +15,45 @@ export function ChampionOddsTable({ teams }: { teams: TeamProbability[] }) {
   const rows = [...teams].sort((a, b) => b.champion - a.champion).slice(0, 12);
 
   return (
-    <SectionCard>
-      <h2 className="text-base font-semibold text-white">Champion odds</h2>
-      <p className="mt-1 text-sm text-zinc-400">
-        Chance each contender wins the tournament across the simulation run.
-      </p>
-      <div className="mt-4 overflow-x-auto">
-        <table className="w-full text-left text-sm">
-          <thead className="text-xs uppercase text-zinc-500">
-            <tr>
-              <th className="py-2 font-semibold">Team</th>
-              <th className="py-2 font-semibold">Group</th>
-              <th className="py-2 font-semibold">Champion</th>
-              <th className="py-2 font-semibold">Average points</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/10">
-            {rows.map((team) => (
-              <tr key={team.team_id}>
-                <td className="py-3 font-medium text-zinc-100">
-                  {team.team_name}
-                </td>
-                <td className="py-3 text-zinc-400">{team.group_id}</td>
-                <td className="py-3">
-                  <ProbabilityBar value={team.champion} />
-                </td>
-                <td className="py-3 text-zinc-400">
+    <SectionCard
+      title="Champion odds"
+      description="Chance each contender wins the tournament across the simulation run."
+    >
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead>Team</TableHead>
+              <TableHead>Group</TableHead>
+              <TableHead>Champion</TableHead>
+              <TableHead className="text-right">Average points</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((team, index) => (
+              <TableRow
+                key={team.team_id}
+                className={index % 2 === 1 ? "bg-muted/25" : undefined}
+              >
+                <TableCell className="font-medium">{team.team_name}</TableCell>
+                <TableCell className="text-muted-foreground">
+                  {team.group_id}
+                </TableCell>
+                <TableCell className="min-w-[10rem]">
+                  <ProbabilityBar value={team.champion} showLabel={false} />
+                  <span className="mt-1 block font-mono text-xs tabular-nums text-muted-foreground">
+                    {formatPercent(team.champion)}
+                  </span>
+                </TableCell>
+                <TableCell className="text-right font-mono tabular-nums text-muted-foreground">
                   {team.average_points.toFixed(2)}
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
-      <p className="mt-3 text-xs text-zinc-500">
+      <p className="mt-3 text-xs text-muted-foreground">
         Top 12 teams shown. Total champion probability:{" "}
         {formatPercent(teams.reduce((total, team) => total + team.champion, 0))}
       </p>

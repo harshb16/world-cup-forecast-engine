@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { AppShell } from "@/components/AppShell";
 import { MethodologyExperience } from "@/components/methodology/MethodologyExperience";
 
 export const metadata: Metadata = {
@@ -10,9 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function MethodologyPage() {
-  return (
-    <AppShell>
-      <MethodologyExperience />
-    </AppShell>
-  );
+  return <MethodologyExperience />;
 }

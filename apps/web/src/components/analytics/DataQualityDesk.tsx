@@ -8,13 +8,13 @@ export function DataQualityDesk({ report }: { report: DataQualityReport }) {
 
   return (
     <SectionCard>
-      <p className="text-xs font-semibold uppercase text-[var(--var-blue)]">
+      <p className="text-xs font-semibold uppercase text-signal-blue">
         Data quality desk
       </p>
-      <h2 className="mt-1 text-lg font-semibold text-white">
+      <h2 className="mt-1 text-lg font-semibold text-foreground">
         Source coverage and gaps
       </h2>
-      <p className="mt-1 text-sm text-zinc-400">
+      <p className="mt-1 text-sm text-muted-foreground">
         Last refresh <DataFreshness timestamp={report.last_refresh} />. All
         inputs are computed from open sources or flagged as missing.
       </p>
@@ -23,12 +23,12 @@ export function DataQualityDesk({ report }: { report: DataQualityReport }) {
         {Object.entries(report.source_coverage).map(([key, value]) => (
           <div
             key={key}
-            className="rounded-md border border-white/10 bg-black/20 px-3 py-3"
+            className="rounded-md border border-border bg-muted/40 px-3 py-3"
           >
-            <p className="text-xs uppercase text-zinc-500">
+            <p className="text-xs uppercase text-muted-foreground">
               {key.replaceAll("_", " ")}
             </p>
-            <p className="mt-1 text-xl font-semibold text-white">
+            <p className="mt-1 text-xl font-semibold text-foreground">
               {formatNumber(value)}
             </p>
           </div>
@@ -37,10 +37,10 @@ export function DataQualityDesk({ report }: { report: DataQualityReport }) {
 
       {report.warnings.length > 0 ? (
         <div className="mt-5 rounded-md border border-[var(--score-amber)]/30 bg-[var(--score-amber)]/10 p-4">
-          <h3 className="text-sm font-semibold text-[var(--score-amber)]">
+          <h3 className="text-sm font-semibold text-signal-amber">
             Coverage warnings
           </h3>
-          <ul className="mt-2 space-y-1 text-sm text-zinc-200">
+          <ul className="mt-2 space-y-1 text-sm text-foreground">
             {report.warnings.map((warning) => (
               <li key={warning}>• {warning}</li>
             ))}
@@ -51,7 +51,7 @@ export function DataQualityDesk({ report }: { report: DataQualityReport }) {
       {warningTeams.length > 0 ? (
         <div className="mt-5 overflow-x-auto">
           <table className="min-w-full text-left text-sm">
-            <thead className="text-xs uppercase text-zinc-500">
+            <thead className="text-xs uppercase text-muted-foreground">
               <tr>
                 <th className="px-3 py-2">Team</th>
                 <th className="px-3 py-2">Rating</th>
@@ -62,8 +62,8 @@ export function DataQualityDesk({ report }: { report: DataQualityReport }) {
             </thead>
             <tbody>
               {warningTeams.slice(0, 8).map((team) => (
-                <tr key={team.team_id} className="border-t border-white/10">
-                  <td className="px-3 py-2 font-semibold text-zinc-100">
+                <tr key={team.team_id} className="border-t border-border">
+                  <td className="px-3 py-2 font-semibold text-foreground">
                     {team.team_name}
                   </td>
                   <td className="px-3 py-2">
@@ -77,7 +77,7 @@ export function DataQualityDesk({ report }: { report: DataQualityReport }) {
                       ? "-"
                       : `${Math.round(team.squad_coverage * 100)}%`}
                   </td>
-                  <td className="px-3 py-2 text-zinc-400">
+                  <td className="px-3 py-2 text-muted-foreground">
                     {team.warnings.join(" ")}
                   </td>
                 </tr>
@@ -87,7 +87,7 @@ export function DataQualityDesk({ report }: { report: DataQualityReport }) {
         </div>
       ) : null}
 
-      <ul className="mt-5 space-y-2 text-sm leading-6 text-zinc-400">
+      <ul className="mt-5 space-y-2 text-sm leading-6 text-muted-foreground">
         {report.notes.map((note) => (
           <li key={note}>• {note}</li>
         ))}

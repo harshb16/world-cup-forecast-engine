@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
-import { AppShell } from "@/components/AppShell";
-import { PageHeader } from "@/components/PageHeader";
 import { TeamDetailDashboard } from "@/components/teams/TeamDetailDashboard";
+import { TeamDetailHeader } from "@/components/teams/TeamDetailHeader";
 import { API_BASE_URL, SIMULATION_COUNT } from "@/lib/config";
 import { DEFAULT_MODEL_TYPE } from "@/lib/api";
 
@@ -74,13 +73,9 @@ export async function generateMetadata({
 
 export default function TeamDetailPage() {
   return (
-    <AppShell>
-      <PageHeader
-        eyebrow="Team detail"
-        title="Team probability profile"
-        description="A team-level readout of rating, group position, qualification, and tournament upside."
-      />
+    <>
+      <TeamDetailHeader />
       <TeamDetailDashboard />
-    </AppShell>
+    </>
   );
 }

@@ -1,17 +1,33 @@
 import { ProbabilityBar as BaseProbabilityBar } from "@/components/ui/ProbabilityBar";
+import { cn } from "@/lib/utils";
 
 export function ProbabilityBar({
   value,
-  tone = "emerald",
+  tone = "default",
+  showLabel = true,
 }: {
   value: number;
-  tone?: "emerald" | "amber" | "rose";
+  tone?: "default" | "amber" | "rose";
+  showLabel?: boolean;
 }) {
-  return <BaseProbabilityBar value={value} label={toneLabel[tone]} />;
+  return (
+    <div
+      className={cn(
+        tone === "amber" && "[&_[data-fill]]:bg-signal-amber",
+        tone === "rose" && "[&_[data-fill]]:bg-signal-red",
+      )}
+    >
+      <BaseProbabilityBar
+        value={value}
+        label={toneLabel[tone]}
+        showLabel={showLabel}
+      />
+    </div>
+  );
 }
 
 const toneLabel = {
-  emerald: "Champion",
+  default: "Champion",
   amber: "Semi-final",
   rose: "Final",
 };

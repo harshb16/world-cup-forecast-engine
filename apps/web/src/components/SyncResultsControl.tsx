@@ -68,7 +68,7 @@ export function SyncResultsControl({
         type="button"
         onClick={() => void syncResults()}
         disabled={isSyncing}
-        className="inline-flex items-center gap-2 rounded-md bg-[var(--turf)] px-3 py-2 text-sm font-semibold text-zinc-950 transition hover:brightness-110 disabled:cursor-wait disabled:opacity-60"
+        className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground transition hover:brightness-110 disabled:cursor-wait disabled:opacity-60"
       >
         <DatabaseZap
           size={15}
@@ -80,7 +80,7 @@ export function SyncResultsControl({
       {message ? (
         <span
           role="status"
-          className="max-w-lg font-mono text-[0.65rem] uppercase tracking-[0.08em] text-zinc-400"
+          className="max-w-lg font-mono text-[0.65rem] uppercase tracking-[0.08em] text-muted-foreground"
         >
           {message}
         </span>

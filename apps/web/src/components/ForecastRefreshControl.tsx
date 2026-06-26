@@ -17,7 +17,7 @@ export function ForecastRefreshControl({
         type="button"
         onClick={() => void onRefresh()}
         disabled={isRefreshing}
-        className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-white/[0.05] px-3 py-2 text-sm font-semibold text-white transition hover:bg-white/[0.09] disabled:cursor-wait disabled:text-zinc-500"
+        className="inline-flex items-center gap-2 rounded-md border border-border bg-accent/50 px-3 py-2 text-sm font-semibold text-foreground transition hover:bg-white/[0.09] disabled:cursor-wait disabled:text-muted-foreground"
       >
         <RefreshCw
           size={15}
@@ -28,7 +28,7 @@ export function ForecastRefreshControl({
       </button>
       <span
         aria-live="polite"
-        className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-zinc-500"
+        className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-muted-foreground"
       >
         {lastRunAt
           ? `Published forecast · loaded ${lastRunAt.toLocaleTimeString([], {

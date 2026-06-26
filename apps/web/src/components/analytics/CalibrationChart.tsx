@@ -11,6 +11,7 @@ import {
   YAxis,
 } from "recharts";
 
+import { CHART_TOOLTIP_STYLE } from "@/lib/chart-colors";
 import { CalibrationBin } from "@/lib/api";
 import { formatPercent } from "@/lib/format";
 
@@ -30,7 +31,7 @@ export function CalibrationChart({ bins }: CalibrationChartProps) {
 
   if (data.length === 0) {
     return (
-      <p className="text-sm text-zinc-400">
+      <p className="text-sm text-muted-foreground">
         Not enough completed fixtures to plot calibration yet.
       </p>
     );
@@ -54,11 +55,7 @@ export function CalibrationChart({ bins }: CalibrationChartProps) {
             domain={[0, 1]}
           />
           <Tooltip
-            contentStyle={{
-              background: "#0f1720",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "0.5rem",
-            }}
+            contentStyle={CHART_TOOLTIP_STYLE}
             formatter={(value, name, item) => {
               const numeric = typeof value === "number" ? value : 0;
               if (name === "actual") {

@@ -121,8 +121,8 @@ export function TeamsDashboard() {
               onClick={() => setSelectedGroupId("all")}
               className={`min-w-fit rounded-md border px-3 py-2 text-xs font-semibold transition ${
                 selectedGroupId === "all"
-                  ? "border-emerald-300/40 bg-emerald-300/10 text-emerald-100"
-                  : "border-white/10 text-zinc-400 hover:bg-white/[0.06]"
+                  ? "border-primary/40 bg-primary/10 text-primary"
+                  : "border-border text-muted-foreground hover:bg-accent/60"
               }`}
             >
               All groups
@@ -134,8 +134,8 @@ export function TeamsDashboard() {
                 onClick={() => setSelectedGroupId(group.id)}
                 className={`min-w-fit rounded-md border px-3 py-2 text-xs font-semibold transition ${
                   selectedGroupId === group.id
-                    ? "border-emerald-300/40 bg-emerald-300/10 text-emerald-100"
-                    : "border-white/10 text-zinc-400 hover:bg-white/[0.06]"
+                    ? "border-primary/40 bg-primary/10 text-primary"
+                    : "border-border text-muted-foreground hover:bg-accent/60"
                 }`}
               >
                 {group.id}
@@ -162,10 +162,10 @@ export function TeamsDashboard() {
         {teamsByGroup.map(({ group, teams }) => (
           <section key={group.id} className="space-y-3">
             <div>
-              <p className="text-xs font-semibold uppercase text-emerald-200">
+              <p className="text-xs font-semibold uppercase text-primary">
                 {group.id}
               </p>
-              <h2 className="text-lg font-semibold text-white">{group.name}</h2>
+              <h2 className="text-lg font-semibold text-foreground">{group.name}</h2>
             </div>
             <div className="grid gap-4 xl:grid-cols-2">
               {teams.map((team) => {
@@ -184,7 +184,7 @@ export function TeamsDashboard() {
                         <TeamProbabilitySummary probability={probability} compact />
                       </div>
                     ) : (
-                      <p className="mt-3 text-sm text-zinc-500">
+                      <p className="mt-3 text-sm text-muted-foreground">
                         Simulation probabilities unavailable.
                       </p>
                     )}

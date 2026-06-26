@@ -11,10 +11,10 @@ export function ScenarioResultDeltaTable({
 }) {
   return (
     <SectionCard>
-      <h2 className="text-base font-semibold text-white">{title}</h2>
+      <h2 className="text-base font-semibold text-foreground">{title}</h2>
       <div className="mt-4 overflow-x-auto">
         <table className="w-full text-left text-sm">
-          <thead className="text-xs uppercase text-zinc-500">
+          <thead className="text-xs uppercase text-muted-foreground">
             <tr>
               <th className="py-2 font-semibold">Team</th>
               <th className="py-2 font-semibold">Champion</th>
@@ -25,10 +25,10 @@ export function ScenarioResultDeltaTable({
               <th className="py-2 font-semibold">Qualify</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/10">
+          <tbody className="divide-y divide-border">
             {rows.map((row) => (
               <tr key={row.team_id}>
-                <td className="py-3 font-medium text-zinc-100">
+                <td className="py-3 font-medium text-foreground">
                   {row.team_name}
                 </td>
                 <td className="py-3">

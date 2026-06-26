@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { Match, MatchResultOverride, Team } from "@/lib/api";
 
@@ -28,20 +30,20 @@ export function ScenarioBuilder({
   return (
     <SectionCard>
       <div>
-        <p className="text-xs font-semibold uppercase text-emerald-200">
+        <p className="text-xs font-semibold uppercase text-primary">
           Step 1 and 2
         </p>
-        <h2 className="mt-1 text-lg font-semibold text-white">
+        <h2 className="mt-1 text-lg font-semibold text-foreground">
           Pick a match and set the score
         </h2>
       </div>
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_8rem_8rem_auto]">
-        <label className="text-sm font-medium text-zinc-300">
+        <label className="text-sm font-medium text-muted-foreground">
           Match
           <select
             value={matchId}
             onChange={(event) => setMatchId(event.target.value)}
-            className="mt-2 h-11 w-full rounded-md border border-white/10 bg-[#101624] px-3 text-sm text-white outline-none focus:border-emerald-300/50"
+            className="mt-2 h-11 w-full rounded-md border border-border bg-card px-3 text-sm text-foreground outline-none focus:border-primary/50"
           >
             {fixtures.map((fixture) => {
               return (
@@ -53,31 +55,32 @@ export function ScenarioBuilder({
           </select>
         </label>
 
-        <label className="text-sm font-medium text-zinc-300">
+        <label className="text-sm font-medium text-muted-foreground">
           Team A
-          <input
+          <Input
             value={teamAGoals}
             min={0}
             type="number"
             onChange={(event) => setTeamAGoals(Number(event.target.value))}
-            className="mt-2 h-11 w-full rounded-md border border-white/10 bg-[#101624] px-3 text-sm text-white outline-none focus:border-emerald-300/50"
+            className="mt-2 h-11"
           />
         </label>
 
-        <label className="text-sm font-medium text-zinc-300">
+        <label className="text-sm font-medium text-muted-foreground">
           Team B
-          <input
+          <Input
             value={teamBGoals}
             min={0}
             type="number"
             onChange={(event) => setTeamBGoals(Number(event.target.value))}
-            className="mt-2 h-11 w-full rounded-md border border-white/10 bg-[#101624] px-3 text-sm text-white outline-none focus:border-emerald-300/50"
+            className="mt-2 h-11"
           />
         </label>
 
-        <button
+        <Button
           type="button"
           disabled={!matchId}
+          className="mt-7 h-11"
           onClick={() =>
             onAddOverride({
               match_id: matchId,
@@ -85,13 +88,12 @@ export function ScenarioBuilder({
               team_b_goals: Math.max(0, teamBGoals),
             })
           }
-          className="mt-7 h-11 rounded-md bg-emerald-300 px-4 text-sm font-semibold text-zinc-950 transition hover:bg-emerald-200 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400"
         >
           Add result
-        </button>
+        </Button>
       </div>
       {selectedLabel ? (
-        <p className="mt-3 text-xs text-zinc-500">Selected: {selectedLabel}</p>
+        <p className="mt-3 text-xs text-muted-foreground">Selected: {selectedLabel}</p>
       ) : null}
     </SectionCard>
   );

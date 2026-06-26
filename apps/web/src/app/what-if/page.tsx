@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { AppShell } from "@/components/AppShell";
 import { LoadingState } from "@/components/LoadingState";
 import { PageHeader } from "@/components/PageHeader";
 import { WhatIfLab } from "@/components/scenario/WhatIfLab";
@@ -40,7 +39,7 @@ export async function generateMetadata({
 
 export default function WhatIfPage() {
   return (
-    <AppShell>
+    <>
       <PageHeader
         eyebrow="What-if lab"
         title="Scenario simulation"
@@ -49,6 +48,6 @@ export default function WhatIfPage() {
       <Suspense fallback={<LoadingState label="Loading scenario lab" />}>
         <WhatIfLab />
       </Suspense>
-    </AppShell>
+    </>
   );
 }

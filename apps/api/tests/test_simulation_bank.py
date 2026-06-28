@@ -14,9 +14,12 @@ from app.services.simulation_bank_service import (
     build_snapshot_seed,
     champion_probabilities_from_bank,
     champion_probabilities_match_summary,
+    load_bank_arrays,
     simulation_summary_from_bank,
     simulation_summary_response_from_bank,
 )
+from app.services.team_path_service import team_path_from_bank
+from app.simulation.knockout import ROUND_NAMES
 from app.simulation.seed_sequence import SeedSequence
 
 
@@ -58,6 +61,11 @@ def test_build_simulation_bank_persists_npz_artifacts(
     assert payload["points"].shape == (200, 48)
     assert payload["max_stage"].shape == (200, 48)
     assert payload["qualifier_order"].shape == (200, 32)
+    assert payload["knockout_opponents"].shape == (200, 48, 5)
+    opponent_values = payload["knockout_opponents"]
+    valid_mask = opponent_values >= 0
+    assert np.all(opponent_values[valid_mask] < 48)
+    assert np.all(opponent_values[~valid_mask] == -1)
     probabilities = champion_probabilities_from_bank(bank_path)
     assert pytest.approx(sum(probabilities.values()), rel=1e-6) == 1.0
 
@@ -85,6 +93,43 @@ def test_simulation_summary_from_bank_matches_champion_probabilities(
         seed=11,
     )
     assert champion_probabilities_match_summary(response)
+
+
+def test_team_path_from_bank_matches_opponent_trace(
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("WCO_RUNTIME_DATA_DIR", str(tmp_path / "runtime"))
+    monkeypatch.setenv("WCO_SNAPSHOT_SIMULATIONS", "200")
+    bank_path, bank_meta = build_simulation_bank(
+        data_version="team-path-test",
+        n_simulations=200,
+        master_seed=42,
+        max_workers=1,
+        batch_size=50,
+    )
+    bank = load_bank_arrays(bank_path)
+    team_ids: list[str] = bank["team_ids"]  # type: ignore[assignment]
+    knockout_opponents: np.ndarray = bank["knockout_opponents"]  # type: ignore[assignment]
+    team_id = team_ids[0]
+    team_index = 0
+
+    team_path = team_path_from_bank(
+        bank_path,
+        team_id,
+        "processed",
+        model_type=str(bank_meta["model_version"]),
+        seed=int(bank_meta["master_seed"]),
+    )
+    assert team_path.metadata.n_simulations == 200
+
+    for stage_index, stage_name in enumerate(ROUND_NAMES):
+        expected_reached = int(np.sum(knockout_opponents[:, team_index, stage_index] >= 0))
+        stage = next(item for item in team_path.stages if item.stage == stage_name)
+        assert stage.reached_count == expected_reached
+        if expected_reached > 0:
+            assert stage.opponents
+            assert stage.opponents[0].count <= expected_reached
 
 
 def test_recommended_bank_sizes_match_tournament_mode(

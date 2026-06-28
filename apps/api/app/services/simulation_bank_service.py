@@ -86,6 +86,7 @@ def _concat_batches(parts: list[SimulationBatchTrace]) -> SimulationBatchTrace:
         points=np.concatenate([part.points for part in parts], axis=0),
         max_stage=np.concatenate([part.max_stage for part in parts], axis=0),
         qualifier_order=np.concatenate([part.qualifier_order for part in parts], axis=0),
+        knockout_opponents=np.concatenate([part.knockout_opponents for part in parts], axis=0),
     )
 
 
@@ -155,6 +156,7 @@ def build_simulation_bank(
         points=trace.points,
         max_stage=trace.max_stage,
         qualifier_order=trace.qualifier_order,
+        knockout_opponents=trace.knockout_opponents,
         master_seed=np.int64(seed),
         n_simulations=np.int32(total),
         model_version=np.array(model_type),
@@ -186,6 +188,7 @@ def load_bank_arrays(bank_path: Path) -> dict[str, np.ndarray | list[str] | int]
         "points": payload["points"],
         "max_stage": payload["max_stage"],
         "qualifier_order": payload["qualifier_order"],
+        "knockout_opponents": payload["knockout_opponents"],
     }
 
 

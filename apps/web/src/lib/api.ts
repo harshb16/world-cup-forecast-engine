@@ -1,4 +1,4 @@
-import { API_BASE_URL, TEAM_PATH_SIMULATION_COUNT } from "@/lib/config";
+import { API_BASE_URL } from "@/lib/config";
 export { formatPercent } from "@/lib/format";
 
 export type ModelType =
@@ -607,22 +607,7 @@ export async function fetchCurrentTournamentScoring(
 }
 
 export async function fetchTeamPath(teamId: string): Promise<TeamPath> {
-  const response = await fetch(`${API_BASE_URL}/team-path`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      team_id: teamId,
-      model_type: DEFAULT_MODEL_TYPE,
-      n_simulations: TEAM_PATH_SIMULATION_COUNT,
-      seed: 42,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Team path request failed with status ${response.status}`);
-  }
-
-  return response.json();
+  return fetchJson<TeamPath>(`/team-path/${encodeURIComponent(teamId)}`);
 }
 
 export async function fetchUpsetRadar(

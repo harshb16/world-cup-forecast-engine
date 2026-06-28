@@ -29,3 +29,4 @@ export const TEAM_PATH_SIMULATION_COUNT = boundedInteger(
   500,
   100,
 );
+// Used only for optional live POST /team-path diagnostics; default UI uses GET.

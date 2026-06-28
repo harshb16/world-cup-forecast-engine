@@ -216,6 +216,31 @@ def get_active_forecast_payload_path() -> Path | None:
     return Path(row["payload_path"])
 
 
+def get_active_forecast_directory() -> Path | None:
+    """Return the directory containing the active forecast snapshot payload."""
+    payload_path = get_active_forecast_payload_path()
+    if payload_path is None:
+        return None
+    return payload_path.parent
+
+
+def get_active_forecast_bank_path() -> Path | None:
+    """Return the simulation bank path for the active forecast snapshot."""
+    init_runtime_store()
+    with _connect() as connection:
+        row = connection.execute(
+            """
+            SELECT bank_path FROM forecast_snapshots
+            WHERE is_active = 1
+            ORDER BY created_at DESC
+            LIMIT 1
+            """
+        ).fetchone()
+    if row is None or row["bank_path"] is None:
+        return None
+    return Path(row["bank_path"])
+
+
 def rollback_forecast_snapshot(record_id: str) -> None:
     init_runtime_store()
     with _connect() as connection:

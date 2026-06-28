@@ -32,6 +32,14 @@ idle, 30,000 during active match windows) and derives all dashboard
 probabilities from that bank. Override bank size with
 `WCO_SNAPSHOT_SIMULATIONS` when testing locally.
 
+Team path explorer (`GET /team-path/{team_id}`) uses the same published
+simulation bank as the dashboard (via `data/processed/team_paths.json` bootstrap
+sidecar or runtime `team_paths.json` written at forecast publish). It does not
+run a separate 500-simulation Monte Carlo on the default team page path. Use
+`POST /team-path` for live diagnostic simulations. The bank stores per-round
+opponent traces (`knockout_opponents`, ~48 KB per 1k sims compressed) alongside
+existing trace arrays.
+
 Set `WCO_NO_OPEN=1` to prevent the browser from opening automatically.
 
 ## Data Mode

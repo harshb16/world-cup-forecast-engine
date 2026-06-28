@@ -8,7 +8,7 @@ import numpy as np
 
 from app.models.domain import TournamentConfig
 from app.simulation.group_stage import simulate_group_stage
-from app.simulation.knockout import simulate_knockout
+from app.simulation.knockout import ROUND_NAMES, simulate_knockout
 from app.simulation.match_models import MatchModel
 from app.simulation.monte_carlo import ELIMINATION_STAGE_TO_SUMMARY_STAGE, STAGES
 
@@ -27,6 +27,7 @@ class SimulationBatchTrace:
     points: np.ndarray
     max_stage: np.ndarray
     qualifier_order: np.ndarray
+    knockout_opponents: np.ndarray
 
 
 def run_simulation_trace(
@@ -34,7 +35,17 @@ def run_simulation_trace(
     match_model: MatchModel,
     seed: int,
     team_index: dict[str, int],
-) -> tuple[int, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+) -> tuple[
+    int,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+]:
     """Return champion index and per-team trace arrays for one simulation."""
     rng = np.random.default_rng(seed)
     teams_by_id = {team.id: team for team in config.teams}
@@ -80,6 +91,35 @@ def run_simulation_trace(
     for index, team_id in enumerate(group_stage.qualified_team_ids):
         qualifier_order[index] = team_index[team_id]
 
+    knockout_opponents = np.full(
+        (team_count, len(ROUND_NAMES)),
+        -1,
+        dtype=np.int16,
+    )
+    for team in config.teams:
+        if team.id not in qualified_ids:
+            continue
+        team_idx = team_index[team.id]
+        for stage_index, stage in enumerate(ROUND_NAMES):
+            match = next(
+                (
+                    candidate
+                    for candidate in knockout.rounds[stage]
+                    if team.id in {candidate.team_a_id, candidate.team_b_id}
+                ),
+                None,
+            )
+            if match is None:
+                continue
+            opponent_id = (
+                match.team_b_id
+                if match.team_a_id == team.id
+                else match.team_a_id
+            )
+            knockout_opponents[team_idx, stage_index] = team_index[opponent_id]
+            if match.winner_team_id != team.id:
+                break
+
     champion_idx = team_index[knockout.champion_team_id]
     return (
         champion_idx,
@@ -90,6 +130,7 @@ def run_simulation_trace(
         points,
         max_stage,
         qualifier_order,
+        knockout_opponents,
     )
 
 
@@ -115,6 +156,7 @@ def run_simulation_batch(
     points = np.empty((batch_size, team_count), dtype=np.uint8)
     max_stage = np.empty((batch_size, team_count), dtype=np.uint8)
     qualifier_order = np.empty((batch_size, QUALIFIER_COUNT), dtype=np.int16)
+    knockout_opponents = np.empty((batch_size, team_count, len(ROUND_NAMES)), dtype=np.int16)
 
     for simulation_index in range(batch_size):
         seed = sequence.child_seed(batch_index, simulation_index)
@@ -127,6 +169,7 @@ def run_simulation_batch(
             points_row,
             max_stage_row,
             qualifier_order_row,
+            knockout_opponents_row,
         ) = run_simulation_trace(config, match_model, seed, team_index)
         champions[simulation_index] = champion_idx
         qualified[simulation_index] = qualification_mask
@@ -136,6 +179,7 @@ def run_simulation_batch(
         points[simulation_index] = points_row
         max_stage[simulation_index] = max_stage_row
         qualifier_order[simulation_index] = qualifier_order_row
+        knockout_opponents[simulation_index] = knockout_opponents_row
 
     return SimulationBatchTrace(
         champions=champions,
@@ -146,4 +190,5 @@ def run_simulation_batch(
         points=points,
         max_stage=max_stage,
         qualifier_order=qualifier_order,
+        knockout_opponents=knockout_opponents,
     )

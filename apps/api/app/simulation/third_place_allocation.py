@@ -7,7 +7,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 TABLE_PATH = REPO_ROOT / "data" / "tournament" / "third_place_allocations_2026.json"
-SLOT_IDS = ("1E", "1I", "1A", "1L", "1D", "1G", "1B", "1K")
+SLOT_IDS = ("1A", "1B", "1D", "1E", "1G", "1I", "1K", "1L")
 
 _table_cache: dict[str, dict[str, str]] | None = None
 

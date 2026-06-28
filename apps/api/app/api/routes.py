@@ -317,6 +317,22 @@ def bracket_simulate(request: BracketSimulateRequest) -> BracketSimulationRespon
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
+@router.get("/team-path/head-to-head", response_model=HeadToHeadResponse)
+def team_path_head_to_head(
+    team_a: str,
+    team_b: str,
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
+    n_simulations: int = Query(default=500, ge=1, le=5_000),
+    seed: int = 42,
+) -> HeadToHeadResponse:
+    try:
+        return calculate_head_to_head(
+            team_a, team_b, get_data_mode(), model_type, n_simulations, seed
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
 @router.get("/team-path/{team_id}", response_model=TeamPathResponse)
 def team_path_from_forecast(team_id: str) -> TeamPathResponse:
     """Return bank-derived knockout path for one team from the active forecast."""
@@ -333,22 +349,6 @@ def team_path(request: TeamPathRequest) -> TeamPathResponse:
     """Run live Monte Carlo team path simulation for diagnostics."""
     try:
         return calculate_team_path(request, get_data_mode())
-    except ValueError as exc:
-        raise HTTPException(status_code=400, detail=str(exc)) from exc
-
-
-@router.get("/team-path/head-to-head", response_model=HeadToHeadResponse)
-def team_path_head_to_head(
-    team_a: str,
-    team_b: str,
-    model_type: ModelType = DEFAULT_MODEL_TYPE,
-    n_simulations: int = Query(default=500, ge=1, le=5_000),
-    seed: int = 42,
-) -> HeadToHeadResponse:
-    try:
-        return calculate_head_to_head(
-            team_a, team_b, get_data_mode(), model_type, n_simulations, seed
-        )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 

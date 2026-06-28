@@ -53,12 +53,12 @@ def plurality_bracket_from_bank(
     match_model = _MostLikelyMatchModel(base_match_model)
     qualified_team_ids = modal_qualifier_team_ids(bank, teams_by_id)
     modal_champion_id, modal_runner_id = modal_champion_and_final_pairing(bank)
-    group_stage = _modal_group_stage_from_bank(
-        bank,
+    group_stage = _hybrid_group_stage_from_bank(
         base_config,
         match_model,
-        qualified_team_ids=qualified_team_ids,
+        modal_qualified_team_ids=qualified_team_ids,
     )
+    qualified_team_ids = group_stage.qualified_team_ids
     plurality = build_plurality_knockout(
         bank,
         qualified_team_ids=qualified_team_ids,
@@ -466,6 +466,63 @@ def _project_favorite_group_stage(
         for group_id in sorted(group_tables)
         for row in group_tables[group_id][:2]
     ]
+    third_place_rankings = rank_third_place_teams(group_tables)
+    third_place_qualifiers = [
+        row.team_id
+        for row in get_best_third_place_qualifiers(group_tables, count=8)
+    ]
+
+    return GroupStageResult(
+        simulated_matches=group_matches,
+        group_tables=group_tables,
+        top_two_qualifiers=top_two_qualifiers,
+        third_place_rankings=third_place_rankings,
+        third_place_qualifiers=third_place_qualifiers,
+        qualified_team_ids=top_two_qualifiers + third_place_qualifiers,
+    )
+
+
+def _hybrid_group_stage_from_bank(
+    config: TournamentConfig,
+    match_model: MatchModel,
+    *,
+    modal_qualified_team_ids: list[str],
+) -> GroupStageResult:
+    """Use actual standings for finished groups and modal qualifiers elsewhere."""
+    teams_by_id = {team.id: team for team in config.teams}
+    completed_groups = _completed_group_ids(config)
+    group_matches: list[Match] = []
+
+    for match in config.matches:
+        if match.stage != "group":
+            continue
+        if match.result is not None and match.result.played:
+            group_matches.append(match)
+            continue
+
+        team_a = teams_by_id[match.team_a_id]
+        team_b = teams_by_id[match.team_b_id]
+        result = _projected_match_result(match_model, team_a, team_b)
+        group_matches.append(match.model_copy(update={"result": result}))
+
+    group_tables = {
+        group.id: calculate_group_table(group, teams_by_id, group_matches)
+        for group in sorted(config.groups, key=lambda item: item.id)
+    }
+
+    top_two_qualifiers: list[str] = []
+    for group_index, group in enumerate(sorted(config.groups, key=lambda item: item.id)):
+        if group.id in completed_groups:
+            rows = group_tables[group.id]
+            top_two_qualifiers.extend([rows[0].team_id, rows[1].team_id])
+        else:
+            top_two_qualifiers.extend(
+                [
+                    modal_qualified_team_ids[group_index * 2],
+                    modal_qualified_team_ids[group_index * 2 + 1],
+                ]
+            )
+
     third_place_rankings = rank_third_place_teams(group_tables)
     third_place_qualifiers = [
         row.team_id

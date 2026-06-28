@@ -62,6 +62,8 @@ def test_build_simulation_bank_persists_npz_artifacts(
     assert payload["max_stage"].shape == (200, 48)
     assert payload["qualifier_order"].shape == (200, 32)
     assert payload["knockout_opponents"].shape == (200, 48, 5)
+    assert int(payload["batch_size"]) == 50
+    assert metadata["batch_size"] == 50
     opponent_values = payload["knockout_opponents"]
     valid_mask = opponent_values >= 0
     assert np.all(opponent_values[valid_mask] < 48)

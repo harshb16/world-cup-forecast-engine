@@ -8,7 +8,6 @@ from pathlib import Path
 
 from app.core.config import BOOTSTRAP_PROCESSED_DIR, DEFAULT_MODEL_TYPE
 from app.models.schemas import (
-    BracketSimulateRequest,
     ForecastSnapshotResponse,
     ForecastStatusResponse,
 )
@@ -16,7 +15,7 @@ from app.services.analytics_service import (
     calculate_group_chaos_from_summary,
     calculate_upset_radar,
 )
-from app.services.bracket_service import run_bracket_simulation
+from app.services.bracket_service import plurality_bracket_from_bank
 from app.services.data_loader import load_metadata, load_tournament
 from app.services.runtime_store import (
     get_active_forecast_directory,
@@ -29,7 +28,6 @@ from app.services.snapshot_outlook_service import (
 )
 
 BOOTSTRAP_SNAPSHOT_PATH = BOOTSTRAP_PROCESSED_DIR / "forecast_snapshot.json"
-SNAPSHOT_SEED = 42
 
 
 def build_snapshot_id(
@@ -78,14 +76,7 @@ def build_forecast_snapshot_from_bank(
         model_type,  # type: ignore[arg-type]
     )
     upsets = calculate_upset_radar(data_mode, model_type, limit=6)  # type: ignore[arg-type]
-    bracket = run_bracket_simulation(
-        BracketSimulateRequest(
-            model_type=model_type,  # type: ignore[arg-type]
-            simulation_mode="favorite",
-            seed=SNAPSHOT_SEED,
-        ),
-        data_mode,
-    )
+    bracket = plurality_bracket_from_bank(bank_path, bank_meta, data_mode)
     featured_final = bracket.rounds["Final"][0]
     config = load_tournament(data_mode)
     upcoming_fixtures = build_upcoming_fixture_outlook(

@@ -23,7 +23,8 @@ NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS=1000 \
 ```
 
 Tournament forecasts enforce at least 1,000 simulations. Smaller samples make
-the favorites table unstable and can contradict the deterministic bracket.
+the favorites table unstable and can disagree with the published forecast
+bracket trace.
 
 Dashboard, groups, and team probability pages read
 `data/processed/forecast_snapshot.json`. Normal page loads do not run Monte
@@ -39,6 +40,11 @@ run a separate 500-simulation Monte Carlo on the default team page path. Use
 `POST /team-path` for live diagnostic simulations. The bank stores per-round
 opponent traces (`knockout_opponents`, ~48 KB per 1k sims compressed) alongside
 existing trace arrays.
+
+The bracket page default trace is a bank plurality tree: the most common bank
+winner at each knockout slot at full simulation count, with advance percentages
+matching bank-conditional matchup rates. Random mode on the bracket page is an
+interactive seeded resimulation only.
 
 Set `WCO_NO_OPEN=1` to prevent the browser from opening automatically.
 

@@ -24,9 +24,12 @@ from app.services.data_loader import load_metadata, load_tournament
 from app.services.runtime_store import get_runtime_root
 from app.services.sync_scheduler_service import is_tournament_active
 from app.simulation.group_table import calculate_group_table
-from app.simulation.knockout import WorldCup2026BracketBuilder
+from app.simulation.knockout import ROUND_NAMES, WorldCup2026BracketBuilder
 from app.simulation.monte_carlo import STAGES
+from app.simulation.seed_sequence import SeedSequence
 from app.simulation.simulation_trace import SimulationBatchTrace, run_simulation_batch
+
+FINAL_STAGE_INDEX = len(ROUND_NAMES) - 1
 
 BASELINE_SIMULATIONS = 100_000
 IN_PLAY_SIMULATIONS = 30_000
@@ -159,6 +162,7 @@ def build_simulation_bank(
         knockout_opponents=trace.knockout_opponents,
         master_seed=np.int64(seed),
         n_simulations=np.int32(total),
+        batch_size=np.int32(batch_size),
         model_version=np.array(model_type),
         data_version=np.array(data_version or "unknown"),
     )
@@ -166,6 +170,7 @@ def build_simulation_bank(
         "bank_path": bank_path,
         "master_seed": seed,
         "n_simulations": total,
+        "batch_size": batch_size,
         "model_version": model_type,
         "data_version": data_version,
     }
@@ -177,9 +182,15 @@ def load_bank_arrays(bank_path: Path) -> dict[str, np.ndarray | list[str] | int]
     payload = np.load(bank_path, allow_pickle=True)
     team_ids = [str(team_id) for team_id in payload["team_ids"].tolist()]
     n_simulations = int(payload["n_simulations"])
+    batch_size = (
+        int(payload["batch_size"])
+        if "batch_size" in payload
+        else DEFAULT_BATCH_SIZE
+    )
     return {
         "team_ids": team_ids,
         "n_simulations": n_simulations,
+        "batch_size": batch_size,
         "champions": payload["champions"],
         "qualified": payload["qualified"],
         "top_two": payload["top_two"],
@@ -190,6 +201,102 @@ def load_bank_arrays(bank_path: Path) -> dict[str, np.ndarray | list[str] | int]
         "qualifier_order": payload["qualifier_order"],
         "knockout_opponents": payload["knockout_opponents"],
     }
+
+
+def global_index_to_batch_coords(
+    global_index: int,
+    *,
+    batch_size: int,
+) -> tuple[int, int]:
+    """Map a concatenated bank row index to batch-local coordinates."""
+    if global_index < 0:
+        raise ValueError("global_index must be non-negative")
+    return global_index // batch_size, global_index % batch_size
+
+
+def representative_simulation_index(
+    bank: dict[str, np.ndarray | list[str] | int],
+) -> int:
+    """Pick one bank simulation that matches modal champion and final pairing."""
+    team_ids: list[str] = bank["team_ids"]  # type: ignore[assignment]
+    team_count = len(team_ids)
+    champions: np.ndarray = bank["champions"]  # type: ignore[assignment]
+    knockout_opponents: np.ndarray = bank["knockout_opponents"]  # type: ignore[assignment]
+    n_simulations: int = bank["n_simulations"]  # type: ignore[assignment]
+
+    if n_simulations == 0:
+        return 0
+
+    champion_counts = np.bincount(champions, minlength=team_count)
+    modal_champion = int(np.argmax(champion_counts))
+    champion_mask = champions == modal_champion
+
+    if not np.any(champion_mask):
+        return 0
+
+    final_opponents = knockout_opponents[champion_mask, modal_champion, FINAL_STAGE_INDEX]
+    final_opponents = final_opponents[final_opponents >= 0]
+    if final_opponents.size == 0:
+        champion_indices = np.flatnonzero(champion_mask)
+        return int(champion_indices[len(champion_indices) // 2])
+
+    runner_counts = np.bincount(final_opponents, minlength=team_count)
+    modal_runner = int(np.argmax(runner_counts))
+    candidates = np.flatnonzero(
+        champion_mask & (knockout_opponents[:, modal_champion, FINAL_STAGE_INDEX] == modal_runner)
+    )
+    if candidates.size == 0:
+        champion_indices = np.flatnonzero(champion_mask)
+        return int(champion_indices[len(champion_indices) // 2])
+
+    signatures = [
+        tuple(int(value) for value in knockout_opponents[index, modal_champion, :FINAL_STAGE_INDEX])
+        for index in candidates
+    ]
+    modal_signature = Counter(signatures).most_common(1)[0][0]
+    bucket = sorted(
+        int(index)
+        for index, signature in zip(candidates, signatures, strict=True)
+        if signature == modal_signature
+    )
+    return bucket[len(bucket) // 2]
+
+
+def representative_child_seed(
+    bank: dict[str, np.ndarray | list[str] | int],
+    master_seed: int,
+) -> tuple[int, int]:
+    """Return representative bank row index and replay child seed."""
+    rep_index = representative_simulation_index(bank)
+    batch_size: int = bank["batch_size"]  # type: ignore[assignment]
+    batch_index, simulation_index = global_index_to_batch_coords(
+        rep_index,
+        batch_size=batch_size,
+    )
+    child_seed = SeedSequence(master_seed).child_seed(batch_index, simulation_index)
+    return rep_index, child_seed
+
+
+def modal_champion_and_final_pairing(
+    bank: dict[str, np.ndarray | list[str] | int],
+) -> tuple[str, str]:
+    """Return modal champion id and modal final runner-up id."""
+    team_ids: list[str] = bank["team_ids"]  # type: ignore[assignment]
+    team_count = len(team_ids)
+    champions: np.ndarray = bank["champions"]  # type: ignore[assignment]
+    knockout_opponents: np.ndarray = bank["knockout_opponents"]  # type: ignore[assignment]
+
+    champion_counts = np.bincount(champions, minlength=team_count)
+    modal_champion_idx = int(np.argmax(champion_counts))
+    champion_mask = champions == modal_champion_idx
+    final_opponents = knockout_opponents[champion_mask, modal_champion_idx, FINAL_STAGE_INDEX]
+    final_opponents = final_opponents[final_opponents >= 0]
+    if final_opponents.size == 0:
+        modal_runner_idx = modal_champion_idx
+    else:
+        modal_runner_idx = int(np.argmax(np.bincount(final_opponents, minlength=team_count)))
+
+    return team_ids[modal_champion_idx], team_ids[modal_runner_idx]
 
 
 def simulation_summary_from_bank(bank_path: Path) -> SimulationSummary:

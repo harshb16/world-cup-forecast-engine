@@ -259,11 +259,12 @@ class BracketSimulationResponse(BaseModel):
     """One complete tournament trace for an interactive bracket reveal."""
 
     metadata: SimulationMetadataResponse
-    simulation_mode: Literal["favorite", "random"]
+    simulation_mode: Literal["favorite", "random", "bank_representative", "bank_plurality"]
     group_tables: list[BracketGroupTableResponse]
     rounds: dict[str, list[BracketMatchResponse]]
     champion_team_id: str
     champion_team_name: str
+    representative_simulation_index: int | None = None
 
 
 class TeamPathOpponentResponse(BaseModel):

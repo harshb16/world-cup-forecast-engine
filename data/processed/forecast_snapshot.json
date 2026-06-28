@@ -1,6 +1,6 @@
 {
-  "snapshot_id": "2026-worldcup-results-2026-06-28:2026-06-28T05:38:00+00:00:calibrated_elo:5000",
-  "generated_at": "2026-06-28T05:38:00+00:00",
+  "snapshot_id": "2026-worldcup-results-2026-06-28:2026-06-28T06:56:08+00:00:calibrated_elo:5000",
+  "generated_at": "2026-06-28T06:56:08+00:00",
   "model_version": "calibrated_elo",
   "summary": {
     "metadata": {
@@ -11,7 +11,7 @@
       "data_mode": "processed",
       "is_real_data": true,
       "data_version": "2026-worldcup-results-2026-06-28",
-      "last_updated": "2026-06-28T04:05:24+00:00",
+      "last_updated": "2026-06-28T06:25:45+00:00",
       "sources": [
         {
           "name": "FIFA World Cup 26 scores and fixtures",
@@ -1804,76 +1804,6 @@
     "n_simulations": 5000,
     "teams": [
       {
-        "team_id": "GHANA",
-        "team_name": "Ghana",
-        "group_id": "L",
-        "qualification_probability": 1.0,
-        "current_points": 4,
-        "simulated_average_points": 4.0,
-        "slot_distribution": [
-          {
-            "slot_label": "R32-15",
-            "probability": 1.0
-          }
-        ]
-      },
-      {
-        "team_id": "PARAGUAY",
-        "team_name": "Paraguay",
-        "group_id": "D",
-        "qualification_probability": 1.0,
-        "current_points": 4,
-        "simulated_average_points": 4.0,
-        "slot_distribution": [
-          {
-            "slot_label": "R32-05",
-            "probability": 1.0
-          }
-        ]
-      },
-      {
-        "team_id": "COD",
-        "team_name": "Congo DR",
-        "group_id": "K",
-        "qualification_probability": 1.0,
-        "current_points": 4,
-        "simulated_average_points": 4.0,
-        "slot_distribution": [
-          {
-            "slot_label": "R32-08",
-            "probability": 1.0
-          }
-        ]
-      },
-      {
-        "team_id": "ECUADOR",
-        "team_name": "Ecuador",
-        "group_id": "E",
-        "qualification_probability": 1.0,
-        "current_points": 4,
-        "simulated_average_points": 4.0,
-        "slot_distribution": [
-          {
-            "slot_label": "R32-07",
-            "probability": 1.0
-          }
-        ]
-      },
-      {
-        "team_id": "BIH",
-        "team_name": "Bosnia and Herzegovina",
-        "group_id": "B",
-        "qualification_probability": 1.0,
-        "current_points": 4,
-        "simulated_average_points": 4.0,
-        "slot_distribution": [
-          {
-            "slot_label": "R32-02",
-            "probability": 1.0
-          }
-        ]
-      },
-      {
         "team_id": "SENEGAL",
         "team_name": "Senegal",
         "group_id": "I",
@@ -1914,19 +1844,89 @@
             "probability": 1.0
           }
         ]
+      },
+      {
+        "team_id": "COD",
+        "team_name": "Congo DR",
+        "group_id": "K",
+        "qualification_probability": 1.0,
+        "current_points": 4,
+        "simulated_average_points": 4.0,
+        "slot_distribution": [
+          {
+            "slot_label": "R32-08",
+            "probability": 1.0
+          }
+        ]
+      },
+      {
+        "team_id": "ECUADOR",
+        "team_name": "Ecuador",
+        "group_id": "E",
+        "qualification_probability": 1.0,
+        "current_points": 4,
+        "simulated_average_points": 4.0,
+        "slot_distribution": [
+          {
+            "slot_label": "R32-07",
+            "probability": 1.0
+          }
+        ]
+      },
+      {
+        "team_id": "PARAGUAY",
+        "team_name": "Paraguay",
+        "group_id": "D",
+        "qualification_probability": 1.0,
+        "current_points": 4,
+        "simulated_average_points": 4.0,
+        "slot_distribution": [
+          {
+            "slot_label": "R32-05",
+            "probability": 1.0
+          }
+        ]
+      },
+      {
+        "team_id": "GHANA",
+        "team_name": "Ghana",
+        "group_id": "L",
+        "qualification_probability": 1.0,
+        "current_points": 4,
+        "simulated_average_points": 4.0,
+        "slot_distribution": [
+          {
+            "slot_label": "R32-15",
+            "probability": 1.0
+          }
+        ]
+      },
+      {
+        "team_id": "BIH",
+        "team_name": "Bosnia and Herzegovina",
+        "group_id": "B",
+        "qualification_probability": 1.0,
+        "current_points": 4,
+        "simulated_average_points": 4.0,
+        "slot_distribution": [
+          {
+            "slot_label": "R32-02",
+            "probability": 1.0
+          }
+        ]
       }
     ]
   },
   "bracket": {
     "metadata": {
-      "n_simulations": 1,
+      "n_simulations": 5000,
       "model_type": "calibrated_elo",
-      "seed": 42,
+      "seed": 1026068783,
       "overrides_applied": [],
       "data_mode": "processed",
       "is_real_data": true,
       "data_version": "2026-worldcup-results-2026-06-28",
-      "last_updated": "2026-06-28T04:05:24+00:00",
+      "last_updated": "2026-06-28T06:25:45+00:00",
       "sources": [
         {
           "name": "FIFA World Cup 26 scores and fixtures",
@@ -1973,7 +1973,7 @@
         "Small Monte Carlo probability gaps can be sampling noise."
       ]
     },
-    "simulation_mode": "favorite",
+    "simulation_mode": "bank_plurality",
     "group_tables": [
       {
         "group_id": "A",
@@ -2688,8 +2688,8 @@
             "team_a_win": 0.26369578471292404,
             "draw": 0.18122727272727274,
             "team_b_win": 0.5550769425598031,
-            "team_a_advance": 0.3220622474704008,
-            "team_b_advance": 0.6779377525295991
+            "team_a_advance": 0.3459752321981424,
+            "team_b_advance": 0.6540247678018576
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -2726,8 +2726,8 @@
             "team_a_win": 0.7467189710569235,
             "draw": 0.13999999999999999,
             "team_b_win": 0.11328102894307646,
-            "team_a_advance": 0.8682778733220041,
-            "team_b_advance": 0.13172212667799588
+            "team_a_advance": 0.8824143329274656,
+            "team_b_advance": 0.11758566707253437
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -2764,8 +2764,8 @@
             "team_a_win": 0.30198129780686356,
             "draw": 0.20059090909090907,
             "team_b_win": 0.49742779310222746,
-            "team_a_advance": 0.37775564631551706,
-            "team_b_advance": 0.622244353684483
+            "team_a_advance": 0.40893524283935245,
+            "team_b_advance": 0.5910647571606475
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -2793,20 +2793,20 @@
             "rating": 2040.0
           },
           "result": {
-            "team_a_goals": 1,
+            "team_a_goals": 3,
             "team_b_goals": 2
           },
-          "winner_team_id": "JAPAN",
+          "winner_team_id": "BRAZIL",
           "probabilities": {
             "team_a_win": 0.37791678148366264,
             "draw": 0.23890909090909085,
             "team_b_win": 0.3831741276072465,
-            "team_a_advance": 0.4965461772957822,
-            "team_b_advance": 0.5034538227042178
+            "team_a_advance": 0.5824937027707808,
+            "team_b_advance": 0.41750629722921917
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
-          "confidence_label": "coin flip",
+          "confidence_label": "lean",
           "drivers": [
             "rating blend"
           ],
@@ -2838,8 +2838,8 @@
             "team_a_win": 0.6908932479387633,
             "draw": 0.13999999999999999,
             "team_b_win": 0.16910675206123665,
-            "team_a_advance": 0.8033642417892596,
-            "team_b_advance": 0.1966357582107403
+            "team_a_advance": 0.8576158940397351,
+            "team_b_advance": 0.14238410596026485
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -2876,12 +2876,12 @@
             "team_a_win": 0.3793931618717289,
             "draw": 0.23968181818181825,
             "team_b_win": 0.3809250199464529,
-            "team_a_advance": 0.4989926203848889,
-            "team_b_advance": 0.5010073796151111
+            "team_a_advance": 0.4027751734483405,
+            "team_b_advance": 0.5972248265516595
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
-          "confidence_label": "coin flip",
+          "confidence_label": "lean",
           "drivers": [
             "rating blend"
           ],
@@ -2913,12 +2913,12 @@
             "team_a_win": 0.4225706772391082,
             "draw": 0.22554545454545447,
             "team_b_win": 0.3518838682154373,
-            "team_a_advance": 0.5456365124580572,
-            "team_b_advance": 0.4543634875419428
+            "team_a_advance": 0.6094611417392851,
+            "team_b_advance": 0.3905388582607149
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
-          "confidence_label": "coin flip",
+          "confidence_label": "lean",
           "drivers": [
             "rating blend"
           ],
@@ -2950,8 +2950,8 @@
             "team_a_win": 0.6185509358655256,
             "draw": 0.1591818181818182,
             "team_b_win": 0.22226724595265626,
-            "team_a_advance": 0.7356536160147887,
-            "team_b_advance": 0.26434638398521126
+            "team_a_advance": 0.8038860530215709,
+            "team_b_advance": 0.1961139469784291
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -2988,12 +2988,12 @@
             "team_a_win": 0.2839531318226267,
             "draw": 0.19154545454545446,
             "team_b_win": 0.5245014136319189,
-            "team_a_advance": 0.35122955696040636,
-            "team_b_advance": 0.6487704430395937
+            "team_a_advance": 0.44868035190615835,
+            "team_b_advance": 0.5513196480938416
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
-          "confidence_label": "lean",
+          "confidence_label": "coin flip",
           "drivers": [
             "rating blend"
           ],
@@ -3017,16 +3017,16 @@
             "rating": 2048.0
           },
           "result": {
-            "team_a_goals": 1,
+            "team_a_goals": 3,
             "team_b_goals": 2
           },
-          "winner_team_id": "SENEGAL",
+          "winner_team_id": "BELGIUM",
           "probabilities": {
             "team_a_win": 0.3783513944164066,
             "draw": 0.2391363636363636,
             "team_b_win": 0.38251224194722977,
-            "team_a_advance": 0.4972657074592834,
-            "team_b_advance": 0.5027342925407166
+            "team_a_advance": 0.5503249604777797,
+            "team_b_advance": 0.4496750395222203
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3062,8 +3062,8 @@
             "team_a_win": 0.5103750275810273,
             "draw": 0.19627272727272724,
             "team_b_win": 0.29335224514624547,
-            "team_a_advance": 0.6350102141603099,
-            "team_b_advance": 0.3649897858396901
+            "team_a_advance": 0.6446753246753246,
+            "team_b_advance": 0.3553246753246754
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3099,8 +3099,8 @@
             "team_a_win": 0.6167635430377261,
             "draw": 0.15981818181818175,
             "team_b_win": 0.22341827514409224,
-            "team_a_advance": 0.7340834206248632,
-            "team_b_advance": 0.2659165793751368
+            "team_a_advance": 0.7947222627205132,
+            "team_b_advance": 0.20527773727948684
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3137,8 +3137,8 @@
             "team_a_win": 0.5215181545349811,
             "draw": 0.1925454545454546,
             "team_b_win": 0.28593639091956435,
-            "team_a_advance": 0.645879272673361,
-            "team_b_advance": 0.354120727326639
+            "team_a_advance": 0.6756147925661723,
+            "team_b_advance": 0.3243852074338277
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3174,8 +3174,8 @@
             "team_a_win": 0.7523161910966133,
             "draw": 0.13999999999999999,
             "team_b_win": 0.10768380890338673,
-            "team_a_advance": 0.8747862687169922,
-            "team_b_advance": 0.12521373128300783
+            "team_a_advance": 0.9169568711492098,
+            "team_b_advance": 0.08304312885079024
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3212,8 +3212,8 @@
             "team_a_win": 0.7136241195982398,
             "draw": 0.13999999999999999,
             "team_b_win": 0.14637588040176022,
-            "team_a_advance": 0.82979548790493,
-            "team_b_advance": 0.17020451209507004
+            "team_a_advance": 0.8652340496418457,
+            "team_b_advance": 0.1347659503581543
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3250,8 +3250,8 @@
             "team_a_win": 0.4383118161339349,
             "draw": 0.22027272727272731,
             "team_b_win": 0.34141545659333783,
-            "team_a_advance": 0.5621347764338678,
-            "team_b_advance": 0.4378652235661322
+            "team_a_advance": 0.5768153817435132,
+            "team_b_advance": 0.4231846182564868
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3292,8 +3292,8 @@
             "team_a_win": 0.25509399216766526,
             "draw": 0.1767727272727273,
             "team_b_win": 0.5681332805596074,
-            "team_a_advance": 0.30987067680904623,
-            "team_b_advance": 0.6901293231909538
+            "team_a_advance": 0.239345380156836,
+            "team_b_advance": 0.760654619843164
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3333,8 +3333,8 @@
             "team_a_win": 0.3235905100237212,
             "draw": 0.21136363636363636,
             "team_b_win": 0.46504585361264245,
-            "team_a_advance": 0.4103164968600499,
-            "team_b_advance": 0.5896835031399501
+            "team_a_advance": 0.3846699787083038,
+            "team_b_advance": 0.6153300212916962
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3353,10 +3353,10 @@
             "KO-R32-06"
           ],
           "team_a": {
-            "team_id": "JAPAN",
-            "team_name": "Japan",
-            "group_id": "F",
-            "rating": 2040.0
+            "team_id": "BRAZIL",
+            "team_name": "Brazil",
+            "group_id": "C",
+            "rating": 2160.0
           },
           "team_b": {
             "team_id": "NORWAY",
@@ -3368,17 +3368,17 @@
             "team_a_goals": 2,
             "team_b_goals": 1
           },
-          "winner_team_id": "JAPAN",
+          "winner_team_id": "BRAZIL",
           "probabilities": {
-            "team_a_win": 0.4833609832003861,
-            "draw": 0.20527272727272722,
-            "team_b_win": 0.3113662895268866,
-            "team_a_advance": 0.6082098850611126,
-            "team_b_advance": 0.39179011493888727
+            "team_a_win": 0.4800808758663149,
+            "draw": 0.20636363636363636,
+            "team_b_win": 0.31355548777004877,
+            "team_a_advance": 0.7107913669064748,
+            "team_b_advance": 0.2892086330935252
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
-          "confidence_label": "lean",
+          "confidence_label": "clear favorite",
           "drivers": [
             "rating blend"
           ],
@@ -3413,8 +3413,8 @@
             "team_a_win": 0.32805695940399443,
             "draw": 0.2135909090909091,
             "team_b_win": 0.4583521315050964,
-            "team_a_advance": 0.41715814732604345,
-            "team_b_advance": 0.5828418526739565
+            "team_a_advance": 0.37143618438582465,
+            "team_b_advance": 0.6285638156141753
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3453,12 +3453,12 @@
             "team_a_win": 0.29117818499580383,
             "draw": 0.19518181818181812,
             "team_b_win": 0.513639996822378,
-            "team_a_advance": 0.36179374618251914,
-            "team_b_advance": 0.6382062538174809
+            "team_a_advance": 0.3186221743810549,
+            "team_b_advance": 0.6813778256189451
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
-          "confidence_label": "lean",
+          "confidence_label": "clear favorite",
           "drivers": [
             "rating blend"
           ],
@@ -3479,22 +3479,22 @@
             "rating": 1920.0
           },
           "team_b": {
-            "team_id": "SENEGAL",
-            "team_name": "Senegal",
-            "group_id": "I",
-            "rating": 2048.0
+            "team_id": "BELGIUM",
+            "team_name": "Belgium",
+            "group_id": "G",
+            "rating": 2136.0
           },
           "result": {
             "team_a_goals": 2,
-            "team_b_goals": 1
+            "team_b_goals": 3
           },
-          "winner_team_id": "ALGERIA",
+          "winner_team_id": "BELGIUM",
           "probabilities": {
-            "team_a_win": 0.4221647311565687,
-            "draw": 0.22568181818181818,
-            "team_b_win": 0.3521534506616131,
-            "team_a_advance": 0.5452083407950991,
-            "team_b_advance": 0.45479165920490094
+            "team_a_win": 0.4247367999339775,
+            "draw": 0.22481818181818178,
+            "team_b_win": 0.3504450182478407,
+            "team_a_advance": 0.4259513984410821,
+            "team_b_advance": 0.5740486015589179
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3533,8 +3533,8 @@
             "team_a_win": 0.6027474052180531,
             "draw": 0.16477272727272727,
             "team_b_win": 0.2324798675092196,
-            "team_a_advance": 0.7216567572678732,
-            "team_b_advance": 0.27834324273212685
+            "team_a_advance": 0.8395680678750482,
+            "team_b_advance": 0.16043193212495177
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3574,8 +3574,8 @@
             "team_a_win": 0.28945905978396297,
             "draw": 0.1943181818181818,
             "team_b_win": 0.5162227583978551,
-            "team_a_advance": 0.35927217575442516,
-            "team_b_advance": 0.6407278242455747
+            "team_a_advance": 0.32255676209279366,
+            "team_b_advance": 0.6774432379072064
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3609,15 +3609,15 @@
           },
           "result": {
             "team_a_goals": 2,
-            "team_b_goals": 1
+            "team_b_goals": 3
           },
-          "winner_team_id": "MOROCCO",
+          "winner_team_id": "FRANCE",
           "probabilities": {
             "team_a_win": 0.3866209781936723,
             "draw": 0.23772727272727273,
             "team_b_win": 0.3756517490790549,
-            "team_a_advance": 0.5071950817090514,
-            "team_b_advance": 0.49280491829094863
+            "team_a_advance": 0.43704138538303494,
+            "team_b_advance": 0.5629586146169651
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3642,10 +3642,10 @@
             "rating": 2192.0
           },
           "team_b": {
-            "team_id": "ALGERIA",
-            "team_name": "Algeria",
-            "group_id": "J",
-            "rating": 1920.0
+            "team_id": "BELGIUM",
+            "team_name": "Belgium",
+            "group_id": "G",
+            "rating": 2136.0
           },
           "result": {
             "team_a_goals": 2,
@@ -3653,17 +3653,18 @@
           },
           "winner_team_id": "SPAIN",
           "probabilities": {
-            "team_a_win": 0.5277524286439891,
-            "draw": 0.19045454545454543,
-            "team_b_win": 0.2817930259014655,
-            "team_a_advance": 0.6519120398746636,
-            "team_b_advance": 0.3480879601253364
+            "team_a_win": 0.5725066733798306,
+            "draw": 0.17527272727272722,
+            "team_b_win": 0.25222059934744206,
+            "team_a_advance": 0.7797537619699042,
+            "team_b_advance": 0.2202462380300958
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
-          "confidence_label": "lean",
+          "confidence_label": "clear favorite",
           "drivers": [
-            "rating blend"
+            "rating blend",
+            "strength gap"
           ],
           "confirmed": false
         },
@@ -3676,10 +3677,10 @@
             "KO-R16-04"
           ],
           "team_a": {
-            "team_id": "JAPAN",
-            "team_name": "Japan",
-            "group_id": "F",
-            "rating": 2040.0
+            "team_id": "BRAZIL",
+            "team_name": "Brazil",
+            "group_id": "C",
+            "rating": 2160.0
           },
           "team_b": {
             "team_id": "ENGLAND",
@@ -3688,16 +3689,16 @@
             "rating": 2168.0
           },
           "result": {
-            "team_a_goals": 2,
-            "team_b_goals": 1
+            "team_a_goals": 1,
+            "team_b_goals": 2
           },
-          "winner_team_id": "JAPAN",
+          "winner_team_id": "ENGLAND",
           "probabilities": {
-            "team_a_win": 0.38,
-            "draw": 0.24,
-            "team_b_win": 0.38,
-            "team_a_advance": 0.5,
-            "team_b_advance": 0.5
+            "team_a_win": 0.37791678148366264,
+            "draw": 0.23890909090909085,
+            "team_b_win": 0.3831741276072465,
+            "team_a_advance": 0.4742634007809727,
+            "team_b_advance": 0.5257365992190273
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3736,12 +3737,12 @@
             "team_a_win": 0.5121438918033301,
             "draw": 0.19568181818181818,
             "team_b_win": 0.29217429001485173,
-            "team_a_advance": 0.6367429002358441,
-            "team_b_advance": 0.3632570997641559
+            "team_a_advance": 0.6863949376512191,
+            "team_b_advance": 0.31360506234878094
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
-          "confidence_label": "lean",
+          "confidence_label": "clear favorite",
           "drivers": [
             "rating blend"
           ],
@@ -3758,10 +3759,10 @@
             "KO-QF-02"
           ],
           "team_a": {
-            "team_id": "MOROCCO",
-            "team_name": "Morocco",
-            "group_id": "C",
-            "rating": 2104.0
+            "team_id": "FRANCE",
+            "team_name": "France",
+            "group_id": "I",
+            "rating": 2176.0
           },
           "team_b": {
             "team_id": "SPAIN",
@@ -3775,11 +3776,11 @@
           },
           "winner_team_id": "SPAIN",
           "probabilities": {
-            "team_a_win": 0.3416871619058776,
-            "draw": 0.22040909090909083,
-            "team_b_win": 0.4379037471850316,
-            "team_a_advance": 0.4382903365360216,
-            "team_b_advance": 0.5617096634639784
+            "team_a_win": 0.3371532156621282,
+            "draw": 0.21813636363636357,
+            "team_b_win": 0.4447104207015082,
+            "team_a_advance": 0.4238921001926782,
+            "team_b_advance": 0.5761078998073218
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
@@ -3798,10 +3799,10 @@
             "KO-QF-04"
           ],
           "team_a": {
-            "team_id": "JAPAN",
-            "team_name": "Japan",
-            "group_id": "F",
-            "rating": 2040.0
+            "team_id": "ENGLAND",
+            "team_name": "England",
+            "group_id": "L",
+            "rating": 2168.0
           },
           "team_b": {
             "team_id": "ARGENTINA",
@@ -3818,12 +3819,12 @@
             "team_a_win": 0.30116244735793696,
             "draw": 0.2001818181818182,
             "team_b_win": 0.4986557344602448,
-            "team_a_advance": 0.3765386361601849,
-            "team_b_advance": 0.6234613638398151
+            "team_a_advance": 0.31174480425326245,
+            "team_b_advance": 0.6882551957467375
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
-          "confidence_label": "lean",
+          "confidence_label": "clear favorite",
           "drivers": [
             "rating blend"
           ],
@@ -3860,12 +3861,12 @@
             "team_a_win": 0.36314451277532933,
             "draw": 0.23127272727272735,
             "team_b_win": 0.4055827599519434,
-            "team_a_advance": 0.47239707196412284,
-            "team_b_advance": 0.5276029280358772
+            "team_a_advance": 0.41451104100946373,
+            "team_b_advance": 0.5854889589905363
           },
           "team_a_expected_goals": null,
           "team_b_expected_goals": null,
-          "confidence_label": "coin flip",
+          "confidence_label": "lean",
           "drivers": [
             "rating blend"
           ],
@@ -3874,7 +3875,8 @@
       ]
     },
     "champion_team_id": "ARGENTINA",
-    "champion_team_name": "Argentina"
+    "champion_team_name": "Argentina",
+    "representative_simulation_index": null
   },
   "featured_final": {
     "id": "KO-F-01",
@@ -3905,12 +3907,12 @@
       "team_a_win": 0.36314451277532933,
       "draw": 0.23127272727272735,
       "team_b_win": 0.4055827599519434,
-      "team_a_advance": 0.47239707196412284,
-      "team_b_advance": 0.5276029280358772
+      "team_a_advance": 0.41451104100946373,
+      "team_b_advance": 0.5854889589905363
     },
     "team_a_expected_goals": null,
     "team_b_expected_goals": null,
-    "confidence_label": "coin flip",
+    "confidence_label": "lean",
     "drivers": [
       "rating blend"
     ],

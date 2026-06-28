@@ -147,7 +147,7 @@ export function BracketExperience() {
     <>
       <PageHeader
         eyebrow="Bracket lab"
-        title="Reveal the most likely World Cup path"
+        title="Explore the forecast bracket"
         description="A vertical knockout tree — scroll down through the bracket, no sideways panning required."
       />
 
@@ -160,12 +160,14 @@ export function BracketExperience() {
                 {championRevealed && trace
                   ? `${trace.champion_team_name} wins this path.`
                   : simulationMode === "favorite"
-                    ? "Most likely bracket locked. Start revealing."
+                    ? "Forecast bracket locked. Start revealing."
                     : "Random bracket locked. Start revealing."}
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-                Favorite mode picks the higher advance probability each match.
-                Random mode samples one seeded tournament trace.
+                Forecast path picks the most common bank winner at each knockout
+                slot from the full simulation count. Advance percentages are
+                bank-conditional rates for that matchup. Random mode samples one
+                seeded tournament trace on demand.
               </p>
             </div>
             <div className="grid gap-2 sm:grid-cols-3">
@@ -179,7 +181,7 @@ export function BracketExperience() {
                 label="Mode"
                 value={
                   simulationMode === "favorite"
-                    ? "Most likely"
+                    ? "Forecast"
                     : `Seed ${formatNumber(seed)}`
                 }
               />
@@ -213,7 +215,7 @@ export function BracketExperience() {
                       : "border-border bg-accent/50 text-muted-foreground hover:bg-accent/80",
                   )}
                 >
-                  {mode === "favorite" ? "Most likely" : "Random"}
+                  {mode === "favorite" ? "Forecast path" : "Random"}
                 </button>
               ))}
             </div>
@@ -227,10 +229,12 @@ export function BracketExperience() {
                 icon={Shuffle}
                 label="New seed"
                 onClick={() => {
+                  if (simulationMode !== "random") {
+                    return;
+                  }
                   clear();
                   setRevealedMatchIds(new Set());
                   setSelectedMatch(null);
-                  setSimulationMode("random");
                   setSeed((current) => current + 1);
                 }}
               />

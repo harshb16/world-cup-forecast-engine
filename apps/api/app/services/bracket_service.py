@@ -1,5 +1,7 @@
 """Bracket trace service for interactive tournament reveals."""
 
+from pathlib import Path
+
 import numpy as np
 
 from app.models.domain import (
@@ -19,13 +21,134 @@ from app.models.schemas import (
     SimulationMetadataResponse,
 )
 from app.services.data_loader import load_metadata, load_tournament
+from app.services.simulation_bank_service import (
+    load_bank_arrays,
+    modal_champion_and_final_pairing,
+)
 from app.services.simulation_service import apply_result_overrides, create_match_model
+from app.simulation.bank_knockout_plurality import (
+    build_plurality_knockout,
+    modal_qualifier_team_ids,
+    projected_result_for_winner,
+)
 from app.simulation.group_stage import simulate_group_stage
 from app.simulation.group_table import calculate_group_table
 from app.simulation.knockout import ADVANCEMENT_PAIRINGS, ROUND_NAMES, simulate_knockout
 from app.simulation.knockout_resolution import with_host_advantage
 from app.simulation.match_models import MatchModel
 from app.simulation.third_place import get_best_third_place_qualifiers, rank_third_place_teams
+
+
+def plurality_bracket_from_bank(
+    bank_path: Path,
+    bank_meta: dict[str, object],
+    data_mode: str,
+) -> BracketSimulationResponse:
+    """Build a bank plurality knockout tree for publish and snapshot reads."""
+    bank = load_bank_arrays(bank_path)
+    model_type = str(bank_meta["model_version"])
+    base_config = load_tournament(data_mode)
+    teams_by_id = {team.id: team for team in base_config.teams}
+    base_match_model = create_match_model(model_type, data_mode)  # type: ignore[arg-type]
+    match_model = _MostLikelyMatchModel(base_match_model)
+    qualified_team_ids = modal_qualifier_team_ids(bank, teams_by_id)
+    modal_champion_id, modal_runner_id = modal_champion_and_final_pairing(bank)
+    group_stage = _modal_group_stage_from_bank(
+        bank,
+        base_config,
+        match_model,
+        qualified_team_ids=qualified_team_ids,
+    )
+    plurality = build_plurality_knockout(
+        bank,
+        qualified_team_ids=qualified_team_ids,
+        teams_by_id=teams_by_id,
+        model_advance_probability=match_model._team_a_advance_probability,
+        projected_result=lambda team_a, team_b, winner_team_id: projected_result_for_winner(
+            match_model,
+            team_a,
+            team_b,
+            winner_team_id,
+        ),
+        modal_champion_id=modal_champion_id,
+        modal_runner_id=modal_runner_id,
+    )
+    knockout = plurality.knockout
+    metadata = SimulationMetadataResponse(
+        n_simulations=int(bank_meta["n_simulations"]),
+        model_type=model_type,  # type: ignore[arg-type]
+        seed=int(bank_meta["master_seed"]),
+        overrides_applied=[],
+        **load_metadata(data_mode),
+    )
+    champion = teams_by_id[knockout.champion_team_id]
+    completed_groups = _completed_group_ids(base_config)
+
+    return BracketSimulationResponse(
+        metadata=metadata,
+        simulation_mode="bank_plurality",
+        group_tables=[
+            BracketGroupTableResponse(
+                group_id=group_id,
+                rows=[row.model_dump() for row in rows],
+            )
+            for group_id, rows in group_stage.group_tables.items()
+        ],
+        rounds={
+            stage: [
+                _to_bracket_match(
+                    match,
+                    teams_by_id,
+                    match_model,
+                    index,
+                    _source_match_ids(knockout.rounds, match, index),
+                    completed_groups=completed_groups,
+                    advance_probabilities=plurality.advance_probabilities.get(match.id),
+                )
+                for index, match in enumerate(matches, start=1)
+            ]
+            for stage, matches in knockout.rounds.items()
+        },
+        champion_team_id=champion.id,
+        champion_team_name=champion.name,
+        representative_simulation_index=None,
+    )
+
+
+def representative_bracket_from_bank(
+    bank_path: Path,
+    bank_meta: dict[str, object],
+    data_mode: str,
+) -> BracketSimulationResponse:
+    """Replay one representative bank simulation as a full bracket trace."""
+    from app.services.simulation_bank_service import representative_child_seed
+
+    bank = load_bank_arrays(bank_path)
+    rep_index, child_seed = representative_child_seed(
+        bank,
+        int(bank_meta["master_seed"]),
+    )
+    model_type = str(bank_meta["model_version"])
+    response = run_bracket_simulation(
+        BracketSimulateRequest(
+            model_type=model_type,  # type: ignore[arg-type]
+            simulation_mode="random",
+            seed=child_seed,
+        ),
+        data_mode,
+    )
+    return response.model_copy(
+        update={
+            "simulation_mode": "bank_representative",
+            "metadata": response.metadata.model_copy(
+                update={
+                    "n_simulations": int(bank_meta["n_simulations"]),
+                    "seed": child_seed,
+                }
+            ),
+            "representative_simulation_index": rep_index,
+        }
+    )
 
 
 def run_bracket_simulation(
@@ -103,21 +226,25 @@ def _to_bracket_match(
     match_number: int,
     source_match_ids: list[str],
     completed_groups: set[str] | None = None,
+    advance_probabilities: tuple[float, float] | None = None,
 ) -> BracketMatchResponse:
     team_a = teams_by_id[match.team_a_id]
     team_b = teams_by_id[match.team_b_id]
     probability_team_a = with_host_advantage(team_a) if match.stage != "group" else team_a
     probability_team_b = with_host_advantage(team_b) if match.stage != "group" else team_b
     probabilities = match_model.predict_probabilities(probability_team_a, probability_team_b)
-    team_a_rating = _model_rating(match_model, probability_team_a)
-    team_b_rating = _model_rating(match_model, probability_team_b)
-    team_a_tiebreak = 1 / (1 + 10 ** (-(team_a_rating - team_b_rating) / 400))
-    team_a_advance = (
-        probabilities["team_a_win"] + probabilities["draw"] * team_a_tiebreak
-    )
-    team_b_advance = probabilities["team_b_win"] + probabilities["draw"] * (
-        1 - team_a_tiebreak
-    )
+    if advance_probabilities is None:
+        team_a_rating = _model_rating(match_model, probability_team_a)
+        team_b_rating = _model_rating(match_model, probability_team_b)
+        team_a_tiebreak = 1 / (1 + 10 ** (-(team_a_rating - team_b_rating) / 400))
+        team_a_advance = (
+            probabilities["team_a_win"] + probabilities["draw"] * team_a_tiebreak
+        )
+        team_b_advance = probabilities["team_b_win"] + probabilities["draw"] * (
+            1 - team_a_tiebreak
+        )
+    else:
+        team_a_advance, team_b_advance = advance_probabilities
     expected_goals = _expected_goals(match_model, probability_team_a, probability_team_b)
 
     if match.result is None or match.winner_team_id is None:
@@ -353,6 +480,118 @@ def _project_favorite_group_stage(
         third_place_qualifiers=third_place_qualifiers,
         qualified_team_ids=top_two_qualifiers + third_place_qualifiers,
     )
+
+
+def _modal_group_stage_from_bank(
+    bank: dict[str, object],
+    config: TournamentConfig,
+    match_model: MatchModel,
+    *,
+    qualified_team_ids: list[str],
+) -> GroupStageResult:
+    """Create projected group tables aligned with modal bank qualification."""
+    teams_by_id = {team.id: team for team in config.teams}
+    team_ids: list[str] = bank["team_ids"]  # type: ignore[assignment]
+    points: np.ndarray = bank["points"]  # type: ignore[assignment]
+    group_matches: list[Match] = []
+
+    for match in config.matches:
+        if match.stage != "group":
+            continue
+        if match.result is not None and match.result.played:
+            group_matches.append(match)
+            continue
+
+        team_a = teams_by_id[match.team_a_id]
+        team_b = teams_by_id[match.team_b_id]
+        result = _projected_match_result(match_model, team_a, team_b)
+        group_matches.append(match.model_copy(update={"result": result}))
+
+    group_tables = {
+        group.id: calculate_group_table(group, teams_by_id, group_matches)
+        for group in sorted(config.groups, key=lambda item: item.id)
+    }
+
+    for group in sorted(config.groups, key=lambda item: item.id):
+        rows = list(group_tables[group.id])
+        group_team_ids = [team.id for team in config.teams if team.group_id == group.id]
+        rows.sort(
+            key=lambda row: (
+                row.team_id in qualified_team_ids,
+                float(np.mean(points[:, team_ids.index(row.team_id)])),
+                teams_by_id[row.team_id].rating,
+                row.team_id,
+            ),
+            reverse=True,
+        )
+        group_tables[group.id] = rows
+
+    top_two_qualifiers = [
+        row.team_id
+        for group_id in sorted(group_tables)
+        for row in group_tables[group_id][:2]
+    ]
+    third_place_rankings = rank_third_place_teams(group_tables)
+    third_place_qualifiers = [
+        row.team_id
+        for row in get_best_third_place_qualifiers(group_tables, count=8)
+    ]
+    derived_qualified = top_two_qualifiers + third_place_qualifiers
+    if derived_qualified != qualified_team_ids:
+        group_tables = _force_modal_group_tables(
+            config,
+            teams_by_id,
+            group_matches,
+            qualified_team_ids=qualified_team_ids,
+        )
+        top_two_qualifiers = qualified_team_ids[:24]
+        third_place_qualifiers = qualified_team_ids[24:]
+        third_place_rankings = rank_third_place_teams(group_tables)
+
+    return GroupStageResult(
+        simulated_matches=group_matches,
+        group_tables=group_tables,
+        top_two_qualifiers=top_two_qualifiers,
+        third_place_rankings=third_place_rankings,
+        third_place_qualifiers=third_place_qualifiers,
+        qualified_team_ids=qualified_team_ids,
+    )
+
+
+def _force_modal_group_tables(
+    config: TournamentConfig,
+    teams_by_id: dict[str, Team],
+    group_matches: list[Match],
+    *,
+    qualified_team_ids: list[str],
+) -> dict[str, list]:
+    """Reorder group tables so modal qualifiers appear in the top two / third slots."""
+    group_tables = {
+        group.id: calculate_group_table(group, teams_by_id, group_matches)
+        for group in sorted(config.groups, key=lambda item: item.id)
+    }
+    rows_by_team = {
+        row.team_id: row
+        for rows in group_tables.values()
+        for row in rows
+    }
+
+    forced_tables: dict[str, list] = {}
+    for group_index, group_id in enumerate(sorted(group_tables)):
+        winner_id = qualified_team_ids[group_index * 2]
+        runner_up_id = qualified_team_ids[group_index * 2 + 1]
+        remaining = [
+            row
+            for row in group_tables[group_id]
+            if row.team_id not in {winner_id, runner_up_id}
+        ]
+        forced_tables[group_id] = [
+            rows_by_team[winner_id],
+            rows_by_team[runner_up_id],
+            *remaining,
+        ]
+
+    return forced_tables
 
 
 def _projected_match_result(

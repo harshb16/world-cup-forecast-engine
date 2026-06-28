@@ -222,7 +222,8 @@ export type BracketSimulation = {
     seed: number | null;
     overrides_applied: unknown[];
   };
-  simulation_mode: "favorite" | "random";
+  simulation_mode: "favorite" | "random" | "bank_representative" | "bank_plurality";
+  representative_simulation_index?: number | null;
   group_tables: Array<{
     group_id: string;
     rows: Array<Record<string, unknown>>;

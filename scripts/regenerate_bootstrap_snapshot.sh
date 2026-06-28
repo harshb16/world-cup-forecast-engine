@@ -22,6 +22,10 @@ from app.core.config import DEFAULT_MODEL_TYPE
 from app.services.data_loader import load_metadata
 from app.services.forecast_snapshot_service import build_forecast_snapshot_from_bank
 from app.services.simulation_bank_service import build_simulation_bank
+from app.services.team_path_service import (
+    all_team_paths_from_bank,
+    write_team_paths_sidecar,
+)
 
 metadata = load_metadata("processed")
 bank_path, bank_meta = build_simulation_bank(
@@ -35,5 +39,14 @@ target.write_text(
     json.dumps(snapshot.model_dump(mode="json"), indent=2, ensure_ascii=False) + "\n",
     encoding="utf-8",
 )
+team_paths = all_team_paths_from_bank(
+    bank_path,
+    "processed",
+    model_type=str(bank_meta["model_version"]),
+    seed=int(bank_meta["master_seed"]),
+)
+team_paths_target = Path("../../data/processed/team_paths.json").resolve()
+write_team_paths_sidecar(team_paths_target.parent, team_paths)
 print(f"wrote bootstrap forecast snapshot to {target}")
+print(f"wrote bootstrap team paths to {team_paths_target}")
 PY

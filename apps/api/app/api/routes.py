@@ -81,7 +81,7 @@ from app.services.simulation_service import (
     run_sample_scenario_simulation,
     run_sample_simulation,
 )
-from app.services.team_path_service import calculate_team_path
+from app.services.team_path_service import calculate_team_path, get_published_team_path
 from app.services.third_place_tracker_service import calculate_third_place_tracker
 
 router = APIRouter()
@@ -317,9 +317,20 @@ def bracket_simulate(request: BracketSimulateRequest) -> BracketSimulationRespon
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
+@router.get("/team-path/{team_id}", response_model=TeamPathResponse)
+def team_path_from_forecast(team_id: str) -> TeamPathResponse:
+    """Return bank-derived knockout path for one team from the active forecast."""
+    try:
+        return get_published_team_path(team_id, get_data_mode())
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+
 @router.post("/team-path", response_model=TeamPathResponse)
 def team_path(request: TeamPathRequest) -> TeamPathResponse:
-    """Return likely knockout path distribution for one team."""
+    """Run live Monte Carlo team path simulation for diagnostics."""
     try:
         return calculate_team_path(request, get_data_mode())
     except ValueError as exc:

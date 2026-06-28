@@ -14,7 +14,13 @@ from app.services.simulation_bank_service import (
     modal_champion_and_final_pairing,
 )
 from app.simulation.bank_knockout_plurality import modal_qualifier_team_ids
-from app.simulation.knockout import ADVANCEMENT_PAIRINGS, ROUND_NAMES
+from app.simulation.knockout import ADVANCEMENT_PAIRINGS, ROUND_NAMES, WorldCup2026BracketBuilder
+from app.simulation.third_place_allocation import reset_allocation_table_cache_for_tests
+
+
+@pytest.fixture(autouse=True)
+def _reset_third_place_allocation_cache() -> None:
+    reset_allocation_table_cache_for_tests()
 
 
 @pytest.fixture
@@ -130,3 +136,37 @@ def test_modal_qualifier_team_ids_are_valid(small_bank: tuple[Path, dict[str, ob
     third_place_ids = qualified_team_ids[24:]
     third_groups = {teams_by_id[team_id].group_id for team_id in third_place_ids}
     assert len(third_groups) == 8
+
+
+def test_plurality_bracket_round_of_32_matches_hybrid_qualifiers(
+    small_bank: tuple[Path, dict[str, object]],
+) -> None:
+    from app.services.bracket_service import (
+        _MostLikelyMatchModel,
+        _hybrid_group_stage_from_bank,
+    )
+    from app.services.simulation_service import create_match_model
+
+    bank_path, bank_meta = small_bank
+    bank = load_bank_arrays(bank_path)
+    config = load_tournament("processed")
+    teams_by_id = {team.id: team for team in config.teams}
+    model_type = str(bank_meta["model_version"])
+    modal_qualified_team_ids = modal_qualifier_team_ids(bank, teams_by_id)
+    match_model = _MostLikelyMatchModel(create_match_model(model_type, "processed"))  # type: ignore[arg-type]
+    group_stage = _hybrid_group_stage_from_bank(
+        config,
+        match_model,
+        modal_qualified_team_ids=modal_qualified_team_ids,
+    )
+    expected_pairs = WorldCup2026BracketBuilder().build_round_of_32(
+        group_stage.qualified_team_ids,
+        teams_by_id,
+    )
+    bracket = plurality_bracket_from_bank(bank_path, bank_meta, "processed")
+    round_of_32 = bracket.rounds["Round of 32"]
+
+    for index, expected_pair in enumerate(expected_pairs):
+        match = round_of_32[index]
+        assert {match.team_a.team_id, match.team_b.team_id} == set(expected_pair)
+        assert match.team_a.group_id != match.team_b.group_id

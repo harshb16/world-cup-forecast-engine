@@ -1,5 +1,6 @@
 """Coherence tests for published forecast snapshots."""
 
+import json
 from pathlib import Path
 from unittest.mock import patch
 
@@ -10,6 +11,9 @@ from app.main import app
 from app.services import forecast_snapshot_service
 
 client = TestClient(app)
+BOOTSTRAP_SNAPSHOT_PATH = (
+    Path(__file__).resolve().parents[3] / "data" / "processed" / "forecast_snapshot.json"
+)
 
 
 def test_snapshot_bracket_final_matches_featured_final() -> None:
@@ -91,3 +95,16 @@ def test_snapshot_bracket_matchups_are_internally_consistent() -> None:
     for match in r16:
         assert match["team_a"]["team_id"]
         assert match["team_b"]["team_id"]
+
+
+def test_snapshot_round_of_32_follows_fifa_annex_c_row_67() -> None:
+    snapshot = json.loads(BOOTSTRAP_SNAPSHOT_PATH.read_text(encoding="utf-8"))
+    r32 = {
+        match["match_number"]: match
+        for match in snapshot["bracket"]["rounds"]["Round of 32"]
+    }
+
+    assert {r32[2]["team_a"]["group_id"], r32[2]["team_b"]["group_id"]} == {"D", "E"}
+    assert {r32[5]["team_a"]["group_id"], r32[5]["team_b"]["group_id"]} == {"F", "I"}
+    assert {r32[9]["team_a"]["group_id"], r32[9]["team_b"]["group_id"]} == {"B", "D"}
+    assert {r32[13]["team_a"]["group_id"], r32[13]["team_b"]["group_id"]} == {"B", "J"}

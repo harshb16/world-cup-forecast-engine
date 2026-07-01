@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/PageHeader";
@@ -28,19 +28,35 @@ export default function MatchdayPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const groupStageComplete = useMemo(
+    () => data?.groups.every((group) => group.is_complete) ?? false,
+    [data],
+  );
+  const hasKnockoutFixtures = useMemo(
+    () => data?.fixtures.some((fixture) => fixture.stage !== "group") ?? false,
+    [data],
+  );
+
   return (
     <>
       <PageHeader
         eyebrow={data?.matchday_label ?? "Matchday"}
         title={data ? `${data.matchday_label} — ${formatDate(data.date)}` : "Today's Matches"}
-        description="Live group standings, today's fixtures, and model probabilities."
+        description={
+          groupStageComplete || hasKnockoutFixtures
+            ? "Knockout fixtures with model advance probabilities."
+            : "Live group standings, today's fixtures, and model probabilities."
+        }
       />
       {loading && <LoadingState label="Loading matchday data" />}
       {error && <ErrorState message={error} />}
       {data && (
         <div className="space-y-10">
           <FixturesSection fixtures={data.fixtures} />
-          <GroupStandingsSection groups={data.groups} />
+          <GroupStandingsSection
+            groups={data.groups}
+            collapsed={groupStageComplete}
+          />
         </div>
       )}
     </>
@@ -112,6 +128,15 @@ function ProbBar({
 
 function FixtureCard({ fixture }: { fixture: MatchdayFixture }) {
   const isFinished = fixture.status.toLowerCase() === "finished";
+  const isKnockout = fixture.stage !== "group";
+  const teamAAdvance = isKnockout
+    ? fixture.team_a_win_probability +
+      fixture.draw_probability / 2
+    : fixture.team_a_win_probability;
+  const teamBAdvance = isKnockout
+    ? fixture.team_b_win_probability +
+      fixture.draw_probability / 2
+    : fixture.team_b_win_probability;
 
   return (
     <div
@@ -129,6 +154,11 @@ function FixtureCard({ fixture }: { fixture: MatchdayFixture }) {
               Group {fixture.group_id}
             </span>
           )}
+          {isKnockout ? (
+            <span className="rounded bg-primary/15 px-1.5 py-0.5 font-mono text-xs text-primary">
+              {fixture.stage}
+            </span>
+          ) : null}
           {fixture.what_still_matters && (
             <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-xs font-semibold text-amber-300">
               Still matters
@@ -166,9 +196,26 @@ function FixtureCard({ fixture }: { fixture: MatchdayFixture }) {
       {/* Probability bars */}
       {!isFinished && (
         <div className="space-y-1.5">
-          <ProbBar label="W" value={fixture.team_a_win_probability} color="bg-primary" />
-          <ProbBar label="D" value={fixture.draw_probability} color="bg-zinc-500" />
-          <ProbBar label="W" value={fixture.team_b_win_probability} color="bg-blue-500" />
+          {isKnockout ? (
+            <>
+              <ProbBar
+                label="A"
+                value={teamAAdvance}
+                color="bg-primary"
+              />
+              <ProbBar
+                label="B"
+                value={teamBAdvance}
+                color="bg-blue-500"
+              />
+            </>
+          ) : (
+            <>
+              <ProbBar label="W" value={fixture.team_a_win_probability} color="bg-primary" />
+              <ProbBar label="D" value={fixture.draw_probability} color="bg-zinc-500" />
+              <ProbBar label="W" value={fixture.team_b_win_probability} color="bg-blue-500" />
+            </>
+          )}
         </div>
       )}
     </div>
@@ -254,17 +301,40 @@ function GroupStandingTable({ group }: { group: MatchdayGroup }) {
   );
 }
 
-function GroupStandingsSection({ groups }: { groups: MatchdayGroup[] }) {
+function GroupStandingsSection({
+  groups,
+  collapsed,
+}: {
+  groups: MatchdayGroup[];
+  collapsed: boolean;
+}) {
+  const [open, setOpen] = useState(!collapsed);
+
+  useEffect(() => {
+    setOpen(!collapsed);
+  }, [collapsed]);
+
   return (
     <section>
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        Group Standings
-      </h2>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {groups.map((g) => (
-          <GroupStandingTable key={g.group_id} group={g} />
-        ))}
-      </div>
+      <button
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        className="mb-4 flex w-full items-center justify-between text-left"
+      >
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          {collapsed ? "Group stage archive" : "Group standings"}
+        </h2>
+        <span className="text-xs text-muted-foreground">
+          {open ? "Hide" : "Show"}
+        </span>
+      </button>
+      {open ? (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {groups.map((g) => (
+            <GroupStandingTable key={g.group_id} group={g} />
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }

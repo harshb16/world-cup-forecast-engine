@@ -24,6 +24,7 @@ import {
 } from "@/lib/api";
 import { formatModelLabel, formatNumber } from "@/lib/format";
 import { usePublishedForecast } from "@/hooks/usePublishedForecast";
+import { ADMIN_UI_ENABLED } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
 import { ROUND_ORDER } from "./constants";
@@ -243,7 +244,9 @@ export function BracketExperience() {
                 lastRunAt={lastRunAt}
                 onRefresh={refresh}
               />
-              <SyncResultsControl onSynced={refresh} />
+              {ADMIN_UI_ENABLED ? (
+                <SyncResultsControl onSynced={refresh} />
+              ) : null}
               <ActionButton
                 icon={Download}
                 label="Export"

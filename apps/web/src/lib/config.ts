@@ -30,3 +30,6 @@ export const TEAM_PATH_SIMULATION_COUNT = boundedInteger(
   100,
 );
 // Used only for optional live POST /team-path diagnostics; default UI uses GET.
+
+export const ADMIN_UI_ENABLED =
+  process.env.NEXT_PUBLIC_WCO_ADMIN_UI === "true";

@@ -167,6 +167,18 @@ export type CurrentTournamentScoring = {
   limitations: string[];
 };
 
+export type HistoricalBacktest = {
+  tournament: string;
+  model_type: ModelType;
+  sample_size: number;
+  accuracy: number | null;
+  brier_score: number | null;
+  log_loss: number | null;
+  calibration_bins: CalibrationBin[];
+  per_match_details: CurrentTournamentMatchScore[];
+  limitations: string[];
+};
+
 export type CalibrationBin = {
   predicted_midpoint: number;
   actual_frequency: number;
@@ -351,6 +363,7 @@ export type GroupChaosReport = {
   data_mode: string;
   n_simulations: number;
   groups: GroupChaosScore[];
+  group_stage_complete: boolean;
 };
 
 export type ForecastStatus = {
@@ -605,6 +618,15 @@ export async function fetchCurrentTournamentScoring(
 ): Promise<CurrentTournamentScoring> {
   return fetchJson<CurrentTournamentScoring>(
     `/evaluation/current?model_type=${modelType}`,
+  );
+}
+
+export async function fetchHistoricalBacktest(
+  tournament = "2022",
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
+): Promise<HistoricalBacktest> {
+  return fetchJson<HistoricalBacktest>(
+    `/evaluation/historical?tournament=${encodeURIComponent(tournament)}&model_type=${modelType}`,
   );
 }
 

@@ -13,12 +13,14 @@ import { SectionCard } from "@/components/ui/SectionCard";
 import {
   fetchCurrentTournamentScoring,
   fetchDataQuality,
+  fetchHistoricalBacktest,
   fetchModelComparison,
   fetchModelMetadata,
   fetchTeams,
   DEFAULT_MODEL_TYPE,
   CurrentTournamentScoring,
   DataQualityReport,
+  HistoricalBacktest,
   ModelComparison,
   ModelMetadata,
   ModelType,
@@ -44,6 +46,9 @@ export default function ModelsPage() {
     useState<ModelType>(DEFAULT_MODEL_TYPE);
   const [scoring, setScoring] = useState<CurrentTournamentScoring | null>(null);
   const [scoringError, setScoringError] = useState<string | null>(null);
+  const [historicalBacktest, setHistoricalBacktest] =
+    useState<HistoricalBacktest | null>(null);
+  const [historicalError, setHistoricalError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -61,6 +66,29 @@ export default function ModelsPage() {
             caughtError instanceof Error
               ? caughtError.message
               : "Current tournament scoring request failed",
+          );
+        }
+      });
+    return () => {
+      isActive = false;
+    };
+  }, [scoringModel]);
+
+  useEffect(() => {
+    let isActive = true;
+    fetchHistoricalBacktest("2022", scoringModel)
+      .then((metrics) => {
+        if (isActive) {
+          setHistoricalBacktest(metrics);
+          setHistoricalError(null);
+        }
+      })
+      .catch((caughtError: unknown) => {
+        if (isActive) {
+          setHistoricalError(
+            caughtError instanceof Error
+              ? caughtError.message
+              : "Historical backtest request failed",
           );
         }
       });
@@ -261,6 +289,72 @@ export default function ModelsPage() {
                 </div>
                 <ul className="mt-5 space-y-1 text-sm text-muted-foreground">
                   {scoring.limitations.map((limitation) => (
+                    <li key={limitation}>• {limitation}</li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
+          </SectionCard>
+
+          <SectionCard>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase text-primary">
+                  Historical backtest
+                </p>
+                <h2 className="mt-1 text-lg font-semibold text-foreground">
+                  2022 World Cup out-of-sample evaluation
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Fixed past tournament replay — genuine holdout scoring against
+                  completed 2022 fixtures.
+                </p>
+              </div>
+            </div>
+
+            {historicalError ? (
+              <p className="mt-4 text-sm text-red-200">{historicalError}</p>
+            ) : null}
+
+            {historicalBacktest ? (
+              <>
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  <SummaryCard
+                    icon={Target}
+                    label="Accuracy"
+                    value={
+                      historicalBacktest.accuracy === null
+                        ? "—"
+                        : formatPercent(historicalBacktest.accuracy)
+                    }
+                    detail={`${historicalBacktest.sample_size} completed 2022 fixtures`}
+                  />
+                  <SummaryCard
+                    icon={BarChart3}
+                    label="Brier score"
+                    value={
+                      historicalBacktest.brier_score === null
+                        ? "—"
+                        : formatNumber(historicalBacktest.brier_score, 3)
+                    }
+                    detail="Lower is better"
+                  />
+                  <SummaryCard
+                    icon={BrainCircuit}
+                    label="Log loss"
+                    value={
+                      historicalBacktest.log_loss === null
+                        ? "—"
+                        : formatNumber(historicalBacktest.log_loss, 3)
+                    }
+                    detail="Lower is better"
+                  />
+                </div>
+                <div className="mt-6">
+                  <CalibrationChart bins={historicalBacktest.calibration_bins} />
+                </div>
+                <ul className="mt-5 space-y-1 text-sm text-muted-foreground">
+                  {historicalBacktest.limitations.map((limitation) => (
                     <li key={limitation}>• {limitation}</li>
                   ))}
                 </ul>

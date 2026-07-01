@@ -85,6 +85,26 @@ before publication; contradictory published scores abort the refresh.
 Ranking and model-training refreshes remain separate CLI workflows. A result
 sync never retrains or silently changes the selected forecasting model.
 
+## Historical Evaluation
+
+Out-of-sample scoring against the fixed 2022 World Cup dataset:
+
+```bash
+curl "http://localhost:8000/evaluation/historical?tournament=2022&model_type=poisson"
+```
+
+Historical fixtures live in `data/historical/wc2022/`. The models page
+(`/models`) shows both current-tournament scoring and the 2022 holdout panel.
+
+Regenerate bootstrap forecast snapshots after bank-affecting changes:
+
+```bash
+bash scripts/regenerate_bootstrap_snapshot.sh
+```
+
+Requires a Python environment with API dependencies installed (uses `python` from
+`.venv` when present, otherwise ensure `python` is on your PATH).
+
 ## Run Backend
 
 ```bash

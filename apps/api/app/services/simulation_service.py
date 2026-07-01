@@ -124,6 +124,13 @@ def apply_result_overrides(
             updated_matches.append(match)
             continue
 
+        winner_team_id = (
+            match.team_a_id
+            if override.team_a_goals > override.team_b_goals
+            else match.team_b_id
+            if override.team_b_goals > override.team_a_goals
+            else None
+        )
         updated_matches.append(
             match.model_copy(
                 update={
@@ -131,7 +138,8 @@ def apply_result_overrides(
                         team_a_goals=override.team_a_goals,
                         team_b_goals=override.team_b_goals,
                         played=True,
-                    )
+                    ),
+                    "winner_team_id": winner_team_id,
                 }
             )
         )

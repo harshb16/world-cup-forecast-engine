@@ -26,6 +26,7 @@ from app.models.schemas import (
     UpsetRadarResponse,
 )
 from app.services.bracket_service import run_bracket_simulation
+from app.services.bracket_materialization_service import is_group_stage_complete
 from app.services.data_loader import load_tournament
 from app.services.simulation_service import create_match_model, run_simulation
 from app.simulation.group_stage import simulate_group_stage
@@ -228,6 +229,7 @@ def calculate_group_chaos_from_summary(
         data_mode=data_mode,
         n_simulations=summary.metadata.n_simulations,
         groups=groups,
+        group_stage_complete=is_group_stage_complete(config),
     )
 
 

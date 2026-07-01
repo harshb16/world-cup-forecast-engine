@@ -16,6 +16,7 @@ from app.models.schemas import (
     ForecastStatusResponse,
     GroupChaosResponse,
     HeadToHeadResponse,
+    HistoricalBacktestResponse,
     HealthResponse,
     MatchdayResponse,
     ModelComparisonResponse,
@@ -41,6 +42,7 @@ from app.services.analytics_service import (
     calculate_model_comparison,
     calculate_upset_radar,
 )
+from app.services.backtest_service import calculate_historical_backtest
 from app.services.bracket_service import run_bracket_simulation
 from app.services.current_tournament_scoring import (
     calculate_current_tournament_scores,
@@ -282,6 +284,18 @@ def rollback_forecast_snapshot_record(
 def models() -> list[ModelMetadataResponse]:
     """Return public metadata for supported match models."""
     return list_model_metadata()
+
+
+@router.get(
+    "/evaluation/historical",
+    response_model=HistoricalBacktestResponse,
+)
+def historical_backtest(
+    tournament: str = Query(default="2022", pattern="^2022$"),
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
+) -> HistoricalBacktestResponse:
+    """Score model predictions against a fixed historical World Cup dataset."""
+    return calculate_historical_backtest(tournament="2022", model_type=model_type)  # type: ignore[arg-type]
 
 
 @router.get(

@@ -253,3 +253,81 @@ def test_validate_processed_data_rejects_results_score_mismatch(
     errors = validate_processed_data(tmp_path)
 
     assert "A-1 result score does not match fixtures.json" in errors
+
+
+def test_validate_processed_data_accepts_knockout_results(tmp_path: Path) -> None:
+    _write_valid_dataset(tmp_path)
+    fixtures = json.loads((tmp_path / "fixtures.json").read_text())
+    knockout_fixture = {
+        "id": "R32-01",
+        "stage": "Round of 32",
+        "team_a_id": "A1",
+        "team_b_id": "B1",
+        "status": "finished",
+        "result": {
+            "played": True,
+            "team_a_goals": 2,
+            "team_b_goals": 1,
+        },
+        "winner_team_id": "A1",
+    }
+    fixtures.append(knockout_fixture)
+    write_json(tmp_path / "fixtures.json", fixtures)
+    write_json(
+        tmp_path / "results.json",
+        [
+            {
+                "match_id": "R32-01",
+                "team_a_id": "A1",
+                "team_b_id": "B1",
+                "team_a_goals": 2,
+                "team_b_goals": 1,
+                "status": "finished",
+                "stage": "Round of 32",
+            }
+        ],
+    )
+
+    assert validate_processed_data(tmp_path) == []
+
+
+def test_validate_processed_data_accepts_knockout_penalty_winner(tmp_path: Path) -> None:
+    _write_valid_dataset(tmp_path)
+    fixtures = json.loads((tmp_path / "fixtures.json").read_text())
+    knockout_fixture = {
+        "id": "R32-02",
+        "stage": "Round of 32",
+        "team_a_id": "A2",
+        "team_b_id": "B2",
+        "status": "finished",
+        "result": {
+            "played": True,
+            "team_a_goals": 1,
+            "team_b_goals": 1,
+            "decided_by_penalties": True,
+            "penalty_team_a_goals": 4,
+            "penalty_team_b_goals": 3,
+        },
+        "winner_team_id": "A2",
+    }
+    fixtures.append(knockout_fixture)
+    write_json(tmp_path / "fixtures.json", fixtures)
+    write_json(
+        tmp_path / "results.json",
+        [
+            {
+                "match_id": "R32-02",
+                "team_a_id": "A2",
+                "team_b_id": "B2",
+                "team_a_goals": 1,
+                "team_b_goals": 1,
+                "status": "finished",
+                "stage": "Round of 32",
+                "decided_by_penalties": True,
+                "penalty_team_a_goals": 4,
+                "penalty_team_b_goals": 3,
+            }
+        ],
+    )
+
+    assert validate_processed_data(tmp_path) == []

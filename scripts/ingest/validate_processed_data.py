@@ -43,6 +43,14 @@ def _expected_winner_id(fixture: dict) -> str | None:
     result = fixture.get("result")
     if not isinstance(result, dict):
         return None
+    if result.get("decided_by_penalties"):
+        penalty_a = result.get("penalty_team_a_goals")
+        penalty_b = result.get("penalty_team_b_goals")
+        if type(penalty_a) is int and type(penalty_b) is int:
+            if penalty_a > penalty_b:
+                return fixture.get("team_a_id")
+            if penalty_b > penalty_a:
+                return fixture.get("team_b_id")
     team_a_goals = result.get("team_a_goals")
     team_b_goals = result.get("team_b_goals")
     if type(team_a_goals) is not int or type(team_b_goals) is not int:
@@ -52,6 +60,68 @@ def _expected_winner_id(fixture: dict) -> str | None:
     if team_b_goals > team_a_goals:
         return fixture.get("team_b_id")
     return None
+
+
+def _validate_fixture_record(
+    fixture: dict,
+    *,
+    team_ids: set[str],
+    teams_by_id: dict[str, dict],
+    group_by_id: dict[str, dict],
+    errors: list[str],
+    require_group_fields: bool,
+) -> None:
+    fixture_id = fixture.get("id", "<missing id>")
+    if require_group_fields:
+        group_id = fixture.get("group_id")
+        if group_id not in group_by_id:
+            errors.append(f"{fixture_id} has invalid group_id")
+            return
+        for side in ["team_a_id", "team_b_id"]:
+            team_id = fixture.get(side)
+            if team_id not in team_ids:
+                errors.append(f"{fixture_id} references unknown team {team_id}")
+            elif teams_by_id[team_id]["group_id"] != group_id:
+                errors.append(f"{fixture_id} team {team_id} is not in {group_id}")
+        kickoff_date = _parse_kickoff_date(fixture, errors)
+        kickoff_utc = _parse_kickoff_utc(fixture, errors)
+        if (
+            kickoff_date is not None
+            and kickoff_utc is not None
+            and abs((kickoff_date - kickoff_utc.date()).days) > 1
+        ):
+            errors.append(f"{fixture_id} kickoff date contradicts kickoff_utc")
+    else:
+        for side in ["team_a_id", "team_b_id"]:
+            team_id = fixture.get(side)
+            if team_id not in team_ids:
+                errors.append(f"{fixture_id} references unknown team {team_id}")
+
+    result = fixture.get("result")
+    status = fixture.get("status")
+    winner_team_id = fixture.get("winner_team_id")
+    if status not in ALLOWED_FIXTURE_STATUSES:
+        errors.append(f"{fixture_id} has invalid status {status}")
+        return
+    if status == "finished":
+        if not result:
+            errors.append(f"{fixture_id} is finished but has no result")
+        elif not all(
+            type(result.get(key)) is int and result[key] >= 0
+            for key in ["team_a_goals", "team_b_goals"]
+        ):
+            errors.append(f"{fixture_id} has invalid finished score")
+        elif result.get("played") is not True:
+            errors.append(f"{fixture_id} finished result must be marked played")
+        else:
+            expected_winner_id = _expected_winner_id(fixture)
+            if winner_team_id != expected_winner_id:
+                errors.append(f"{fixture_id} winner_team_id does not match result")
+    else:
+        if result is not None:
+            errors.append(f"{fixture_id} is scheduled but result is not null")
+        if winner_team_id is not None:
+            errors.append(f"{fixture_id} is scheduled but winner_team_id is not null")
 
 
 def validate_processed_data(base_dir=PROCESSED_DIR) -> list[str]:
@@ -92,62 +162,35 @@ def validate_processed_data(base_dir=PROCESSED_DIR) -> list[str]:
 
     group_by_id = {group["id"]: group for group in groups}
     group_stage_fixtures = [fixture for fixture in fixtures if fixture.get("stage") == "group"]
+    knockout_fixtures = [fixture for fixture in fixtures if fixture.get("stage") != "group"]
     if len(group_stage_fixtures) != 72:
         errors.append("fixtures.json must contain 72 group-stage fixtures")
 
-    fixture_ids = [fixture.get("id") for fixture in group_stage_fixtures]
+    fixture_ids = [fixture.get("id") for fixture in fixtures]
     if len(set(fixture_ids)) != len(fixture_ids):
         errors.append("fixtures.json contains duplicate fixture ids")
 
     for fixture in group_stage_fixtures:
-        fixture_id = fixture.get("id", "<missing id>")
-        group_id = fixture.get("group_id")
-        if group_id not in group_by_id:
-            errors.append(f"{fixture_id} has invalid group_id")
-            continue
-        for side in ["team_a_id", "team_b_id"]:
-            team_id = fixture.get(side)
-            if team_id not in team_ids:
-                errors.append(f"{fixture_id} references unknown team {team_id}")
-            elif teams_by_id[team_id]["group_id"] != group_id:
-                errors.append(f"{fixture_id} team {team_id} is not in {group_id}")
+        _validate_fixture_record(
+            fixture,
+            team_ids=team_ids,
+            teams_by_id=teams_by_id,
+            group_by_id=group_by_id,
+            errors=errors,
+            require_group_fields=True,
+        )
 
-        kickoff_date = _parse_kickoff_date(fixture, errors)
-        kickoff_utc = _parse_kickoff_utc(fixture, errors)
-        if (
-            kickoff_date is not None
-            and kickoff_utc is not None
-            and abs((kickoff_date - kickoff_utc.date()).days) > 1
-        ):
-            errors.append(f"{fixture_id} kickoff date contradicts kickoff_utc")
+    for fixture in knockout_fixtures:
+        _validate_fixture_record(
+            fixture,
+            team_ids=team_ids,
+            teams_by_id=teams_by_id,
+            group_by_id=group_by_id,
+            errors=errors,
+            require_group_fields=False,
+        )
 
-        result = fixture.get("result")
-        status = fixture.get("status")
-        winner_team_id = fixture.get("winner_team_id")
-        if status not in ALLOWED_FIXTURE_STATUSES:
-            errors.append(f"{fixture_id} has invalid status {status}")
-            continue
-        if status == "finished":
-            if not result:
-                errors.append(f"{fixture_id} is finished but has no result")
-            elif not all(
-                type(result.get(key)) is int and result[key] >= 0
-                for key in ["team_a_goals", "team_b_goals"]
-            ):
-                errors.append(f"{fixture_id} has invalid finished score")
-            elif result.get("played") is not True:
-                errors.append(f"{fixture_id} finished result must be marked played")
-            else:
-                expected_winner_id = _expected_winner_id(fixture)
-                if winner_team_id != expected_winner_id:
-                    errors.append(f"{fixture_id} winner_team_id does not match result")
-        else:
-            if result is not None:
-                errors.append(f"{fixture_id} is scheduled but result is not null")
-            if winner_team_id is not None:
-                errors.append(f"{fixture_id} is scheduled but winner_team_id is not null")
-
-    fixtures_by_id = {fixture["id"]: fixture for fixture in group_stage_fixtures}
+    fixtures_by_id = {fixture["id"]: fixture for fixture in fixtures}
     result_fixture_ids: set[str] = set()
     for result in results:
         match_id = result.get("match_id")
@@ -177,7 +220,7 @@ def validate_processed_data(base_dir=PROCESSED_DIR) -> list[str]:
         if result.get("status") != "finished":
             errors.append(f"{match_id} result status must be finished")
 
-    for fixture in group_stage_fixtures:
+    for fixture in fixtures:
         if fixture.get("status") == "finished" and fixture["id"] not in result_fixture_ids:
             errors.append(f"{fixture['id']} finished fixture missing from results.json")
 

@@ -62,44 +62,46 @@ def calculate_upset_radar(
     teams_by_id = {team.id: team for team in config.teams}
     match_model = create_match_model(model_type, data_mode)
     upsets: list[UpsetFixtureResponse] = []
+    group_stage_complete = is_group_stage_complete(config)
 
-    for match in config.matches:
-        if match.stage != "group":
-            continue
-        if match.result is not None and match.result.played:
-            continue
+    if not group_stage_complete:
+        for match in config.matches:
+            if match.stage != "group":
+                continue
+            if match.result is not None and match.result.played:
+                continue
 
-        team_a = teams_by_id[match.team_a_id]
-        team_b = teams_by_id[match.team_b_id]
-        probabilities = match_model.predict_probabilities(team_a, team_b)
-        favorite_id, underdog_id, favorite_prob, underdog_prob = _favorite_underdog(
-            team_a,
-            team_b,
-            probabilities,
-        )
-        gap = favorite_prob - underdog_prob
-        stage_weight = STAGE_IMPORTANCE["group"]
-        upset_score = underdog_prob * (1 - gap) * stage_weight
-        upsets.append(
-            UpsetFixtureResponse(
-                match_id=match.id,
-                stage=match.stage,
-                group_id=match.group_id,
-                team_a_id=team_a.id,
-                team_a_name=team_a.name,
-                team_b_id=team_b.id,
-                team_b_name=team_b.name,
-                favorite_team_id=favorite_id,
-                underdog_team_id=underdog_id,
-                favorite_advance_probability=favorite_prob,
-                underdog_advance_probability=underdog_prob,
-                advance_probability_gap=gap,
-                upset_score=upset_score,
-                risk_label=_risk_label(upset_score),
-                stage_importance=stage_weight,
-                reasons=_upset_reasons(gap, underdog_prob, match.stage),
+            team_a = teams_by_id[match.team_a_id]
+            team_b = teams_by_id[match.team_b_id]
+            probabilities = match_model.predict_probabilities(team_a, team_b)
+            favorite_id, underdog_id, favorite_prob, underdog_prob = _favorite_underdog(
+                team_a,
+                team_b,
+                probabilities,
             )
-        )
+            gap = favorite_prob - underdog_prob
+            stage_weight = STAGE_IMPORTANCE["group"]
+            upset_score = underdog_prob * (1 - gap) * stage_weight
+            upsets.append(
+                UpsetFixtureResponse(
+                    match_id=match.id,
+                    stage=match.stage,
+                    group_id=match.group_id,
+                    team_a_id=team_a.id,
+                    team_a_name=team_a.name,
+                    team_b_id=team_b.id,
+                    team_b_name=team_b.name,
+                    favorite_team_id=favorite_id,
+                    underdog_team_id=underdog_id,
+                    favorite_advance_probability=favorite_prob,
+                    underdog_advance_probability=underdog_prob,
+                    advance_probability_gap=gap,
+                    upset_score=upset_score,
+                    risk_label=_risk_label(upset_score),
+                    stage_importance=stage_weight,
+                    reasons=_upset_reasons(gap, underdog_prob, match.stage),
+                )
+            )
 
     bracket = run_bracket_simulation(
         BracketSimulateRequest(model_type=model_type, simulation_mode="favorite", seed=42),
@@ -108,6 +110,8 @@ def calculate_upset_radar(
     for stage, matches in bracket.rounds.items():
         stage_weight = STAGE_IMPORTANCE.get(stage, 1.0)
         for match in matches:
+            if match.result_is_real:
+                continue
             favorite_advance = max(
                 match.probabilities.team_a_advance,
                 match.probabilities.team_b_advance,

@@ -21,7 +21,8 @@ from app.services.data_loader import (
     load_tournament,
 )
 from app.services.simulation_service import create_match_model
-from app.services.world_cup_schedule import group_matchday_label
+from app.services.bracket_materialization_service import is_group_stage_complete
+from app.services.world_cup_schedule import tournament_stage_label
 from app.simulation.group_table import calculate_group_table
 
 
@@ -39,12 +40,24 @@ def calculate_matchday(
 
     requested_date = as_of_date or datetime.now(timezone.utc).date()
     group_matches = [m for m in config.matches if m.stage == "group"]
-    unplayed_matches = [
+    group_stage_complete = is_group_stage_complete(config)
+    unplayed_group_matches = [
         match
         for match in group_matches
         if match.result is None or not match.result.played
     ]
-    display_candidates = group_matches if as_of_date is not None else unplayed_matches
+    unplayed_knockout_matches = [
+        match
+        for match in config.matches
+        if match.stage != "group"
+        and (match.result is None or not match.result.played)
+    ]
+    if group_stage_complete and unplayed_knockout_matches:
+        display_candidates = unplayed_knockout_matches
+    elif as_of_date is not None:
+        display_candidates = group_matches
+    else:
+        display_candidates = unplayed_group_matches
 
     today_fixtures = [
         m
@@ -87,7 +100,7 @@ def calculate_matchday(
 
     return MatchdayResponse(
         date=display_date.isoformat(),
-        matchday_label=group_matchday_label(display_date),
+        matchday_label=tournament_stage_label(display_date),
         model_type=model_type,
         fixtures=fixture_responses,
         groups=group_responses,
@@ -137,7 +150,7 @@ def _build_fixture_response(
         "finished" if match.result is not None and match.result.played else "scheduled",
     )
 
-    probs = match_model.predict_probabilities(team_a, team_b)
+    probs = _predict_matchday_probabilities(match_model, team_a, team_b, match.stage)
 
     projected_a, projected_b = _projected_scoreline(match_model, team_a, team_b)
 
@@ -166,6 +179,19 @@ def _build_fixture_response(
         team_b_goals=team_b_goals,
         what_still_matters=False,  # annotated in a second pass
     )
+
+
+def _predict_matchday_probabilities(
+    match_model: Any,
+    team_a: Team,
+    team_b: Team,
+    stage: str,
+) -> dict[str, float]:
+    stage_arg = None if stage == "group" else "knockout"
+    try:
+        return match_model.predict_probabilities(team_a, team_b, stage=stage_arg)
+    except TypeError:
+        return match_model.predict_probabilities(team_a, team_b)
 
 
 def _projected_scoreline(

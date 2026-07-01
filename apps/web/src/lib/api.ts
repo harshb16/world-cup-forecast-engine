@@ -86,6 +86,9 @@ export type DataMetadata = {
   rating_coverage_count: number;
   data_quality_notes: string[];
   model_limitations: string[];
+  archive_mode: string | null;
+  is_frozen: boolean;
+  frozen_label: string | null;
 };
 
 export type ProviderStatus = {
@@ -104,6 +107,8 @@ export type DataStatus = {
   scheduler_idle_interval_minutes: number;
   recommended_interval_minutes: number;
   admin_sync_configured: boolean;
+  sync_disabled: boolean;
+  sync_disabled_reason: string | null;
   latest_job: SyncJobDetail | null;
 };
 

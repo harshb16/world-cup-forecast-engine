@@ -6,13 +6,17 @@ from typing import Any
 
 from app.models.domain import Group, Match, Team, TournamentConfig
 
+from app.core.archive_config import archive_metadata_fields, get_archive_data_dir
 from app.services.runtime_store import resolve_processed_data_directory
 REPO_ROOT = Path(__file__).resolve().parents[4]
 SAMPLE_DATA_DIR = REPO_ROOT / "data" / "sample"
 
 
 def get_processed_data_dir() -> Path:
-    """Return active runtime processed data or bootstrap seed."""
+    """Return active runtime data, frozen archive, or bootstrap seed."""
+    archive_dir = get_archive_data_dir()
+    if archive_dir is not None:
+        return archive_dir
     return resolve_processed_data_directory()
 
 
@@ -88,7 +92,7 @@ def load_metadata(mode: str) -> dict[str, Any]:
     """Load data-source metadata for the selected mode."""
     if mode == "processed":
         metadata = _load_object(get_processed_data_dir() / "metadata.json")
-        return {**metadata, **_processed_quality_metadata()}
+        return {**metadata, **_processed_quality_metadata(), **archive_metadata_fields()}
     if mode == "sample":
         sample = load_sample_tournament()
         return {

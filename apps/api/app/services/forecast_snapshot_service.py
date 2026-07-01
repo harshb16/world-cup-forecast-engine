@@ -6,6 +6,11 @@ import json
 from datetime import UTC, datetime
 from pathlib import Path
 
+from app.core.archive_config import (
+    get_archive_data_dir,
+    is_archive_mode_active,
+    resolve_archive_bank_path,
+)
 from app.core.config import BOOTSTRAP_PROCESSED_DIR, DEFAULT_MODEL_TYPE
 from app.models.schemas import (
     ForecastSnapshotResponse,
@@ -42,10 +47,23 @@ def build_snapshot_id(
 
 
 def _resolve_snapshot_path() -> Path:
+    archive_dir = get_archive_data_dir()
+    if archive_dir is not None:
+        return archive_dir / "forecast_snapshot.json"
     active_path = get_active_forecast_payload_path()
     if active_path is not None and active_path.exists():
         return active_path
-    return BOOTSTRAP_SNAPSHOT_PATH
+    return BOOTSTRAP_PROCESSED_DIR / "forecast_snapshot.json"
+
+
+def resolve_forecast_bank_path() -> Path | None:
+    """Return active simulation bank, including frozen archive bundles."""
+    archive_bank = resolve_archive_bank_path()
+    if archive_bank is not None:
+        return archive_bank
+    from app.services.runtime_store import get_active_forecast_bank_path
+
+    return get_active_forecast_bank_path()
 
 
 def build_forecast_snapshot_from_bank(

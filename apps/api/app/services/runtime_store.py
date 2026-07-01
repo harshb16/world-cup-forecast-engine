@@ -12,6 +12,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Iterator
 
+from app.core.archive_config import get_archive_data_dir
 from app.models.schemas import SyncJobDetailResponse, SyncResponse
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
@@ -101,6 +102,9 @@ def get_active_data_directory() -> Path | None:
 
 def resolve_processed_data_directory() -> Path:
     """Return active runtime data dir or checked-in bootstrap seed."""
+    archive_dir = get_archive_data_dir()
+    if archive_dir is not None:
+        return archive_dir
     return get_active_data_directory() or BOOTSTRAP_PROCESSED_DIR
 
 

@@ -246,15 +246,19 @@ def load_published_team_path(
 
 def get_published_team_path(team_id: str, data_mode: str) -> TeamPathResponse:
     """Load the active forecast's bank-derived team path for one team."""
-    from app.services.forecast_snapshot_service import load_forecast_snapshot
-    from app.services.runtime_store import (
-        get_active_forecast_bank_path,
-        get_active_forecast_directory,
+    from app.services.forecast_snapshot_service import (
+        load_forecast_snapshot,
+        resolve_forecast_bank_path,
     )
+    from app.services.data_loader import get_processed_data_dir
+    from app.services.runtime_store import get_active_forecast_directory
 
     cache_path: Path | None = None
+    archive_team_paths = get_processed_data_dir() / TEAM_PATHS_FILENAME
+    if archive_team_paths.exists():
+        cache_path = archive_team_paths
     forecast_dir = get_active_forecast_directory()
-    if forecast_dir is not None:
+    if cache_path is None and forecast_dir is not None:
         candidate = forecast_dir / TEAM_PATHS_FILENAME
         if candidate.exists():
             cache_path = candidate
@@ -265,7 +269,7 @@ def get_published_team_path(team_id: str, data_mode: str) -> TeamPathResponse:
     return load_published_team_path(
         team_id,
         cache_path=cache_path,
-        bank_path=get_active_forecast_bank_path(),
+        bank_path=resolve_forecast_bank_path(),
         data_mode=data_mode,
         model_type=snapshot.model_version,
     )

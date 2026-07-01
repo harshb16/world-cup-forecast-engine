@@ -139,6 +139,9 @@ class DataMetadataResponse(BaseModel):
     rating_coverage_count: int
     data_quality_notes: list[str] = Field(default_factory=list)
     model_limitations: list[str] = Field(default_factory=list)
+    archive_mode: str | None = None
+    is_frozen: bool = False
+    frozen_label: str | None = None
 
 
 class ProviderStatusResponse(BaseModel):
@@ -161,6 +164,8 @@ class DataStatusResponse(BaseModel):
     scheduler_idle_interval_minutes: int
     recommended_interval_minutes: int
     admin_sync_configured: bool
+    sync_disabled: bool = False
+    sync_disabled_reason: str | None = None
     latest_job: SyncJobDetailResponse | None = None
 
 

@@ -156,14 +156,13 @@ def sync_results(on_stage: StageReporter | None = None) -> SyncResponse:
         teams = _read_json(_active_processed_dir() / "teams.json")
         provider, provider_matches = _fetch_provider_matches()
         report("normalize", f"Normalizing {provider} payload")
-        updated_fixtures, results, changed_count = _merge_provider_matches(
+        updated_fixtures, results, changed_count = _merge_fixtures_with_materialization(
             fixtures,
             teams,
             existing_results,
             provider,
             provider_matches,
         )
-        updated_fixtures = _append_materialized_knockout_fixtures(updated_fixtures, teams)
         report("compare", "Provider scores compared against published results")
         timestamp = datetime.now(tz=UTC).replace(microsecond=0).isoformat()
 
@@ -256,6 +255,35 @@ def _fetch_json(
     if not isinstance(payload, dict):
         raise ResultsSyncError(f"Provider returned invalid JSON from {url}.")
     return payload
+
+
+def _merge_fixtures_with_materialization(
+    fixtures: list[dict[str, Any]],
+    teams: list[dict[str, Any]],
+    existing_results: list[dict[str, Any]],
+    provider: str,
+    provider_matches: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], int]:
+    """Materialize knockout fixtures, merge provider results, repeat until stable."""
+    changed_total = 0
+    current = _append_materialized_knockout_fixtures(fixtures, teams)
+    results: list[dict[str, Any]] = []
+
+    for _ in range(8):
+        merged, results, changed = _merge_provider_matches(
+            current,
+            teams,
+            existing_results,
+            provider,
+            provider_matches,
+        )
+        changed_total += changed
+        with_materialized = _append_materialized_knockout_fixtures(merged, teams)
+        if len(with_materialized) == len(merged) and changed == 0:
+            return with_materialized, results, changed_total
+        current = with_materialized
+
+    return current, results, changed_total
 
 
 def _merge_provider_matches(

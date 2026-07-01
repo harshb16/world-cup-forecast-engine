@@ -2,6 +2,7 @@
 
 from fastapi import APIRouter, Header, HTTPException, Query
 
+from app.core.archive_config import get_frozen_label, is_archive_mode_active
 from app.core.config import DEFAULT_MODEL_TYPE, get_data_mode
 from app.models.domain import Group, Match, Team
 from app.models.schemas import (
@@ -154,6 +155,11 @@ def sync_match_results(
     admin_key: str | None = Header(default=None, alias="X-WCO-Admin-Key"),
 ) -> SyncJobStartResponse:
     """Queue an authenticated background result-sync job."""
+    if is_archive_mode_active():
+        raise HTTPException(
+            status_code=409,
+            detail=get_frozen_label() or "Result sync is disabled in archive mode.",
+        )
     if not admin_sync_is_configured():
         raise HTTPException(
             status_code=503,

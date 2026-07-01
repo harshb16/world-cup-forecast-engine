@@ -156,9 +156,9 @@ def _calculate_head_to_head_live(
 
 
 def _resolve_bank_path() -> Path | None:
-    from app.services.runtime_store import get_active_forecast_bank_path
+    from app.services.forecast_snapshot_service import resolve_forecast_bank_path
 
-    bank_path = get_active_forecast_bank_path()
+    bank_path = resolve_forecast_bank_path()
     if bank_path is not None and bank_path.exists():
         return bank_path
     return None

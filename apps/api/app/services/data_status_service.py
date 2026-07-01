@@ -7,6 +7,7 @@ import os
 from collections import Counter
 from typing import Any
 
+from app.core.archive_config import get_frozen_label, is_archive_mode_active
 from app.core.config import get_data_mode
 from app.models.schemas import (
     DataMetadataResponse,
@@ -74,6 +75,7 @@ def build_data_status() -> DataStatusResponse:
         else None
     )
     tournament_active = is_tournament_active()
+    sync_disabled = is_archive_mode_active()
     return DataStatusResponse(
         metadata=DataMetadataResponse.model_validate(metadata),
         match_status_counts=_match_status_counts(),
@@ -83,5 +85,7 @@ def build_data_status() -> DataStatusResponse:
         scheduler_idle_interval_minutes=IDLE_INTERVAL_MINUTES,
         recommended_interval_minutes=recommended_interval_minutes(),
         admin_sync_configured=admin_sync_is_configured(),
+        sync_disabled=sync_disabled,
+        sync_disabled_reason=get_frozen_label() if sync_disabled else None,
         latest_job=latest_job,
     )

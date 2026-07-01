@@ -40,6 +40,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { DataFreshness } from "@/components/DataFreshness";
+import { FrozenDatasetBadge } from "@/components/FrozenDatasetBadge";
 import { DEFAULT_MODEL_TYPE, fetchMetadata } from "@/lib/api";
 import { formatModelLabel } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -135,6 +136,7 @@ function NavGroup({
 export function AppHeader() {
   const pathname = usePathname();
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const [frozenLabel, setFrozenLabel] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const activePage =
     allNavItems.find((item) => item.href === pathname)?.label ?? "World Cup Oracle";
@@ -143,10 +145,16 @@ export function AppHeader() {
     let isActive = true;
     fetchMetadata()
       .then((metadata) => {
-        if (isActive) setLastUpdated(metadata.last_updated);
+        if (isActive) {
+          setLastUpdated(metadata.last_updated);
+          setFrozenLabel(metadata.is_frozen ? metadata.frozen_label : null);
+        }
       })
       .catch(() => {
-        if (isActive) setLastUpdated(null);
+        if (isActive) {
+          setLastUpdated(null);
+          setFrozenLabel(null);
+        }
       });
     return () => {
       isActive = false;
@@ -240,7 +248,11 @@ export function AppHeader() {
         </p>
 
         <div className="ml-auto flex items-center gap-2">
-          {lastUpdated ? (
+          {frozenLabel ? (
+            <p className="hidden text-[0.68rem] text-muted-foreground md:block">
+              <FrozenDatasetBadge label={frozenLabel} compact />
+            </p>
+          ) : lastUpdated ? (
             <p className="hidden text-[0.68rem] text-muted-foreground md:block">
               Data <DataFreshness timestamp={lastUpdated} compact />
             </p>

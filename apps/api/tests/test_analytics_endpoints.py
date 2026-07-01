@@ -26,6 +26,21 @@ def test_upset_radar_returns_ranked_fixtures() -> None:
     assert first["favorite_advance_probability"] >= first["underdog_advance_probability"]
 
 
+def test_upset_radar_excludes_group_fixtures_after_group_stage_complete() -> None:
+    from app.services.bracket_materialization_service import is_group_stage_complete
+    from app.services.data_loader import load_tournament
+
+    if not is_group_stage_complete(load_tournament("processed")):
+        return
+
+    response = client.get("/analytics/upsets?model_type=calibrated_elo&limit=20")
+
+    assert response.status_code == 200
+    fixtures = response.json()["fixtures"]
+    assert fixtures
+    assert all(fixture["stage"] != "group" for fixture in fixtures)
+
+
 def test_group_chaos_returns_all_groups() -> None:
     response = client.get(
         "/analytics/group-chaos?model_type=oracle_v2&n_simulations=40&seed=7"

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { Match, MatchResultOverride, Team } from "@/lib/api";
+import { scenarioFixtures } from "@/lib/scenario-overrides";
 
 export function ScenarioBuilder({
   fixtures,
@@ -16,13 +17,17 @@ export function ScenarioBuilder({
   teamsById: Map<string, Team>;
   onAddOverride: (override: MatchResultOverride) => void;
 }) {
-  const [matchId, setMatchId] = useState(fixtures[0]?.id ?? "");
+  const selectableFixtures = useMemo(
+    () => scenarioFixtures(fixtures),
+    [fixtures],
+  );
+  const [matchId, setMatchId] = useState(selectableFixtures[0]?.id ?? "");
   const [teamAGoals, setTeamAGoals] = useState(1);
   const [teamBGoals, setTeamBGoals] = useState(0);
 
   const selectedMatch = useMemo(
-    () => fixtures.find((fixture) => fixture.id === matchId),
-    [fixtures, matchId],
+    () => selectableFixtures.find((fixture) => fixture.id === matchId),
+    [selectableFixtures, matchId],
   );
 
   const selectedLabel = selectedMatch ? formatFixture(selectedMatch, teamsById) : "";
@@ -45,7 +50,7 @@ export function ScenarioBuilder({
             onChange={(event) => setMatchId(event.target.value)}
             className="mt-2 h-11 w-full rounded-md border border-border bg-card px-3 text-sm text-foreground outline-none focus:border-primary/50"
           >
-            {fixtures.map((fixture) => {
+            {selectableFixtures.map((fixture) => {
               return (
                 <option key={fixture.id} value={fixture.id}>
                   {formatFixture(fixture, teamsById)}

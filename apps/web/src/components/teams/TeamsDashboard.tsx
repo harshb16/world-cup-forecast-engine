@@ -20,8 +20,15 @@ import {
   Group,
   SimulationSummary,
   Team,
+  TeamProbability,
   DataMetadata,
 } from "@/lib/api";
+import {
+  currentRoundLabel,
+  matchesTournamentFilter,
+  type TournamentFilter,
+} from "@/lib/team-status";
+import { formatPercent } from "@/lib/format";
 
 type TeamIndexData = {
   groups: Group[];
@@ -33,6 +40,8 @@ type TeamIndexData = {
 export function TeamsDashboard() {
   const [query, setQuery] = useState("");
   const [selectedGroupId, setSelectedGroupId] = useState("all");
+  const [tournamentFilter, setTournamentFilter] =
+    useState<TournamentFilter>("all");
 
   const loadTeams = useCallback(async (): Promise<TeamIndexData> => {
     const [groups, teams, metadata, snapshot] = await Promise.all([
@@ -76,18 +85,22 @@ export function TeamsDashboard() {
         .filter((team) =>
           selectedGroupId === "all" ? true : team.group_id === selectedGroupId,
         )
+        .filter((team) =>
+          matchesTournamentFilter(
+            probabilitiesByTeamId.get(team.id),
+            tournamentFilter,
+          ),
+        )
         .sort((a, b) => {
-          const aProbability =
-            probabilitiesByTeamId.get(a.id)?.group_qualification_probability ??
-            0;
-          const bProbability =
-            probabilitiesByTeamId.get(b.id)?.group_qualification_probability ??
-            0;
+          const aProbability = probabilitiesByTeamId.get(a.id);
+          const bProbability = probabilitiesByTeamId.get(b.id);
+          const aChampion = aProbability?.champion ?? 0;
+          const bChampion = bProbability?.champion ?? 0;
 
-          return bProbability - aProbability || a.name.localeCompare(b.name);
+          return bChampion - aChampion || a.name.localeCompare(b.name);
         }) ?? []
     );
-  }, [data, probabilitiesByTeamId, query, selectedGroupId]);
+  }, [data, probabilitiesByTeamId, query, selectedGroupId, tournamentFilter]);
 
   const teamsByGroup = useMemo(() => {
     if (!data) {
@@ -113,9 +126,32 @@ export function TeamsDashboard() {
   return (
     <div className="space-y-5">
       <SectionCard>
-        <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
-          <TeamSearch value={query} onChange={setQuery} />
-          <div className="flex max-w-full gap-2 overflow-x-auto">
+        <div className="grid gap-4">
+          <div className="flex flex-wrap gap-2">
+            {(
+              [
+                ["still_in", "Still in"],
+                ["eliminated", "Eliminated"],
+                ["all", "All teams"],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setTournamentFilter(value)}
+                className={`min-w-fit rounded-md border px-3 py-2 text-xs font-semibold transition ${
+                  tournamentFilter === value
+                    ? "border-primary/40 bg-primary/10 text-primary"
+                    : "border-border text-muted-foreground hover:bg-accent/60"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+            <TeamSearch value={query} onChange={setQuery} />
+            <div className="flex max-w-full gap-2 overflow-x-auto">
             <button
               type="button"
               onClick={() => setSelectedGroupId("all")}
@@ -142,6 +178,7 @@ export function TeamsDashboard() {
               </button>
             ))}
           </div>
+        </div>
         </div>
       </SectionCard>
 
@@ -174,11 +211,16 @@ export function TeamsDashboard() {
 
                 return (
                   <SectionCard key={team.id}>
-                    <TeamName
-                      team={team}
-                      groupName={groupInfo?.name}
-                      href={`/teams/${team.id}`}
-                    />
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <TeamName
+                        team={team}
+                        groupName={groupInfo?.name}
+                        href={`/teams/${team.id}`}
+                      />
+                      {probability ? (
+                        <TeamRoundBadge probability={probability} />
+                      ) : null}
+                    </div>
                     {probability ? (
                       <div className="mt-4">
                         <TeamProbabilitySummary probability={probability} compact />
@@ -196,5 +238,22 @@ export function TeamsDashboard() {
         ))}
       </div>
     </div>
+  );
+}
+
+function TeamRoundBadge({ probability }: { probability: TeamProbability }) {
+  const label = currentRoundLabel(probability);
+  const tone =
+    label === "Eliminated"
+      ? "border-signal-red/30 bg-signal-red/10 text-signal-red"
+      : "border-primary/25 bg-primary/10 text-primary";
+
+  return (
+    <span
+      className={`rounded-full border px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wide ${tone}`}
+    >
+      {label}
+      {label !== "Eliminated" ? ` · ${formatPercent(probability.champion)}` : ""}
+    </span>
   );
 }

@@ -1,5 +1,6 @@
 import { ProbabilityBar } from "@/components/ui/ProbabilityBar";
 import { TeamProbability } from "@/lib/api";
+import { isGroupQualificationSaturated } from "@/lib/team-status";
 
 const stageRows = [
   { label: "Round of 32", key: "round_of_32" },
@@ -16,26 +17,32 @@ export function TeamProbabilitySummary({
   probability: TeamProbability;
   compact?: boolean;
 }) {
+  const showGroupQualification = !isGroupQualificationSaturated(probability);
+
   return (
     <div className="space-y-4">
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div
+        className={`grid gap-3 ${showGroupQualification ? "sm:grid-cols-2" : "sm:grid-cols-1"}`}
+      >
         <div className="rounded-md border border-border bg-white/[0.035] p-3">
           <span className="text-xs font-medium text-muted-foreground">Champion</span>
           <div className="mt-2">
             <ProbabilityBar value={probability.champion} label="Win title" />
           </div>
         </div>
-        <div className="rounded-md border border-border bg-white/[0.035] p-3">
-          <span className="text-xs font-medium text-muted-foreground">
-            Group qualification
-          </span>
-          <div className="mt-2">
-            <ProbabilityBar
-              value={probability.group_qualification_probability}
-              label="Reach knockouts"
-            />
+        {showGroupQualification ? (
+          <div className="rounded-md border border-border bg-white/[0.035] p-3">
+            <span className="text-xs font-medium text-muted-foreground">
+              Group qualification
+            </span>
+            <div className="mt-2">
+              <ProbabilityBar
+                value={probability.group_qualification_probability}
+                label="Reach knockouts"
+              />
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
 
       {!compact ? (

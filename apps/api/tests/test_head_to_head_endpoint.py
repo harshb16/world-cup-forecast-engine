@@ -1,5 +1,6 @@
 """Tests for head-to-head meeting probability endpoint."""
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -39,3 +40,38 @@ def test_head_to_head_rejects_zero_simulations() -> None:
     )
 
     assert response.status_code == 422
+
+
+def test_head_to_head_from_bank_is_deterministic(
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from app.services.head_to_head_service import calculate_head_to_head_from_bank
+    from app.services.simulation_bank_service import build_simulation_bank
+
+    monkeypatch.setenv("WCO_RUNTIME_DATA_DIR", str(tmp_path / "runtime"))
+    monkeypatch.setenv("WCO_SNAPSHOT_SIMULATIONS", "120")
+    bank_path, _ = build_simulation_bank(
+        data_version="h2h-test",
+        n_simulations=120,
+        master_seed=17,
+        max_workers=1,
+    )
+
+    first = calculate_head_to_head_from_bank(
+        bank_path,
+        "MEXICO",
+        "RSA",
+        "processed",
+        model_type="calibrated_elo",
+    )
+    second = calculate_head_to_head_from_bank(
+        bank_path,
+        "MEXICO",
+        "RSA",
+        "processed",
+        model_type="calibrated_elo",
+    )
+
+    assert first == second
+    assert first.n_simulations == 120

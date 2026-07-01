@@ -1,0 +1,194 @@
+[
+  {
+    "id": "ARG",
+    "name": "Argentina",
+    "group_id": "C",
+    "rating": 1840
+  },
+  {
+    "id": "FRA",
+    "name": "France",
+    "group_id": "D",
+    "rating": 1860
+  },
+  {
+    "id": "CRO",
+    "name": "Croatia",
+    "group_id": "F",
+    "rating": 1780
+  },
+  {
+    "id": "MAR",
+    "name": "Morocco",
+    "group_id": "F",
+    "rating": 1720
+  },
+  {
+    "id": "NED",
+    "name": "Netherlands",
+    "group_id": "A",
+    "rating": 1800
+  },
+  {
+    "id": "ENG",
+    "name": "England",
+    "group_id": "B",
+    "rating": 1820
+  },
+  {
+    "id": "BRA",
+    "name": "Brazil",
+    "group_id": "G",
+    "rating": 1850
+  },
+  {
+    "id": "POR",
+    "name": "Portugal",
+    "group_id": "H",
+    "rating": 1810
+  },
+  {
+    "id": "JPN",
+    "name": "Japan",
+    "group_id": "E",
+    "rating": 1700
+  },
+  {
+    "id": "KOR",
+    "name": "South Korea",
+    "group_id": "H",
+    "rating": 1680
+  },
+  {
+    "id": "ESP",
+    "name": "Spain",
+    "group_id": "E",
+    "rating": 1830
+  },
+  {
+    "id": "GER",
+    "name": "Germany",
+    "group_id": "E",
+    "rating": 1790
+  },
+  {
+    "id": "BEL",
+    "name": "Belgium",
+    "group_id": "F",
+    "rating": 1770
+  },
+  {
+    "id": "USA",
+    "name": "United States",
+    "group_id": "B",
+    "rating": 1710
+  },
+  {
+    "id": "MEX",
+    "name": "Mexico",
+    "group_id": "C",
+    "rating": 1690
+  },
+  {
+    "id": "POL",
+    "name": "Poland",
+    "group_id": "C",
+    "rating": 1670
+  },
+  {
+    "id": "SEN",
+    "name": "Senegal",
+    "group_id": "A",
+    "rating": 1705
+  },
+  {
+    "id": "ECU",
+    "name": "Ecuador",
+    "group_id": "A",
+    "rating": 1685
+  },
+  {
+    "id": "QAT",
+    "name": "Qatar",
+    "group_id": "A",
+    "rating": 1450
+  },
+  {
+    "id": "IRN",
+    "name": "Iran",
+    "group_id": "B",
+    "rating": 1660
+  },
+  {
+    "id": "WAL",
+    "name": "Wales",
+    "group_id": "B",
+    "rating": 1650
+  },
+  {
+    "id": "KSA",
+    "name": "Saudi Arabia",
+    "group_id": "C",
+    "rating": 1580
+  },
+  {
+    "id": "AUS",
+    "name": "Australia",
+    "group_id": "D",
+    "rating": 1640
+  },
+  {
+    "id": "TUN",
+    "name": "Tunisia",
+    "group_id": "D",
+    "rating": 1620
+  },
+  {
+    "id": "DEN",
+    "name": "Denmark",
+    "group_id": "D",
+    "rating": 1760
+  },
+  {
+    "id": "CRC",
+    "name": "Costa Rica",
+    "group_id": "E",
+    "rating": 1600
+  },
+  {
+    "id": "CAN",
+    "name": "Canada",
+    "group_id": "F",
+    "rating": 1630
+  },
+  {
+    "id": "SUI",
+    "name": "Switzerland",
+    "group_id": "G",
+    "rating": 1740
+  },
+  {
+    "id": "CMR",
+    "name": "Cameroon",
+    "group_id": "G",
+    "rating": 1610
+  },
+  {
+    "id": "SRB",
+    "name": "Serbia",
+    "group_id": "G",
+    "rating": 1725
+  },
+  {
+    "id": "URU",
+    "name": "Uruguay",
+    "group_id": "H",
+    "rating": 1755
+  },
+  {
+    "id": "GHA",
+    "name": "Ghana",
+    "group_id": "H",
+    "rating": 1645
+  }
+]

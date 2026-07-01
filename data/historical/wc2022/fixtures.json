@@ -1,0 +1,313 @@
+[
+  {
+    "id": "R16-01",
+    "stage": "Round of 16",
+    "team_a_id": "NED",
+    "team_b_id": "USA",
+    "result": {
+      "played": true,
+      "team_a_goals": 3,
+      "team_b_goals": 1
+    },
+    "winner_team_id": "NED"
+  },
+  {
+    "id": "R16-02",
+    "stage": "Round of 16",
+    "team_a_id": "ARG",
+    "team_b_id": "AUS",
+    "result": {
+      "played": true,
+      "team_a_goals": 2,
+      "team_b_goals": 1
+    },
+    "winner_team_id": "ARG"
+  },
+  {
+    "id": "R16-03",
+    "stage": "Round of 16",
+    "team_a_id": "FRA",
+    "team_b_id": "POL",
+    "result": {
+      "played": true,
+      "team_a_goals": 3,
+      "team_b_goals": 1
+    },
+    "winner_team_id": "FRA"
+  },
+  {
+    "id": "R16-04",
+    "stage": "Round of 16",
+    "team_a_id": "ENG",
+    "team_b_id": "SEN",
+    "result": {
+      "played": true,
+      "team_a_goals": 3,
+      "team_b_goals": 0
+    },
+    "winner_team_id": "ENG"
+  },
+  {
+    "id": "R16-05",
+    "stage": "Round of 16",
+    "team_a_id": "JPN",
+    "team_b_id": "CRO",
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 1,
+      "decided_by_penalties": true,
+      "penalty_team_a_goals": 1,
+      "penalty_team_b_goals": 3
+    },
+    "winner_team_id": "CRO"
+  },
+  {
+    "id": "R16-06",
+    "stage": "Round of 16",
+    "team_a_id": "BRA",
+    "team_b_id": "KOR",
+    "result": {
+      "played": true,
+      "team_a_goals": 4,
+      "team_b_goals": 1
+    },
+    "winner_team_id": "BRA"
+  },
+  {
+    "id": "R16-07",
+    "stage": "Round of 16",
+    "team_a_id": "MAR",
+    "team_b_id": "ESP",
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 0,
+      "decided_by_penalties": true,
+      "penalty_team_a_goals": 3,
+      "penalty_team_b_goals": 0
+    },
+    "winner_team_id": "MAR"
+  },
+  {
+    "id": "R16-08",
+    "stage": "Round of 16",
+    "team_a_id": "POR",
+    "team_b_id": "SUI",
+    "result": {
+      "played": true,
+      "team_a_goals": 6,
+      "team_b_goals": 1
+    },
+    "winner_team_id": "POR"
+  },
+  {
+    "id": "QF-01",
+    "stage": "Quarter-finals",
+    "team_a_id": "CRO",
+    "team_b_id": "BRA",
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 0,
+      "decided_by_penalties": true,
+      "penalty_team_a_goals": 4,
+      "penalty_team_b_goals": 2
+    },
+    "winner_team_id": "CRO"
+  },
+  {
+    "id": "QF-02",
+    "stage": "Quarter-finals",
+    "team_a_id": "NED",
+    "team_b_id": "ARG",
+    "result": {
+      "played": true,
+      "team_a_goals": 2,
+      "team_b_goals": 2,
+      "decided_by_penalties": true,
+      "penalty_team_a_goals": 3,
+      "penalty_team_b_goals": 4
+    },
+    "winner_team_id": "ARG"
+  },
+  {
+    "id": "QF-03",
+    "stage": "Quarter-finals",
+    "team_a_id": "MAR",
+    "team_b_id": "POR",
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 0
+    },
+    "winner_team_id": "MAR"
+  },
+  {
+    "id": "QF-04",
+    "stage": "Quarter-finals",
+    "team_a_id": "ENG",
+    "team_b_id": "FRA",
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 2
+    },
+    "winner_team_id": "FRA"
+  },
+  {
+    "id": "SF-01",
+    "stage": "Semi-finals",
+    "team_a_id": "ARG",
+    "team_b_id": "CRO",
+    "result": {
+      "played": true,
+      "team_a_goals": 3,
+      "team_b_goals": 0
+    },
+    "winner_team_id": "ARG"
+  },
+  {
+    "id": "SF-02",
+    "stage": "Semi-finals",
+    "team_a_id": "FRA",
+    "team_b_id": "MAR",
+    "result": {
+      "played": true,
+      "team_a_goals": 2,
+      "team_b_goals": 0
+    },
+    "winner_team_id": "FRA"
+  },
+  {
+    "id": "TP-01",
+    "stage": "Third-place match",
+    "team_a_id": "CRO",
+    "team_b_id": "MAR",
+    "result": {
+      "played": true,
+      "team_a_goals": 2,
+      "team_b_goals": 1
+    },
+    "winner_team_id": "CRO"
+  },
+  {
+    "id": "F-01",
+    "stage": "Final",
+    "team_a_id": "ARG",
+    "team_b_id": "FRA",
+    "result": {
+      "played": true,
+      "team_a_goals": 3,
+      "team_b_goals": 3,
+      "decided_by_penalties": true,
+      "penalty_team_a_goals": 4,
+      "penalty_team_b_goals": 2
+    },
+    "winner_team_id": "ARG"
+  },
+  {
+    "id": "C1",
+    "stage": "group",
+    "group_id": "C",
+    "team_a_id": "ARG",
+    "team_b_id": "KSA",
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 2
+    },
+    "winner_team_id": "KSA"
+  },
+  {
+    "id": "C2",
+    "stage": "group",
+    "group_id": "C",
+    "team_a_id": "MEX",
+    "team_b_id": "POL",
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 0
+    },
+    "winner_team_id": null
+  },
+  {
+    "id": "C3",
+    "stage": "group",
+    "group_id": "C",
+    "team_a_id": "POL",
+    "team_b_id": "KSA",
+    "result": {
+      "played": true,
+      "team_a_goals": 2,
+      "team_b_goals": 0
+    },
+    "winner_team_id": "POL"
+  },
+  {
+    "id": "C4",
+    "stage": "group",
+    "group_id": "C",
+    "team_a_id": "ARG",
+    "team_b_id": "MEX",
+    "result": {
+      "played": true,
+      "team_a_goals": 2,
+      "team_b_goals": 0
+    },
+    "winner_team_id": "ARG"
+  },
+  {
+    "id": "C5",
+    "stage": "group",
+    "group_id": "C",
+    "team_a_id": "POL",
+    "team_b_id": "ARG",
+    "result": {
+      "played": true,
+      "team_a_goals": 0,
+      "team_b_goals": 2
+    },
+    "winner_team_id": "ARG"
+  },
+  {
+    "id": "C6",
+    "stage": "group",
+    "group_id": "C",
+    "team_a_id": "KSA",
+    "team_b_id": "MEX",
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 2
+    },
+    "winner_team_id": "MEX"
+  },
+  {
+    "id": "E1",
+    "stage": "group",
+    "group_id": "E",
+    "team_a_id": "GER",
+    "team_b_id": "JPN",
+    "result": {
+      "played": true,
+      "team_a_goals": 1,
+      "team_b_goals": 2
+    },
+    "winner_team_id": "JPN"
+  },
+  {
+    "id": "E2",
+    "stage": "group",
+    "group_id": "E",
+    "team_a_id": "ESP",
+    "team_b_id": "CRC",
+    "result": {
+      "played": true,
+      "team_a_goals": 7,
+      "team_b_goals": 0
+    },
+    "winner_team_id": "ESP"
+  }
+]

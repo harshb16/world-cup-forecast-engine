@@ -210,6 +210,22 @@ class CurrentTournamentScoringResponse(BaseModel):
     limitations: list[str] = Field(default_factory=list)
 
 
+class HistoricalBacktestResponse(BaseModel):
+    """Out-of-sample model scores against a fixed historical tournament."""
+
+    tournament: str
+    model_type: ModelType
+    sample_size: int
+    accuracy: float | None = None
+    brier_score: float | None = None
+    log_loss: float | None = None
+    calibration_bins: list[CalibrationBinResponse] = Field(default_factory=list)
+    per_match_details: list[CurrentTournamentMatchScoreResponse] = Field(
+        default_factory=list
+    )
+    limitations: list[str] = Field(default_factory=list)
+
+
 class BracketTeamResponse(BaseModel):
     """Team payload used inside a bracket match."""
 

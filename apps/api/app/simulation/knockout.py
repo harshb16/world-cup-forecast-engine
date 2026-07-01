@@ -43,6 +43,23 @@ GROUP_ORDER = tuple("ABCDEFGHIJKL")
 
 from app.simulation.third_place_allocation import assign_third_place_slots
 
+KnownKnockoutResults = dict[tuple[str, frozenset[str]], Match]
+
+
+def build_known_knockout_results(matches: list[Match]) -> KnownKnockoutResults:
+    """Index played knockout fixtures by stage and unordered team pair."""
+    known: KnownKnockoutResults = {}
+    for match in matches:
+        if match.stage == "group":
+            continue
+        if match.result is None or not match.result.played:
+            continue
+        if match.winner_team_id is None:
+            continue
+        key = (match.stage, frozenset({match.team_a_id, match.team_b_id}))
+        known[key] = match
+    return known
+
 
 class WorldCup2026BracketBuilder:
     """FIFA World Cup 2026 round-of-32 slot builder."""
@@ -102,6 +119,7 @@ def simulate_knockout(
     match_model: MatchModel,
     rng: np.random.Generator,
     bracket_builder: WorldCup2026BracketBuilder | None = None,
+    known_results: KnownKnockoutResults | None = None,
 ) -> KnockoutResult:
     """Simulate the knockout bracket from 32 teams to champion."""
     builder = bracket_builder or WorldCup2026BracketBuilder()
@@ -109,6 +127,7 @@ def simulate_knockout(
     rounds: dict[str, list[Match]] = {}
     eliminated_stage_by_team: dict[str, str] = {}
     finalists: list[str] = []
+    known = known_results or {}
 
     for round_name in ROUND_NAMES:
         if round_name == "Round of 32":
@@ -124,18 +143,29 @@ def simulate_knockout(
         for index, (team_a_id, team_b_id) in enumerate(pairs, start=1):
             team_a = teams_by_id[team_a_id]
             team_b = teams_by_id[team_b_id]
-            result, winner_team_id = resolve_knockout_match(
-                match_model,
-                team_a,
-                team_b,
-                rng,
-            )
+            real_match = known.get((round_name, frozenset({team_a_id, team_b_id})))
+            if real_match is not None and real_match.result is not None:
+                result = real_match.result
+                winner_team_id = real_match.winner_team_id
+                if winner_team_id is None:
+                    raise ValueError(
+                        f"known knockout match {real_match.id} is missing winner_team_id"
+                    )
+                match_id = real_match.id
+            else:
+                result, winner_team_id = resolve_knockout_match(
+                    match_model,
+                    team_a,
+                    team_b,
+                    rng,
+                )
+                match_id = f"KO-{_round_code(round_name)}-{index:02d}"
             loser_team_id = team_b_id if winner_team_id == team_a_id else team_a_id
             eliminated_stage_by_team[loser_team_id] = round_name
             winners.append(winner_team_id)
             round_matches.append(
                 Match(
-                    id=f"KO-{_round_code(round_name)}-{index:02d}",
+                    id=match_id,
                     stage=round_name,
                     team_a_id=team_a_id,
                     team_b_id=team_b_id,

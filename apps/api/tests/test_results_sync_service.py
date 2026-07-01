@@ -160,6 +160,136 @@ def test_failed_validation_does_not_publish_partial_files(
     } == originals
 
 
+def test_knockout_penalty_result_sets_winner() -> None:
+    fixtures = [
+        {
+            "id": "R32-01",
+            "stage": "Round of 32",
+            "team_a_id": "MEXICO",
+            "team_b_id": "RSA",
+            "status": "scheduled",
+            "result": None,
+            "winner_team_id": None,
+        }
+    ]
+    teams = [
+        {"id": "MEXICO", "name": "Mexico"},
+        {"id": "RSA", "name": "South Africa"},
+    ]
+    provider_matches = [
+        {
+            "status": "FINISHED",
+            "utcDate": "2026-06-28T19:00:00Z",
+            "homeTeam": {"name": "Mexico", "tla": "MEX"},
+            "awayTeam": {"name": "South Africa", "tla": "RSA"},
+            "score": {
+                "fullTime": {"home": 1, "away": 1},
+                "extraTime": {"home": 1, "away": 1},
+                "penalties": {"home": 4, "away": 3},
+            },
+        }
+    ]
+
+    updated, results, changed = results_sync_service._merge_provider_matches(
+        fixtures,
+        teams,
+        [],
+        "football-data.org",
+        provider_matches,
+    )
+
+    assert changed == 1
+    assert updated[0]["result"]["decided_by_penalties"] is True
+    assert updated[0]["result"]["penalty_team_a_goals"] == 4
+    assert updated[0]["winner_team_id"] == "MEXICO"
+    assert results[0]["stage"] == "Round of 32"
+
+
+def test_knockout_progression_guard_rejects_invalid_team() -> None:
+    fixtures = [
+        {
+            "id": "R32-01",
+            "stage": "Round of 32",
+            "team_a_id": "MEXICO",
+            "team_b_id": "RSA",
+            "status": "finished",
+            "result": {"played": True, "team_a_goals": 2, "team_b_goals": 0},
+            "winner_team_id": "MEXICO",
+        },
+        {
+            "id": "R16-01",
+            "stage": "Round of 16",
+            "team_a_id": "MEXICO",
+            "team_b_id": "BRAZIL",
+            "status": "scheduled",
+            "result": None,
+            "winner_team_id": None,
+        },
+    ]
+    teams = [
+        {"id": "MEXICO", "name": "Mexico"},
+        {"id": "RSA", "name": "South Africa"},
+        {"id": "BRAZIL", "name": "Brazil"},
+    ]
+    provider_matches = [
+        {
+            "status": "FINISHED",
+            "homeTeam": {"name": "Mexico", "tla": "MEX"},
+            "awayTeam": {"name": "Brazil", "tla": "BRA"},
+            "score": {"fullTime": {"home": 1, "away": 0}},
+        }
+    ]
+
+    with pytest.raises(results_sync_service.ResultsSyncError):
+        results_sync_service._merge_provider_matches(
+            fixtures,
+            teams,
+            [],
+            "football-data.org",
+            provider_matches,
+        )
+
+
+def test_materialize_next_knockout_round_from_completed_r32() -> None:
+    from app.models.domain import MatchResult, TournamentConfig
+    from app.services.bracket_materialization_service import (
+        build_next_knockout_round,
+        is_knockout_round_complete,
+        materialize_round_of_32_if_ready,
+    )
+    from app.services.data_loader import load_tournament
+
+    config = load_tournament("sample")
+    completed_matches = [
+        match.model_copy(
+            update={
+                "result": MatchResult(team_a_goals=2, team_b_goals=1, played=True),
+                "winner_team_id": match.team_a_id,
+            }
+        )
+        for match in config.matches
+        if match.stage == "group"
+    ]
+    config = config.model_copy(update={"matches": completed_matches})
+    r32 = materialize_round_of_32_if_ready(config)
+    config = config.model_copy(update={"matches": [*config.matches, *r32]})
+    completed_r32 = [
+        match.model_copy(
+            update={
+                "result": MatchResult(team_a_goals=1, team_b_goals=0, played=True),
+                "winner_team_id": match.team_a_id,
+            }
+        )
+        for match in r32
+    ]
+    group_matches = [match for match in config.matches if match.stage == "group"]
+    config = config.model_copy(update={"matches": [*group_matches, *completed_r32]})
+    assert is_knockout_round_complete(config, "Round of 32")
+    r16 = build_next_knockout_round(config, "Round of 32", "Round of 16")
+    assert len(r16) == 8
+    assert all(match.stage == "Round of 16" for match in r16)
+
+
 def test_successful_sync_publishes_consistent_snapshot(
     runtime_processed: Path,
 ) -> None:

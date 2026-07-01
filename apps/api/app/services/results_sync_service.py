@@ -18,6 +18,10 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 from app.models.schemas import ForecastSnapshotResponse, SyncJobStage, SyncResponse
+from app.services.bracket_materialization_service import (
+    materialize_pending_knockout_rounds,
+    winners_from_previous_round,
+)
 
 from app.services.runtime_store import (
     get_runtime_root,
@@ -159,6 +163,7 @@ def sync_results(on_stage: StageReporter | None = None) -> SyncResponse:
             provider,
             provider_matches,
         )
+        updated_fixtures = _append_materialized_knockout_fixtures(updated_fixtures, teams)
         report("compare", "Provider scores compared against published results")
         timestamp = datetime.now(tz=UTC).replace(microsecond=0).isoformat()
 
@@ -282,15 +287,16 @@ def _merge_provider_matches(
 
     for fixture in fixtures:
         updated = dict(fixture)
-        if fixture.get("stage") != "group":
-            updated_fixtures.append(updated)
-            continue
+        stage = fixture.get("stage", "group")
         incoming = provider_index.get(
             _team_pair(fixture["team_a_id"], fixture["team_b_id"])
         )
         if incoming is None:
             updated_fixtures.append(updated)
             continue
+
+        if stage != "group":
+            _validate_knockout_progression(updated, updated_fixtures)
 
         updated = _apply_match_update(updated, incoming, provider)
         persisted_update = {
@@ -303,22 +309,11 @@ def _merge_provider_matches(
         updated_fixtures.append(updated)
 
     results = [
-        {
-            "match_id": fixture["id"],
-            "team_a_id": fixture["team_a_id"],
-            "team_b_id": fixture["team_b_id"],
-            "team_a_goals": fixture["result"]["team_a_goals"],
-            "team_b_goals": fixture["result"]["team_b_goals"],
-            "status": "finished",
-            "source": fixture.get(
-                "result_source",
-                existing_sources.get(fixture["id"], "previous published result"),
-            ),
-        }
+        _result_record(fixture, existing_sources)
         for fixture in updated_fixtures
-        if fixture.get("stage") == "group"
-        and fixture.get("status") == "finished"
+        if fixture.get("status") == "finished"
         and isinstance(fixture.get("result"), dict)
+        and fixture["result"].get("played")
     ]
     for fixture in updated_fixtures:
         fixture.pop("result_source", None)
@@ -368,19 +363,28 @@ def _apply_match_update(
                 f"{existing_score[0]}-{existing_score[1]} vs {score_a}-{score_b}."
             )
 
-    updated["status"] = "finished"
-    updated["result"] = {
+    result_payload: dict[str, Any] = {
         "played": True,
         "team_a_goals": score_a,
         "team_b_goals": score_b,
     }
-    updated["winner_team_id"] = (
-        fixture["team_a_id"]
-        if score_a > score_b
-        else fixture["team_b_id"]
-        if score_b > score_a
-        else None
-    )
+    if incoming.get("decided_by_penalties"):
+        result_payload["decided_by_penalties"] = True
+        pen_a, pen_b = _orient_penalty_score(fixture, incoming)
+        result_payload["penalty_team_a_goals"] = pen_a
+        result_payload["penalty_team_b_goals"] = pen_b
+        updated["winner_team_id"] = (
+            fixture["team_a_id"] if pen_a > pen_b else fixture["team_b_id"]
+        )
+    else:
+        updated["winner_team_id"] = (
+            fixture["team_a_id"]
+            if score_a > score_b
+            else fixture["team_b_id"]
+            if score_b > score_a
+            else None
+        )
+    updated["result"] = result_payload
     updated["result_source"] = provider
     return updated
 
@@ -400,12 +404,21 @@ def _parse_football_data_matches(
         if home_id is None or away_id is None:
             continue
         full_time = (match.get("score") or {}).get("fullTime") or {}
+        extra_time = (match.get("score") or {}).get("extraTime") or {}
+        penalties = (match.get("score") or {}).get("penalties") or {}
         status = football_data_status(match.get("status"))
         finished = status == "finished"
-        home_goals = full_time.get("home")
-        away_goals = full_time.get("away")
+        if extra_time.get("home") is not None and extra_time.get("away") is not None:
+            home_goals = extra_time.get("home")
+            away_goals = extra_time.get("away")
+        else:
+            home_goals = full_time.get("home")
+            away_goals = full_time.get("away")
         if finished and (home_goals is None or away_goals is None):
             continue
+        decided_by_penalties = (
+            penalties.get("home") is not None and penalties.get("away") is not None
+        )
         parsed.append(
             {
                 "team_a_id": home_id,
@@ -414,6 +427,13 @@ def _parse_football_data_matches(
                 "team_b_goals": int(away_goals) if away_goals is not None else None,
                 "kickoff_utc": match.get("utcDate"),
                 "status": status,
+                "decided_by_penalties": decided_by_penalties,
+                "penalty_team_a_goals": int(penalties["home"])
+                if decided_by_penalties
+                else None,
+                "penalty_team_b_goals": int(penalties["away"])
+                if decided_by_penalties
+                else None,
             }
         )
     return parsed
@@ -461,6 +481,89 @@ def _parse_fifa_matches(matches: list[dict[str, Any]]) -> list[dict[str, Any]]:
             }
         )
     return parsed
+
+
+def _orient_penalty_score(
+    fixture: dict[str, Any],
+    incoming: dict[str, Any],
+) -> tuple[int, int]:
+    if (
+        fixture["team_a_id"] == incoming["team_a_id"]
+        and fixture["team_b_id"] == incoming["team_b_id"]
+    ):
+        return incoming["penalty_team_a_goals"], incoming["penalty_team_b_goals"]
+    return incoming["penalty_team_b_goals"], incoming["penalty_team_a_goals"]
+
+
+def _validate_knockout_progression(
+    fixture: dict[str, Any],
+    fixtures: list[dict[str, Any]],
+) -> None:
+    stage = str(fixture.get("stage"))
+    if stage == "Round of 32":
+        return
+    allowed_winners = winners_from_previous_round(fixtures, stage)
+    if not allowed_winners:
+        return
+    for team_id in (fixture["team_a_id"], fixture["team_b_id"]):
+        if team_id not in allowed_winners:
+            raise ResultsSyncError(
+                f"Knockout progression guard rejected {fixture['id']}: "
+                f"{team_id} has not won the previous round."
+            )
+
+
+def _result_record(
+    fixture: dict[str, Any],
+    existing_sources: dict[str, str],
+) -> dict[str, Any]:
+    result = fixture["result"]
+    record = {
+        "match_id": fixture["id"],
+        "team_a_id": fixture["team_a_id"],
+        "team_b_id": fixture["team_b_id"],
+        "team_a_goals": result["team_a_goals"],
+        "team_b_goals": result["team_b_goals"],
+        "status": "finished",
+        "source": fixture.get(
+            "result_source",
+            existing_sources.get(fixture["id"], "previous published result"),
+        ),
+        "stage": fixture.get("stage", "group"),
+    }
+    if result.get("decided_by_penalties"):
+        record["decided_by_penalties"] = True
+        record["penalty_team_a_goals"] = result.get("penalty_team_a_goals")
+        record["penalty_team_b_goals"] = result.get("penalty_team_b_goals")
+    return record
+
+
+def _append_materialized_knockout_fixtures(
+    fixtures: list[dict[str, Any]],
+    teams: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    from app.models.domain import Match
+    from app.services.data_loader import load_tournament
+
+    base_config = load_tournament("processed")
+    matches = [Match.model_validate(fixture) for fixture in fixtures]
+    config = base_config.model_copy(update={"matches": matches})
+    new_matches = materialize_pending_knockout_rounds(config)
+    if not new_matches:
+        return fixtures
+    serialized = [
+        {
+            "id": match.id,
+            "stage": match.stage,
+            "team_a_id": match.team_a_id,
+            "team_b_id": match.team_b_id,
+            "result": None,
+            "winner_team_id": None,
+            "status": "scheduled",
+        }
+        for match in new_matches
+    ]
+    return [*fixtures, *serialized]
 
 
 def _orient_score(

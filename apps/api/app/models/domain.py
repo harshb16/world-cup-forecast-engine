@@ -62,13 +62,18 @@ class Match(BaseModel):
             self.team_b_id,
         }:
             raise ValueError("winner_team_id must reference one of the match teams")
-        if self.result is not None and self.result.played and self.winner_team_id is None:
+        if (
+            self.stage != "group"
+            and self.result is not None
+            and self.result.played
+            and self.winner_team_id is None
+        ):
             if self.result.decided_by_penalties:
                 raise ValueError(
                     "played knockout matches decided by penalties require winner_team_id"
                 )
             if self.result.team_a_goals != self.result.team_b_goals:
-                raise ValueError("played decisive matches require winner_team_id")
+                raise ValueError("played decisive knockout matches require winner_team_id")
         return self
 
 

@@ -8,7 +8,7 @@ import numpy as np
 
 from app.models.domain import TournamentConfig
 from app.simulation.group_stage import simulate_group_stage
-from app.simulation.knockout import ROUND_NAMES, simulate_knockout
+from app.simulation.knockout import ROUND_NAMES, build_known_knockout_results, simulate_knockout
 from app.simulation.match_models import MatchModel
 from app.simulation.monte_carlo import ELIMINATION_STAGE_TO_SUMMARY_STAGE, STAGES
 
@@ -51,11 +51,13 @@ def run_simulation_trace(
     teams_by_id = {team.id: team for team in config.teams}
     team_count = len(team_index)
     group_stage = simulate_group_stage(config, match_model, rng)
+    known_knockout = build_known_knockout_results(config.matches)
     knockout = simulate_knockout(
         group_stage.qualified_team_ids,
         teams_by_id,
         match_model,
         rng,
+        known_results=known_knockout,
     )
 
     qualified = np.zeros(team_count, dtype=np.bool_)

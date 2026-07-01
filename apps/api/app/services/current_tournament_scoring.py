@@ -23,16 +23,14 @@ def calculate_current_tournament_scores(
     model_type: ModelType = "poisson",
     data_mode: str | None = None,
 ) -> CurrentTournamentScoringResponse:
-    """Score model probabilities against completed group-stage fixtures."""
+    """Score model probabilities against completed tournament fixtures."""
     mode = data_mode or get_data_mode()
     tournament = load_tournament(mode)
     teams_by_id = {team.id: team for team in tournament.teams}
     completed_matches = [
         match
         for match in tournament.matches
-        if match.stage == "group"
-        and match.result is not None
-        and match.result.played
+        if match.result is not None and match.result.played
     ]
 
     if not completed_matches:
@@ -60,8 +58,9 @@ def calculate_current_tournament_scores(
     for match in completed_matches:
         team_a = teams_by_id[match.team_a_id]
         team_b = teams_by_id[match.team_b_id]
-        probabilities = match_model.predict_probabilities(team_a, team_b)
-        actual = _actual_outcome(match.result)
+        stage = None if match.stage == "group" else "knockout"
+        probabilities = _predict_probabilities(match_model, team_a, team_b, stage)
+        actual = _actual_outcome(match.result, match.winner_team_id)
         predicted = max(probabilities, key=probabilities.get)
         confidence = probabilities[predicted]
 
@@ -115,12 +114,33 @@ def calculate_current_tournament_scores(
             "Metric sample is small until more completed fixtures are ingested.",
             "This scores the current model against matches from this tournament only.",
             "This is not a historical out-of-sample backtest and must not be read as proof of model superiority.",
-            "Current fixtures are group-stage only, so knockout behavior is not evaluated.",
+            "Penalty shootouts are scored using regulation/extra-time W/D/L; the decisive penalty winner is noted separately in match metadata.",
         ],
     )
 
 
-def _actual_outcome(result: MatchResult) -> Outcome:
+def _predict_probabilities(
+    match_model,
+    team_a: Team,
+    team_b: Team,
+    stage: str | None,
+) -> dict[str, float]:
+    predict = getattr(match_model, "predict_probabilities", None)
+    if predict is None:
+        raise ValueError("match model must expose predict_probabilities")
+    try:
+        return predict(team_a, team_b, stage=stage)
+    except TypeError:
+        return predict(team_a, team_b)
+
+
+def _actual_outcome(result: MatchResult, winner_team_id: str | None) -> Outcome:
+    if result.decided_by_penalties:
+        if result.team_a_goals > result.team_b_goals:
+            return "team_a_win"
+        if result.team_b_goals > result.team_a_goals:
+            return "team_b_win"
+        return "draw"
     if result.team_a_goals > result.team_b_goals:
         return "team_a_win"
     if result.team_b_goals > result.team_a_goals:

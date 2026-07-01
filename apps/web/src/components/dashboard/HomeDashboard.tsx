@@ -81,7 +81,7 @@ export function HomeDashboard() {
         : featuredFinal.team_b;
 
   const insights = useMemo(() => {
-    if (!summary || !groupChaos) {
+    if (!summary) {
       return null;
     }
 
@@ -89,18 +89,25 @@ export function HomeDashboard() {
     const championSorted = [...teams].sort((a, b) => b.champion - a.champion);
     const topChampion = championSorted[0];
     const secondChampion = championSorted[1];
-    const mostVolatileGroup = groupChaos.groups[0];
 
     return {
       topChampion,
       closestTitleRace: formatPercent(
         topChampion.champion - (secondChampion?.champion ?? 0),
       ),
-      mostVolatileGroup: mostVolatileGroup
-        ? `${mostVolatileGroup.group_id} · ${mostVolatileGroup.chaos_label}`
-        : "-",
     };
-  }, [summary, groupChaos]);
+  }, [summary]);
+
+  const nextRoundSpotlight = useMemo(() => {
+    if (!upsets) {
+      return null;
+    }
+    return (
+      upsets.fixtures.find((fixture) => fixture.stage !== "group") ??
+      upsets.fixtures[0] ??
+      null
+    );
+  }, [upsets]);
 
   if (error && !summary) {
     return <ErrorState message={error} />;
@@ -171,14 +178,15 @@ export function HomeDashboard() {
                 </p>
               </div>
               <p className="mt-5 max-w-2xl text-sm leading-6 text-muted-foreground">
-                Title pressure, dangerous fixtures, and group volatility in one
-                desk. Powered by {formatModelLabel(DEFAULT_MODEL_TYPE)}.
+                Knockout probabilities, upset radar, and title paths from{" "}
+                {formatNumber(summary.metadata.n_simulations)} simulations.
+                Powered by {formatModelLabel(DEFAULT_MODEL_TYPE)}.
               </p>
             </div>
 
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button render={<Link href="/matchday" />} size="lg">
-                Open matchday
+              <Button render={<Link href="/bracket" />} size="lg">
+                Open bracket
                 <ArrowRight data-icon="inline-end" aria-hidden="true" />
               </Button>
               <Button render={<Link href="/what-if" />} variant="outline" size="lg">
@@ -216,9 +224,17 @@ export function HomeDashboard() {
             detail="Held by top eight teams"
           />
           <Signal
-            label="Chaos watch"
-            value={insights.mostVolatileGroup}
-            detail="Most unsettled group"
+            label="Next round spotlight"
+            value={
+              nextRoundSpotlight
+                ? `${nextRoundSpotlight.team_a_name}–${nextRoundSpotlight.team_b_name}`
+                : "No fixture"
+            }
+            detail={
+              nextRoundSpotlight
+                ? `${nextRoundSpotlight.stage} · ${nextRoundSpotlight.risk_label} upset risk`
+                : "No knockout signal"
+            }
             tone="amber"
           />
           <Signal

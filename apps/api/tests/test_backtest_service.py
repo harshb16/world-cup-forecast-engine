@@ -27,9 +27,27 @@ def test_historical_backtest_endpoint_returns_2022_metrics() -> None:
 
 
 def test_historical_backtest_rejects_unsupported_tournament() -> None:
-    response = client.get("/evaluation/historical?tournament=2018")
+    response = client.get("/evaluation/historical?tournament=2010")
 
     assert response.status_code == 422
+
+
+def test_historical_backtest_endpoint_returns_2018_metrics() -> None:
+    response = client.get("/evaluation/historical?tournament=2018&model_type=poisson")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["tournament"] == "2018"
+    assert payload["sample_size"] == 16
+
+
+def test_historical_backtest_endpoint_returns_2014_metrics() -> None:
+    response = client.get("/evaluation/historical?tournament=2014&model_type=elo")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["tournament"] == "2014"
+    assert payload["sample_size"] == 16
 
 
 def test_historical_backtest_scores_are_deterministic() -> None:

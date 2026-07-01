@@ -299,11 +299,11 @@ def models() -> list[ModelMetadataResponse]:
     response_model=HistoricalBacktestResponse,
 )
 def historical_backtest(
-    tournament: str = Query(default="2022", pattern="^2022$"),
+    tournament: str = Query(default="2022", pattern="^(2022|2018|2014)$"),
     model_type: ModelType = DEFAULT_MODEL_TYPE,
 ) -> HistoricalBacktestResponse:
     """Score model predictions against a fixed historical World Cup dataset."""
-    return calculate_historical_backtest(tournament="2022", model_type=model_type)  # type: ignore[arg-type]
+    return calculate_historical_backtest(tournament=tournament, model_type=model_type)  # type: ignore[arg-type]
 
 
 @router.get(

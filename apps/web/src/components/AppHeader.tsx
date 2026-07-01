@@ -11,6 +11,7 @@ import {
   FlaskConical,
   Gauge,
   GitBranch,
+  History,
   Menu,
   MoreHorizontal,
   Shield,
@@ -68,6 +69,7 @@ const labNav: NavItem[] = [
 ];
 
 const systemNav: NavItem[] = [
+  { href: "/retrospective", label: "Retrospective", icon: History },
   { href: "/methodology", label: "Methodology", icon: BookOpenText },
 ];
 

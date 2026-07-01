@@ -24,6 +24,7 @@ from app.models.schemas import (
     ModelType,
     ProbabilityHistoryResponse,
     ProbabilityMoversResponse,
+    RetrospectiveResponse,
     RollbackResponse,
     ScenarioCompareResponse,
     ScenarioSimulateRequest,
@@ -59,6 +60,7 @@ from app.services.matchday_service import calculate_matchday
 from app.services.model_metadata import list_model_metadata
 from app.services.probability_movers_service import calculate_probability_movers
 from app.services.probability_timeline_service import build_probability_timeline
+from app.services.retrospective_service import calculate_retrospective
 from app.services.results_sync_service import (
     admin_key_is_valid,
     admin_sync_is_configured,
@@ -307,6 +309,14 @@ def current_tournament_scoring(
 ) -> CurrentTournamentScoringResponse:
     """Score model predictions against completed active-tournament fixtures."""
     return calculate_current_tournament_scores(model_type, get_data_mode())
+
+
+@router.get("/retrospective", response_model=RetrospectiveResponse)
+def retrospective(
+    model_type: ModelType = DEFAULT_MODEL_TYPE,
+) -> RetrospectiveResponse:
+    """Return tournament retrospective: champion arc, hits, misses, calibration."""
+    return calculate_retrospective(model_type, get_data_mode())
 
 
 @router.post("/simulate", response_model=SimulationSummaryResponse)

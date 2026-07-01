@@ -120,6 +120,13 @@ export function TeamDetailDashboard() {
             <h2 className="mt-2 text-4xl font-semibold text-foreground">
               {team.name}
             </h2>
+            {probability &&
+            probability.group_qualification_probability < 0.001 &&
+            probability.round_of_32 < 0.001 ? (
+              <p className="mt-2 inline-flex rounded-full border border-signal-red/30 bg-signal-red/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-signal-red">
+                Eliminated from tournament
+              </p>
+            ) : null}
             <p className="mt-3 text-sm text-muted-foreground">
               {group?.name ?? team.group_id} · Rating {formatNumber(team.rating)}
             </p>

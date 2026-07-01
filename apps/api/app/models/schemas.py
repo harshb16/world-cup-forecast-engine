@@ -713,3 +713,41 @@ class ForecastStatusResponse(BaseModel):
     completed_result_count: int | None = None
     model_type: str
     n_simulations: int
+
+
+class RetrospectiveChampionArcPointResponse(BaseModel):
+    """Champion odds for top teams at one tournament milestone."""
+
+    label: str
+    milestone_id: str | None = None
+    champion_probabilities: dict[str, float] = Field(default_factory=dict)
+
+
+class RetrospectiveMatchInsightResponse(BaseModel):
+    """High-confidence model hit or miss on a completed fixture."""
+
+    match_id: str
+    stage: str
+    team_a_name: str
+    team_b_name: str
+    predicted_outcome: str
+    actual_outcome: str
+    confidence: float
+    correct: bool
+
+
+class RetrospectiveResponse(BaseModel):
+    """Tournament retrospective: arc, calibration, and notable calls."""
+
+    model_type: ModelType
+    data_mode: str
+    champion_team_id: str | None = None
+    champion_team_name: str | None = None
+    pre_tournament_champion_probability: float | None = None
+    champion_arc: list[RetrospectiveChampionArcPointResponse] = Field(
+        default_factory=list
+    )
+    top_hits: list[RetrospectiveMatchInsightResponse] = Field(default_factory=list)
+    top_misses: list[RetrospectiveMatchInsightResponse] = Field(default_factory=list)
+    scoring: CurrentTournamentScoringResponse
+    limitations: list[str] = Field(default_factory=list)

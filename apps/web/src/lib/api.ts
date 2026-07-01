@@ -167,6 +167,36 @@ export type CurrentTournamentScoring = {
   limitations: string[];
 };
 
+export type RetrospectiveChampionArcPoint = {
+  label: string;
+  milestone_id: string | null;
+  champion_probabilities: Record<string, number>;
+};
+
+export type RetrospectiveMatchInsight = {
+  match_id: string;
+  stage: string;
+  team_a_name: string;
+  team_b_name: string;
+  predicted_outcome: string;
+  actual_outcome: string;
+  confidence: number;
+  correct: boolean;
+};
+
+export type Retrospective = {
+  model_type: ModelType;
+  data_mode: string;
+  champion_team_id: string | null;
+  champion_team_name: string | null;
+  pre_tournament_champion_probability: number | null;
+  champion_arc: RetrospectiveChampionArcPoint[];
+  top_hits: RetrospectiveMatchInsight[];
+  top_misses: RetrospectiveMatchInsight[];
+  scoring: CurrentTournamentScoring;
+  limitations: string[];
+};
+
 export type HistoricalBacktest = {
   tournament: string;
   model_type: ModelType;
@@ -619,6 +649,12 @@ export async function fetchCurrentTournamentScoring(
   return fetchJson<CurrentTournamentScoring>(
     `/evaluation/current?model_type=${modelType}`,
   );
+}
+
+export async function fetchRetrospective(
+  modelType: ModelType = DEFAULT_MODEL_TYPE,
+): Promise<Retrospective> {
+  return fetchJson<Retrospective>(`/retrospective?model_type=${modelType}`);
 }
 
 export async function fetchHistoricalBacktest(

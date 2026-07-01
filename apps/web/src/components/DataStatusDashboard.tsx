@@ -11,6 +11,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { SyncResultsControl } from "@/components/SyncResultsControl";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { fetchDataStatus, type DataStatus } from "@/lib/api";
+import { ADMIN_UI_ENABLED } from "@/lib/config";
 import { formatNumber } from "@/lib/format";
 
 export function DataStatusDashboard() {
@@ -100,15 +101,17 @@ export function DataStatusDashboard() {
           </div>
         </SectionCard>
 
-        <SectionCard title="Manual sync">
-          {status.admin_sync_configured ? (
-            <SyncResultsControl onSynced={refresh} />
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              Admin sync is not configured on this API instance.
-            </p>
-          )}
-        </SectionCard>
+        {ADMIN_UI_ENABLED ? (
+          <SectionCard title="Manual sync">
+            {status.admin_sync_configured ? (
+              <SyncResultsControl onSynced={refresh} />
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Admin sync is not configured on this API instance.
+              </p>
+            )}
+          </SectionCard>
+        ) : null}
       </div>
 
       <SectionCard title="Providers">

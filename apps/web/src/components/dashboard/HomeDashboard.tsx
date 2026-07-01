@@ -34,6 +34,7 @@ import {
 } from "@/lib/api";
 import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
 import { usePublishedForecast } from "@/hooks/usePublishedForecast";
+import { ADMIN_UI_ENABLED } from "@/lib/config";
 import { cn } from "@/lib/utils";
 
 type DashboardForecast = {
@@ -141,7 +142,9 @@ export function HomeDashboard() {
                 />
               </div>
               <div className="mt-4 flex flex-wrap items-start gap-3">
-                <SyncResultsControl onSynced={refresh} />
+                {ADMIN_UI_ENABLED ? (
+                  <SyncResultsControl onSynced={refresh} />
+                ) : null}
                 <ForecastRefreshControl
                   isRefreshing={isRefreshing}
                   lastRunAt={lastRunAt}

@@ -21,6 +21,25 @@ class MatchResult(BaseModel):
     played: bool = True
     team_a_conduct_score: int = Field(default=0, le=0)
     team_b_conduct_score: int = Field(default=0, le=0)
+    decided_by_penalties: bool = False
+    penalty_team_a_goals: int | None = Field(default=None, ge=0)
+    penalty_team_b_goals: int | None = Field(default=None, ge=0)
+
+    @model_validator(mode="after")
+    def penalty_fields_must_be_consistent(self) -> "MatchResult":
+        if self.decided_by_penalties:
+            if self.penalty_team_a_goals is None or self.penalty_team_b_goals is None:
+                raise ValueError(
+                    "penalty shootout results require both penalty_team_a_goals "
+                    "and penalty_team_b_goals"
+                )
+            if self.penalty_team_a_goals == self.penalty_team_b_goals:
+                raise ValueError("penalty shootout results cannot end in a tie")
+        elif self.penalty_team_a_goals is not None or self.penalty_team_b_goals is not None:
+            raise ValueError(
+                "penalty goal fields require decided_by_penalties to be true"
+            )
+        return self
 
 
 class Match(BaseModel):
@@ -43,6 +62,13 @@ class Match(BaseModel):
             self.team_b_id,
         }:
             raise ValueError("winner_team_id must reference one of the match teams")
+        if self.result is not None and self.result.played and self.winner_team_id is None:
+            if self.result.decided_by_penalties:
+                raise ValueError(
+                    "played knockout matches decided by penalties require winner_team_id"
+                )
+            if self.result.team_a_goals != self.result.team_b_goals:
+                raise ValueError("played decisive matches require winner_team_id")
         return self
 
 

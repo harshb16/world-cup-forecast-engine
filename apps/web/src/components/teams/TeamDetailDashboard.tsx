@@ -131,6 +131,12 @@ export function TeamDetailDashboard() {
             <p className="mt-3 text-sm text-muted-foreground">
               {group?.name ?? team.group_id} · Rating {formatNumber(team.rating)}
             </p>
+            <Link
+              href={`/teams/compare?a=${team.id}`}
+              className="mt-3 inline-flex text-sm font-semibold text-primary"
+            >
+              Compare with another team
+            </Link>
           </div>
           {probability ? (
             <div className="grid gap-3 sm:grid-cols-3">

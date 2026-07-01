@@ -82,6 +82,15 @@ export function MatchDetailDrawer({
           teamBId={match.team_b.team_id}
         />
 
+        <div className="mt-3">
+          <Link
+            href={`/teams/compare?a=${match.team_a.team_id}&b=${match.team_b.team_id}`}
+            className="text-sm font-semibold text-primary"
+          >
+            Compare teams
+          </Link>
+        </div>
+
         {!match.result_is_real ? (
           <div className="mt-5 flex flex-wrap gap-2">
             <Button

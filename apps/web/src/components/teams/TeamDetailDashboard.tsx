@@ -9,6 +9,7 @@ import { LoadingState } from "@/components/LoadingState";
 import { DataStatusCard } from "@/components/DataStatusCard";
 import { TeamName } from "@/components/teams/TeamName";
 import { TeamProbabilitySummary } from "@/components/teams/TeamProbabilitySummary";
+import { HeadToHeadPanel } from "@/components/teams/HeadToHeadPanel";
 import { HelpText } from "@/components/ui/HelpText";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { StatCard } from "@/components/ui/StatCard";
@@ -171,7 +172,7 @@ export function TeamDetailDashboard() {
       </SectionCard>
       <DataStatusCard metadata={data.metadata} />
 
-      <TeamPathExplorer path={data.path} />
+      <TeamPathExplorer path={data.path} teamId={teamId} />
 
       <SectionCard>
         <p className="text-xs font-semibold uppercase text-primary">
@@ -213,7 +214,31 @@ export function TeamDetailDashboard() {
   );
 }
 
-function TeamPathExplorer({ path }: { path: TeamPath }) {
+function TeamPathExplorer({
+  path,
+  teamId,
+}: {
+  path: TeamPath;
+  teamId: string;
+}) {
+  const [selectedOpponentId, setSelectedOpponentId] = useState<string | null>(
+    null,
+  );
+  const selectedOpponentName = useMemo(() => {
+    if (!selectedOpponentId) {
+      return null;
+    }
+    for (const stage of path.stages) {
+      const opponent = stage.opponents.find(
+        (candidate) => candidate.team_id === selectedOpponentId,
+      );
+      if (opponent) {
+        return opponent.team_name;
+      }
+    }
+    return null;
+  }, [path.stages, selectedOpponentId]);
+
   return (
     <SectionCard>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
@@ -224,6 +249,9 @@ function TeamPathExplorer({ path }: { path: TeamPath }) {
           <h2 className="mt-1 text-lg font-semibold text-foreground">
             Likely knockout road
           </h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Click an opponent to see tournament meeting odds.
+          </p>
         </div>
         <p className="text-xs text-muted-foreground">
           {formatNumber(path.metadata.n_simulations)} simulations ·{" "}
@@ -233,14 +261,35 @@ function TeamPathExplorer({ path }: { path: TeamPath }) {
 
       <div className="mt-5 grid gap-3 lg:grid-cols-5">
         {path.stages.map((stage) => (
-          <PathStageCard key={stage.stage} stage={stage} />
+          <PathStageCard
+            key={stage.stage}
+            stage={stage}
+            selectedOpponentId={selectedOpponentId}
+            onSelectOpponent={setSelectedOpponentId}
+          />
         ))}
       </div>
+
+      {selectedOpponentId && selectedOpponentName ? (
+        <HeadToHeadPanel
+          teamAId={teamId}
+          teamBId={selectedOpponentId}
+          title={`Meeting odds vs ${selectedOpponentName}`}
+        />
+      ) : null}
     </SectionCard>
   );
 }
 
-function PathStageCard({ stage }: { stage: TeamPathStage }) {
+function PathStageCard({
+  stage,
+  selectedOpponentId,
+  onSelectOpponent,
+}: {
+  stage: TeamPathStage;
+  selectedOpponentId: string | null;
+  onSelectOpponent: (teamId: string) => void;
+}) {
   const topOpponent = stage.opponents[0];
 
   return (
@@ -256,7 +305,16 @@ function PathStageCard({ stage }: { stage: TeamPathStage }) {
       <div className="mt-4 space-y-2">
         {topOpponent ? (
           stage.opponents.slice(0, 3).map((opponent) => (
-            <div key={opponent.team_id}>
+            <button
+              key={opponent.team_id}
+              type="button"
+              onClick={() => onSelectOpponent(opponent.team_id)}
+              className={`w-full rounded-md px-1 py-1 text-left transition ${
+                selectedOpponentId === opponent.team_id
+                  ? "bg-primary/10 ring-1 ring-primary/30"
+                  : "hover:bg-accent/50"
+              }`}
+            >
               <div className="flex items-center justify-between gap-2 text-xs">
                 <span className="truncate font-semibold text-foreground">
                   {opponent.team_name}
@@ -273,7 +331,7 @@ function PathStageCard({ stage }: { stage: TeamPathStage }) {
                   }}
                 />
               </div>
-            </div>
+            </button>
           ))
         ) : (
           <p className="text-sm text-muted-foreground">No common opponent yet.</p>

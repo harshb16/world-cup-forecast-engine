@@ -2,6 +2,7 @@
 
 import { X } from "lucide-react";
 
+import { HeadToHeadPanel } from "@/components/teams/HeadToHeadPanel";
 import type { BracketMatch } from "@/lib/api";
 import { formatNumber, formatPercent } from "@/lib/format";
 
@@ -72,6 +73,11 @@ export function MatchDetailDrawer({
           Ratings: {match.team_a.team_name} {formatNumber(match.team_a.rating)} ·{" "}
           {match.team_b.team_name} {formatNumber(match.team_b.rating)}
         </div>
+
+        <HeadToHeadPanel
+          teamAId={match.team_a.team_id}
+          teamBId={match.team_b.team_id}
+        />
       </div>
     </div>
   );

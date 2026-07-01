@@ -40,14 +40,16 @@ export function KnockoutMatchCard({
   );
   const teamAWins = match.winner_team_id === match.team_a.team_id;
   const teamBWins = match.winner_team_id === match.team_b.team_id;
-  const showOdds = eligible || revealed;
-  const locked = !eligible && !revealed;
+  const showOdds = (eligible || revealed) && !match.result_is_real;
+  const locked = !eligible && !revealed && !match.result_is_real;
+  const showRealScore = match.result_is_real || (revealed && !match.result_is_real);
 
   return (
     <article
       className={cn(
         "relative overflow-hidden rounded-xl border bg-card/90 transition",
         match.confirmed && "border-primary/40 ring-1 ring-primary/20",
+        match.result_is_real && "border-signal-blue/40 ring-1 ring-signal-blue/20",
         variant === "final" && "border-signal-amber/35 ring-1 ring-signal-amber/15",
         revealed && variant !== "final" && "border-primary/30",
         locked && "border-border/70 opacity-75",
@@ -70,14 +72,14 @@ export function KnockoutMatchCard({
         <TeamRow
           side={teamASide}
           score={match.result.team_a_goals}
-          revealed={revealed}
+          revealed={showRealScore}
           winner={!teamASide.placeholder && teamAWins}
         />
         <div className="my-1.5 border-t border-border/50" />
         <TeamRow
           side={teamBSide}
           score={match.result.team_b_goals}
-          revealed={revealed}
+          revealed={showRealScore}
           winner={!teamBSide.placeholder && teamBWins}
         />
 
@@ -100,7 +102,11 @@ export function KnockoutMatchCard({
         )}
       </button>
 
-      {!match.confirmed ? (
+      {match.result_is_real ? (
+        <div className="border-t border-border/60 bg-signal-blue/10 px-3 py-1.5 text-center text-[0.65rem] font-semibold uppercase tracking-wider text-signal-blue">
+          Final score
+        </div>
+      ) : !match.confirmed ? (
         <button
           type="button"
           onClick={onReveal}

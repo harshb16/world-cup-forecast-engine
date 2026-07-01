@@ -215,6 +215,67 @@ def test_oracle_v3_favorite_path_uses_expected_group_projection() -> None:
     assert result.rounds["Final"][0].confidence_label
 
 
+def test_bracket_result_is_real_false_without_knockout_fixtures() -> None:
+    result = run_bracket_simulation(
+        BracketSimulateRequest(model_type="poisson", seed=42),
+        "processed",
+    )
+
+    for matches in result.rounds.values():
+        for match in matches:
+            assert match.result_is_real is False
+
+
+def test_bracket_result_is_real_true_for_played_knockout_fixture() -> None:
+    from app.models.domain import MatchResult
+    from app.services.bracket_materialization_service import materialize_round_of_32_if_ready
+
+    config = load_tournament("sample")
+    completed_groups = [
+        match.model_copy(
+            update={
+                "result": MatchResult(team_a_goals=2, team_b_goals=1, played=True),
+                "winner_team_id": match.team_a_id,
+            }
+        )
+        for match in config.matches
+        if match.stage == "group"
+    ]
+    config = config.model_copy(update={"matches": completed_groups})
+    r32 = materialize_round_of_32_if_ready(config)
+    first = r32[0].model_copy(
+        update={
+            "result": MatchResult(team_a_goals=1, team_b_goals=0, played=True),
+            "winner_team_id": r32[0].team_a_id,
+        }
+    )
+    config = config.model_copy(
+        update={"matches": [*completed_groups, first, *r32[1:]]}
+    )
+
+    from app.services.data_loader import load_sample_tournament
+    from unittest.mock import patch
+
+    with patch("app.services.bracket_service.load_tournament", return_value=config):
+        result = run_bracket_simulation(
+            BracketSimulateRequest(
+                model_type="poisson",
+                simulation_mode="random",
+                seed=42,
+            ),
+            "sample",
+        )
+
+    real_matches = [
+        match
+        for stage_matches in result.rounds.values()
+        for match in stage_matches
+        if match.result_is_real
+    ]
+    assert len(real_matches) == 1
+    assert real_matches[0].winner_team_id == first.team_a_id
+
+
 def test_bracket_unknown_override_match_returns_400() -> None:
     response = client.post(
         "/bracket/simulate",

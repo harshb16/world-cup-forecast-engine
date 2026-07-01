@@ -246,6 +246,7 @@ class BracketMatchResponse(BaseModel):
     confidence_label: str | None = None
     drivers: list[str] = Field(default_factory=list)
     confirmed: bool = False
+    result_is_real: bool = False
 
 
 class BracketGroupTableResponse(BaseModel):

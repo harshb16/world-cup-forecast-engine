@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ALG",
+    "name": "Algeria",
+    "group_id": "H",
+    "rating": 1680
+  },
+  {
+    "id": "ARG",
+    "name": "Argentina",
+    "group_id": "F",
+    "rating": 1840
+  },
+  {
+    "id": "BEL",
+    "name": "Belgium",
+    "group_id": "H",
+    "rating": 1800
+  },
+  {
+    "id": "BRA",
+    "name": "Brazil",
+    "group_id": "A",
+    "rating": 1870
+  },
+  {
+    "id": "CHI",
+    "name": "Chile",
+    "group_id": "B",
+    "rating": 1780
+  },
+  {
+    "id": "COL",
+    "name": "Colombia",
+    "group_id": "C",
+    "rating": 1760
+  },
+  {
+    "id": "CRC",
+    "name": "Costa Rica",
+    "group_id": "D",
+    "rating": 1725
+  },
+  {
+    "id": "FRA",
+    "name": "France",
+    "group_id": "E",
+    "rating": 1830
+  },
+  {
+    "id": "GER",
+    "name": "Germany",
+    "group_id": "G",
+    "rating": 1885
+  },
+  {
+    "id": "GRE",
+    "name": "Greece",
+    "group_id": "C",
+    "rating": 1710
+  },
+  {
+    "id": "MEX",
+    "name": "Mexico",
+    "group_id": "A",
+    "rating": 1740
+  },
+  {
+    "id": "NED",
+    "name": "Netherlands",
+    "group_id": "B",
+    "rating": 1810
+  },
+  {
+    "id": "NGA",
+    "name": "Nigeria",
+    "group_id": "F",
+    "rating": 1700
+  },
+  {
+    "id": "SUI",
+    "name": "Switzerland",
+    "group_id": "E",
+    "rating": 1765
+  },
+  {
+    "id": "URU",
+    "name": "Uruguay",
+    "group_id": "D",
+    "rating": 1775
+  },
+  {
+    "id": "USA",
+    "name": "United States",
+    "group_id": "G",
+    "rating": 1735
+  }
+]

@@ -22,7 +22,7 @@ from app.services.simulation_service import create_match_model
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 HISTORICAL_ROOT = REPO_ROOT / "data" / "historical"
-SupportedTournament = Literal["2022"]
+SupportedTournament = Literal["2022", "2018", "2014"]
 
 
 def calculate_historical_backtest(

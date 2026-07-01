@@ -35,6 +35,9 @@ const SCORING_MODELS: ModelType[] = [
   "oracle_v3",
 ];
 
+const HISTORICAL_TOURNAMENTS = ["2022", "2018", "2014"] as const;
+type HistoricalTournament = (typeof HISTORICAL_TOURNAMENTS)[number];
+
 export default function ModelsPage() {
   const [models, setModels] = useState<ModelMetadata[]>([]);
   const [dataQuality, setDataQuality] = useState<DataQualityReport | null>(null);
@@ -48,6 +51,8 @@ export default function ModelsPage() {
   const [scoringError, setScoringError] = useState<string | null>(null);
   const [historicalBacktest, setHistoricalBacktest] =
     useState<HistoricalBacktest | null>(null);
+  const [historicalTournament, setHistoricalTournament] =
+    useState<HistoricalTournament>("2022");
   const [historicalError, setHistoricalError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -76,7 +81,7 @@ export default function ModelsPage() {
 
   useEffect(() => {
     let isActive = true;
-    fetchHistoricalBacktest("2022", scoringModel)
+    fetchHistoricalBacktest(historicalTournament, scoringModel)
       .then((metrics) => {
         if (isActive) {
           setHistoricalBacktest(metrics);
@@ -95,7 +100,7 @@ export default function ModelsPage() {
     return () => {
       isActive = false;
     };
-  }, [scoringModel]);
+  }, [scoringModel, historicalTournament]);
 
   useEffect(() => {
     let isActive = true;
@@ -303,13 +308,29 @@ export default function ModelsPage() {
                   Historical backtest
                 </p>
                 <h2 className="mt-1 text-lg font-semibold text-foreground">
-                  2022 World Cup out-of-sample evaluation
+                  {historicalTournament} World Cup out-of-sample evaluation
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Fixed past tournament replay — genuine holdout scoring against
-                  completed 2022 fixtures.
+                  completed {historicalTournament} fixtures.
                 </p>
               </div>
+              <label className="text-sm text-muted-foreground">
+                Tournament
+                <select
+                  className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
+                  value={historicalTournament}
+                  onChange={(event) =>
+                    setHistoricalTournament(event.target.value as HistoricalTournament)
+                  }
+                >
+                  {HISTORICAL_TOURNAMENTS.map((tournament) => (
+                    <option key={tournament} value={tournament}>
+                      {tournament}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </div>
 
             {historicalError ? (
@@ -327,7 +348,7 @@ export default function ModelsPage() {
                         ? "—"
                         : formatPercent(historicalBacktest.accuracy)
                     }
-                    detail={`${historicalBacktest.sample_size} completed 2022 fixtures`}
+                    detail={`${historicalBacktest.sample_size} completed ${historicalTournament} fixtures`}
                   />
                   <SummaryCard
                     icon={BarChart3}

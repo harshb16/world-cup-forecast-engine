@@ -1,0 +1,66 @@
+[
+  {
+    "id": "A",
+    "name": "Group A",
+    "team_ids": [
+      "BRA",
+      "MEX"
+    ]
+  },
+  {
+    "id": "B",
+    "name": "Group B",
+    "team_ids": [
+      "CHI",
+      "NED"
+    ]
+  },
+  {
+    "id": "C",
+    "name": "Group C",
+    "team_ids": [
+      "COL",
+      "GRE"
+    ]
+  },
+  {
+    "id": "D",
+    "name": "Group D",
+    "team_ids": [
+      "CRC",
+      "URU"
+    ]
+  },
+  {
+    "id": "E",
+    "name": "Group E",
+    "team_ids": [
+      "FRA",
+      "SUI"
+    ]
+  },
+  {
+    "id": "F",
+    "name": "Group F",
+    "team_ids": [
+      "ARG",
+      "NGA"
+    ]
+  },
+  {
+    "id": "G",
+    "name": "Group G",
+    "team_ids": [
+      "GER",
+      "USA"
+    ]
+  },
+  {
+    "id": "H",
+    "name": "Group H",
+    "team_ids": [
+      "ALG",
+      "BEL"
+    ]
+  }
+]

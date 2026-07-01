@@ -1,9 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { X } from "lucide-react";
 
 import { HeadToHeadPanel } from "@/components/teams/HeadToHeadPanel";
+import { Button } from "@/components/ui/button";
 import type { BracketMatch } from "@/lib/api";
+import { buildWhatIfUrl, favoriteWinsOverride, upsetOverride } from "@/lib/scenario-overrides";
 import { formatNumber, formatPercent } from "@/lib/format";
 
 import { formatExpectedGoals } from "./utils";
@@ -78,6 +81,25 @@ export function MatchDetailDrawer({
           teamAId={match.team_a.team_id}
           teamBId={match.team_b.team_id}
         />
+
+        {!match.result_is_real ? (
+          <div className="mt-5 flex flex-wrap gap-2">
+            <Button
+              render={<Link href={buildWhatIfUrl([upsetOverride(match)])} />}
+              variant="outline"
+              size="sm"
+            >
+              Simulate upset
+            </Button>
+            <Button
+              render={<Link href={buildWhatIfUrl([favoriteWinsOverride(match)])} />}
+              variant="outline"
+              size="sm"
+            >
+              Favorite wins
+            </Button>
+          </div>
+        ) : null}
       </div>
     </div>
   );

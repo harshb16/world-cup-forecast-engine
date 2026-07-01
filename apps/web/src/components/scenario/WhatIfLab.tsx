@@ -26,18 +26,12 @@ import {
   DataMetadata,
 } from "@/lib/api";
 import { SIMULATION_COUNT } from "@/lib/config";
-
-function encodeOverrides(overrides: MatchResultOverride[]): string {
-  if (overrides.length === 0) {
-    return "";
-  }
-  return overrides
-    .map(
-      (override) =>
-        `${override.match_id}:${override.team_a_goals}-${override.team_b_goals}`,
-    )
-    .join(",");
-}
+import {
+  allFavoritesAdvancePreset,
+  chaosRoundPreset,
+  encodeOverrides,
+  underdogWinsNextMatchPreset,
+} from "@/lib/scenario-overrides";
 
 function decodeOverrides(value: string | null): MatchResultOverride[] {
   if (!value) {
@@ -176,6 +170,31 @@ export function WhatIfLab() {
       </section>
       {metadata ? <DataStatusCard metadata={metadata} /> : null}
 
+      <SectionCard>
+        <p className="text-xs font-semibold uppercase text-primary">
+          Quick presets
+        </p>
+        <h2 className="mt-1 text-lg font-semibold text-foreground">
+          One-click scenarios
+        </h2>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <PresetButton
+            label="Underdog wins next match"
+            onClick={() =>
+              setOverrides(underdogWinsNextMatchPreset(fixtures))
+            }
+          />
+          <PresetButton
+            label="All favorites advance"
+            onClick={() => setOverrides(allFavoritesAdvancePreset(fixtures))}
+          />
+          <PresetButton
+            label="Chaos round"
+            onClick={() => setOverrides(chaosRoundPreset(fixtures))}
+          />
+        </div>
+      </SectionCard>
+
       <ScenarioBuilder
         fixtures={fixtures}
         teamsById={teamsById}
@@ -292,6 +311,24 @@ const scenarioSteps = [
   "Run scenario",
   "Compare movement",
 ];
+
+function PresetButton({
+  label,
+  onClick,
+}: {
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="rounded-md border border-border bg-accent/50 px-3 py-2 text-sm font-semibold text-foreground transition hover:bg-accent/80"
+    >
+      {label}
+    </button>
+  );
+}
 
 function DeltaSummary({
   title,

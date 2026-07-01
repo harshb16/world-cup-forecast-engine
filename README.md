@@ -1,20 +1,84 @@
 # World Cup Oracle
 
-World Cup Oracle is a FastAPI + Next.js World Cup simulation dashboard.
+**Monte Carlo World Cup forecasting — bracket probabilities, what-if scenarios, and post-tournament retrospectives from one simulation engine.**
 
-## Quick Start
+World Cup Oracle is a full-stack portfolio project: FastAPI simulation backend, Next.js dashboard, precomputed simulation banks, and a frozen archive mode for demos after the final whistle.
 
-Run both servers with one command:
+![Dashboard](docs/screenshots/dashboard.svg)
+
+## Try this (local)
+
+Start both servers:
 
 ```bash
 ./scripts/dev.sh
 ```
 
-The launcher opens `http://127.0.0.1:3000`, enables hot reload, and uses a
-small simulation profile so pages load quickly while testing. Press `Ctrl+C`
-to stop both servers.
+Then open:
 
-Override interactive scenario simulation counts when needed:
+| Page | URL | What to look for |
+|------|-----|------------------|
+| **Dashboard** | http://localhost:3000/ | Knockout outlook, upset spotlight, bracket CTA |
+| **Bracket** | http://localhost:3000/bracket | Bank plurality trace, match drawer with H2H + what-if links |
+| **What-if** | http://localhost:3000/what-if?overrides=R16-01:2-1 | Deep-linked scenario override |
+| **Teams** | http://localhost:3000/teams | Still-in filter, champion sort, round badges |
+| **Compare** | http://localhost:3000/teams/compare?a=ARG&b=FRA | Side-by-side paths and meeting odds |
+| **Retrospective** | http://localhost:3000/retrospective | Champion arc, model hits/misses, calibration |
+| **Models** | http://localhost:3000/models | Current-tournament + historical holdout scoring |
+
+Curated what-if presets are on the What-if page (`Underdog wins next`, `All favorites advance`, `Chaos round`).
+
+![Bracket](docs/screenshots/bracket.svg)
+
+![What-if lab](docs/screenshots/what-if.svg)
+
+## Architecture
+
+```mermaid
+flowchart TB
+    subgraph client [Next.js 16]
+        pages[App Router pages]
+        components[Dashboard / Bracket / Analytics]
+    end
+
+    subgraph api [FastAPI]
+        routes[REST routes]
+        services[Simulation services]
+        bank[Simulation bank .npz]
+    end
+
+    subgraph data [Data layer]
+        processed[data/processed]
+        runtime[data/runtime]
+        archive[data/archive/wc2026]
+    end
+
+    pages --> routes
+    routes --> services
+    services --> bank
+    services --> processed
+    services --> runtime
+    services --> archive
+```
+
+Read the engine walkthrough in [`docs/ENGINE.md`](docs/ENGINE.md).
+
+## Stack
+
+| Layer | Tech |
+|-------|------|
+| Frontend | Next.js, TypeScript, Tailwind CSS, shadcn/ui, Recharts |
+| Backend | FastAPI, Pydantic, NumPy, SciPy, scikit-learn |
+| Data | JSON snapshots, SQLite runtime store, compressed simulation banks |
+| Tests | **790+** pytest cases (`apps/api/tests/`) |
+
+## Quick start
+
+```bash
+./scripts/dev.sh
+```
+
+Override simulation counts for local testing:
 
 ```bash
 NEXT_PUBLIC_WCO_SIMULATIONS=5000 \
@@ -22,126 +86,69 @@ NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS=1000 \
 ./scripts/dev.sh
 ```
 
-Tournament forecasts enforce at least 1,000 simulations. Smaller samples make
-the favorites table unstable and can disagree with the published forecast
-bracket trace.
-
-Dashboard, groups, and team probability pages read
-`data/processed/forecast_snapshot.json`. Normal page loads do not run Monte
-Carlo simulations. Result sync builds one simulation bank (100,000 paths when
-idle, 30,000 during active match windows) and derives all dashboard
-probabilities from that bank. Override bank size with
-`WCO_SNAPSHOT_SIMULATIONS` when testing locally.
-
-Team path explorer (`GET /team-path/{team_id}`) uses the same published
-simulation bank as the dashboard (via `data/processed/team_paths.json` bootstrap
-sidecar or runtime `team_paths.json` written at forecast publish). It does not
-run a separate 500-simulation Monte Carlo on the default team page path. Use
-`POST /team-path` for live diagnostic simulations. The bank stores per-round
-opponent traces (`knockout_opponents`, ~48 KB per 1k sims compressed) alongside
-existing trace arrays.
-
-The bracket page default trace is a bank plurality tree: the most common bank
-winner at each knockout slot at full simulation count, with advance percentages
-matching bank-conditional matchup rates. Random mode on the bracket page is an
-interactive seeded resimulation only.
-
-Set `WCO_NO_OPEN=1` to prevent the browser from opening automatically.
-
-## Data Mode
-
-Backend defaults to real processed World Cup 2026 data:
+Data mode (backend):
 
 ```bash
-WORLD_CUP_DATA_MODE=processed
+WORLD_CUP_DATA_MODE=processed   # default — checked-in WC 2026 data
+WORLD_CUP_DATA_MODE=sample      # 48-team dev sample
 ```
 
-Use sample data only for tests/dev fallback:
+Published UI pages read `data/processed/forecast_snapshot.json` and related sidecars — they do not rerun full Monte Carlo on every navigation.
 
-```bash
-WORLD_CUP_DATA_MODE=sample
-```
+## Operator vs showcase
 
-The app reads published JSON snapshots from `data/processed`. Forecast controls
-rerun simulations against that snapshot; they do not silently fetch results.
+| Concern | Default showcase | Operator mode |
+|---------|------------------|---------------|
+| Result sync UI | Hidden (`NEXT_PUBLIC_WCO_ADMIN_UI` unset) | Set `NEXT_PUBLIC_WCO_ADMIN_UI=true` |
+| Live data refresh | CLI/cron via `POST /admin/sync/results` | Requires `WCO_ADMIN_SYNC_KEY` |
+| Post-final demo | `bash scripts/freeze_tournament_archive.sh` then `WCO_ARCHIVE_MODE=wc2026` | Sync returns 409; header shows frozen badge |
 
-## Refresh Data
+## Development
 
-Configure the backend result sync in repo-root `.env` (or `apps/web/.env.local`
-when using `./scripts/dev.sh`):
-
-```bash
-WCO_ADMIN_SYNC_KEY=choose-a-long-random-secret
-FOOTBALL_DATA_API_TOKEN=your-football-data-token
-```
-
-These variables are read by the FastAPI process, not by the Next.js client.
-
-The dashboard's **Sync match results** button calls the protected
-`POST /admin/sync/results` endpoint. It tries football-data.org first and falls
-back to FIFA's public match feed. Incoming files are staged and validated
-before publication; contradictory published scores abort the refresh.
-
-Ranking and model-training refreshes remain separate CLI workflows. A result
-sync never retrains or silently changes the selected forecasting model.
-
-## Historical Evaluation
-
-Out-of-sample scoring against the fixed 2022 World Cup dataset:
-
-```bash
-curl "http://localhost:8000/evaluation/historical?tournament=2022&model_type=poisson"
-```
-
-Historical fixtures live in `data/historical/wc2022/`. The models page
-(`/models`) shows both current-tournament scoring and the 2022 holdout panel.
-
-Regenerate bootstrap forecast snapshots after bank-affecting changes:
-
-```bash
-bash scripts/regenerate_bootstrap_snapshot.sh
-```
-
-Requires a Python environment with API dependencies installed (uses `python` from
-`.venv` when present, otherwise ensure `python` is on your PATH).
-
-## Run Backend
-
-```bash
-cd apps/api
-source .venv/bin/activate
-uvicorn app.main:app --reload
-```
-
-Backend validation:
+**API**
 
 ```bash
 cd apps/api
 source .venv/bin/activate
 bash ../../scripts/clean_pycache.sh
-pytest
+pytest -q
+uvicorn app.main:app --reload
 ```
 
-Optional one-time setup to clear Python caches on every commit:
-
-```bash
-bash scripts/install-git-hooks.sh
-```
-
-## Run Frontend
-
-Use Bun, not npm:
+**Web** (use Bun)
 
 ```bash
 cd apps/web
 bun install
 bun run dev
-bun run lint
 bun run build
 ```
 
-Set frontend API target:
+Regenerate bootstrap forecast after bank-affecting changes:
 
 ```bash
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+bash scripts/regenerate_bootstrap_snapshot.sh
 ```
+
+## Key features
+
+- 48-team FIFA format with Round of 32 and best-third-place logic
+- Precomputed simulation banks for consistent dashboard/bracket/team-path probabilities
+- What-if scenario lab with bracket deep links
+- Upset radar, group chaos, probability timeline with milestone scrubber
+- Head-to-head meeting odds from bank traces (with live fallback)
+- Team compare page and tournament retrospective
+- Historical backtests (2022, 2018, 2014) on the models page
+- Frozen `wc2026` archive mode for portfolio demos
+
+## Limitations
+
+- Forecasts are probabilistic, not betting advice.
+- Historical evaluations use fixed past-tournament datasets with era rating proxies.
+- Small diagnostic simulation counts are unstable; production snapshots use ≥1,000 paths.
+- ML ensemble weights are not retrained on every matchday.
+- Screenshot assets in `docs/screenshots/` are stylized placeholders for README layout.
+
+## License / data
+
+Tournament fixtures and results are derived from public football data sources documented in processed metadata. See `data/processed/metadata.json` for provenance notes.

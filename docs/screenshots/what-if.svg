@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="World Cup Oracle what-if lab screenshot placeholder">
+  <rect width="1280" height="720" fill="#0f172a"/>
+  <rect x="40" y="40" width="1200" height="56" rx="12" fill="#111827" stroke="#334155"/>
+  <text x="64" y="76" fill="#f8fafc" font-family="system-ui,sans-serif" font-size="22" font-weight="600">What-if Lab</text>
+  <rect x="40" y="120" width="520" height="560" rx="16" fill="#111827" stroke="#334155"/>
+  <text x="64" y="160" fill="#38bdf8" font-family="system-ui,sans-serif" font-size="14" font-weight="600">SCENARIO BUILDER</text>
+  <text x="64" y="200" fill="#f8fafc" font-family="system-ui,sans-serif" font-size="22" font-weight="700">Override a fixture</text>
+  <rect x="64" y="230" width="180" height="36" rx="8" fill="#1e293b" stroke="#334155"/>
+  <text x="80" y="254" fill="#94a3b8" font-family="system-ui,sans-serif" font-size="14">Underdog wins next</text>
+  <rect x="256" y="230" width="180" height="36" rx="8" fill="#1e293b" stroke="#334155"/>
+  <text x="272" y="254" fill="#94a3b8" font-family="system-ui,sans-serif" font-size="14">All favorites advance</text>
+  <rect x="64" y="290" width="472" height="48" rx="8" fill="#0f172a" stroke="#334155"/>
+  <text x="80" y="320" fill="#f8fafc" font-family="system-ui,sans-serif" font-size="16">Round of 16 · BRA vs FRA</text>
+  <rect x="64" y="360" width="120" height="40" rx="8" fill="#0ea5e9"/>
+  <text x="88" y="386" fill="#0f172a" font-family="system-ui,sans-serif" font-size="15" font-weight="600">2 - 1</text>
+  <rect x="580" y="120" width="660" height="560" rx="16" fill="#111827" stroke="#334155"/>
+  <text x="604" y="160" fill="#38bdf8" font-family="system-ui,sans-serif" font-size="14" font-weight="600">COMPARISON</text>
+  <text x="604" y="200" fill="#f8fafc" font-family="system-ui,sans-serif" font-size="22" font-weight="700">Baseline vs scenario</text>
+  <rect x="604" y="240" width="280" height="120" rx="12" fill="#0f172a" stroke="#334155"/>
+  <text x="628" y="280" fill="#94a3b8" font-family="system-ui,sans-serif" font-size="14">Baseline champion</text>
+  <text x="628" y="320" fill="#f8fafc" font-family="system-ui,sans-serif" font-size="28" font-weight="700">FRA 18%</text>
+  <rect x="920" y="240" width="280" height="120" rx="12" fill="#0f172a" stroke="#334155"/>
+  <text x="944" y="280" fill="#94a3b8" font-family="system-ui,sans-serif" font-size="14">Scenario champion</text>
+  <text x="944" y="320" fill="#22c55e" font-family="system-ui,sans-serif" font-size="28" font-weight="700">BRA 24%</text>
+  <polyline points="604,420 1180,420 1180,620 604,620 604,420" fill="none" stroke="#334155"/>
+  <text x="628" y="460" fill="#94a3b8" font-family="system-ui,sans-serif" font-size="14">Stage probability deltas after override</text>
+</svg>

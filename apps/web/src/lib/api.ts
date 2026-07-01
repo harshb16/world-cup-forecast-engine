@@ -351,6 +351,7 @@ export type GroupChaosReport = {
   data_mode: string;
   n_simulations: number;
   groups: GroupChaosScore[];
+  group_stage_complete: boolean;
 };
 
 export type ForecastStatus = {

@@ -282,7 +282,11 @@ export function HomeDashboard() {
             {groupChaos ? (
               <SectionCard
                 title="Most unsettled groups"
-                description="Groups where qualification odds are bunched"
+                description={
+                  groupChaos.group_stage_complete
+                    ? "Group stage complete — final chaos scores frozen"
+                    : "Groups where qualification odds are bunched"
+                }
               >
                 <div className="flex flex-col gap-3">
                   {groupChaos.groups.slice(0, 6).map((group) => (

@@ -391,6 +391,7 @@ class GroupChaosResponse(BaseModel):
     data_mode: str
     n_simulations: int
     groups: list[GroupChaosScoreResponse]
+    group_stage_complete: bool = False
 
 
 class ModelComparisonDeltaResponse(BaseModel):

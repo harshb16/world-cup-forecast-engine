@@ -76,6 +76,22 @@ def test_current_scoring_sample_mode_handles_no_completed_results() -> None:
     assert metrics.log_loss is None
 
 
+def test_knockout_penalty_match_scores_as_regulation_draw() -> None:
+    from app.models.domain import MatchResult
+    from app.services.current_tournament_scoring import _actual_outcome
+
+    result = MatchResult(
+        team_a_goals=1,
+        team_b_goals=1,
+        played=True,
+        decided_by_penalties=True,
+        penalty_team_a_goals=4,
+        penalty_team_b_goals=3,
+    )
+
+    assert _actual_outcome(result, "TEAM_A") == "draw"
+
+
 def test_legacy_backtesting_endpoint_is_not_exposed() -> None:
     response = client.get("/backtesting")
 

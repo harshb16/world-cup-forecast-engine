@@ -33,7 +33,12 @@ from app.simulation.bank_knockout_plurality import (
 )
 from app.simulation.group_stage import simulate_group_stage
 from app.simulation.group_table import calculate_group_table
-from app.simulation.knockout import ADVANCEMENT_PAIRINGS, ROUND_NAMES, simulate_knockout
+from app.simulation.knockout import (
+    ADVANCEMENT_PAIRINGS,
+    ROUND_NAMES,
+    build_known_knockout_results,
+    simulate_knockout,
+)
 from app.simulation.knockout_resolution import with_host_advantage
 from app.simulation.match_models import MatchModel
 from app.simulation.third_place import get_best_third_place_qualifiers, rank_third_place_teams
@@ -83,6 +88,7 @@ def plurality_bracket_from_bank(
     )
     champion = teams_by_id[knockout.champion_team_id]
     completed_groups = _completed_group_ids(base_config)
+    real_knockout_pairs = set(build_known_knockout_results(base_config.matches))
 
     return BracketSimulationResponse(
         metadata=metadata,
@@ -104,6 +110,7 @@ def plurality_bracket_from_bank(
                     _source_match_ids(knockout.rounds, match, index),
                     completed_groups=completed_groups,
                     advance_probabilities=plurality.advance_probabilities.get(match.id),
+                    real_knockout_pairs=real_knockout_pairs,
                 )
                 for index, match in enumerate(matches, start=1)
             ]
@@ -179,6 +186,7 @@ def run_bracket_simulation(
         teams_by_id,
         match_model,
         rng,
+        known_results=build_known_knockout_results(config.matches),
     )
     metadata = SimulationMetadataResponse(
         n_simulations=1,
@@ -189,6 +197,7 @@ def run_bracket_simulation(
     )
     champion = teams_by_id[knockout.champion_team_id]
     completed_groups = _completed_group_ids(config)
+    real_knockout_pairs = set(build_known_knockout_results(config.matches))
 
     return BracketSimulationResponse(
         metadata=metadata,
@@ -209,6 +218,7 @@ def run_bracket_simulation(
                     index,
                     _source_match_ids(knockout.rounds, match, index),
                     completed_groups=completed_groups,
+                    real_knockout_pairs=real_knockout_pairs,
                 )
                 for index, match in enumerate(matches, start=1)
             ]
@@ -227,6 +237,7 @@ def _to_bracket_match(
     source_match_ids: list[str],
     completed_groups: set[str] | None = None,
     advance_probabilities: tuple[float, float] | None = None,
+    real_knockout_pairs: set[tuple[str, frozenset[str]]] | None = None,
 ) -> BracketMatchResponse:
     team_a = teams_by_id[match.team_a_id]
     team_b = teams_by_id[match.team_b_id]
@@ -251,11 +262,16 @@ def _to_bracket_match(
         raise ValueError("bracket trace match must include result and winner")
 
     completed = completed_groups or set()
-    confirmed = (
+    pairing_known = (
         match.stage == "Round of 32"
         and team_a.group_id in completed
         and team_b.group_id in completed
     )
+    real_pairs = real_knockout_pairs or set()
+    result_is_real = (
+        match.stage,
+        frozenset({match.team_a_id, match.team_b_id}),
+    ) in real_pairs
 
     return BracketMatchResponse(
         id=match.id,
@@ -280,7 +296,8 @@ def _to_bracket_match(
         team_b_expected_goals=expected_goals[1],
         confidence_label=_confidence_label(max(team_a_advance, team_b_advance)),
         drivers=_match_drivers(match_model, team_a, team_b),
-        confirmed=confirmed,
+        confirmed=pairing_known,
+        result_is_real=result_is_real,
     )
 
 

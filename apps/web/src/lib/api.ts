@@ -213,6 +213,7 @@ export type BracketMatch = {
   confidence_label: string | null;
   drivers: string[];
   confirmed: boolean;
+  result_is_real: boolean;
 };
 
 export type BracketSimulation = {

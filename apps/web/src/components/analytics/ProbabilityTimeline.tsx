@@ -26,7 +26,7 @@ import {
 import { formatPercent } from "@/lib/format";
 import { CHART_LINE_COLORS, CHART_TOOLTIP_STYLE } from "@/lib/chart-colors";
 
-export function ProbabilityTimeline() {
+export function ProbabilityTimeline({ showScrubber = true }: { showScrubber?: boolean }) {
   const [history, setHistory] = useState<ProbabilityHistory | null>(null);
   const [teams, setTeams] = useState<Team[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -136,7 +136,7 @@ export function ProbabilityTimeline() {
         </p>
 
         <div className="mt-5 h-80 w-full">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
             <LineChart data={chartData.rows}>
               <CartesianGrid stroke="rgba(255,255,255,0.08)" strokeDasharray="3 3" />
               <XAxis dataKey="label" stroke="#71717a" fontSize={12} />
@@ -180,13 +180,13 @@ export function ProbabilityTimeline() {
         </div>
       </SectionCard>
 
-      <MilestoneScrubber
+      {showScrubber ? <MilestoneScrubber
         snapshots={history.snapshots}
         selectedIndex={selectedIndex}
         onSelect={setSelectedIndex}
         teamNames={teamNames}
         selectedSnapshot={selectedSnapshot}
-      />
+      /> : null}
     </div>
   );
 }

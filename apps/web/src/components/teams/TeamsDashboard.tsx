@@ -23,6 +23,7 @@ import {
   TeamProbability,
   DataMetadata,
 } from "@/lib/api";
+import { useTimeMachine } from "@/components/time-machine/TimeMachineProvider";
 import {
   currentRoundLabel,
   matchesTournamentFilter,
@@ -38,18 +39,21 @@ type TeamIndexData = {
 };
 
 export function TeamsDashboard() {
+  const replay = useTimeMachine();
   const [query, setQuery] = useState("");
   const [selectedGroupId, setSelectedGroupId] = useState("all");
   const [tournamentFilter, setTournamentFilter] =
     useState<TournamentFilter>("all");
 
   const loadTeams = useCallback(async (): Promise<TeamIndexData> => {
-    const [groups, teams, metadata, snapshot] = await Promise.all([
+    const [groups, teams, metadata, liveSnapshot] = await Promise.all([
       fetchGroups(),
       fetchTeams(),
       fetchMetadata(),
-      fetchLatestForecast(),
+      replay.isReplay ? Promise.resolve(null) : fetchLatestForecast(),
     ]);
+    const snapshot = replay.isReplay ? replay.snapshot?.forecast : liveSnapshot;
+    if (!snapshot) throw new Error("Replay snapshot is still loading.");
 
     return {
       groups,
@@ -57,7 +61,7 @@ export function TeamsDashboard() {
       metadata,
       simulation: snapshot.summary,
     };
-  }, []);
+  }, [replay.isReplay, replay.snapshot]);
 
   const { data, error } = usePublishedForecast(loadTeams);
 
@@ -186,7 +190,7 @@ export function TeamsDashboard() {
         Team cards use the published forecast snapshot. Open a profile for a
         fuller stage-by-stage ladder.
       </HelpText>
-      <DataStatusCard metadata={data.metadata} />
+      {!replay.isReplay ? <DataStatusCard metadata={data.metadata} /> : null}
 
       {teamsByGroup.length === 0 ? (
         <EmptyState
@@ -215,7 +219,7 @@ export function TeamsDashboard() {
                       <TeamName
                         team={team}
                         groupName={groupInfo?.name}
-                        href={`/teams/${team.id}`}
+                        href={replay.hrefFor(`/teams/${team.id}`)}
                       />
                       {probability ? (
                         <TeamRoundBadge probability={probability} />

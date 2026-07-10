@@ -44,6 +44,7 @@ import { FrozenDatasetBadge } from "@/components/FrozenDatasetBadge";
 import { DEFAULT_MODEL_TYPE, fetchMetadata } from "@/lib/api";
 import { formatModelLabel } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { useTimeMachine } from "@/components/time-machine/TimeMachineProvider";
 
 type NavItem = {
   href: string;
@@ -60,7 +61,7 @@ const liveNav: NavItem[] = [
 const exploreNav: NavItem[] = [
   { href: "/groups", label: "Groups", icon: Table2 },
   { href: "/teams", label: "Teams", icon: Users },
-  { href: "/timeline", label: "Timeline", icon: TrendingUp },
+  { href: "/time-machine", label: "Replay", icon: TrendingUp },
   { href: "/data-status", label: "Data Status", icon: Database },
 ];
 
@@ -88,9 +89,10 @@ function NavLink({
   compact?: boolean;
 }) {
   const Icon = item.icon;
+  const { hrefFor } = useTimeMachine();
   return (
     <Link
-      href={item.href}
+      href={hrefFor(item.href)}
       onClick={onNavigate}
       className={cn(
         "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition",
@@ -135,6 +137,7 @@ function NavGroup({
 
 export function AppHeader() {
   const pathname = usePathname();
+  const { hrefFor, isReplay } = useTimeMachine();
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [frozenLabel, setFrozenLabel] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -165,7 +168,7 @@ export function AppHeader() {
     <header className="sticky top-0 z-40 border-b border-border/80 bg-background/80 shadow-[0_8px_32px_color-mix(in_oklch,var(--background)_55%,transparent)] backdrop-blur-md supports-[backdrop-filter]:bg-background/70">
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/45 to-transparent" />
       <div className="mx-auto flex h-14 max-w-[100vw] items-center gap-3 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex shrink-0 items-center gap-2.5">
+        <Link href={hrefFor("/")} className="flex shrink-0 items-center gap-2.5">
           <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Trophy aria-hidden="true" />
           </span>
@@ -180,7 +183,7 @@ export function AppHeader() {
         </Link>
 
         <nav
-          className="hidden items-center gap-0.5 lg:flex"
+          className="hidden items-center gap-0.5 xl:flex"
           aria-label="Primary"
         >
           {liveNav.map((item) => (
@@ -222,7 +225,7 @@ export function AppHeader() {
               {labNav.map((item) => (
                 <DropdownMenuItem
                   key={item.href}
-                  render={<Link href={item.href} />}
+                  render={<Link href={hrefFor(item.href)} />}
                 >
                   <item.icon aria-hidden="true" />
                   {item.label}
@@ -233,7 +236,7 @@ export function AppHeader() {
               {systemNav.map((item) => (
                 <DropdownMenuItem
                   key={item.href}
-                  render={<Link href={item.href} />}
+                  render={<Link href={hrefFor(item.href)} />}
                 >
                   <item.icon aria-hidden="true" />
                   {item.label}
@@ -243,12 +246,16 @@ export function AppHeader() {
           </DropdownMenu>
         </nav>
 
-        <p className="truncate text-sm font-medium text-muted-foreground lg:hidden">
+        <p className="truncate text-sm font-medium text-muted-foreground xl:hidden">
           {activePage}
         </p>
 
         <div className="ml-auto flex items-center gap-2">
-          {frozenLabel ? (
+          {isReplay ? (
+            <p className="hidden text-[0.68rem] font-semibold text-primary md:block">
+              Reconstructed replay
+            </p>
+          ) : frozenLabel ? (
             <p className="hidden text-[0.68rem] text-muted-foreground md:block">
               <FrozenDatasetBadge label={frozenLabel} compact />
             </p>
@@ -257,7 +264,7 @@ export function AppHeader() {
               Data <DataFreshness timestamp={lastUpdated} compact />
             </p>
           ) : null}
-          <Link href="/models" className="hidden md:block">
+          <Link href={hrefFor("/models")} className="hidden 2xl:block">
             <Badge variant="secondary" className="gap-1.5 font-normal">
               <Shield aria-hidden="true" />
               {formatModelLabel(DEFAULT_MODEL_TYPE)}
@@ -270,7 +277,7 @@ export function AppHeader() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="lg:hidden"
+                  className="xl:hidden"
                   aria-label="Open navigation menu"
                 />
               }
@@ -307,7 +314,7 @@ export function AppHeader() {
                   onNavigate={() => setMobileOpen(false)}
                 />
                 <Link
-                  href="/models"
+                  href={hrefFor("/models")}
                   onClick={() => setMobileOpen(false)}
                   className="mx-3 rounded-lg border border-border bg-card p-3 text-sm"
                 >

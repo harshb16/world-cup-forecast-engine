@@ -23,6 +23,7 @@ import {
   DataMetadata,
   ThirdPlaceTracker,
 } from "@/lib/api";
+import { useTimeMachine } from "@/components/time-machine/TimeMachineProvider";
 
 type GroupData = {
   groups: Group[];
@@ -31,16 +32,20 @@ type GroupData = {
   metadata: DataMetadata;
   chaosByGroupId: Map<string, GroupChaosScore>;
   thirdPlace: ThirdPlaceTracker;
+  groupTables?: Record<string, Array<Record<string, unknown>>>;
 };
 
 export function GroupsDashboard() {
+  const replay = useTimeMachine();
   const loadGroups = useCallback(async (): Promise<GroupData> => {
-    const [groups, teams, metadata, snapshot] = await Promise.all([
+    const [groups, teams, metadata, liveSnapshot] = await Promise.all([
       fetchGroups(),
       fetchTeams(),
       fetchMetadata(),
-      fetchLatestForecast(),
+      replay.isReplay ? Promise.resolve(null) : fetchLatestForecast(),
     ]);
+    const snapshot = replay.isReplay ? replay.snapshot?.forecast : liveSnapshot;
+    if (!snapshot) throw new Error("Replay snapshot is still loading.");
 
     return {
       groups,
@@ -51,8 +56,9 @@ export function GroupsDashboard() {
         snapshot.group_chaos.groups.map((group) => [group.group_id, group]),
       ),
       thirdPlace: snapshot.third_place,
+      groupTables: replay.snapshot?.group_tables,
     };
-  }, []);
+  }, [replay.isReplay, replay.snapshot]);
 
   const { data, error } = usePublishedForecast(loadGroups);
 
@@ -88,7 +94,9 @@ export function GroupsDashboard() {
         advancing as one of the best {THIRD_PLACE_QUALIFIER_COUNT} third-place
         teams.
       </HelpText>
-      <DataStatusCard metadata={data.metadata} />
+      {replay.isReplay ? (
+        <p className="rounded-md border border-primary/20 bg-primary/10 px-4 py-3 text-sm">Observed standings and forecast odds at {replay.snapshot?.milestone.label}.</p>
+      ) : <DataStatusCard metadata={data.metadata} />}
 
       <Tabs
         value={activeGroup}
@@ -109,6 +117,7 @@ export function GroupsDashboard() {
                 teams={data.teams}
                 probabilitiesByTeamId={probabilitiesByTeamId}
                 chaos={data.chaosByGroupId.get(group.id)}
+                standings={data.groupTables?.[group.id]}
               />
             ) : null}
           </TabsContent>

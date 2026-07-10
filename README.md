@@ -95,6 +95,26 @@ WORLD_CUP_DATA_MODE=sample      # 48-team dev sample
 
 Published UI pages read `data/processed/forecast_snapshot.json` and related sidecars — they do not rerun full Monte Carlo on every navigation.
 
+### Tournament replay
+
+Replay links use `?at=<milestone_id>` across Dashboard, Groups, Bracket, Teams,
+team detail, and comparison pages. The URL is the only replay state, so refreshes
+and shared links reproduce the same checkpoint. Replay artifacts are reconstructed
+with the frozen final model and are not claims about forecasts published at the time.
+
+Generate reduced local artifacts while the tournament is in progress:
+
+```bash
+cd apps/api
+python -m app.services.time_machine_generator --simulations 250
+```
+
+The generator resumes matching fingerprints. Use `--force` to rebuild, or
+`--require-complete` for the final nine-milestone archive. Production defaults to
+`WCO_TIME_MACHINE_SIMULATIONS=100000`. Banks and sidecars live under
+`time_machine/milestones/<milestone_id>/`; a complete archive is expected to add
+roughly 20–45 MB.
+
 ## Operator vs showcase
 
 | Concern | Default showcase | Operator mode |
@@ -135,7 +155,8 @@ bash scripts/regenerate_bootstrap_snapshot.sh
 - 48-team FIFA format with Round of 32 and best-third-place logic
 - Precomputed simulation banks for consistent dashboard/bracket/team-path probabilities
 - What-if scenario lab with bracket deep links
-- Upset radar, group chaos, probability timeline with milestone scrubber
+- Global, shareable tournament replay across six product surfaces
+- Upset radar, group chaos, and artifact-backed probability timeline
 - Head-to-head meeting odds from bank traces (with live fallback)
 - Team compare page and tournament retrospective
 - Historical backtests (2022, 2018, 2014) on the models page
@@ -148,6 +169,8 @@ bash scripts/regenerate_bootstrap_snapshot.sh
 - Small diagnostic simulation counts are unstable; production snapshots use ≥1,000 paths.
 - ML ensemble weights are not retrained on every matchday.
 - Screenshot assets in `docs/screenshots/` are stylized placeholders for README layout.
+- Replay is deliberately limited to nine major milestones; what-if, operator,
+  methodology, model, retrospective, and data-status pages exit replay mode.
 
 ## License / data
 

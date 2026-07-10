@@ -207,6 +207,9 @@ def time_machine_head_to_head(
     """Aggregate meeting odds from the selected milestone bank."""
     try:
         snapshot = load_time_machine_snapshot(milestone_id)
+        known_team_ids = {team.team_id for team in snapshot.forecast.summary.teams}
+        if team_a not in known_team_ids or team_b not in known_team_ids:
+            raise KeyError("unknown team_id")
         return calculate_head_to_head_from_bank(
             time_machine_bank_path(milestone_id),
             team_a,
@@ -216,9 +219,7 @@ def time_machine_head_to_head(
         )
     except KeyError as exc:
         raise _time_machine_http_error(exc) from exc
-    except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
-    except (FileNotFoundError, RuntimeError) as exc:
+    except (FileNotFoundError, RuntimeError, ValueError, OSError) as exc:
         raise _time_machine_http_error(exc) from exc
 
 

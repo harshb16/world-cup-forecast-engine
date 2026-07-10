@@ -1,6 +1,12 @@
 """Milestone catalog and future-information leakage tests."""
 
+from pathlib import Path
+from unittest.mock import patch
+
+import pytest
+
 from app.models.domain import Group, Match, MatchResult, Team, TournamentConfig
+from app.models.schemas import TimeMachineManifestResponse, TimeMachineMilestoneResponse
 from app.services.time_machine_service import (
     MILESTONE_DEFINITIONS,
     derive_time_machine_seed,
@@ -65,3 +71,56 @@ def test_seed_is_deterministic_and_milestone_specific() -> None:
     first = derive_time_machine_seed("data-v1", "elo", "after_group_md1")
     assert first == derive_time_machine_seed("data-v1", "elo", "after_group_md1")
     assert first != derive_time_machine_seed("data-v1", "elo", "after_group_md2")
+
+
+def test_group_fixture_sequence_handles_utc_schedule_boundaries() -> None:
+    from app.services.time_machine_service import _group_matchday
+
+    raw = {"J6": {"group_id": "J", "kickoff_utc": "2026-06-28T02:00:00Z"}}
+    assert _group_matchday("J6", raw) == 3
+
+
+def test_manifest_rejects_stale_data_version(tmp_path: Path) -> None:
+    manifest = TimeMachineManifestResponse(
+        data_version="old-data",
+        model_version="elo",
+        simulation_count=1,
+        milestones=[],
+    )
+    (tmp_path / "manifest.json").write_text(manifest.model_dump_json())
+    from app.services.time_machine_service import load_time_machine_manifest
+
+    with patch("app.services.time_machine_service.get_time_machine_root", return_value=tmp_path), patch(
+        "app.services.time_machine_service.load_metadata",
+        return_value={"data_version": "new-data"},
+    ), pytest.raises(RuntimeError, match="stale"):
+        load_time_machine_manifest()
+
+
+def test_snapshot_rejects_corrupt_json(tmp_path: Path) -> None:
+    milestone = TimeMachineMilestoneResponse(
+        id="before_group_md1",
+        label="Before Matchday 1",
+        order=0,
+        phase="pre_tournament",
+        cutoff="group_md0",
+        known_result_count=0,
+        available=True,
+    )
+    manifest = TimeMachineManifestResponse(
+        data_version="data-v1",
+        model_version="elo",
+        simulation_count=1,
+        milestones=[milestone],
+    )
+    (tmp_path / "manifest.json").write_text(manifest.model_dump_json())
+    artifact_dir = tmp_path / "milestones" / milestone.id
+    artifact_dir.mkdir(parents=True)
+    (artifact_dir / "snapshot.json").write_text("{not-json")
+    from app.services.time_machine_service import load_time_machine_snapshot
+
+    with patch("app.services.time_machine_service.get_time_machine_root", return_value=tmp_path), patch(
+        "app.services.time_machine_service.load_metadata",
+        return_value={"data_version": "data-v1"},
+    ), pytest.raises(ValueError):
+        load_time_machine_snapshot(milestone.id)

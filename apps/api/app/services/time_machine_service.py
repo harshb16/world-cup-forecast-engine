@@ -217,6 +217,14 @@ def _played(match: Match) -> bool:
 
 def _group_matchday(match_id: str, raw_fixtures: dict[str, dict[str, Any]]) -> int | None:
     raw = raw_fixtures.get(match_id, {})
+    explicit = raw.get("matchday")
+    if isinstance(explicit, int) and 1 <= explicit <= 3:
+        return explicit
+    group_id = raw.get("group_id")
+    if isinstance(group_id, str) and match_id.startswith(group_id):
+        suffix = match_id.removeprefix(group_id)
+        if suffix.isdigit() and 1 <= int(suffix) <= 6:
+            return ((int(suffix) - 1) // 2) + 1
     value = raw.get("kickoff_utc") or raw.get("kickoff")
     if not value:
         return None

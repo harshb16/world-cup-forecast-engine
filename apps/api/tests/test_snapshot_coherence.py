@@ -97,7 +97,7 @@ def test_snapshot_bracket_matchups_are_internally_consistent() -> None:
         assert match["team_b"]["team_id"]
 
 
-def test_snapshot_round_of_32_follows_fifa_annex_c_row_67() -> None:
+def test_snapshot_round_of_32_follows_fifa_allocation_for_modal_thirds() -> None:
     snapshot = json.loads(BOOTSTRAP_SNAPSHOT_PATH.read_text(encoding="utf-8"))
     r32 = {
         match["match_number"]: match
@@ -105,6 +105,6 @@ def test_snapshot_round_of_32_follows_fifa_annex_c_row_67() -> None:
     }
 
     assert {r32[2]["team_a"]["group_id"], r32[2]["team_b"]["group_id"]} == {"D", "E"}
-    assert {r32[5]["team_a"]["group_id"], r32[5]["team_b"]["group_id"]} == {"F", "I"}
+    assert {r32[5]["team_a"]["group_id"], r32[5]["team_b"]["group_id"]} == {"G", "I"}
     assert {r32[9]["team_a"]["group_id"], r32[9]["team_b"]["group_id"]} == {"B", "D"}
     assert {r32[13]["team_a"]["group_id"], r32[13]["team_b"]["group_id"]} == {"B", "J"}

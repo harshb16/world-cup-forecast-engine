@@ -254,18 +254,21 @@ def get_published_team_path(team_id: str, data_mode: str) -> TeamPathResponse:
         load_forecast_snapshot,
         resolve_forecast_bank_path,
     )
+    from app.core.archive_config import is_archive_mode_active
     from app.services.data_loader import get_processed_data_dir
     from app.services.runtime_store import get_active_forecast_directory
 
     cache_path: Path | None = None
     archive_team_paths = get_processed_data_dir() / TEAM_PATHS_FILENAME
-    if archive_team_paths.exists():
+    if is_archive_mode_active() and archive_team_paths.exists():
         cache_path = archive_team_paths
     forecast_dir = get_active_forecast_directory()
     if cache_path is None and forecast_dir is not None:
         candidate = forecast_dir / TEAM_PATHS_FILENAME
         if candidate.exists():
             cache_path = candidate
+    if cache_path is None and archive_team_paths.exists():
+        cache_path = archive_team_paths
     if cache_path is None and BOOTSTRAP_TEAM_PATHS_PATH.exists():
         cache_path = BOOTSTRAP_TEAM_PATHS_PATH
 

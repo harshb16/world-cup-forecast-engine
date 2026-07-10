@@ -265,11 +265,14 @@ def main() -> None:
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--require-complete", action="store_true")
     args = parser.parse_args()
-    generate_time_machine_artifacts(
-        n_simulations=args.simulations,
-        force=args.force,
-        require_complete=args.require_complete,
-    )
+    try:
+        generate_time_machine_artifacts(
+            n_simulations=args.simulations,
+            force=args.force,
+            require_complete=args.require_complete,
+        )
+    except RuntimeError as exc:
+        parser.exit(1, f"error: {exc}\n")
 
 
 if __name__ == "__main__":

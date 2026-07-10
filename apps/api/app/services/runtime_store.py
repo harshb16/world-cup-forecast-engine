@@ -170,8 +170,9 @@ def publish_forecast_snapshot_record(
     snapshot_id: str,
     payload: dict[str, Any],
     bank_path: Path | None = None,
+    json_sidecars: dict[str, Any] | None = None,
 ) -> str:
-    """Persist one forecast snapshot payload and mark it active."""
+    """Persist a complete forecast bundle, then mark it active."""
     init_runtime_store()
     record_id = uuid.uuid4().hex
     created_at = datetime.now(tz=UTC).replace(microsecond=0).isoformat()
@@ -182,6 +183,19 @@ def publish_forecast_snapshot_record(
         json.dumps(payload, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    for filename, sidecar_payload in (json_sidecars or {}).items():
+        if Path(filename).name != filename:
+            raise ValueError(f"forecast sidecar must be a filename: {filename}")
+        (target_dir / filename).write_text(
+            json.dumps(
+                sidecar_payload,
+                indent=2,
+                ensure_ascii=False,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
 
     with _connect() as connection:
         connection.execute(

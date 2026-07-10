@@ -24,7 +24,6 @@ from app.services.analytics_service import (
 from app.services.bracket_service import plurality_bracket_from_bank
 from app.services.data_loader import load_metadata, load_tournament
 from app.services.runtime_store import (
-    get_active_forecast_directory,
     get_active_forecast_payload_path,
     publish_forecast_snapshot_record,
 )
@@ -143,8 +142,9 @@ def publish_forecast_snapshot(
     """Build then atomically publish a forecast snapshot."""
     from app.services.simulation_bank_service import build_simulation_bank
     from app.services.team_path_service import (
+        TEAM_PATHS_FILENAME,
         all_team_paths_from_bank,
-        write_team_paths_sidecar,
+        serialize_team_paths,
     )
 
     metadata = load_metadata(data_mode)
@@ -154,20 +154,18 @@ def publish_forecast_snapshot(
         data_version=metadata.get("data_version"),
     )
     snapshot = build_forecast_snapshot_from_bank(bank_path, bank_meta, data_mode)
+    team_paths = all_team_paths_from_bank(
+        bank_path,
+        data_mode,
+        model_type=str(bank_meta["model_version"]),
+        seed=int(bank_meta["master_seed"]),
+    )
     publish_forecast_snapshot_record(
         snapshot_id=snapshot.snapshot_id,
         payload=snapshot.model_dump(mode="json"),
         bank_path=bank_path,
+        json_sidecars={TEAM_PATHS_FILENAME: serialize_team_paths(team_paths)},
     )
-    forecast_dir = get_active_forecast_directory()
-    if forecast_dir is not None:
-        team_paths = all_team_paths_from_bank(
-            bank_path,
-            data_mode,
-            model_type=str(bank_meta["model_version"]),
-            seed=int(bank_meta["master_seed"]),
-        )
-        write_team_paths_sidecar(forecast_dir, team_paths)
     return snapshot
 
 

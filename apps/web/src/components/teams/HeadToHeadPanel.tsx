@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-import { DEFAULT_MODEL_TYPE, fetchHeadToHead, type HeadToHead } from "@/lib/api";
+import { DEFAULT_MODEL_TYPE, fetchHeadToHead, fetchTimeMachineHeadToHead, type HeadToHead } from "@/lib/api";
 import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
+import { useTimeMachine } from "@/components/time-machine/TimeMachineProvider";
 
 export function HeadToHeadPanel({
   teamAId,
@@ -14,6 +15,7 @@ export function HeadToHeadPanel({
   teamBId: string;
   title?: string;
 }) {
+  const replay = useTimeMachine();
   const [data, setData] = useState<HeadToHead | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -22,7 +24,10 @@ export function HeadToHeadPanel({
     let isActive = true;
     setLoading(true);
     setError(null);
-    fetchHeadToHead(teamAId, teamBId, DEFAULT_MODEL_TYPE)
+    const request = replay.isReplay && replay.milestoneId
+      ? fetchTimeMachineHeadToHead(replay.milestoneId, teamAId, teamBId)
+      : fetchHeadToHead(teamAId, teamBId, DEFAULT_MODEL_TYPE);
+    request
       .then((response) => {
         if (isActive) {
           setData(response);
@@ -46,7 +51,7 @@ export function HeadToHeadPanel({
     return () => {
       isActive = false;
     };
-  }, [teamAId, teamBId]);
+  }, [replay.isReplay, replay.milestoneId, teamAId, teamBId]);
 
   if (loading) {
     return (

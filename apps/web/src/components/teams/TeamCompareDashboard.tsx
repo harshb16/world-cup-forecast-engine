@@ -18,8 +18,11 @@ import {
   TeamProbability,
 } from "@/lib/api";
 import { formatNumber, formatPercent } from "@/lib/format";
+import { useTimeMachine } from "@/components/time-machine/TimeMachineProvider";
 
 export function TeamCompareDashboard() {
+  const replay = useTimeMachine();
+  const { isReplay, loadTeamPath, snapshot } = replay;
   const searchParams = useSearchParams();
   const [teams, setTeams] = useState<Team[]>([]);
   const [teamAId, setTeamAId] = useState(searchParams.get("a") ?? "");
@@ -59,14 +62,15 @@ export function TeamCompareDashboard() {
     setError(null);
 
     Promise.all([
-      fetchLatestForecast(),
-      fetchTeamPath(teamAId),
-      fetchTeamPath(teamBId),
+      isReplay ? Promise.resolve(snapshot?.forecast ?? null) : fetchLatestForecast(),
+      isReplay ? loadTeamPath(teamAId) : fetchTeamPath(teamAId),
+      isReplay ? loadTeamPath(teamBId) : fetchTeamPath(teamBId),
     ])
       .then(([snapshot, pathA, pathB]) => {
         if (!isActive) {
           return;
         }
+        if (!snapshot) throw new Error("Replay snapshot is still loading.");
         setProbabilities(
           new Map(snapshot.summary.teams.map((team) => [team.team_id, team])),
         );
@@ -88,7 +92,7 @@ export function TeamCompareDashboard() {
     return () => {
       isActive = false;
     };
-  }, [teamAId, teamBId]);
+  }, [isReplay, loadTeamPath, snapshot, teamAId, teamBId]);
 
   const teamA = useMemo(
     () => teams.find((team) => team.id === teamAId) ?? null,
@@ -217,6 +221,7 @@ function CompareColumn({
   probability: TeamProbability;
   path: TeamPath | null;
 }) {
+  const replay = useTimeMachine();
   return (
     <SectionCard>
       <div className="flex items-start justify-between gap-3">
@@ -229,7 +234,7 @@ function CompareColumn({
           </h2>
         </div>
         <Link
-          href={`/teams/${team.id}`}
+          href={replay.hrefFor(`/teams/${team.id}`)}
           className="text-sm font-semibold text-primary"
         >
           Open profile

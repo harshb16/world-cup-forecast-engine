@@ -9,11 +9,13 @@ export function GroupProbabilityCard({
   teams,
   probabilitiesByTeamId,
   chaos,
+  standings,
 }: {
   group: Group;
   teams: Team[];
   probabilitiesByTeamId: Map<string, TeamProbability>;
   chaos?: GroupChaosScore;
+  standings?: Array<Record<string, unknown>>;
 }) {
   const groupTeams = group.team_ids
     .map((teamId) => {
@@ -66,6 +68,26 @@ export function GroupProbabilityCard({
           </p>
         ) : null}
       </div>
+
+      {standings ? (
+        <div className="mt-5 overflow-x-auto rounded-md border border-border">
+          <table className="w-full min-w-[34rem] text-sm">
+            <thead className="bg-muted/60 text-xs uppercase text-muted-foreground">
+              <tr><th className="px-3 py-2 text-left">Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+              {standings.map((row) => {
+                const team = teams.find((candidate) => candidate.id === row.team_id);
+                return <tr key={String(row.team_id)} className="border-t border-border text-center">
+                  <td className="px-3 py-2 text-left font-semibold">{team?.name ?? String(row.team_id)}</td>
+                  <td>{String(row.played)}</td><td>{String(row.wins)}</td><td>{String(row.draws)}</td><td>{String(row.losses)}</td>
+                  <td>{String(row.goals_for)}</td><td>{String(row.goals_against)}</td><td>{String(row.goal_difference)}</td><td className="font-semibold">{String(row.points)}</td>
+                </tr>;
+              })}
+            </tbody>
+          </table>
+        </div>
+      ) : null}
 
       <div className="mt-5 space-y-3">
         <div className="flex items-center justify-between gap-3">

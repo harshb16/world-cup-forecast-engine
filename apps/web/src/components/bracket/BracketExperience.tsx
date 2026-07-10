@@ -26,6 +26,7 @@ import { formatModelLabel, formatNumber } from "@/lib/format";
 import { usePublishedForecast } from "@/hooks/usePublishedForecast";
 import { ADMIN_UI_ENABLED } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import { useTimeMachine } from "@/components/time-machine/TimeMachineProvider";
 
 import { ROUND_ORDER } from "./constants";
 import { MatchDetailDrawer } from "./MatchDetailDrawer";
@@ -36,16 +37,33 @@ import {
 } from "./utils";
 
 export function BracketExperience() {
+  const replay = useTimeMachine();
   const [simulationMode, setSimulationMode] = useState<"favorite" | "random">(
     "favorite",
   );
   const [seed, setSeed] = useState(42);
-  const [revealedMatchIds, setRevealedMatchIds] = useState<Set<string>>(
-    () => new Set(),
+  const replayKey = replay.milestoneId ?? "live";
+  const [revealState, setRevealState] = useState<{ key: string; ids: Set<string> }>(
+    () => ({ key: "live", ids: new Set() }),
   );
-  const [selectedMatch, setSelectedMatch] = useState<BracketMatch | null>(null);
+  const [selectionState, setSelectionState] = useState<{ key: string; match: BracketMatch | null }>(
+    () => ({ key: "live", match: null }),
+  );
+  const revealedMatchIds = revealState.key === replayKey ? revealState.ids : new Set<string>();
+  const selectedMatch = selectionState.key === replayKey ? selectionState.match : null;
+  const setRevealedMatchIds = (value: Set<string> | ((current: Set<string>) => Set<string>)) => {
+    setRevealState((current) => {
+      const ids = current.key === replayKey ? current.ids : new Set<string>();
+      return { key: replayKey, ids: typeof value === "function" ? value(ids) : value };
+    });
+  };
+  const setSelectedMatch = (match: BracketMatch | null) => setSelectionState({ key: replayKey, match });
 
   const loadBracket = useCallback(async () => {
+    if (replay.isReplay) {
+      if (!replay.snapshot) throw new Error("Replay snapshot is still loading.");
+      return replay.snapshot.forecast.bracket;
+    }
     if (simulationMode === "favorite") {
       const snapshot = await fetchLatestForecast();
       return snapshot.bracket;
@@ -55,7 +73,7 @@ export function BracketExperience() {
       simulation_mode: "random",
       seed,
     });
-  }, [seed, simulationMode]);
+  }, [replay.isReplay, replay.snapshot, seed, simulationMode]);
 
   const {
     data: trace,
@@ -196,7 +214,7 @@ export function BracketExperience() {
 
           <div className="flex flex-col gap-3 p-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap gap-2">
-              {(["favorite", "random"] as const).map((mode) => (
+              {(replay.isReplay ? (["favorite"] as const) : (["favorite", "random"] as const)).map((mode) => (
                 <button
                   key={mode}
                   type="button"
@@ -226,7 +244,7 @@ export function BracketExperience() {
                 label="Reset"
                 onClick={() => setRevealedMatchIds(new Set())}
               />
-              <ActionButton
+              {!replay.isReplay ? <ActionButton
                 icon={Shuffle}
                 label="New seed"
                 onClick={() => {
@@ -238,13 +256,13 @@ export function BracketExperience() {
                   setSelectedMatch(null);
                   setSeed((current) => current + 1);
                 }}
-              />
-              <ForecastRefreshControl
+              /> : null}
+              {!replay.isReplay ? <ForecastRefreshControl
                 isRefreshing={isRefreshing}
                 lastRunAt={lastRunAt}
                 onRefresh={refresh}
-              />
-              {ADMIN_UI_ENABLED ? (
+              /> : null}
+              {!replay.isReplay && ADMIN_UI_ENABLED ? (
                 <SyncResultsControl onSynced={refresh} />
               ) : null}
               <ActionButton

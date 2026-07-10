@@ -16,7 +16,7 @@ import { StageProbabilityTable } from "@/components/dashboard/StageProbabilityTa
 import { SyncResultsControl } from "@/components/SyncResultsControl";
 import { TitleRaceRail } from "@/components/dashboard/TitleRaceRail";
 import { MotionBorderBeam } from "@/components/ui/MotionBorderBeam";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { HelpText } from "@/components/ui/HelpText";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { SectionCard } from "@/components/ui/SectionCard";
@@ -36,6 +36,7 @@ import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
 import { usePublishedForecast } from "@/hooks/usePublishedForecast";
 import { ADMIN_UI_ENABLED } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import { useTimeMachine } from "@/components/time-machine/TimeMachineProvider";
 
 type DashboardForecast = {
   summary: SimulationSummary;
@@ -46,7 +47,18 @@ type DashboardForecast = {
 };
 
 export function HomeDashboard() {
+  const replay = useTimeMachine();
   const loadForecast = useCallback(async (): Promise<DashboardForecast> => {
+    if (replay.isReplay) {
+      if (!replay.snapshot) throw new Error("Replay snapshot is still loading.");
+      return {
+        summary: replay.snapshot.forecast.summary,
+        upsets: replay.snapshot.forecast.upsets,
+        groupChaos: replay.snapshot.forecast.group_chaos,
+        movers: replay.snapshot.movers,
+        featuredFinal: replay.snapshot.forecast.featured_final,
+      };
+    }
     const [snapshot, movers] = await Promise.all([
       fetchLatestForecast(),
       fetchProbabilityMovers(8),
@@ -58,7 +70,7 @@ export function HomeDashboard() {
       movers,
       featuredFinal: snapshot.featured_final,
     };
-  }, []);
+  }, [replay.isReplay, replay.snapshot]);
 
   const {
     data,
@@ -141,14 +153,11 @@ export function HomeDashboard() {
             <div>
               <div className="flex flex-wrap items-center gap-3">
                 <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 font-mono text-[0.68rem] font-semibold uppercase tracking-widest text-primary/90">
-                  Forecast snapshot
+                  {replay.isReplay ? "At this point" : "Forecast snapshot"}
                 </span>
-                <DataFreshness
-                  timestamp={summary.metadata.last_updated}
-                  compact
-                />
+                {!replay.isReplay ? <DataFreshness timestamp={summary.metadata.last_updated} compact /> : null}
               </div>
-              <div className="mt-4 flex flex-wrap items-start gap-3">
+              {!replay.isReplay ? <div className="mt-4 flex flex-wrap items-start gap-3">
                 {ADMIN_UI_ENABLED ? (
                   <SyncResultsControl onSynced={refresh} />
                 ) : null}
@@ -157,9 +166,9 @@ export function HomeDashboard() {
                   lastRunAt={lastRunAt}
                   onRefresh={refresh}
                 />
-              </div>
+              </div> : null}
               <p className="mt-6 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                Current title leader
+                {replay.isReplay ? "Title leader at this point" : "Current title leader"}
               </p>
               <h2 className="font-display mt-3 max-w-3xl text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl">
                 {insights.topChampion.team_name}
@@ -185,13 +194,11 @@ export function HomeDashboard() {
             </div>
 
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button render={<Link href="/bracket" />} size="lg">
+              <Link href={replay.hrefFor("/bracket")} className={buttonVariants({ size: "lg" })}>
                 Open bracket
                 <ArrowRight data-icon="inline-end" aria-hidden="true" />
-              </Button>
-              <Button render={<Link href="/what-if" />} variant="outline" size="lg">
-                Run scenario
-              </Button>
+              </Link>
+              {!replay.isReplay ? <Link href="/what-if" className={buttonVariants({ variant: "outline", size: "lg" })}>Run scenario</Link> : null}
             </div>
           </div>
           <div className="relative p-6 sm:p-7">

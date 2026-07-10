@@ -1,15 +1,16 @@
-import { ProbabilityTimeline } from "@/components/analytics/ProbabilityTimeline";
-import { PageHeader } from "@/components/PageHeader";
+import { permanentRedirect } from "next/navigation";
 
-export default function TimelinePage() {
-  return (
-    <>
-      <PageHeader
-        eyebrow="Timeline"
-        title="Probability movement"
-        description="Champion odds at each group matchday and knockout round as results are played."
-      />
-      <ProbabilityTimeline />
-    </>
-  );
+export default async function TimelinePage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const query = await searchParams;
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(query)) {
+    for (const item of Array.isArray(value) ? value : [value]) {
+      if (item !== undefined) params.append(key, item);
+    }
+  }
+  permanentRedirect(`/time-machine${params.size ? `?${params}` : ""}`);
 }

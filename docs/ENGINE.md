@@ -26,6 +26,7 @@ flowchart LR
         snapshot[forecast_snapshot.json]
         paths[team_paths.json]
         history[probability_history.json]
+        replay[time_machine/milestones/*]
     end
 
     subgraph ui [Read-heavy UI]
@@ -42,6 +43,7 @@ flowchart LR
     mc --> bank
     bank --> snapshot
     bank --> paths
+    bank --> replay
     snapshot --> dashboard
     snapshot --> teams
     paths --> teams
@@ -123,6 +125,35 @@ bash scripts/freeze_tournament_archive.sh
 WCO_ARCHIVE_MODE=wc2026 uvicorn app.main:app
 ```
 
+### Time-machine artifacts
+
+`time_machine_generator` slices the same frozen `TournamentConfig` at nine
+checkpoints: pre-kickoff, three group matchdays, and each knockout round through
+the final. Group fixtures remain scheduled with future results cleared; knockout
+fixtures after the cutoff are removed completely so future pairings cannot leak.
+
+Each available milestone contains:
+
+- `bank.npz` — the coherent Monte Carlo trace bank;
+- `snapshot.json` — forecast, observed group tables, sliced fixtures, movers, and provenance;
+- `team_paths.json` — lazy team-path responses derived from that bank.
+
+`manifest.json` records availability, data/model versions, seed, simulation count,
+fingerprint, byte size, and checksum. Seeds are SHA-256-derived from data version,
+model version, and milestone ID. Normal result sync does not regenerate replay;
+generation is an explicit offline operation with atomic JSON writes and fingerprint
+resume support.
+
+```bash
+cd apps/api
+WCO_TIME_MACHINE_SIMULATIONS=100000 \
+  python -m app.services.time_machine_generator --require-complete
+```
+
+The freeze script runs that completeness gate before copying the processed dataset.
+API replay reads never invoke Monte Carlo and return 503 for missing, corrupt, or
+stale artifacts.
+
 ## Determinism
 
 - Given the same `data_version`, `model_type`, `master_seed`, and `n_simulations`, bank generation is deterministic.
@@ -139,6 +170,8 @@ WCO_ARCHIVE_MODE=wc2026 uvicorn app.main:app
 | Team path explorer | `team_paths.json` or bank |
 | Head-to-head (knockout era) | Bank `knockout_opponents` arrays |
 | Timeline / retrospective | `probability_history.json` |
+| Replay-enabled surfaces | `time_machine/milestones/<id>/snapshot.json` |
+| Replay team paths / comparisons | Milestone `team_paths.json` / `bank.npz` |
 | What-if lab | Live scenario simulation (capped `N`) |
 
 ## Limitations (by design)

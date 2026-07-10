@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np
 
 from app.core.config import DEFAULT_MODEL_TYPE
-from app.models.domain import SimulationSummary
+from app.models.domain import SimulationSummary, TournamentConfig
 from app.models.schemas import (
     ModelType,
     SimulationMetadataResponse,
@@ -102,9 +102,11 @@ def build_simulation_bank(
     master_seed: int | None = None,
     batch_size: int = DEFAULT_BATCH_SIZE,
     max_workers: int | None = None,
+    config: TournamentConfig | None = None,
+    target_path: Path | None = None,
 ) -> tuple[Path, dict[str, object]]:
     """Run parallel simulation batches and persist one `.npz` bank."""
-    config = load_tournament(data_mode)
+    config = config or load_tournament(data_mode)
     team_ids = [team.id for team in config.teams]
     team_index = {team_id: index for index, team_id in enumerate(team_ids)}
     total = n_simulations or recommended_bank_size()
@@ -145,9 +147,13 @@ def build_simulation_bank(
                 batch_parts.append(trace)
 
     trace = _concat_batches(batch_parts)
-    target_dir = get_runtime_root() / "banks"
-    target_dir.mkdir(parents=True, exist_ok=True)
-    bank_path = target_dir / f"bank-{seed}-{total}.npz"
+    if target_path is None:
+        target_dir = get_runtime_root() / "banks"
+        target_dir.mkdir(parents=True, exist_ok=True)
+        bank_path = target_dir / f"bank-{seed}-{total}.npz"
+    else:
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        bank_path = target_path
     np.savez_compressed(
         bank_path,
         team_ids=np.array(team_ids, dtype=object),
@@ -364,13 +370,14 @@ def simulation_summary_response_from_bank(
     data_mode: str,
     model_type: ModelType,
     seed: int,
+    config: TournamentConfig | None = None,
 ) -> SimulationSummaryResponse:
     """Build API summary response from a stored simulation bank."""
     from app.services.simulation_service import _to_response
 
     bank = load_bank_arrays(bank_path)
     summary = simulation_summary_from_bank(bank_path)
-    teams = load_tournament(data_mode).teams
+    teams = (config or load_tournament(data_mode)).teams
     metadata = SimulationMetadataResponse(
         n_simulations=int(bank["n_simulations"]),  # type: ignore[arg-type]
         model_type=model_type,
@@ -385,6 +392,7 @@ def third_place_tracker_from_bank(
     bank_path: Path,
     data_mode: str,
     model_type: ModelType = DEFAULT_MODEL_TYPE,
+    config: TournamentConfig | None = None,
 ) -> ThirdPlaceTrackerResponse:
     """Build third-place tracker response from a stored simulation bank."""
     bank = load_bank_arrays(bank_path)
@@ -395,7 +403,7 @@ def third_place_tracker_from_bank(
     points: np.ndarray = bank["points"]  # type: ignore[assignment]
     qualifier_order: np.ndarray = bank["qualifier_order"]  # type: ignore[assignment]
 
-    config = load_tournament(data_mode)
+    config = config or load_tournament(data_mode)
     teams_by_id = {team.id: team for team in config.teams}
     builder = WorldCup2026BracketBuilder()
     group_matches = [match for match in config.matches if match.stage == "group"]

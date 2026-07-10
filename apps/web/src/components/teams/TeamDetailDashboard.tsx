@@ -27,6 +27,7 @@ import {
   TeamPathStage,
 } from "@/lib/api";
 import { formatModelLabel, formatNumber, formatPercent } from "@/lib/format";
+import { useTimeMachine } from "@/components/time-machine/TimeMachineProvider";
 
 type TeamDetailData = {
   groups: Group[];
@@ -37,6 +38,8 @@ type TeamDetailData = {
 };
 
 export function TeamDetailDashboard() {
+  const replay = useTimeMachine();
+  const { isReplay, loadTeamPath, snapshot } = replay;
   const params = useParams<{ teamId: string }>();
   const teamId = params.teamId;
   const [data, setData] = useState<TeamDetailData | null>(null);
@@ -49,10 +52,11 @@ export function TeamDetailDashboard() {
       fetchGroups(),
       fetchTeams(),
       fetchMetadata(),
-      fetchTeamPath(teamId),
-      fetchLatestForecast(),
+      isReplay ? loadTeamPath(teamId) : fetchTeamPath(teamId),
+      isReplay ? Promise.resolve(snapshot?.forecast ?? null) : fetchLatestForecast(),
     ])
       .then(([groups, teams, metadata, path, snapshot]) => {
+        if (!snapshot) throw new Error("Replay snapshot is still loading.");
         if (isActive) {
           setData({
             groups,
@@ -76,7 +80,7 @@ export function TeamDetailDashboard() {
     return () => {
       isActive = false;
     };
-  }, [teamId]);
+  }, [isReplay, loadTeamPath, snapshot, teamId]);
 
   const team = useMemo(
     () => data?.teams.find((candidate) => candidate.id === teamId),
@@ -106,7 +110,7 @@ export function TeamDetailDashboard() {
   return (
     <div className="space-y-5">
       <Link
-        href="/teams"
+        href={replay.hrefFor("/teams")}
         className="inline-flex text-sm font-semibold text-primary transition hover:text-primary"
       >
         Back to teams
@@ -132,7 +136,7 @@ export function TeamDetailDashboard() {
               {group?.name ?? team.group_id} · Rating {formatNumber(team.rating)}
             </p>
             <Link
-              href={`/teams/compare?a=${team.id}`}
+              href={replay.hrefFor(`/teams/compare?a=${team.id}`)}
               className="mt-3 inline-flex text-sm font-semibold text-primary"
             >
               Compare with another team
@@ -176,7 +180,7 @@ export function TeamDetailDashboard() {
           </p>
         )}
       </SectionCard>
-      <DataStatusCard metadata={data.metadata} />
+      {!replay.isReplay ? <DataStatusCard metadata={data.metadata} /> : null}
 
       <TeamPathExplorer path={data.path} teamId={teamId} />
 

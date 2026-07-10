@@ -37,6 +37,8 @@ from app.models.schemas import (
     ThirdPlaceTrackerResponse,
     TeamPathRequest,
     TeamPathResponse,
+    TimeMachineManifestResponse,
+    TimeMachineSnapshotResponse,
     UpsetRadarResponse,
 )
 from app.services.analytics_service import (
@@ -88,8 +90,22 @@ from app.services.simulation_service import (
 )
 from app.services.team_path_service import calculate_team_path, get_published_team_path
 from app.services.third_place_tracker_service import calculate_third_place_tracker
+from app.services.time_machine_service import (
+    load_time_machine_manifest,
+    load_time_machine_probability_history,
+    load_time_machine_snapshot,
+    load_time_machine_team_path,
+    time_machine_bank_path,
+)
+from app.services.head_to_head_service import calculate_head_to_head_from_bank
 
 router = APIRouter()
+
+
+def _time_machine_http_error(exc: Exception) -> HTTPException:
+    if isinstance(exc, KeyError):
+        return HTTPException(status_code=404, detail="Replay milestone or team not found.")
+    return HTTPException(status_code=503, detail=str(exc))
 
 
 @router.get("/health", response_model=HealthResponse)
@@ -144,6 +160,67 @@ def forecast_status() -> ForecastStatusResponse:
         return load_forecast_status()
     except FileNotFoundError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+
+@router.get("/time-machine/milestones", response_model=TimeMachineManifestResponse)
+def time_machine_milestones() -> TimeMachineManifestResponse:
+    """Return the precomputed replay catalog and provenance."""
+    try:
+        return load_time_machine_manifest()
+    except (FileNotFoundError, RuntimeError, ValueError) as exc:
+        raise _time_machine_http_error(exc) from exc
+
+
+@router.get(
+    "/time-machine/milestones/{milestone_id}",
+    response_model=TimeMachineSnapshotResponse,
+)
+def time_machine_snapshot(milestone_id: str) -> TimeMachineSnapshotResponse:
+    """Return one precomputed milestone snapshot."""
+    try:
+        return load_time_machine_snapshot(milestone_id)
+    except (KeyError, FileNotFoundError, RuntimeError, ValueError) as exc:
+        raise _time_machine_http_error(exc) from exc
+
+
+@router.get(
+    "/time-machine/milestones/{milestone_id}/team-path/{team_id}",
+    response_model=TeamPathResponse,
+)
+def time_machine_team_path(milestone_id: str, team_id: str) -> TeamPathResponse:
+    """Return a milestone-specific precomputed path for one team."""
+    try:
+        return load_time_machine_team_path(milestone_id, team_id)
+    except (KeyError, FileNotFoundError, RuntimeError, ValueError) as exc:
+        raise _time_machine_http_error(exc) from exc
+
+
+@router.get(
+    "/time-machine/milestones/{milestone_id}/head-to-head",
+    response_model=HeadToHeadResponse,
+)
+def time_machine_head_to_head(
+    milestone_id: str,
+    team_a: str,
+    team_b: str,
+) -> HeadToHeadResponse:
+    """Aggregate meeting odds from the selected milestone bank."""
+    try:
+        snapshot = load_time_machine_snapshot(milestone_id)
+        known_team_ids = {team.team_id for team in snapshot.forecast.summary.teams}
+        if team_a not in known_team_ids or team_b not in known_team_ids:
+            raise KeyError("unknown team_id")
+        return calculate_head_to_head_from_bank(
+            time_machine_bank_path(milestone_id),
+            team_a,
+            team_b,
+            get_data_mode(),
+            model_type=snapshot.provenance.model_version,
+        )
+    except KeyError as exc:
+        raise _time_machine_http_error(exc) from exc
+    except (FileNotFoundError, RuntimeError, ValueError, OSError) as exc:
+        raise _time_machine_http_error(exc) from exc
 
 
 @router.post(
@@ -446,12 +523,20 @@ def probability_history(
     n_simulations: int = Query(default=500, ge=1, le=1_000),
     seed: int = 42,
 ) -> ProbabilityHistoryResponse:
-    return build_probability_timeline(
-        get_data_mode(),
-        model_type=model_type,
-        n_simulations=n_simulations,
-        seed=seed,
-    )
+    try:
+        return load_time_machine_probability_history()
+    except (FileNotFoundError, RuntimeError, ValueError):
+        if is_archive_mode_active():
+            raise HTTPException(
+                status_code=503,
+                detail="Time-machine artifacts are required in archive mode.",
+            )
+        return build_probability_timeline(
+            get_data_mode(),
+            model_type=model_type,
+            n_simulations=n_simulations,
+            seed=seed,
+        )
 
 
 @router.get("/analytics/probability-movers", response_model=ProbabilityMoversResponse)

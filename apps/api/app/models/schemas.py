@@ -19,6 +19,12 @@ ModelType = Literal[
 ]
 
 MatchStatus = Literal["scheduled", "in_play", "finished"]
+TimeMachinePhase = Literal[
+    "pre_tournament",
+    "group_stage",
+    "knockout",
+    "complete",
+]
 
 
 class HealthResponse(BaseModel):
@@ -564,6 +570,60 @@ class ProbabilityMoversResponse(BaseModel):
     fallers: list[ProbabilityMoverResponse]
     previous_timestamp: str | None = None
     current_timestamp: str | None = None
+
+
+class TimeMachineMilestoneResponse(BaseModel):
+    """One deterministic replay checkpoint in display order."""
+
+    id: str
+    label: str
+    order: int = Field(ge=0)
+    phase: TimeMachinePhase
+    cutoff: str
+    known_result_count: int = Field(ge=0)
+    available: bool
+    previous_id: str | None = None
+    next_id: str | None = None
+    seed: int | None = None
+    simulation_count: int | None = Field(default=None, ge=1)
+    artifact_size_bytes: int | None = Field(default=None, ge=0)
+    checksum: str | None = None
+    fingerprint: str | None = None
+
+
+class TimeMachineManifestResponse(BaseModel):
+    """Replay artifact catalog and frozen-model provenance."""
+
+    reconstructed: bool = True
+    archive_mode: str | None = None
+    data_version: str
+    model_version: str
+    generated_at: str | None = None
+    simulation_count: int = Field(ge=1)
+    milestones: list[TimeMachineMilestoneResponse]
+
+
+class TimeMachineProvenanceResponse(BaseModel):
+    """Inputs that make a replay artifact reproducible."""
+
+    reconstructed: bool = True
+    data_version: str
+    model_version: str
+    seed: int
+    simulation_count: int = Field(ge=1)
+    generated_at: str
+    checksum: str | None = None
+
+
+class TimeMachineSnapshotResponse(BaseModel):
+    """Precomputed product state at one replay milestone."""
+
+    milestone: TimeMachineMilestoneResponse
+    provenance: TimeMachineProvenanceResponse
+    forecast: "ForecastSnapshotResponse"
+    group_tables: dict[str, list[dict[str, object]]] = Field(default_factory=dict)
+    fixtures: list[dict[str, object]] = Field(default_factory=list)
+    movers: ProbabilityMoversResponse
 
 
 class MatchdayFixtureResponse(BaseModel):

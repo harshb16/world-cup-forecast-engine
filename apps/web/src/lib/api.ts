@@ -445,6 +445,56 @@ export type ForecastSnapshot = {
   uncertainty: ForecastUncertainty;
 };
 
+export type TimeMachinePhase =
+  | "pre_tournament"
+  | "group_stage"
+  | "knockout"
+  | "complete";
+
+export type TimeMachineMilestone = {
+  id: string;
+  label: string;
+  order: number;
+  phase: TimeMachinePhase;
+  cutoff: string;
+  known_result_count: number;
+  available: boolean;
+  previous_id: string | null;
+  next_id: string | null;
+  seed: number | null;
+  simulation_count: number | null;
+  artifact_size_bytes: number | null;
+  checksum: string | null;
+  fingerprint: string | null;
+};
+
+export type TimeMachineManifest = {
+  reconstructed: true;
+  archive_mode: string | null;
+  data_version: string;
+  model_version: string;
+  generated_at: string | null;
+  simulation_count: number;
+  milestones: TimeMachineMilestone[];
+};
+
+export type TimeMachineSnapshot = {
+  milestone: TimeMachineMilestone;
+  provenance: {
+    reconstructed: true;
+    data_version: string;
+    model_version: string;
+    seed: number;
+    simulation_count: number;
+    generated_at: string;
+    checksum: string | null;
+  };
+  forecast: ForecastSnapshot;
+  group_tables: Record<string, Array<Record<string, unknown>>>;
+  fixtures: Match[];
+  movers: ProbabilityMovers;
+};
+
 export type ModelComparisonDelta = {
   model_type: ModelType;
   baseline_model: ModelType;
@@ -567,6 +617,38 @@ export async function fetchDataStatus(): Promise<DataStatus> {
 
 export async function fetchLatestForecast(): Promise<ForecastSnapshot> {
   return fetchJson<ForecastSnapshot>("/forecast/latest");
+}
+
+export async function fetchTimeMachineManifest(): Promise<TimeMachineManifest> {
+  return fetchJson<TimeMachineManifest>("/time-machine/milestones");
+}
+
+export async function fetchTimeMachineSnapshot(
+  milestoneId: string,
+): Promise<TimeMachineSnapshot> {
+  return fetchJson<TimeMachineSnapshot>(
+    `/time-machine/milestones/${encodeURIComponent(milestoneId)}`,
+  );
+}
+
+export async function fetchTimeMachineTeamPath(
+  milestoneId: string,
+  teamId: string,
+): Promise<TeamPath> {
+  return fetchJson<TeamPath>(
+    `/time-machine/milestones/${encodeURIComponent(milestoneId)}/team-path/${encodeURIComponent(teamId)}`,
+  );
+}
+
+export async function fetchTimeMachineHeadToHead(
+  milestoneId: string,
+  teamA: string,
+  teamB: string,
+): Promise<HeadToHead> {
+  const query = new URLSearchParams({ team_a: teamA, team_b: teamB });
+  return fetchJson<HeadToHead>(
+    `/time-machine/milestones/${encodeURIComponent(milestoneId)}/head-to-head?${query}`,
+  );
 }
 
 export async function fetchForecastStatus(): Promise<ForecastStatus> {

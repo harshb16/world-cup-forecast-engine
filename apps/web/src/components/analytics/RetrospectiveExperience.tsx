@@ -55,12 +55,12 @@ export function RetrospectiveExperience() {
 
   useEffect(() => {
     let isActive = true;
-    setError(null);
     Promise.all([fetchRetrospective(modelType), fetchTeams()])
       .then(([data, teamData]) => {
         if (isActive) {
           setRetrospective(data);
           setTeams(teamData);
+          setError(null);
         }
       })
       .catch((caughtError: unknown) => {
@@ -139,7 +139,10 @@ export function RetrospectiveExperience() {
             <select
               className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
               value={modelType}
-              onChange={(event) => setModelType(event.target.value as ModelType)}
+              onChange={(event) => {
+                setError(null);
+                setModelType(event.target.value as ModelType);
+              }}
             >
               {SCORING_MODELS.map((model) => (
                 <option key={model} value={model}>

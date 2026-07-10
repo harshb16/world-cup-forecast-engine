@@ -22,34 +22,37 @@ export function HeadToHeadPanel({
 
   useEffect(() => {
     let isActive = true;
-    setLoading(true);
-    setError(null);
-    const request = replay.isReplay && replay.milestoneId
-      ? fetchTimeMachineHeadToHead(replay.milestoneId, teamAId, teamBId)
-      : fetchHeadToHead(teamAId, teamBId, DEFAULT_MODEL_TYPE);
-    request
-      .then((response) => {
-        if (isActive) {
-          setData(response);
-        }
-      })
-      .catch((caught: unknown) => {
-        if (isActive) {
-          setError(
-            caught instanceof Error
-              ? caught.message
-              : "Head-to-head request failed",
-          );
-        }
-      })
-      .finally(() => {
-        if (isActive) {
-          setLoading(false);
-        }
-      });
+    const requestTimer = window.setTimeout(() => {
+      setLoading(true);
+      setError(null);
+      const request = replay.isReplay && replay.milestoneId
+        ? fetchTimeMachineHeadToHead(replay.milestoneId, teamAId, teamBId)
+        : fetchHeadToHead(teamAId, teamBId, DEFAULT_MODEL_TYPE);
+      request
+        .then((response) => {
+          if (isActive) {
+            setData(response);
+          }
+        })
+        .catch((caught: unknown) => {
+          if (isActive) {
+            setError(
+              caught instanceof Error
+                ? caught.message
+                : "Head-to-head request failed",
+            );
+          }
+        })
+        .finally(() => {
+          if (isActive) {
+            setLoading(false);
+          }
+        });
+    }, 0);
 
     return () => {
       isActive = false;
+      window.clearTimeout(requestTimer);
     };
   }, [replay.isReplay, replay.milestoneId, teamAId, teamBId]);
 

@@ -34,7 +34,8 @@ export function DataStatusDashboard() {
   }, []);
 
   useEffect(() => {
-    void refresh();
+    const initialRefresh = window.setTimeout(() => void refresh(), 0);
+    return () => window.clearTimeout(initialRefresh);
   }, [refresh]);
 
   if (loading && !status) {

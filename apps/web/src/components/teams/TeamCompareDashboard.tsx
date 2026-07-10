@@ -52,45 +52,48 @@ export function TeamCompareDashboard() {
   }, []);
 
   useEffect(() => {
-    if (!teamAId || !teamBId || teamAId === teamBId) {
-      setLoading(false);
-      return;
-    }
-
     let isActive = true;
-    setLoading(true);
-    setError(null);
+    const requestTimer = window.setTimeout(() => {
+      if (!teamAId || !teamBId || teamAId === teamBId) {
+        setLoading(false);
+        return;
+      }
 
-    Promise.all([
-      isReplay ? Promise.resolve(snapshot?.forecast ?? null) : fetchLatestForecast(),
-      isReplay ? loadTeamPath(teamAId) : fetchTeamPath(teamAId),
-      isReplay ? loadTeamPath(teamBId) : fetchTeamPath(teamBId),
-    ])
-      .then(([snapshot, pathA, pathB]) => {
-        if (!isActive) {
-          return;
-        }
-        if (!snapshot) throw new Error("Replay snapshot is still loading.");
-        setProbabilities(
-          new Map(snapshot.summary.teams.map((team) => [team.team_id, team])),
-        );
-        setPaths({ a: pathA, b: pathB });
-      })
-      .catch((caught: unknown) => {
-        if (isActive) {
-          setError(
-            caught instanceof Error ? caught.message : "Compare request failed",
+      setLoading(true);
+      setError(null);
+
+      Promise.all([
+        isReplay ? Promise.resolve(snapshot?.forecast ?? null) : fetchLatestForecast(),
+        isReplay ? loadTeamPath(teamAId) : fetchTeamPath(teamAId),
+        isReplay ? loadTeamPath(teamBId) : fetchTeamPath(teamBId),
+      ])
+        .then(([snapshot, pathA, pathB]) => {
+          if (!isActive) {
+            return;
+          }
+          if (!snapshot) throw new Error("Replay snapshot is still loading.");
+          setProbabilities(
+            new Map(snapshot.summary.teams.map((team) => [team.team_id, team])),
           );
-        }
-      })
-      .finally(() => {
-        if (isActive) {
-          setLoading(false);
-        }
-      });
+          setPaths({ a: pathA, b: pathB });
+        })
+        .catch((caught: unknown) => {
+          if (isActive) {
+            setError(
+              caught instanceof Error ? caught.message : "Compare request failed",
+            );
+          }
+        })
+        .finally(() => {
+          if (isActive) {
+            setLoading(false);
+          }
+        });
+    }, 0);
 
     return () => {
       isActive = false;
+      window.clearTimeout(requestTimer);
     };
   }, [isReplay, loadTeamPath, snapshot, teamAId, teamBId]);
 

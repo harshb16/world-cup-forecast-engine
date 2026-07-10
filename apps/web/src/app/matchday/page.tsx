@@ -54,6 +54,7 @@ export default function MatchdayPage() {
         <div className="space-y-10">
           <FixturesSection fixtures={data.fixtures} />
           <GroupStandingsSection
+            key={groupStageComplete ? "complete" : "active"}
             groups={data.groups}
             collapsed={groupStageComplete}
           />
@@ -309,10 +310,6 @@ function GroupStandingsSection({
   collapsed: boolean;
 }) {
   const [open, setOpen] = useState(!collapsed);
-
-  useEffect(() => {
-    setOpen(!collapsed);
-  }, [collapsed]);
 
   return (
     <section>

@@ -16,6 +16,7 @@ from app.models.schemas import (
     ForecastSnapshotResponse,
     ForecastStatusResponse,
 )
+from app.models.domain import TournamentConfig
 from app.services.analytics_service import (
     calculate_group_chaos_from_summary,
     calculate_upset_radar,
@@ -70,6 +71,8 @@ def build_forecast_snapshot_from_bank(
     bank_path: Path,
     bank_meta: dict[str, object],
     data_mode: str = "processed",
+    config: TournamentConfig | None = None,
+    generated_at: str | None = None,
 ) -> ForecastSnapshotResponse:
     """Derive all dashboard forecast artifacts from one simulation bank."""
     from app.services.simulation_bank_service import (
@@ -86,17 +89,23 @@ def build_forecast_snapshot_from_bank(
         data_mode=data_mode,
         model_type=model_type,  # type: ignore[arg-type]
         seed=master_seed,
+        config=config,
     )
-    third_place = third_place_tracker_from_bank(bank_path, data_mode, model_type)  # type: ignore[arg-type]
+    third_place = third_place_tracker_from_bank(
+        bank_path, data_mode, model_type, config=config
+    )  # type: ignore[arg-type]
     group_chaos = calculate_group_chaos_from_summary(
         summary,
         data_mode,
         model_type,  # type: ignore[arg-type]
+        config=config,
     )
-    upsets = calculate_upset_radar(data_mode, model_type, limit=6)  # type: ignore[arg-type]
-    bracket = plurality_bracket_from_bank(bank_path, bank_meta, data_mode)
+    upsets = calculate_upset_radar(
+        data_mode, model_type, limit=6, config=config
+    )  # type: ignore[arg-type]
+    bracket = plurality_bracket_from_bank(bank_path, bank_meta, data_mode, config=config)
     featured_final = bracket.rounds["Final"][0]
-    config = load_tournament(data_mode)
+    config = config or load_tournament(data_mode)
     upcoming_fixtures = build_upcoming_fixture_outlook(
         config,
         data_mode=data_mode,
@@ -106,7 +115,7 @@ def build_forecast_snapshot_from_bank(
         summary.champion_probabilities,
         n_simulations=n_simulations,
     )
-    generated_at = datetime.now(tz=UTC).replace(microsecond=0).isoformat()
+    generated_at = generated_at or datetime.now(tz=UTC).replace(microsecond=0).isoformat()
     snapshot_id = build_snapshot_id(
         data_version=summary.metadata.data_version,
         generated_at=generated_at,

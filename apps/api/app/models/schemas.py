@@ -584,6 +584,11 @@ class TimeMachineMilestoneResponse(BaseModel):
     available: bool
     previous_id: str | None = None
     next_id: str | None = None
+    seed: int | None = None
+    simulation_count: int | None = Field(default=None, ge=1)
+    artifact_size_bytes: int | None = Field(default=None, ge=0)
+    checksum: str | None = None
+    fingerprint: str | None = None
 
 
 class TimeMachineManifestResponse(BaseModel):

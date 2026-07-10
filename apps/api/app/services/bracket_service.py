@@ -48,11 +48,12 @@ def plurality_bracket_from_bank(
     bank_path: Path,
     bank_meta: dict[str, object],
     data_mode: str,
+    config: TournamentConfig | None = None,
 ) -> BracketSimulationResponse:
     """Build a bank plurality knockout tree for publish and snapshot reads."""
     bank = load_bank_arrays(bank_path)
     model_type = str(bank_meta["model_version"])
-    base_config = load_tournament(data_mode)
+    base_config = config or load_tournament(data_mode)
     teams_by_id = {team.id: team for team in base_config.teams}
     base_match_model = create_match_model(model_type, data_mode)  # type: ignore[arg-type]
     match_model = _MostLikelyMatchModel(base_match_model)
@@ -161,9 +162,11 @@ def representative_bracket_from_bank(
 def run_bracket_simulation(
     request: BracketSimulateRequest,
     data_mode: str,
+    *,
+    config: TournamentConfig | None = None,
 ) -> BracketSimulationResponse:
     """Run one tournament trace for client-side bracket reveal."""
-    base_config = load_tournament(data_mode)
+    base_config = config or load_tournament(data_mode)
     config = apply_result_overrides(base_config, request.result_overrides)
     teams_by_id = {team.id: team for team in config.teams}
     base_match_model = create_match_model(request.model_type, data_mode)

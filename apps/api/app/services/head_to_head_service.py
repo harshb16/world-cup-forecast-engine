@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 
 from app.core.config import DEFAULT_MODEL_TYPE
+from app.models.domain import TournamentConfig
 from app.models.schemas import HeadToHeadResponse
 from app.services.bracket_materialization_service import is_group_stage_complete
 from app.services.data_loader import load_tournament
@@ -59,9 +60,10 @@ def calculate_head_to_head_from_bank(
     team_b_id: str,
     data_mode: str,
     model_type: str = DEFAULT_MODEL_TYPE,
+    config: TournamentConfig | None = None,
 ) -> HeadToHeadResponse:
     """Derive meeting probabilities from stored knockout opponent traces."""
-    config = load_tournament(data_mode)
+    config = config or load_tournament(data_mode)
     teams_by_id = {team.id: team for team in config.teams}
     if team_a_id not in teams_by_id or team_b_id not in teams_by_id:
         raise ValueError("unknown team_id")

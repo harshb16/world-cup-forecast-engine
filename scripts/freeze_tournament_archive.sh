@@ -11,11 +11,6 @@ if [[ ! -d "$SOURCE_DIR" ]]; then
   exit 1
 fi
 
-mkdir -p "$TARGET_DIR"
-rsync -a --delete \
-  --exclude '__pycache__/' \
-  "$SOURCE_DIR/" "$TARGET_DIR/"
-
 cd "$ROOT/apps/api"
 if [[ -f "$ROOT/.venv/bin/activate" ]]; then
   # shellcheck disable=SC1091
@@ -24,6 +19,13 @@ elif [[ -f ".venv/bin/activate" ]]; then
   # shellcheck disable=SC1091
   source ".venv/bin/activate"
 fi
+
+python -m app.services.time_machine_generator --require-complete
+
+mkdir -p "$TARGET_DIR"
+rsync -a --delete \
+  --exclude '__pycache__/' \
+  "$SOURCE_DIR/" "$TARGET_DIR/"
 
 python - <<'PY'
 from __future__ import annotations
@@ -62,6 +64,10 @@ manifest = {
         "probability_history.json",
         "team_paths.json",
         ARCHIVE_BANK_FILENAME,
+        "time_machine/manifest.json",
+        "time_machine/milestones/*/snapshot.json",
+        "time_machine/milestones/*/team_paths.json",
+        "time_machine/milestones/*/bank.npz",
     ],
 }
 manifest_path = target_dir / ARCHIVE_MANIFEST_FILENAME

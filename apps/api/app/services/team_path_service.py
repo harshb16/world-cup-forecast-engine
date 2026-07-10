@@ -9,6 +9,7 @@ from pathlib import Path
 import numpy as np
 
 from app.core.config import BOOTSTRAP_PROCESSED_DIR, DEFAULT_MODEL_TYPE
+from app.models.domain import TournamentConfig
 from app.models.schemas import (
     BracketTeamResponse,
     SimulationMetadataResponse,
@@ -114,6 +115,7 @@ def team_path_from_bank(
     *,
     model_type: str = DEFAULT_MODEL_TYPE,
     seed: int | None = None,
+    config: TournamentConfig | None = None,
 ) -> TeamPathResponse:
     """Derive one team's knockout path from a stored simulation bank."""
     bank = load_bank_arrays(bank_path)
@@ -125,7 +127,7 @@ def team_path_from_bank(
         payload = np.load(bank_path, allow_pickle=True)
         seed = int(payload["master_seed"])
 
-    config = load_tournament(data_mode)
+    config = config or load_tournament(data_mode)
     teams_by_id = {team.id: team for team in config.teams}
     team_index = team_ids.index(team_id)
     n_simulations: int = bank["n_simulations"]  # type: ignore[assignment]
@@ -166,6 +168,7 @@ def all_team_paths_from_bank(
     *,
     model_type: str = DEFAULT_MODEL_TYPE,
     seed: int | None = None,
+    config: TournamentConfig | None = None,
 ) -> dict[str, TeamPathResponse]:
     """Derive knockout paths for every team in a stored simulation bank."""
     bank = load_bank_arrays(bank_path)
@@ -177,6 +180,7 @@ def all_team_paths_from_bank(
             data_mode,
             model_type=model_type,
             seed=seed,
+            config=config,
         )
         for team_id in team_ids
     }

@@ -13,6 +13,9 @@ from app.core.archive_config import get_archive_data_dir
 from app.core.config import DEFAULT_MODEL_TYPE
 from app.models.domain import Match, TournamentConfig
 from app.models.schemas import (
+    ProbabilityHistoryResponse,
+    ProbabilitySnapshotResponse,
+    TeamPathResponse,
     TimeMachineManifestResponse,
     TimeMachineMilestoneResponse,
     TimeMachineSnapshotResponse,
@@ -147,6 +150,34 @@ def load_time_machine_snapshot(milestone_id: str) -> TimeMachineSnapshotResponse
     if not path.exists():
         raise FileNotFoundError(f"Time-machine artifact is missing for {milestone_id}.")
     return TimeMachineSnapshotResponse.model_validate_json(path.read_text(encoding="utf-8"))
+
+
+def load_time_machine_team_path(milestone_id: str, team_id: str) -> TeamPathResponse:
+    """Load one team path from a milestone sidecar without simulation."""
+    load_time_machine_snapshot(milestone_id)
+    payload = json.loads(time_machine_team_paths_path(milestone_id).read_text(encoding="utf-8"))
+    if team_id not in payload:
+        raise KeyError(team_id)
+    return TeamPathResponse.model_validate(payload[team_id])
+
+
+def load_time_machine_probability_history() -> ProbabilityHistoryResponse:
+    """Build chart-sized champion history from available snapshots."""
+    manifest = load_time_machine_manifest()
+    snapshots = []
+    for milestone in manifest.milestones:
+        if not milestone.available:
+            continue
+        snapshot = load_time_machine_snapshot(milestone.id)
+        snapshots.append(
+            ProbabilitySnapshotResponse(
+                label=milestone.label,
+                milestone_id=milestone.id,
+                matchday=milestone.order if milestone.phase == "group_stage" else None,
+                champion_probabilities=snapshot.forecast.summary.champion_probabilities,
+            )
+        )
+    return ProbabilityHistoryResponse(snapshots=snapshots)
 
 
 def time_machine_bank_path(milestone_id: str) -> Path:

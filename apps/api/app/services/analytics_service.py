@@ -7,6 +7,8 @@ from pathlib import Path
 
 import numpy as np
 
+from app.models.domain import TournamentConfig
+
 from app.core.config import DEFAULT_MODEL_TYPE
 from app.models.schemas import (
     BracketSimulateRequest,
@@ -56,9 +58,10 @@ def calculate_upset_radar(
     data_mode: str,
     model_type: ModelType = DEFAULT_MODEL_TYPE,
     limit: int = 12,
+    config: TournamentConfig | None = None,
 ) -> UpsetRadarResponse:
     """Rank fixtures by upset risk using advance probability gaps."""
-    config = load_tournament(data_mode)
+    config = config or load_tournament(data_mode)
     teams_by_id = {team.id: team for team in config.teams}
     match_model = create_match_model(model_type, data_mode)
     upsets: list[UpsetFixtureResponse] = []
@@ -106,6 +109,7 @@ def calculate_upset_radar(
     bracket = run_bracket_simulation(
         BracketSimulateRequest(model_type=model_type, simulation_mode="favorite", seed=42),
         data_mode,
+        config=config,
     )
     for stage, matches in bracket.rounds.items():
         stage_weight = STAGE_IMPORTANCE.get(stage, 1.0)
@@ -183,9 +187,10 @@ def calculate_group_chaos_from_summary(
     summary: SimulationSummaryResponse,
     data_mode: str,
     model_type: ModelType = DEFAULT_MODEL_TYPE,
+    config: TournamentConfig | None = None,
 ) -> GroupChaosResponse:
     """Compute group chaos from an existing tournament simulation summary."""
-    config = load_tournament(data_mode)
+    config = config or load_tournament(data_mode)
     teams_by_group: dict[str, list] = {}
     for team in summary.teams:
         teams_by_group.setdefault(team.group_id, []).append(team)

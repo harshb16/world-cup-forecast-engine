@@ -362,7 +362,7 @@ def _poisson_probability(goals: int, expected: float) -> float:
 
 
 class OracleV3Model:
-    """Ensemble blending Dixon-Coles, Oracle v2, and GBM match models."""
+    """Ensemble blending Dixon-Coles, Forecast v2, and GBM match models."""
 
     DEFAULT_WEIGHTS: dict[str, float] = {
         "dixon_coles": 0.35,

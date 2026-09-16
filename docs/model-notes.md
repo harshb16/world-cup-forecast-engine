@@ -8,11 +8,11 @@ Other available models:
 
 - Elo and Poisson baselines.
 - Dixon-Coles scoreline baseline with a fixed low-score correction.
-- Oracle v2 squad-aware ensemble, experimental.
+- Forecast v2 squad-aware ensemble, experimental.
 - Gradient boosting classifier, experimental; training uses synthetic labels.
-- Oracle v3 blended ensemble, experimental.
+- Forecast v3 blended ensemble, experimental.
 
-Oracle v2, GBM, and Oracle v3 remain comparison models. They should not be
+Forecast v2, GBM, and Forecast v3 remain comparison models. They should not be
 presented as better than calibrated Elo until rolling historical holdout tests
 show a repeatable gain.
 

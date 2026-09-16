@@ -180,7 +180,7 @@ export default function ModelsPage() {
               icon={BrainCircuit}
               label="ML status"
               value="Experimental"
-              detail="GBM and Oracle v3 are comparison-only until validated"
+              detail="GBM and Forecast v3 are comparison-only until validated"
             />
           </section>
 

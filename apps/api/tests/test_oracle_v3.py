@@ -1,4 +1,4 @@
-"""Tests for Oracle v3 ensemble model."""
+"""Tests for Forecast v3 ensemble model."""
 
 import numpy as np
 import pytest

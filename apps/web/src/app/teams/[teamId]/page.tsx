@@ -46,7 +46,7 @@ export async function generateMetadata({
 
     if (!team) {
       return {
-        title: "Team not found | World Cup Oracle",
+        title: "Team not found | World Cup Forecast Engine",
       };
     }
 
@@ -56,16 +56,16 @@ export async function generateMetadata({
         : `${Math.round(championProbability * 100)}% champion odds`;
 
     return {
-      title: `${team.name} | World Cup Oracle`,
+      title: `${team.name} | World Cup Forecast Engine`,
       description: `${team.name} — ${probabilityText} on checked-in World Cup 2026 data.`,
       openGraph: {
-        title: `${team.name} | World Cup Oracle`,
+        title: `${team.name} | World Cup Forecast Engine`,
         description: `${team.name} — ${probabilityText}.`,
       },
     };
   } catch {
     return {
-      title: "Team profile | World Cup Oracle",
+      title: "Team profile | World Cup Forecast Engine",
       description: "Team probability profile for World Cup 2026.",
     };
   }

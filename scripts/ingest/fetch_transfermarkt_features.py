@@ -81,7 +81,7 @@ def _open_csv_text(path: Path | None, url: str):
 
     request = urllib.request.Request(
         url,
-        headers={"User-Agent": "world-cup-oracle-data-ingest/1.0"},
+        headers={"User-Agent": "world-cup-forecast-engine-data-ingest/1.0"},
     )
     with urllib.request.urlopen(request, timeout=30) as response:
         with gzip.open(response, "rt", newline="") as file:

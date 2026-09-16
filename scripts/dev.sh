@@ -100,7 +100,7 @@ if ! curl --silent --fail "$API_URL/health" >/dev/null 2>&1 \
 fi
 
 echo
-echo "World Cup Oracle ready: $WEB_URL"
+echo "World Cup Forecast Engine ready: $WEB_URL"
 echo "Forecast profile: ${NEXT_PUBLIC_WCO_SIMULATIONS} tournament / ${NEXT_PUBLIC_WCO_ANALYTICS_SIMULATIONS} analytics simulations"
 echo "Press Ctrl+C to stop both servers."
 

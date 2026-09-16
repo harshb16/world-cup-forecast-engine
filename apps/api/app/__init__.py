@@ -1,1 +1,1 @@
-"""World Cup Oracle API package."""
+"""World Cup Forecast Engine API package."""

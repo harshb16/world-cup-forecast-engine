@@ -83,7 +83,7 @@ def run_cron_sync_if_due() -> tuple[bool, str]:
 def main() -> int:
   import argparse
 
-  parser = argparse.ArgumentParser(description="World Cup Oracle cron result sync")
+  parser = argparse.ArgumentParser(description="World Cup Forecast Engine cron result sync")
   parser.add_argument(
       "--cron",
       action="store_true",

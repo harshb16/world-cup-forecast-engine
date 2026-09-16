@@ -114,7 +114,7 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
         ),
         ModelMetadataResponse(
             id="oracle_v2",
-            name="Oracle v2 ensemble (experimental)",
+            name="Forecast v2 ensemble (experimental)",
             is_ml=False,
             maturity="experimental",
             inputs=[
@@ -155,7 +155,7 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
             ],
             assumptions=[
                 "Historical and synthetic international fixtures train a calibrated GBM.",
-                "Scorelines are sampled from Oracle v2 expected goals after W/D/L draw.",
+                "Scorelines are sampled from Forecast v2 expected goals after W/D/L draw.",
             ],
             limitations=[
                 "Training data is sparse for the 2026 tournament window.",
@@ -170,18 +170,18 @@ def list_model_metadata() -> list[ModelMetadataResponse]:
         ),
         ModelMetadataResponse(
             id="oracle_v3",
-            name="Oracle v3 ensemble (experimental)",
+            name="Forecast v3 ensemble (experimental)",
             is_ml=True,
             maturity="experimental",
             inputs=[
                 "Dixon-Coles scoreline model",
-                "Oracle v2 squad-aware model",
+                "Forecast v2 squad-aware model",
                 "GBM classifier (when artifact available)",
             ],
             assumptions=[
                 "Blended W/D/L probabilities are intended to combine complementary model signals.",
-                "Default weights are 35% Dixon-Coles, 35% Oracle v2, 30% GBM.",
-                "Falls back to 50/50 Dixon-Coles + Oracle v2 when GBM artifact is missing.",
+                "Default weights are 35% Dixon-Coles, 35% Forecast v2, 30% GBM.",
+                "Falls back to 50/50 Dixon-Coles + Forecast v2 when GBM artifact is missing.",
             ],
             limitations=[
                 "Ensemble weights are fixed, not re-fit after every matchday.",

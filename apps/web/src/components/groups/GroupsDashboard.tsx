@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { ThirdPlaceTrackerPanel } from "@/components/analytics/ThirdPlaceTracker";
 import { ErrorState } from "@/components/ErrorState";
@@ -70,12 +70,6 @@ export function GroupsDashboard() {
 
   const [activeGroup, setActiveGroup] = useState<string>("A");
 
-  useEffect(() => {
-    if (data?.groups[0] && !data.groups.some((g) => g.id === activeGroup)) {
-      setActiveGroup(data.groups[0].id);
-    }
-  }, [data, activeGroup]);
-
   if (error && !data) {
     return <ErrorState message={error} />;
   }
@@ -86,6 +80,7 @@ export function GroupsDashboard() {
 
   const selectedGroup =
     data.groups.find((group) => group.id === activeGroup) ?? data.groups[0];
+  const selectedGroupId = selectedGroup.id;
 
   return (
     <div className="flex flex-col gap-6">
@@ -99,7 +94,7 @@ export function GroupsDashboard() {
       ) : <DataStatusCard metadata={data.metadata} />}
 
       <Tabs
-        value={activeGroup}
+        value={selectedGroupId}
         onValueChange={(value) => value && setActiveGroup(value)}
       >
         <TabsList className="flex h-auto flex-wrap gap-1">

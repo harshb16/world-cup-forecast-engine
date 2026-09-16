@@ -58,7 +58,8 @@ export function TimeMachineProvider({ children }: { children: React.ReactNode })
   const activeSnapshot = snapshot?.milestone.id === requestedId ? snapshot : null;
 
   const replaceMilestone = useCallback(
-    (id: string) => {
+    (id: string, preserveStatus = false) => {
+      if (!preserveStatus) setStatusMessage(null);
       const query = new URLSearchParams(searchParams.toString());
       query.set("at", id);
       router.replace(`${pathname}?${query.toString()}`, { scroll: false });
@@ -86,9 +87,7 @@ export function TimeMachineProvider({ children }: { children: React.ReactNode })
       if (!selected) throw new Error("No replay milestones are available.");
       if (selected.id !== requestedId) {
         setStatusMessage(`Replay corrected to ${selected.label}, the closest available milestone.`);
-        replaceMilestone(selected.id);
-      } else {
-        setStatusMessage(null);
+        replaceMilestone(selected.id, true);
       }
       const cached = snapshotCache.current.get(selected.id);
       const loaded = cached ?? (await fetchTimeMachineSnapshot(selected.id));

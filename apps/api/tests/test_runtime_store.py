@@ -11,6 +11,7 @@ import pytest
 from app.services.runtime_store import (
     BOOTSTRAP_PROCESSED_DIR,
     get_active_data_directory,
+    get_active_forecast_directory,
     init_runtime_store,
     list_data_snapshots,
     publish_data_snapshot,
@@ -84,5 +85,11 @@ def test_publish_forecast_snapshot_record_is_active(
     record_id = publish_forecast_snapshot_record(
         snapshot_id="seed:now:calibrated_elo:5000",
         payload={"snapshot_id": "seed:now:calibrated_elo:5000", "generated_at": "now"},
+        json_sidecars={"team_paths.json": {"teams": {"arg": {"team_id": "arg"}}}},
     )
     assert record_id
+    forecast_dir = get_active_forecast_directory()
+    assert forecast_dir is not None
+    assert json.loads((forecast_dir / "team_paths.json").read_text()) == {
+        "teams": {"arg": {"team_id": "arg"}}
+    }

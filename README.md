@@ -4,8 +4,6 @@
 
 World Cup Forecast Engine is a full-stack portfolio project: FastAPI simulation backend, Next.js dashboard, precomputed simulation banks, and a frozen archive mode for demos after the final whistle.
 
-![Dashboard](docs/screenshots/dashboard.svg)
-
 ## Try this (local)
 
 Start both servers:
@@ -27,10 +25,6 @@ Then open:
 | **Models** | http://localhost:3000/models | Current-tournament + historical holdout scoring |
 
 Curated what-if presets are on the What-if page (`Underdog wins next`, `All favorites advance`, `Chaos round`).
-
-![Bracket](docs/screenshots/bracket.svg)
-
-![What-if lab](docs/screenshots/what-if.svg)
 
 ## Architecture
 

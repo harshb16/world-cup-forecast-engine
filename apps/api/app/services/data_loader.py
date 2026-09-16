@@ -182,8 +182,8 @@ def _processed_quality_metadata() -> dict[str, Any]:
             "The public default uses open-data Elo ratings; FIFA rank-derived ratings remain available only to baseline and comparison models.",
         ],
         "model_limitations": [
-            "The GBM uses a small real-result sample supplemented by synthetic Oracle v2 labels.",
-            "Oracle v3 ensemble weights are fixed rather than re-fit after every matchday.",
+            "The GBM uses a small real-result sample supplemented by synthetic Forecast v2 labels.",
+            "Forecast v3 ensemble weights are fixed rather than re-fit after every matchday.",
             "Knockout bracket uses FIFA World Cup 2026 round-of-32 slots with deterministic third-place assignment.",
             "Group ties use the FIFA 2026 head-to-head sequence before overall goal difference and goals scored.",
             "Fair-play conduct is supported when disciplinary deductions are present; current processed fixtures do not yet include card events.",

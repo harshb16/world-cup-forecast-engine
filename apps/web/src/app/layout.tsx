@@ -22,7 +22,7 @@ const merriweather = Merriweather({
 });
 
 export const metadata: Metadata = {
-  title: "World Cup Oracle",
+  title: "World Cup Forecast Engine",
   description: "World Cup simulation and prediction dashboard",
 };
 

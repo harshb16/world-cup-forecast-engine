@@ -1,6 +1,6 @@
-# World Cup Oracle — simulation engine
+# World Cup Forecast Engine — simulation engine
 
-This document explains how tournament data flows through the World Cup Oracle backend: from checked-in fixtures to Monte Carlo banks, published forecasts, and UI-facing probabilities.
+This document explains how tournament data flows through the World Cup Forecast Engine backend: from checked-in fixtures to Monte Carlo banks, published forecasts, and UI-facing probabilities.
 
 ## Pipeline overview
 
@@ -69,7 +69,7 @@ Model order (simple → complex):
 2. Calibrated Elo (default production model)
 3. Poisson scoreline model
 4. Dixon–Coles adjustment
-5. Oracle v2 / v3 ensemble (GBM + Elo blend)
+5. Forecast v2 / v3 ensemble (GBM + Elo blend)
 
 Each model exposes win/draw/loss (or advance) probabilities for a fixture given team ratings and stage context.
 

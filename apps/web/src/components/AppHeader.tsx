@@ -142,7 +142,7 @@ export function AppHeader() {
   const [frozenLabel, setFrozenLabel] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const activePage =
-    allNavItems.find((item) => item.href === pathname)?.label ?? "World Cup Oracle";
+    allNavItems.find((item) => item.href === pathname)?.label ?? "World Cup Forecast Engine";
 
   useEffect(() => {
     let isActive = true;
@@ -174,7 +174,7 @@ export function AppHeader() {
           </span>
           <span className="hidden sm:block">
             <span className="block text-sm font-semibold leading-tight text-foreground">
-              World Cup Oracle
+              World Cup Forecast Engine
             </span>
             <span className="block font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">
               Probability desk

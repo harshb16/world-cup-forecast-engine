@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from typing import Literal
 
-API_TITLE = "World Cup Oracle API"
+API_TITLE = "World Cup Forecast Engine API"
 DEFAULT_MODEL_TYPE = "calibrated_elo"
 
 REPO_ROOT = Path(__file__).resolve().parents[4]

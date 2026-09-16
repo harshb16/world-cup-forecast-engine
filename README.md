@@ -1,8 +1,8 @@
-# World Cup Oracle
+# World Cup Forecast Engine
 
 **Monte Carlo World Cup forecasting — bracket probabilities, what-if scenarios, and post-tournament retrospectives from one simulation engine.**
 
-World Cup Oracle is a full-stack portfolio project: FastAPI simulation backend, Next.js dashboard, precomputed simulation banks, and a frozen archive mode for demos after the final whistle.
+World Cup Forecast Engine is a full-stack portfolio project: FastAPI simulation backend, Next.js dashboard, precomputed simulation banks, and a frozen archive mode for demos after the final whistle.
 
 ![Dashboard](docs/screenshots/dashboard.svg)
 

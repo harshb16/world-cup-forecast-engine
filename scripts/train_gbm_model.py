@@ -1,4 +1,4 @@
-"""Train GBM match model using real match results + synthetic Oracle v2 data."""
+"""Train GBM match model using real match results + synthetic Forecast v2 data."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ FEATURE_NAMES = ["rating_diff", "rating_a", "rating_b", "abs_rating_diff"]
 
 
 def _oracle_v2_probs(rating_a: float, rating_b: float) -> list[float]:
-    """Compute win/draw/loss probabilities using Oracle v2 Poisson logic."""
+    """Compute win/draw/loss probabilities using Forecast v2 Poisson logic."""
     base = 1.28
     gap = (rating_a - rating_b) / 400.0
     mu = base * math.exp(gap * 0.42)
@@ -96,7 +96,7 @@ def _load_real_data() -> tuple[list[list[float]], list[int]]:
 def _generate_synthetic_data(
     n_samples: int = 500, seed: int = 42
 ) -> tuple[list[list[float]], list[int]]:
-    """Generate synthetic training pairs using Oracle v2 probabilities as ground truth."""
+    """Generate synthetic training pairs using Forecast v2 probabilities as ground truth."""
     rng = np.random.default_rng(seed)
 
     # Use a spread of ratings from plausible tournament range

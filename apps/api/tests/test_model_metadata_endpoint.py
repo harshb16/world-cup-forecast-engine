@@ -49,5 +49,5 @@ def test_models_endpoint_describes_experimental_models_honestly() -> None:
 
     assert "holdout gain" in combined_text
     assert "synthetic labels" in combined_text
-    assert "oracle v2" in " ".join(model["name"].lower() for model in response.json())
-    assert "oracle v3" in " ".join(model["name"].lower() for model in response.json())
+    assert "forecast v2" in " ".join(model["name"].lower() for model in response.json())
+    assert "forecast v3" in " ".join(model["name"].lower() for model in response.json())

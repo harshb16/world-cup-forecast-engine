@@ -1,8 +1,8 @@
 # AGENTS.md
 
-## Project: World Cup Oracle
+## Project: World Cup Forecast Engine
 
-World Cup Oracle is a full-stack World Cup simulation and prediction platform. The goal is to simulate the FIFA World Cup many times using statistical and machine learning models, then show team probabilities, stage probabilities, group outcomes, knockout paths, upset risk, and what-if scenarios.
+World Cup Forecast Engine is a full-stack World Cup simulation and prediction platform. The goal is to simulate the FIFA World Cup many times using statistical and machine learning models, then show team probabilities, stage probabilities, group outcomes, knockout paths, upset risk, and what-if scenarios.
 
 ## Core Product Goals
 

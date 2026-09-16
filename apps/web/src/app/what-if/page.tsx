@@ -17,21 +17,21 @@ export async function generateMetadata({
 
   if (!overrides) {
     return {
-      title: "What-if lab | World Cup Oracle",
+      title: "What-if lab | World Cup Forecast Engine",
       description:
-        "Override match results and compare tournament probabilities in the World Cup Oracle what-if lab.",
+        "Override match results and compare tournament probabilities in the World Cup Forecast Engine what-if lab.",
       openGraph: {
-        title: "What-if lab | World Cup Oracle",
+        title: "What-if lab | World Cup Forecast Engine",
         description: "Explore scenario-driven probability shifts.",
       },
     };
   }
 
   return {
-    title: "Shared what-if scenario | World Cup Oracle",
+    title: "Shared what-if scenario | World Cup Forecast Engine",
     description: `Scenario with ${overrides.split(",").filter(Boolean).length} manual result override(s). Open to compare probability shifts.`,
     openGraph: {
-      title: "Shared what-if scenario | World Cup Oracle",
+      title: "Shared what-if scenario | World Cup Forecast Engine",
       description: "Open this shared scenario to compare tournament probability shifts.",
     },
   };

@@ -157,7 +157,7 @@ export function MethodologyExperience() {
             Every percentage should have a paper trail.
           </h1>
           <p className="mt-5 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg">
-            World Cup Oracle converts open match history into team ratings,
+            World Cup Forecast Engine converts open match history into team ratings,
             match probabilities, and thousands of complete tournament paths.
             This page shows what happens at each step—and where confidence
             should stop.

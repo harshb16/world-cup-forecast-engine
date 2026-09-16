@@ -1,4 +1,4 @@
-"""Tests for knockout expected-goals calibration on Oracle v2."""
+"""Tests for knockout expected-goals calibration on Forecast v2."""
 
 import pytest
 

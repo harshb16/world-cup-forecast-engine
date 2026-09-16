@@ -1,0 +1,82 @@
+[
+  {
+    "id": "A",
+    "name": "Group A",
+    "team_ids": [
+      "NED",
+      "SEN",
+      "ECU",
+      "QAT"
+    ]
+  },
+  {
+    "id": "B",
+    "name": "Group B",
+    "team_ids": [
+      "ENG",
+      "USA",
+      "IRN",
+      "WAL"
+    ]
+  },
+  {
+    "id": "C",
+    "name": "Group C",
+    "team_ids": [
+      "ARG",
+      "POL",
+      "MEX",
+      "KSA"
+    ]
+  },
+  {
+    "id": "D",
+    "name": "Group D",
+    "team_ids": [
+      "FRA",
+      "AUS",
+      "TUN",
+      "DEN"
+    ]
+  },
+  {
+    "id": "E",
+    "name": "Group E",
+    "team_ids": [
+      "JPN",
+      "ESP",
+      "GER",
+      "CRC"
+    ]
+  },
+  {
+    "id": "F",
+    "name": "Group F",
+    "team_ids": [
+      "MAR",
+      "CRO",
+      "BEL",
+      "CAN"
+    ]
+  },
+  {
+    "id": "G",
+    "name": "Group G",
+    "team_ids": [
+      "BRA",
+      "SUI",
+      "CMR",
+      "SRB"
+    ]
+  },
+  {
+    "id": "H",
+    "name": "Group H",
+    "team_ids": [
+      "POR",
+      "KOR",
+      "URU",
+      "GHA"
+    ]
+  }
+]

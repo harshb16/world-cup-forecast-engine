@@ -1,0 +1,60 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+import { getDataFreshness } from "@/lib/freshness";
+
+const levelStyles = {
+  current: "text-primary",
+  delayed: "text-signal-amber",
+  stale: "text-destructive",
+  unknown: "text-muted-foreground",
+} as const;
+
+const levelLabels = {
+  current: "Current",
+  delayed: "Delayed",
+  stale: "Stale",
+  unknown: "Unknown",
+} as const;
+
+export function DataFreshness({
+  timestamp,
+  compact = false,
+}: {
+  timestamp: string | null | undefined;
+  compact?: boolean;
+}) {
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const interval = window.setInterval(() => setNow(new Date()), 60_000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const freshness = getDataFreshness(timestamp, now);
+
+  if (compact) {
+    return (
+      <span
+        className={levelStyles[freshness.level]}
+        title={freshness.exact}
+        suppressHydrationWarning
+      >
+        {levelLabels[freshness.level]} · {freshness.relative}
+      </span>
+    );
+  }
+
+  return (
+    <span title={freshness.exact} suppressHydrationWarning>
+      <span className={`font-semibold ${levelStyles[freshness.level]}`}>
+        {levelLabels[freshness.level]}
+      </span>
+      <span className="ml-1 font-semibold text-foreground">
+        {freshness.relative}
+      </span>
+      <span className="ml-2 text-xs text-muted-foreground">({freshness.exact})</span>
+    </span>
+  );
+}

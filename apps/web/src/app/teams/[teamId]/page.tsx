@@ -1,0 +1,81 @@
+import type { Metadata } from "next";
+
+import { TeamDetailDashboard } from "@/components/teams/TeamDetailDashboard";
+import { TeamDetailHeader } from "@/components/teams/TeamDetailHeader";
+import { API_BASE_URL, SIMULATION_COUNT } from "@/lib/config";
+import { DEFAULT_MODEL_TYPE } from "@/lib/api";
+
+type TeamDetailPageProps = {
+  params: Promise<{ teamId: string }>;
+};
+
+export async function generateMetadata({
+  params,
+}: TeamDetailPageProps): Promise<Metadata> {
+  const { teamId } = await params;
+
+  try {
+    const [teamsResponse, simulationResponse] = await Promise.all([
+      fetch(`${API_BASE_URL}/teams`, { next: { revalidate: 300 } }),
+      fetch(`${API_BASE_URL}/simulate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          n_simulations: SIMULATION_COUNT,
+          model_type: DEFAULT_MODEL_TYPE,
+          seed: 42,
+        }),
+        next: { revalidate: 300 },
+      }),
+    ]);
+
+    if (!teamsResponse.ok || !simulationResponse.ok) {
+      throw new Error("metadata fetch failed");
+    }
+
+    const teams = (await teamsResponse.json()) as Array<{
+      id: string;
+      name: string;
+    }>;
+    const simulation = (await simulationResponse.json()) as {
+      champion_probabilities: Record<string, number>;
+    };
+    const team = teams.find((candidate) => candidate.id === teamId);
+    const championProbability =
+      simulation.champion_probabilities[teamId] ?? null;
+
+    if (!team) {
+      return {
+        title: "Team not found | World Cup Forecast Engine",
+      };
+    }
+
+    const probabilityText =
+      championProbability === null
+        ? "champion odds unavailable"
+        : `${Math.round(championProbability * 100)}% champion odds`;
+
+    return {
+      title: `${team.name} | World Cup Forecast Engine`,
+      description: `${team.name} — ${probabilityText} on checked-in World Cup 2026 data.`,
+      openGraph: {
+        title: `${team.name} | World Cup Forecast Engine`,
+        description: `${team.name} — ${probabilityText}.`,
+      },
+    };
+  } catch {
+    return {
+      title: "Team profile | World Cup Forecast Engine",
+      description: "Team probability profile for World Cup 2026.",
+    };
+  }
+}
+
+export default function TeamDetailPage() {
+  return (
+    <>
+      <TeamDetailHeader />
+      <TeamDetailDashboard />
+    </>
+  );
+}

@@ -1,0 +1,32 @@
+{
+  "bracket_status": "group-stage real data; knockout simulation uses FIFA World Cup 2026 round-of-32 slots with deterministic third-place assignment",
+  "data_mode": "processed",
+  "data_version": "2026-worldcup-processed-2026-06-25",
+  "is_real_data": true,
+  "last_updated": "2026-06-25T10:45:30Z",
+  "rating_source": "Open international results Elo baseline; FIFA ranking retained as fallback metadata",
+  "result_source": "FIFA API fallback",
+  "ratings_are_official": false,
+  "sources": [
+    {
+      "name": "FIFA World Cup 26 scores and fixtures",
+      "url": "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
+      "usage": "Primary intended source for tournament fixtures/results; automated fetch script provided."
+    },
+    {
+      "name": "FIFA/Coca-Cola Men’s World Ranking",
+      "url": "https://inside.fifa.com/fifa-world-ranking/men",
+      "usage": "Ranking reference for rank-derived model ratings."
+    },
+    {
+      "name": "Public indexed schedule/group references",
+      "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup",
+      "usage": "Fallback normalization aid when official dynamic pages are unavailable to automation."
+    },
+    {
+      "name": "Transfermarkt Datasets",
+      "url": "https://github.com/dcaribou/transfermarkt-datasets",
+      "usage": "Free squad market-value features for Forecast v2 model calibration."
+    }
+  ]
+}

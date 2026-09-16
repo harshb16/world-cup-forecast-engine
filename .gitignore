@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+.env
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Node / Next.js (repo-level)
+node_modules/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Local tooling
+.agents/
+.codex-plugins/
+.codebase-memory/
+.cursor/
+SKILL.md
+AGENTS.md
+PLAN.md
+
+# Raw ingest dumps (keep processed JSON checked in)
+data/raw/
+data/runtime/

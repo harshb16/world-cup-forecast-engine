@@ -1,0 +1,290 @@
+[
+  {
+    "group_id": "A",
+    "id": "MEXICO",
+    "name": "Mexico",
+    "rating": 2080
+  },
+  {
+    "group_id": "A",
+    "id": "RSA",
+    "name": "South Africa",
+    "rating": 1712
+  },
+  {
+    "group_id": "A",
+    "id": "KOR",
+    "name": "Korea Republic",
+    "rating": 2024
+  },
+  {
+    "group_id": "A",
+    "id": "CZECHIA",
+    "name": "Czechia",
+    "rating": 1848
+  },
+  {
+    "group_id": "B",
+    "id": "CANADA",
+    "name": "Canada",
+    "rating": 1688
+  },
+  {
+    "group_id": "B",
+    "id": "QATAR",
+    "name": "Qatar",
+    "rating": 1880
+  },
+  {
+    "group_id": "B",
+    "id": "BIH",
+    "name": "Bosnia and Herzegovina",
+    "rating": 1592
+  },
+  {
+    "group_id": "B",
+    "id": "SWITZERLAND",
+    "name": "Switzerland",
+    "rating": 2072
+  },
+  {
+    "group_id": "C",
+    "id": "BRAZIL",
+    "name": "Brazil",
+    "rating": 2160
+  },
+  {
+    "group_id": "C",
+    "id": "MOROCCO",
+    "name": "Morocco",
+    "rating": 2104
+  },
+  {
+    "group_id": "C",
+    "id": "HAITI",
+    "name": "Haiti",
+    "rating": 1480
+  },
+  {
+    "group_id": "C",
+    "id": "SCOTLAND",
+    "name": "Scotland",
+    "rating": 1808
+  },
+  {
+    "group_id": "D",
+    "id": "USA",
+    "name": "United States",
+    "rating": 2088
+  },
+  {
+    "group_id": "D",
+    "id": "PARAGUAY",
+    "name": "Paraguay",
+    "rating": 1800
+  },
+  {
+    "group_id": "D",
+    "id": "AUSTRALIA",
+    "name": "Australia",
+    "rating": 2000
+  },
+  {
+    "group_id": "D",
+    "id": "TURKIYE",
+    "name": "Türkiye",
+    "rating": 1992
+  },
+  {
+    "group_id": "E",
+    "id": "GERMANY",
+    "name": "Germany",
+    "rating": 2128
+  },
+  {
+    "group_id": "E",
+    "id": "CURACAO",
+    "name": "Curaçao",
+    "rating": 1472
+  },
+  {
+    "group_id": "E",
+    "id": "CIV",
+    "name": "Côte d’Ivoire",
+    "rating": 1760
+  },
+  {
+    "group_id": "E",
+    "id": "ECUADOR",
+    "name": "Ecuador",
+    "rating": 1984
+  },
+  {
+    "group_id": "F",
+    "id": "NETHERLANDS",
+    "name": "Netherlands",
+    "rating": 2144
+  },
+  {
+    "group_id": "F",
+    "id": "JAPAN",
+    "name": "Japan",
+    "rating": 2040
+  },
+  {
+    "group_id": "F",
+    "id": "SWEDEN",
+    "name": "Sweden",
+    "rating": 1960
+  },
+  {
+    "group_id": "F",
+    "id": "TUNISIA",
+    "name": "Tunisia",
+    "rating": 1824
+  },
+  {
+    "group_id": "G",
+    "id": "BELGIUM",
+    "name": "Belgium",
+    "rating": 2136
+  },
+  {
+    "group_id": "G",
+    "id": "EGYPT",
+    "name": "Egypt",
+    "rating": 1944
+  },
+  {
+    "group_id": "G",
+    "id": "IRN",
+    "name": "IR Iran",
+    "rating": 2032
+  },
+  {
+    "group_id": "G",
+    "id": "NEW_ZEALAND",
+    "name": "New Zealand",
+    "rating": 1488
+  },
+  {
+    "group_id": "H",
+    "id": "SPAIN",
+    "name": "Spain",
+    "rating": 2192
+  },
+  {
+    "group_id": "H",
+    "id": "CPV",
+    "name": "Cabo Verde",
+    "rating": 1656
+  },
+  {
+    "group_id": "H",
+    "id": "SAUDI_ARABIA",
+    "name": "Saudi Arabia",
+    "rating": 1720
+  },
+  {
+    "group_id": "H",
+    "id": "URUGUAY",
+    "name": "Uruguay",
+    "rating": 2112
+  },
+  {
+    "group_id": "I",
+    "id": "FRANCE",
+    "name": "France",
+    "rating": 2176
+  },
+  {
+    "group_id": "I",
+    "id": "SENEGAL",
+    "name": "Senegal",
+    "rating": 2048
+  },
+  {
+    "group_id": "I",
+    "id": "IRAQ",
+    "name": "Iraq",
+    "rating": 1552
+  },
+  {
+    "group_id": "I",
+    "id": "NORWAY",
+    "name": "Norway",
+    "rating": 1968
+  },
+  {
+    "group_id": "J",
+    "id": "ARGENTINA",
+    "name": "Argentina",
+    "rating": 2184
+  },
+  {
+    "group_id": "J",
+    "id": "ALGERIA",
+    "name": "Algeria",
+    "rating": 1920
+  },
+  {
+    "group_id": "J",
+    "id": "AUSTRIA",
+    "name": "Austria",
+    "rating": 2064
+  },
+  {
+    "group_id": "J",
+    "id": "JORDAN",
+    "name": "Jordan",
+    "rating": 1600
+  },
+  {
+    "group_id": "K",
+    "id": "PORTUGAL",
+    "name": "Portugal",
+    "rating": 2152
+  },
+  {
+    "group_id": "K",
+    "id": "COD",
+    "name": "Congo DR",
+    "rating": 1560
+  },
+  {
+    "group_id": "K",
+    "id": "UZBEKISTAN",
+    "name": "Uzbekistan",
+    "rating": 1568
+  },
+  {
+    "group_id": "K",
+    "id": "COLOMBIA",
+    "name": "Colombia",
+    "rating": 2096
+  },
+  {
+    "group_id": "L",
+    "id": "ENGLAND",
+    "name": "England",
+    "rating": 2168
+  },
+  {
+    "group_id": "L",
+    "id": "CROATIA",
+    "name": "Croatia",
+    "rating": 2120
+  },
+  {
+    "group_id": "L",
+    "id": "GHANA",
+    "name": "Ghana",
+    "rating": 1624
+  },
+  {
+    "group_id": "L",
+    "id": "PANAMA",
+    "name": "Panama",
+    "rating": 1680
+  }
+]

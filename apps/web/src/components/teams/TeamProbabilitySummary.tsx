@@ -1,0 +1,69 @@
+import { ProbabilityBar } from "@/components/ui/ProbabilityBar";
+import { TeamProbability } from "@/lib/api";
+import { isGroupQualificationSaturated } from "@/lib/team-status";
+
+const stageRows = [
+  { label: "Round of 32", key: "round_of_32" },
+  { label: "Round of 16", key: "round_of_16" },
+  { label: "Quarter-final", key: "quarter_final" },
+  { label: "Semi-final", key: "semi_final" },
+  { label: "Final", key: "final" },
+] as const;
+
+export function TeamProbabilitySummary({
+  probability,
+  compact = false,
+}: {
+  probability: TeamProbability;
+  compact?: boolean;
+}) {
+  const showGroupQualification = !isGroupQualificationSaturated(probability);
+
+  return (
+    <div className="space-y-4">
+      <div
+        className={`grid gap-3 ${showGroupQualification ? "sm:grid-cols-2" : "sm:grid-cols-1"}`}
+      >
+        <div className="rounded-md border border-border bg-white/[0.035] p-3">
+          <span className="text-xs font-medium text-muted-foreground">Champion</span>
+          <div className="mt-2">
+            <ProbabilityBar value={probability.champion} label="Win title" />
+          </div>
+        </div>
+        {showGroupQualification ? (
+          <div className="rounded-md border border-border bg-white/[0.035] p-3">
+            <span className="text-xs font-medium text-muted-foreground">
+              Group qualification
+            </span>
+            <div className="mt-2">
+              <ProbabilityBar
+                value={probability.group_qualification_probability}
+                label="Reach knockouts"
+              />
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      {!compact ? (
+        <div className="rounded-md border border-border bg-white/[0.035] p-3">
+          <div className="space-y-3 text-sm">
+            {stageRows.map((row) => (
+              <ProbabilityBar
+                key={row.key}
+                value={probability[row.key]}
+                label={row.label}
+              />
+            ))}
+            <div className="flex items-center justify-between gap-4">
+              <span className="text-muted-foreground">Average points</span>
+              <span className="font-semibold text-foreground">
+                {probability.average_points.toFixed(2)}
+              </span>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}

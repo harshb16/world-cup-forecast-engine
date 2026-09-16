@@ -28,6 +28,8 @@ node_modules/
 .codebase-memory/
 .cursor/
 SKILL.md
+AGENTS.md
+PLAN.md
 
 # Raw ingest dumps (keep processed JSON checked in)
 data/raw/
